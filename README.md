@@ -1,0 +1,4 @@
+mining
+======
+
+Open Mining
