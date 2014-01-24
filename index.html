@@ -1,5 +1,20 @@
-<!-- http://docs.angularjs.org/api/ng.filter:orderBy -->
-
-{% raw df %}
-
-<img src="/plot.png" />
+<html ng-app="OpenMining">
+  <head>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular-resource.min.js"></script>
+    <script type="text/javascript" src="/assets/javascript/script.js"></script>
+  </head>
+  <body>
+    <div ng-controller="Process">
+      <div class="spinner" ng-show="loading">Carregando...</div>
+      <table class="process">
+        <tr>
+          <th ng-repeat="c in columns"><a href="" ng-click="predicate = '{{!c}}'; reverse=!reverse">{{!c}}</a></th>
+        </tr>
+        <tr ng-repeat="p in process | orderBy:predicate:reverse">
+          <td ng-repeat="c in columns">{{!p[c]}}</td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>
