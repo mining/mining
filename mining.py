@@ -1,68 +1,74 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
-from sqlalchemy import create_engine
-import matplotlib.pyplot as plt
+import os
+import json
+from pandas import read_json
+
+import riak
+import memcache
+
 
 import tornado.ioloop
 import tornado.web
 import tornado.gen
-
-from StringIO import StringIO
-
-
-#e = create_engine('mysql://root:123mudar@192.168.12.4/upessencia_dev1')
-e = create_engine('mysql://root@127.0.0.1/lerolero')
-connection = e.connect()
-
-sql = """SELECT 
-cliente.id_cliente,
-pedido.id_pedido,
-pedido.criacao_ts as 'pedido_data',
-cliente.criacao_ts as 'cliente_data' 
-FROM pedido 
-inner join cliente on cliente.id_cliente = pedido.id_cliente 
-WHERE pedido.id_pedido_status NOT IN (4,8,9) 
-AND pedido.entrega_forma<>'franquia' limit 100"""
-
-sql2 = "SELECT id, date FROM lerolero"
-
-resoverall = connection.execute(sql2)
-
-df = DataFrame(resoverall.fetchall())
-df.columns = resoverall.keys()
-#self.write(df.to_json())
-df.head()
+import tornado.autoreload
 
 
 class MainHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self):
-        self.render('index.html', df=df.to_html())
+        self.render('index.html')
+
+
+class ProcessHandler(tornado.web.RequestHandler):
+    @tornado.web.asynchronous
+    def post(self):
+        mc = memcache.Client(['127.0.0.1:11211'], debug=0)
+        if mc.get('testando'):
+            self.write(mc.get('testando'))
+            self.finish()
+
+        myClient = riak.RiakClient(protocol='http', http_port=8098, host='127.0.0.1')
+        myBucket = myClient.bucket('openmining')
+
+        columns = json.loads(myBucket.get('testando-columns').data)
+        df = read_json(myBucket.get('testando').data)
+
+        fields = columns
+        try:
+            if len(self.get_argument('fields')) >= 1:
+                fields = self.get_argument('fields').split(',')
+        except:
+            pass
+        fields.remove('pedido_data')
+        fields.remove('cliente_data')
+
+        df[fields].head()
+
+        convert = [{unicode(colname): unicode(row[i])
+                    for i, colname in enumerate(df.columns)}
+                   for row in df.values]
+
+        write = json.dumps({'columns': columns, 'json': convert})
+        mc.set('testando', write)
+        self.write(write)
         self.finish()
 
 
-class PlotHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.set_header("Content-Type", 'image/png"')
-        means = df.mean()
-
-        plt.figure()
-        means.plot(kind='barh')
-        plt.legend(loc='best')
-        img = StringIO()
-        plt.savefig(img)
-        img.seek(0)
-
-        self.finish(img.read())
-
-
+PROJECT_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)))
 application = tornado.web.Application([
+    (r'/assets/(.*)', tornado.web.StaticFileHandler,
+        {'path': "{}/{}".format(PROJECT_PATH, "assets")}),
+    (r"/process.json", ProcessHandler),
     (r"/", MainHandler),
-    (r"/plot.png", PlotHandler),
 ])
 
 
 if __name__ == "__main__":
+    print "openmining.io server starting..."
+    def fn():
+        print "openmining.io before reloading..."
     application.listen(8888)
+    tornado.autoreload.add_reload_hook(fn)
+    tornado.autoreload.start()
     tornado.ioloop.IOLoop.instance().start()
