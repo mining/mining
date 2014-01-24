@@ -3,3 +3,5 @@ pandas==0.13.0
 ipython==1.1.0
 matplotlib==1.1.1
 tornado
+riak
+python-memcached
