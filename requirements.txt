@@ -1,4 +1,4 @@
 SQLAlchemy==0.9.1
+pandas==0.13.0
 ipython==1.1.0
 matplotlib==1.1.1
-pandas==0.13.0
