@@ -3,6 +3,9 @@
 import json
 import riak
 import memcache
+
+from utils import pandas_to_dict
+
 from pandas import DataFrame
 from sqlalchemy import create_engine
 
@@ -34,16 +37,7 @@ df = DataFrame(resoverall.fetchall())
 df.columns = resoverall.keys()
 df.head()
 
-
-def fix_str(name):
-    try:
-        return unicode(name)
-    except UnicodeDecodeError:
-        return unicode(name.decode('latin1'))
-
-
-convert = [{colname: (fix_str(row[i]) if type(row[i]) is str else row[i]) for i, colname in enumerate(df.columns) if colname not in ['pedido_data', 'cliente_data']}
-           for row in df.values]
+convert = pandas_to_dict(df)
 
 join = json.dumps(convert)
 b1 = myBucket.new('testando', data=join)

@@ -2,16 +2,17 @@
 # -*- coding: utf-8 -*-
 import os
 import json
-from pandas import read_json
 
 import riak
 import memcache
-
 
 import tornado.ioloop
 import tornado.web
 import tornado.gen
 import tornado.autoreload
+
+from pandas import read_json
+from utils import pandas_to_dict
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -45,9 +46,7 @@ class ProcessHandler(tornado.web.RequestHandler):
 
         df[fields].head()
 
-        convert = [{unicode(colname): unicode(row[i])
-                    for i, colname in enumerate(df.columns)}
-                   for row in df.values]
+        convert = pandas_to_dict(df)
 
         write = json.dumps({'columns': columns, 'json': convert})
         mc.set('testando', write)
