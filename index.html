@@ -9,7 +9,7 @@
       <div class="spinner" ng-show="loading">Carregando...</div>
       <table class="process">
         <tr>
-          <th ng-repeat="c in columns"><a href="" ng-click="predicate = '{{!c}}'; reverse=!reverse">{{!c}}</a></th>
+          <th ng-repeat="c in columns"><a href="javascript:void(0);" ng-click="predicate = '{{!c}}'; reverse=!reverse">{{!c}}</a></th>
         </tr>
         <tr ng-repeat="p in process | orderBy:predicate:reverse">
           <td ng-repeat="c in columns">{{!p[c]}}</td>
