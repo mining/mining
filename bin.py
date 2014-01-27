@@ -9,6 +9,55 @@ from sqlalchemy import create_engine
 
 from utils import pandas_to_dict
 
+
+myClient = riak.RiakClient(protocol='http',
+                           http_port=8098,
+                           host='127.0.0.1')
+radmin = myClient.bucket('openmining-admin')
+
+for cube in radmin.get('cube').data:
+    slug = cube['slug']
+    sql = cube['sql']
+    for c in radmin.get('connection').data:
+        if c['slug'] == cube['conection']:
+            connection = c['conection']
+
+    print "# CLEAN MEMCACHE: {}".format(slug)
+    mc = memcache.Client(['127.0.0.1:11211'], debug=0)
+    mc.delete(str(slug))
+    mc.delete(str('{}-columns'.format(slug)))
+
+    rmining = myClient.bucket('openmining')
+
+    print "# CONNECT IN RELATION DATA BASE: {}".format(slug)
+    e = create_engine(connection)
+    connection = e.connect()
+
+    print sql
+    resoverall = connection.execute(sql)
+
+    df = DataFrame(resoverall.fetchall())
+    df.columns = resoverall.keys()
+    df.head()
+
+    convert = pandas_to_dict(df)
+
+    join = json.dumps(convert)
+    b1 = rmining.new(slug, data=join)
+    b1.store()
+
+    b2 = rmining.new(u'{}-columns'.format(slug), data=json.dumps([c for c in df.columns]))
+    b2.store()
+
+    b3 = rmining.new(u'{}-connect'.format(slug), data=c)
+    b3.store()
+
+    b4 = rmining.new(u'{}-sql'.format(slug), data=sql)
+    b4.store()
+
+exit(0)
+
+
 mc = memcache.Client(['127.0.0.1:11211'], debug=0)
 mc.delete('testando')
 mc.delete('testando-columns')
@@ -17,7 +66,7 @@ myClient = riak.RiakClient(protocol='http', http_port=8098, host='127.0.0.1')
 myBucket = myClient.bucket('openmining')
 
 c = 'mysql://root:123mudar@192.168.12.4/upessencia_dev1'
-e = create_engine('mysql://root:123mudar@192.168.12.4/upessencia_dev1')
+e = create_engine(c)
 connection = e.connect()
 
 sql = """SELECT
