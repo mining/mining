@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import unicodedata
+import re
+
 from pandas import tslib
 
 
@@ -18,3 +21,12 @@ def pandas_to_dict(df):
     return [{colname: fix_render(row[i])
              for i, colname in enumerate(df.columns)}
             for row in df.values]
+
+
+def slugfy(text):
+    slug = unicodedata.normalize("NFKD", text).encode("UTF-8", "ignore")
+    slug = re.sub(r"[^\w]+", " ", slug)
+    slug = "-".join(slug.lower().strip().split())
+    if not slug:
+        return None
+    return slug
