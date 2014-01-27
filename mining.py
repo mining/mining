@@ -66,8 +66,10 @@ application = tornado.web.Application([
 
 if __name__ == "__main__":
     print "openmining.io server starting..."
+
     def fn():
         print "openmining.io before reloading..."
+
     application.listen(8888)
     tornado.autoreload.add_reload_hook(fn)
     tornado.autoreload.start()
