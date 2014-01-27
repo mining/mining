@@ -13,7 +13,6 @@ angular.module('OpenMining', [])
         console.log(data)
         $scope.process = data.json;
         $scope.columns = data.columns;
-        $scope.predicate = "-id_cliente";
         $scope.loading = false;
       });
 });
