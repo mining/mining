@@ -5,3 +5,4 @@ matplotlib==1.1.1
 tornado
 riak
 python-memcached
+wtforms-tornado
