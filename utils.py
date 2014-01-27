@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from pandas import tslib
+
+
 def fix_render(value):
     if type(value) is str:
         try:
