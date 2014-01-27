@@ -12,6 +12,7 @@ from sqlalchemy import create_engine
 
 mc = memcache.Client(['127.0.0.1:11211'], debug=0)
 mc.delete('testando')
+mc.delete('testando-columns')
 
 myClient = riak.RiakClient(protocol='http', http_port=8098, host='127.0.0.1')
 myBucket = myClient.bucket('openmining')
@@ -20,16 +21,16 @@ c = 'mysql://root:123mudar@192.168.12.4/upessencia_dev1'
 e = create_engine('mysql://root:123mudar@192.168.12.4/upessencia_dev1')
 connection = e.connect()
 
+#pedido.criacao_ts as 'pedido_data',
+#cliente.criacao_ts as 'cliente_data' 
 sql = """SELECT 
 cliente.id_cliente,
 cliente.nome,
-pedido.id_pedido,
-pedido.criacao_ts as 'pedido_data',
-cliente.criacao_ts as 'cliente_data' 
+pedido.id_pedido
 FROM pedido 
 inner join cliente on cliente.id_cliente = pedido.id_cliente 
 WHERE pedido.id_pedido_status NOT IN (4,8,9) 
-AND pedido.entrega_forma<>'franquia' limit 10000"""
+AND pedido.entrega_forma<>'franquia' limit 100"""
 
 resoverall = connection.execute(sql)
 
