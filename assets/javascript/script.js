@@ -1,4 +1,4 @@
-angular.module('OpenMining', ['ngRoute'])
+angular.module('OpenMining', [])
 .value('API_URL', '/process.json?')
 
 .controller('Process',
