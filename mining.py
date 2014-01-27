@@ -25,33 +25,34 @@ class ProcessHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def post(self):
         mc = memcache.Client(['127.0.0.1:11211'], debug=0)
-        if mc.get('testando'):
-            self.write(mc.get('testando'))
-            self.finish()
-
-        myClient = riak.RiakClient(protocol='http', http_port=8098, host='127.0.0.1')
+        myClient = riak.RiakClient(protocol='http',
+                                   http_port=8098,
+                                   host='127.0.0.1')
         myBucket = myClient.bucket('openmining')
 
         columns = json.loads(myBucket.get('testando-columns').data)
-        df = read_json(myBucket.get('testando').data)
-
         fields = columns
         try:
             if len(self.get_argument('fields')) >= 1:
                 fields = self.get_argument('fields').split(',')
         except:
             pass
-        fields.remove('pedido_data')
-        fields.remove('cliente_data')
 
-        df[fields].head()
+        fields_json = json.dumps(fields)
+        if mc.get('testando') and mc.get('testando-columns') == fields_json:
+            self.write(mc.get('testando'))
+            self.finish()
 
-        convert = pandas_to_dict(df)
+        mc.set('testando-columns', fields_json)
 
-        write = json.dumps({'columns': columns, 'json': convert})
+        df = read_json(myBucket.get('testando').data)
+
+        read = df[fields]
+        convert = pandas_to_dict(read)
+
+        write = json.dumps({'columns': fields, 'json': convert})
         mc.set('testando', write)
         self.write(write)
-        self.finish()
 
 
 PROJECT_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)))
