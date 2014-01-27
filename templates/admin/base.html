@@ -1,0 +1,18 @@
+<html ng-app="MiningAdmin" xmlns:ng="http://angularjs.org" lang="en">
+  <head>
+    <script type="text/javascript" src="/assets/bower/angular/angular.min.js"></script>
+    <script type="text/javascript" src="/assets/bower/angular-resource/angular-resource.min.js"></script>
+    <script type="text/javascript" src="/assets/javascript/admin.js"></script>
+  </head>
+  <body>
+
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="/admin/connection">Connection</a></li>
+      <li><a href="/admin/cube">Cube</a></li>
+    </ul>
+
+    <div id="content">
+      {% block content %}{% end %}
+    </div>
+  </body>
+</html>

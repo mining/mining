@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="/admin/connection" method="post" accept-charset="utf-8">
+  <table>
+  {% for field in form %}
+  <tr>
+    <th>{% raw field.label %} {% if field.flags.required %}*{% end %}</th>
+    <td>{% raw field %}</td>
+  </tr>
+  {% end %}
+  </table>
+  <input type="submit" value="Create" />
+</form>
+
+<ul>
+  {% for c in connection %}
+  <li>{{c['name']}} - {{c['conection']}}</li>
+  {% end %}
+</ul>
+
+{% end %}
