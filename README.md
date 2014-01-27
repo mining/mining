@@ -1,4 +1,12 @@
-mining
-======
+openmining.io
+=============
 
-Open Mining
+BI Server written in Python
+
+
+Install
+-------
+
+    python setup.py install
+
+
