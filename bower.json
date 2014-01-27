@@ -1,0 +1,29 @@
+{
+  "name": "qpenmining.io",
+  "version": "0.1",
+  "homepage": "https://github.com/avelino/mining",
+  "authors": [
+    "Thiago Avelino <thiago@avelino.xxx>"
+  ],
+  "description": "Open Source BI System",
+  "keywords": [
+    "bi",
+    "server",
+    "web",
+    "python",
+    "async"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "assets/bower/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.10",
+    "angular-resource": "~1.2.10"
+  }
+}
