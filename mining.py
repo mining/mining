@@ -12,7 +12,9 @@ import tornado.gen
 import tornado.autoreload
 
 from pandas import read_json
+
 from utils import pandas_to_dict
+from admin.views import CubeHandler
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -60,6 +62,7 @@ application = tornado.web.Application([
     (r'/assets/(.*)', tornado.web.StaticFileHandler,
         {'path': "{}/{}".format(PROJECT_PATH, "assets")}),
     (r"/process.json", ProcessHandler),
+    (r"/admin/cube", CubeHandler),
     (r"/", MainHandler),
 ])
 
