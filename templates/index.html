@@ -5,7 +5,7 @@
     <script type="text/javascript" src="/assets/javascript/script.js"></script>
   </head>
   <body>
-    <div ng-controller="Process">
+    <div ng-controller="Process" ng-init="init('{{slug}}')">
       <div class="spinner" ng-show="loading">Carregando...</div>
       <table class="process">
         <tr>
