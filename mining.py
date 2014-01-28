@@ -68,7 +68,7 @@ application = tornado.web.Application([
     (r"/admin/connection", ConnectionHandler),
     (r"/admin/cube/?(?P<slug>[\w-]+)?", CubeHandler),
     (r"/process/(?P<slug>[\w-]+).json", ProcessHandler),
-    (r"/?(?P<slug>[\w-]+)?", MainHandler),
+    (r"/(?P<slug>[\w-]+)", MainHandler),
 ], **settings)
 
 

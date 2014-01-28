@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form action="/admin/cube" method="post" accept-charset="utf-8">
+<form action="/admin/cube{% if slug %}/{{slug}}{% end %}" method="post" accept-charset="utf-8">
   <table>
   {% for field in form %}
   <tr>
