@@ -19,20 +19,19 @@ from admin.views import CubeHandler, ConnectionHandler
 
 class MainHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
-    def get(self):
-        self.render('index.html')
+    def get(self, slug):
+        self.render('index.html', slug=slug)
 
 
 class ProcessHandler(tornado.web.RequestHandler):
-    @tornado.web.asynchronous
-    def post(self):
+    def post(self, slug):
         mc = memcache.Client(['127.0.0.1:11211'], debug=0)
         myClient = riak.RiakClient(protocol='http',
                                    http_port=8098,
                                    host='127.0.0.1')
         myBucket = myClient.bucket('openmining')
 
-        columns = json.loads(myBucket.get('testando-columns').data)
+        columns = json.loads(myBucket.get('{}-columns'.format(slug)).data)
         fields = columns
         try:
             if len(self.get_argument('fields')) >= 1:
@@ -41,20 +40,22 @@ class ProcessHandler(tornado.web.RequestHandler):
             pass
 
         fields_json = json.dumps(fields)
-        if mc.get('testando') and mc.get('testando-columns') == fields_json:
-            self.write(mc.get('testando'))
+        if mc.get(str(slug)) and\
+                mc.get('{}-columns'.format(slug)) == fields_json:
+            self.write(mc.get(slug))
             self.finish()
 
-        mc.set('testando-columns', fields_json)
+        mc.set('{}-columns'.format(slug), fields_json)
 
-        df = read_json(myBucket.get('testando').data)
+        df = read_json(myBucket.get(slug).data)
 
         read = df[fields]
         convert = pandas_to_dict(read)
 
         write = json.dumps({'columns': fields, 'json': convert})
-        mc.set('testando', write)
+        mc.set(str(slug), write)
         self.write(write)
+        self.finish()
 
 
 PROJECT_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)))
@@ -64,10 +65,10 @@ settings = dict(
 application = tornado.web.Application([
     (r'/assets/(.*)', tornado.web.StaticFileHandler,
         {'path': "{}/{}".format(PROJECT_PATH, "assets")}),
-    (r"/process.json", ProcessHandler),
     (r"/admin/connection", ConnectionHandler),
-    (r"/admin/cube", CubeHandler),
-    (r"/", MainHandler),
+    (r"/admin/cube/?(?P<slug>[\w-]+)?", CubeHandler),
+    (r"/process/(?P<slug>[\w-]+).json", ProcessHandler),
+    (r"/?(?P<slug>[\w-]+)?", MainHandler),
 ], **settings)
 
 
