@@ -10,6 +10,11 @@ from utils import slugfy
 from admin.forms import ConnectionForm, CubeForm
 
 
+class AdminHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.render('admin/base.html')
+
+
 class CubeHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, slug=None):
