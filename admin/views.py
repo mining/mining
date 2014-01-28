@@ -52,6 +52,8 @@ class CubeHandler(tornado.web.RequestHandler):
         get_bucket.append(data)
 
         b1 = myBucket.new('cube', data=get_bucket)
+        for k in data:
+            b1.add_index("{}_bin".format(k), data[k])
         b1.store()
 
         self.redirect('/admin/cube')
