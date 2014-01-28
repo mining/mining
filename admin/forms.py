@@ -20,7 +20,10 @@ class CubeForm(Form):
 
     bconnection = myBucket.get('connection').data
 
-    CONNECTION = tuple([(c['slug'], c['name']) for c in bconnection])
+    try:
+        CONNECTION = tuple([(c['slug'], c['name']) for c in bconnection])
+    except:
+        CONNECTION = tuple()
 
     name = TextField(validators=[Required()])
     conection = SelectField(choices=CONNECTION, validators=[Required()])
