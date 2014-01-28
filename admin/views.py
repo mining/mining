@@ -12,7 +12,7 @@ from admin.forms import ConnectionForm, CubeForm
 
 class CubeHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
-    def get(self):
+    def get(self, slug=None):
         form = CubeForm()
         myClient = riak.RiakClient(protocol='http',
                                    http_port=8098,
@@ -22,6 +22,12 @@ class CubeHandler(tornado.web.RequestHandler):
         get_bucket = myBucket.get('cube').data
         if get_bucket is None:
             get_bucket = []
+
+        for bload in get_bucket:
+            if bload['slug'] == slug:
+                form.sql.data = bload['sql']
+                form.conection.data = bload['conection']
+                form.name.data = bload['name']
 
         self.render('admin/cube.html', form=form, cube=get_bucket)
 
@@ -45,6 +51,8 @@ class CubeHandler(tornado.web.RequestHandler):
         get_bucket.append(data)
 
         b1 = myBucket.new('cube', data=get_bucket)
+        for k, v in data:
+            b1.add_index(k, v)
         b1.store()
 
         self.redirect('/admin/cube')
@@ -85,6 +93,8 @@ class ConnectionHandler(tornado.web.RequestHandler):
         get_bucket.append(data)
 
         b1 = myBucket.new('connection', data=get_bucket)
+        for k, v in data:
+            b1.add_index(k, v)
         b1.store()
 
         self.redirect('/admin/connection')
