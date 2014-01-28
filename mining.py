@@ -14,7 +14,7 @@ import tornado.autoreload
 from pandas import read_json
 
 from utils import pandas_to_dict
-from admin.views import CubeHandler, ConnectionHandler
+from admin.views import AdminHandler, CubeHandler, ConnectionHandler
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -65,6 +65,7 @@ settings = dict(
 application = tornado.web.Application([
     (r'/assets/(.*)', tornado.web.StaticFileHandler,
         {'path': "{}/{}".format(PROJECT_PATH, "assets")}),
+    (r"/admin", AdminHandler),
     (r"/admin/connection", ConnectionHandler),
     (r"/admin/cube/?(?P<slug>[\w-]+)?", CubeHandler),
     (r"/process/(?P<slug>[\w-]+).json", ProcessHandler),
