@@ -1,0 +1,17 @@
+{
+  "name": "highcharts",
+  "version": "3.0.7",
+  "main": "./highcharts.js",
+  "dependencies": {},
+  "homepage": "https://github.com/ewen/bower-highcharts",
+  "_release": "3.0.7",
+  "_resolution": {
+    "type": "version",
+    "tag": "v3.0.7",
+    "commit": "3319e634b9179af6e07b7bac854ff0cace0217c1"
+  },
+  "_source": "git://github.com/ewen/bower-highcharts.git",
+  "_target": "~3.0.7",
+  "_originalSource": "highcharts",
+  "_direct": true
+}
