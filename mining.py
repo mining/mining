@@ -24,6 +24,8 @@ class MainHandler(tornado.web.RequestHandler):
 
 
 class ProcessHandler(tornado.web.RequestHandler):
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     def post(self, slug):
         mc = memcache.Client(['127.0.0.1:11211'], debug=0)
         myClient = riak.RiakClient(protocol='http',
