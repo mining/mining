@@ -45,7 +45,7 @@ class CubeHandler(tornado.web.RequestHandler):
         data = form.data
         data['slug'] = slugfy(data.get('name'))
 
-        get_bucket = [b for b in myBucket.get('cube').data
+        get_bucket = [b for b in myBucket.get('cube').data or []
                       if b['slug'] != data['slug']]
         if get_bucket is None:
             get_bucket = []
