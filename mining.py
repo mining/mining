@@ -5,7 +5,6 @@ import json
 
 import riak
 import memcache
-
 import tornado.ioloop
 import tornado.web
 import tornado.gen
