@@ -17,12 +17,12 @@ radmin = myClient.bucket('openmining-admin')
 
 for cube in radmin.get('cube').data:
     slug = cube['slug']
-    sql = cube['sql']
+    sql = "SELECT * FROM ({}) AS CUBE;".format(cube['sql'])
     for c in radmin.get('connection').data:
         if c['slug'] == cube['conection']:
             connection = c['conection']
 
-    print "# CLEAN MEMCACHE: {}".format(slug)
+    print "\n# CLEAN MEMCACHE: {}".format(slug)
     mc = memcache.Client(['127.0.0.1:11211'], debug=0)
     mc.delete(str(slug))
     mc.delete(str('{}-columns'.format(slug)))
@@ -56,7 +56,7 @@ for cube in radmin.get('cube').data:
     b3 = rmining.new(u'{}-connect'.format(slug), data=c)
     b3.store()
 
-    print "# SAVE SQL ON RIAK: {}".format(slug)
+    print "# SAVE SQL ON RIAK: {}\n".format(slug)
     b4 = rmining.new(u'{}-sql'.format(slug), data=sql)
     b4.store()
 
