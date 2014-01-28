@@ -15,7 +15,13 @@
 
 <ul>
   {% for c in cube %}
-  <li><a href="/admin/cube/{{c['slug']}}">edit</a> {{c['name']}} - {{c['conection']}} - {{c['sql']}}</li>
+  <li>
+    <ul>
+      <li><a href="/{{c['slug']}}" target="_black">view</a></li>
+      <li><a href="/admin/cube/{{c['slug']}}">edit</a></li>
+      <li>{{c['name']}} - {{c['conection']}} - {{c['sql']}}</li>
+    </ul>
+  </li>
   {% end %}
 </ul>
 
