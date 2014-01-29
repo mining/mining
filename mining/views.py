@@ -62,7 +62,7 @@ class ProcessHandler(tornado.web.RequestHandler):
         fields_json = json.dumps(fields)
         if mc.get(str(slug)) and\
                 mc.get('{}-columns'.format(slug)) == fields_json:
-            self.write(mc.get(slug))
+            self.write(mc.get(str(slug)))
             self.finish()
 
         mc.set('{}-columns'.format(slug), fields_json)
