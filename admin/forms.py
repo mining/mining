@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import riak
 
-from wtforms.fields import TextField, TextAreaField, HiddenField
+from wtforms.fields import TextField, TextAreaField
 from wtforms.fields import SelectField, SelectMultipleField
 from wtforms.validators import Required
 from wtforms_tornado import Form
