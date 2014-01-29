@@ -6,7 +6,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.gen
 
-from utils import slugfy
+from mining.utils import slugfy
 from admin.forms import ConnectionForm, CubeForm
 
 

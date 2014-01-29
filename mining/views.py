@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os
 import json
 
 import riak
@@ -13,7 +12,6 @@ import tornado.autoreload
 from pandas import read_json
 
 from utils import pandas_to_dict
-from admin.views import AdminHandler, CubeHandler, ConnectionHandler
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -57,30 +55,3 @@ class ProcessHandler(tornado.web.RequestHandler):
         mc.set(str(slug), write)
         self.write(write)
         self.finish()
-
-
-PROJECT_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)))
-settings = dict(
-    template_path="{}/{}".format(PROJECT_PATH, 'templates'))
-
-application = tornado.web.Application([
-    (r'/assets/(.*)', tornado.web.StaticFileHandler,
-        {'path': "{}/{}".format(PROJECT_PATH, "assets")}),
-    (r"/admin", AdminHandler),
-    (r"/admin/connection", ConnectionHandler),
-    (r"/admin/cube/?(?P<slug>[\w-]+)?", CubeHandler),
-    (r"/process/(?P<slug>[\w-]+).json", ProcessHandler),
-    (r"/(?P<slug>[\w-]+)", MainHandler),
-], **settings)
-
-
-if __name__ == "__main__":
-    print "openmining.io server starting..."
-
-    def fn():
-        print "openmining.io before reloading..."
-
-    application.listen(8888)
-    tornado.autoreload.add_reload_hook(fn)
-    tornado.autoreload.start()
-    tornado.ioloop.IOLoop.instance().start()
