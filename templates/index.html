@@ -11,7 +11,8 @@
     <script type="text/javascript" src="/assets/javascript/script.js"></script>
   </head>
   <body>
-    <div ng-controller="Process" ng-init="init('{{slug}}')">
+    {% for d in dashboard['element'] %}
+    <div id="element-{{d['cube']}}" ng-controller="Process" ng-init="init('{{d['cube']}}')">
       <div class="spinner" ng-show="loading">Carregando...</div>
       <table class="process">
         <tr>
@@ -22,5 +23,6 @@
         </tr>
       </table>
     </div>
+    {% end %}
   </body>
 </html>

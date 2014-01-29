@@ -17,7 +17,28 @@ from utils import pandas_to_dict
 class MainHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, slug):
-        self.render('index.html', slug=slug)
+
+        myClient = riak.RiakClient(protocol='http',
+                                   http_port=8098,
+                                   host='127.0.0.1')
+        myBucket = myClient.bucket('openmining-admin')
+        get_bucket = myBucket.get('dashboard').data
+
+        dashboard = {}
+        for d in get_bucket:
+            if d['slug'] == slug:
+                dashboard['slug'] = slug
+
+                # GET ELEMENT
+                _e = []
+                for dash_element in d['element']:
+                    element = myBucket.get('element').data
+                    for e in element:
+                        if dash_element == e['slug']:
+                            _e.append(e)
+                dashboard['element'] = _e
+
+        self.render('index.html', dashboard=dashboard)
 
 
 class ProcessHandler(tornado.web.RequestHandler):
