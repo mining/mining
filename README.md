@@ -17,6 +17,11 @@ Requirements
 Install
 -------
 
-    python setup.py install
+    bower install
 
+
+Run
+---
+
+    python manage.py
 
