@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import unicodedata
 import re
+from decimal import Decimal
 
 from pandas import tslib
 
@@ -14,6 +15,8 @@ def fix_render(value):
             return unicode(value.decode('latin1'))
     elif type(value) is tslib.Timestamp:
         return value.strftime("%Y-%m-%d %H:%M:%S")
+    elif type(value) is Decimal:
+        return str(value)
     return value
 
 
