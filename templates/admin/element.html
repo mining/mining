@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="/admin/element{% if slug %}/{{slug}}{% end %}" method="post" accept-charset="utf-8">
+  <table>
+  {% for field in form %}
+  <tr>
+    <th>{% raw field.label %} {% if field.flags.required %}*{% end %}</th>
+    <td>{% raw field %}</td>
+  </tr>
+  {% end %}
+  </table>
+  <input type="submit" value="Save" />
+</form>
+
+<ul>
+  {% for c in element %}
+  <li>
+    <ul>
+      <li><a href="/admin/element/{{c['slug']}}">edit</a></li>
+      <li>{{c['name']}} - {{c['cube']}} - {{c['type']}}</li>
+    </ul>
+  </li>
+  {% end %}
+</ul>
+{% end %}
