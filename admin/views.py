@@ -15,6 +15,23 @@ class AdminHandler(tornado.web.RequestHandler):
         self.render('admin/base.html')
 
 
+class APICubeHandler(tornado.web.RequestHandler):
+    def get(self, slug):
+        myClient = riak.RiakClient(protocol='http',
+                                   http_port=8098,
+                                   host='127.0.0.1')
+        myBucket = myClient.bucket('openmining-admin')
+
+        get_bucket = myBucket.get('dashboard').data
+
+        ret = {}
+        for b in get_bucket:
+            if b['slug'] == slug:
+                ret = b
+        self.write(ret)
+        self.finish()
+
+
 class DashboardHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, slug=None):
