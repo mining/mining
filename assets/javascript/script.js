@@ -59,7 +59,13 @@ angular.module('OpenMining', ["highcharts-ng"])
           credits: {
             enabled: false
           },
-          xAxis: {currentMin: 0, currentMax: 10, minRange: 1},
+          xAxis: {
+            currentMin: 0,
+            currentMax: 10,
+            minRange: 1,
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+          },
           loading: false
         }
 
