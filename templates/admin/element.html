@@ -9,7 +9,18 @@
     <td>{% raw field %}</td>
   </tr>
   {% end %}
+  <tr ng-controller="ElementCube" ng-show="chart">
+    <th>Fields description</th>
+    <td>
+      <select ng-model="fields">
+        <option value=""></option>
+        <option value="{{!f}}" ng-repeat="f in fields">{{!f}}</option>
+      </select>
+    </td>
+  </tr>
   </table>
+  <pre>
+  </pre>
   <input type="submit" value="Save" />
 </form>
 

@@ -18,7 +18,8 @@ def ObjGenerate(bucket, key, value=None, _type=tuple):
 
     try:
         if _type is tuple:
-            return _type([(c[key], c[value]) for c in bconnection])
+            return _type(
+                [('', '')] + [(c[key], c[value]) for c in bconnection])
         return _type(c[key] for c in bconnection)
     except:
         return _type()

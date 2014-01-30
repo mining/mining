@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import json
 import riak
 
 import tornado.ioloop
@@ -15,20 +16,16 @@ class AdminHandler(tornado.web.RequestHandler):
         self.render('admin/base.html')
 
 
-class APICubeHandler(tornado.web.RequestHandler):
+class APIElementCubeHandler(tornado.web.RequestHandler):
     def get(self, slug):
         myClient = riak.RiakClient(protocol='http',
                                    http_port=8098,
                                    host='127.0.0.1')
-        myBucket = myClient.bucket('openmining-admin')
+        myBucket = myClient.bucket('openmining')
 
-        get_bucket = myBucket.get('dashboard').data
+        columns = json.loads(myBucket.get(u'{}-columns'.format(slug)).data)
 
-        ret = {}
-        for b in get_bucket:
-            if b['slug'] == slug:
-                ret = b
-        self.write(ret)
+        self.write({'columns': columns})
         self.finish()
 
 
@@ -170,6 +167,7 @@ class CubeHandler(tornado.web.RequestHandler):
 
         data = form.data
         data['slug'] = slugfy(data.get('name'))
+        data['sql'] = data.get('sql').replace("\n", "").replace("\r", "")
 
         get_bucket = [b for b in myBucket.get('cube').data or []
                       if b['slug'] != data['slug']]
