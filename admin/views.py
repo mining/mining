@@ -112,8 +112,9 @@ class ElementHandler(tornado.web.RequestHandler):
         get_bucket.append(data)
 
         b1 = myBucket.new('element', data=get_bucket)
-        for k in data:
-            b1.add_index("{}_bin".format(k), data[k])
+        b1.add_index("slug_bin", data['slug'])
+        b1.add_index("type_bin", data['type'])
+        b1.add_index("cube_bin", data['cube'])
         b1.store()
 
         self.redirect('/admin/element')
@@ -160,8 +161,8 @@ class CubeHandler(tornado.web.RequestHandler):
         get_bucket.append(data)
 
         b1 = myBucket.new('cube', data=get_bucket)
-        for k in data:
-            b1.add_index("{}_bin".format(k), data[k])
+        b1.add_index("slug_bin", data['slug'])
+        b1.add_index("conection_bin", data['conection'])
         b1.store()
 
         self.redirect('/admin/cube')
