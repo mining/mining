@@ -17,11 +17,10 @@ angular.module('OpenMining', ["highcharts-ng"])
     };
 })
 
-
 .controller('Chart',
   function($scope, $http, $location) {
     $scope.loading = true;
-    $scope.init = function(slug) {
+    $scope.init = function(slug, categorie) {
       API_URL = "/process/" + slug + ".json?";
       for (var key in $location.search()){
         API_URL += key + "=" + $location.search()[key] + "&";
@@ -29,48 +28,41 @@ angular.module('OpenMining', ["highcharts-ng"])
 
       $http({method: 'POST', url: API_URL}).
         success(function(data, status, headers, config) {
-          $scope.process = data.json;
-          $scope.columns = data.columns;
           $scope.loading = false;
-        });
 
-
-
-        $scope.chartConfig = {
-          options: {
-            chart: {
-              type: 'line',
-              zoomType: 'x'
+          var series = {};
+          var loopseries = {}
+          for (j in data.json) {
+            for (c in data.json[j]) {
+              if (typeof loopseries[c] == 'undefined'){
+                loopseries[c] = {};
+                loopseries[c].data = [];
+              }
+              loopseries[c].name = c;
+              loopseries[c].data.push(data.json[j][c]);
             }
-          },
-          series: [
-            {
-              name: "Testando meta dados 1",
-              data: [10002, 15987, 12987, 82222, 77622, 16236, 17833, 19787, 15223, 10123]
+          }
+          series[slug] = []
+          for (ls in loopseries){
+            if (ls != categorie) {
+              series[slug].push(loopseries[ls]);
+            }
+          }
+
+          $scope.chartConfig = {
+            options: {
+              chart: {
+                type: 'line'
+              }
             },
-            {   
-              name: "Testando meta dados 2",
-              data: [11762, 212319, 231231, 52760, 212330, 10000, 123220]
+            series: series[slug],
+            title: {
+              text: 'Hello'
+            },
+            xAxis: {
+              categories: loopseries[categorie].data
             }
-          ],
-          title: {
-            text: 'Hello'
-          },
-          credits: {
-            enabled: false
-          },
-          xAxis: {
-            currentMin: 0,
-            currentMax: 10,
-            minRange: 1,
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-          },
-          loading: false
-        }
-
-
-
-
+          };
+        });
     };
 });
