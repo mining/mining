@@ -12,7 +12,7 @@
   <tr ng-controller="ElementCube" ng-show="chart">
     <th>Fields description</th>
     <td>
-      <select ng-model="fields">
+      <select name="categories" ng-model="fields">
         <option value=""></option>
         <option value="{{!f}}" ng-repeat="f in fields">{{!f}}</option>
       </select>
