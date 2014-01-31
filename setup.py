@@ -22,7 +22,9 @@ classifiers = [
     "Programming Language :: Python :: 2.7",
     'Programming Language :: Python',
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
-    'Topic :: Software Development :: Libraries :: Python Modules'
+    'Topic :: Software Development :: Libraries :: Python Modules',
+    'Topic :: Scientific/Engineering :: Mathematics',
+    'Topic :: Scientific/Engineering :: Information Analysis'
 ]
 
 try:
