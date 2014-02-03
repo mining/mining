@@ -47,12 +47,9 @@ class DashboardHandler(tornado.web.RequestHandler):
                     for e in element:
                         if dash_element == e['slug']:
                             _e.append(e)
-                            categorie = e['categories']
                     dashboard = _e
 
-        self.render('dashboard.html',
-                    dashboard=dashboard,
-                    categorie=categorie)
+        self.render('dashboard.html', dashboard=dashboard)
 
 
 class ProcessHandler(tornado.web.RequestHandler):
