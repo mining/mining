@@ -15,6 +15,17 @@ from utils import pandas_to_dict
 
 
 class MainHandler(tornado.web.RequestHandler):
+    def get(self):
+        myClient = riak.RiakClient(protocol='http',
+                                   http_port=8098,
+                                   host='127.0.0.1')
+        myBucket = myClient.bucket('openmining-admin')
+        dashboard = myBucket.get('dashboard').data
+
+        self.render('index.html', dashboard=dashboard)
+
+
+class DashboardHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, slug):
 
@@ -39,7 +50,9 @@ class MainHandler(tornado.web.RequestHandler):
                             categorie = e['categories']
                     dashboard = _e
 
-        self.render('index.html', dashboard=dashboard, categorie=categorie)
+        self.render('dashboard.html',
+                    dashboard=dashboard,
+                    categorie=categorie)
 
 
 class ProcessHandler(tornado.web.RequestHandler):
