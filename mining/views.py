@@ -46,6 +46,10 @@ class DashboardHandler(tornado.web.RequestHandler):
                     element = myBucket.get('element').data
                     for e in element:
                         if dash_element == e['slug']:
+                            try:
+                                e['_type'] = e['type'].split('_')[1]
+                            except:
+                                e['_type'] = None
                             _e.append(e)
                     dashboard = _e
 

@@ -20,7 +20,7 @@ angular.module('OpenMining', ["highcharts-ng"])
 .controller('Chart',
   function($scope, $http, $location) {
     $scope.loading = true;
-    $scope.init = function(slug, categorie) {
+    $scope.init = function(slug, categorie, type) {
       API_URL = "/process/" + slug + ".json?";
       for (var key in $location.search()){
         API_URL += key + "=" + $location.search()[key] + "&";
@@ -52,7 +52,7 @@ angular.module('OpenMining', ["highcharts-ng"])
           $scope.chartConfig = {
             options: {
               chart: {
-                type: 'line'
+                type: type
               }
             },
             series: series[slug],
