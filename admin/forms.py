@@ -27,7 +27,8 @@ def ObjGenerate(bucket, key, value=None, _type=tuple):
 
 class ConnectionForm(Form):
     name = TextField(validators=[Required()])
-    conection = TextField(validators=[Required()])
+    conection = TextField(validators=[Required()],
+                          description=u"mysql://user:pass@127.0.0.1/db")
 
 
 class CubeForm(Form):
