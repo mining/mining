@@ -33,24 +33,21 @@ class ConnectionForm(Form):
 
 class CubeForm(Form):
     name = TextField(validators=[Required()])
-    conection = SelectField(choices=ObjGenerate('connection', 'slug', 'name'),
-                            validators=[Required()])
+    conection = SelectField(validators=[Required()])
     sql = TextAreaField(validators=[Required()])
 
 
 class ElementForm(Form):
-    ELEMENT_TYPE = ((u'grid', u'Grid'),
+    ELEMENT_TYPE = ((u'', u''),
+                    (u'grid', u'Grid'),
                     (u'chart_line', u'Chart line'),
                     (u"chart_bar", u"Chart bar"))
 
     name = TextField(validators=[Required()])
     type = SelectField(choices=ELEMENT_TYPE, validators=[Required()])
-    cube = SelectField(choices=ObjGenerate('cube', 'slug', 'name'),
-                       validators=[Required()])
+    cube = SelectField(validators=[Required()])
 
 
 class DashboardForm(Form):
     name = TextField(validators=[Required()])
-    element = SelectMultipleField(
-        choices=ObjGenerate('element', 'slug', 'name'),
-        validators=[Required()])
+    element = SelectMultipleField(validators=[Required()])
