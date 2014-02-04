@@ -9,6 +9,7 @@ import tornado.gen
 
 from mining.utils import slugfy
 from admin.forms import ConnectionForm, CubeForm, ElementForm, DashboardForm
+from admin.forms import ObjGenerate
 
 
 class AdminHandler(tornado.web.RequestHandler):
@@ -33,6 +34,7 @@ class DashboardHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, slug=None):
         form = DashboardForm()
+        form.element.choices = ObjGenerate('element', 'slug', 'name')
         myClient = riak.RiakClient(protocol='http',
                                    http_port=8098,
                                    host='127.0.0.1')
@@ -86,6 +88,7 @@ class ElementHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, slug=None):
         form = ElementForm()
+        form.cube.choices = ObjGenerate('cube', 'slug', 'name')
         myClient = riak.RiakClient(protocol='http',
                                    http_port=8098,
                                    host='127.0.0.1')
@@ -140,6 +143,8 @@ class CubeHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, slug=None):
         form = CubeForm()
+        form.conection.choices = ObjGenerate('connection', 'slug', 'name')
+
         myClient = riak.RiakClient(protocol='http',
                                    http_port=8098,
                                    host='127.0.0.1')
