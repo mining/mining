@@ -50,4 +50,6 @@ class ElementForm(Form):
 
 class DashboardForm(Form):
     name = TextField(validators=[Required()])
-    element = SelectMultipleField(validators=[Required()])
+    element = SelectMultipleField(
+        validators=[Required()],
+        choices=ObjGenerate('element', 'slug', 'name'))
