@@ -4,7 +4,7 @@ openmining.io
 ![openmining.io](/assets/image/openmining.io.png)
 
 
-BI Server written in Python
+Business Intelligence (BI) Application Server written in Python 
 
 
 Requirements
@@ -17,6 +17,7 @@ Requirements
 Install
 -------
 
+    pip install -r requirements.txt
     bower install
 
 
