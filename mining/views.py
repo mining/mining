@@ -68,11 +68,8 @@ class ProcessHandler(tornado.web.RequestHandler):
 
         columns = json.loads(myBucket.get('{}-columns'.format(slug)).data)
         fields = columns
-        try:
-            if len(self.get_argument('fields')) >= 1:
-                fields = self.get_argument('fields').split(',')
-        except:
-            pass
+        if self.get_argument('fields', None):
+            fields = self.get_argument('fields').split(',')
 
         fields_json = json.dumps(fields)
         if mc.get(str(slug)) and\
@@ -84,7 +81,21 @@ class ProcessHandler(tornado.web.RequestHandler):
 
         df = read_json(myBucket.get(slug).data)
 
+        filters = [i[0] for i in self.request.arguments.iteritems()
+                   if len(i[0].split('filter__')) > 1]
+
+        def df_generate(df, str_field):
+            s = str_field.split('__')
+            field = s[1]
+            operator = s[2]
+            if operator == "gte":
+                return (df[field] > self.get_argument(str_field))
+
         read = df[fields]
+        if len(filters) >= 1:
+            for f in filters:
+                test = df_generate(df, f)
+            read = df[test]
         convert = pandas_to_dict(read)
 
         write = json.dumps({'columns': fields, 'json': convert})
