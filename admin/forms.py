@@ -33,7 +33,8 @@ class ConnectionForm(Form):
 
 class CubeForm(Form):
     name = TextField(validators=[Required()])
-    conection = SelectField(validators=[Required()])
+    conection = SelectField(validators=[Required()],
+                            choices=ObjGenerate('connection', 'slug', 'name'))
     sql = TextAreaField(validators=[Required()])
 
 
