@@ -6,3 +6,4 @@ tornado
 riak
 python-memcached
 wtforms-tornado
+python-dateutil
