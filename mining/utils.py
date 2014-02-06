@@ -33,3 +33,15 @@ def slugfy(text):
     if not slug:
         return None
     return slug
+
+
+def df_generate(df, argument, str_field):
+    s = str_field.split('__')
+    field = s[1]
+    operator = s[2]
+    if operator == "gte":
+        return (df[field] > argument(str_field))
+    elif operator == "lte":
+        return (df[field] < argument(str_field))
+    elif operator == "is":
+        return (df[field] == argument(str_field))
