@@ -11,7 +11,7 @@ import tornado.autoreload
 
 from pandas import read_json
 
-from utils import pandas_to_dict
+from .utils import pandas_to_dict, df_generate
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -85,17 +85,11 @@ class ProcessHandler(tornado.web.RequestHandler):
         filters = [i[0] for i in self.request.arguments.iteritems()
                    if len(i[0].split('filter__')) > 1]
 
-        def df_generate(df, str_field):
-            s = str_field.split('__')
-            field = s[1]
-            operator = s[2]
-            if operator == "gte":
-                return (df[field] > self.get_argument(str_field))
-
         read = df[fields]
         if len(filters) >= 1:
+            test = ()
             for f in filters:
-                test = df_generate(df, f)
+                test = df_generate(df, self.get_argument, f)
             read = df[test]
         convert = pandas_to_dict(read)
 
