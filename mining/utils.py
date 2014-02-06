@@ -5,6 +5,7 @@ import re
 from decimal import Decimal
 
 from pandas import tslib
+from pandas.tseries.tools import to_datetime
 
 
 def fix_render(value):
@@ -39,15 +40,21 @@ def df_generate(df, argument, str_field):
     s = str_field.split('__')
     field = s[1]
     operator = s[2]
+    value = argument(str_field)
 
     try:
-        _type = s[3]
+        t = s[3]
     except:
-        _type = str
+        t = str
+
+    if t == "date":
+        pass
 
     if operator == "gte":
-        return (df[field] > argument(str_field))
+        return (df[field] > value)
     elif operator == "lte":
-        return (df[field] < argument(str_field))
+        return (df[field] < value)
     elif operator == "is":
         return (df[field] == argument(str_field))
+    elif operator == "in":
+        return "{} in {}".format(field, [i for i in value.split(',')])
