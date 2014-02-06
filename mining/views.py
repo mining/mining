@@ -90,8 +90,8 @@ class ProcessHandler(tornado.web.RequestHandler):
             test = ()
             for f in filters:
                 test = df_generate(df, self.get_argument, f)
-            read = df[test]
-        convert = pandas_to_dict(read)
+            #read = test
+        convert = pandas_to_dict(read.query(test))
 
         write = json.dumps({'columns': fields, 'json': convert})
         mc.set(str(slug), write)
