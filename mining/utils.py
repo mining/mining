@@ -39,6 +39,12 @@ def df_generate(df, argument, str_field):
     s = str_field.split('__')
     field = s[1]
     operator = s[2]
+
+    try:
+        _type = s[3]
+    except:
+        _type = str
+
     if operator == "gte":
         return (df[field] > argument(str_field))
     elif operator == "lte":
