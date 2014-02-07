@@ -57,4 +57,6 @@ def df_generate(df, argument, str_field):
     elif operator == "is":
         return (df[field] == argument(str_field))
     elif operator == "in":
-        return "{} in {}".format(field, [i for i in value.split(',')])
+        return u"{} in {}".format(field, [i for i in value.split(',')])
+    elif operator == "notin":
+        return u"{} not in {}".format([i for i in value.split(',')], field)
