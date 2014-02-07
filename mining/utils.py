@@ -47,7 +47,6 @@ def df_generate(df, argument, str_field):
         t = "str"
 
     if t == "date":
-        date = value.split(":")
         try:
             mark = s[4].replace(":", "%")
         except:
@@ -65,10 +64,12 @@ def df_generate(df, argument, str_field):
         return u"{} not in {}".format([i for i in value.split(',')], field)
     elif operator == "between":
         _range = []
+        between = value.split(":")
+
         if t == "date":
-            r = date_range(date[0], date[1]).tolist()
+            r = date_range(between[0], between[1]).tolist()
             _range = [i.strftime(mark) for i in r]
         elif t == "int":
-            pass
+            _range = [i for i in xrange(between[0], between[1]+1)]
 
         return u"{} in {}".format(field, _range)
