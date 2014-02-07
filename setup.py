@@ -49,4 +49,5 @@ setup(name='mining',
       install_requires=REQUIREMENTS,
       dependency_links=dependency_links,
       scripts=['bin/mining'],
+      test_suite='nose.main',
       include_package_data=True)
