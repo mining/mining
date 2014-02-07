@@ -5,7 +5,7 @@
   "authors": [
     "Thiago Avelino <thiago@avelino.xxx>"
   ],
-  "description": "Open Source BI System",
+  "description": "Business Intelligence (BI) Application Server written in Python", 
   "keywords": [
     "bi",
     "server",
