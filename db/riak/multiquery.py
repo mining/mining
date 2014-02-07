@@ -116,14 +116,16 @@ class RiakMultiIndexQuery(object):
         results = set()
 
         if op == '==':
-            [results.add(res.get_key()) \
-                 for res in self._client.index(self._bucket, field, value).run()]
+            [results.add(res.get_key())
+             for res in self._client.index(self._bucket, field, value).run()]
         elif op == '>' or op == '>=':
-            [results.add(res.get_key()) \
-                 for res in self._client.index(self._bucket, field, value, max).run()]
+            [results.add(res.get_key())
+             for res in self._client.index(self._bucket, field, value,
+                                           max).run()]
         elif op == '<' or op == '<=':
-            [results.add(res.get_key()) \
-                 for res in self._client.index(self._bucket, field, min, value).run()]
+            [results.add(res.get_key())
+             for res in self._client.index(self._bucket, field, min,
+                                           value).run()]
         else:
             raise InvalidFilterOperation(op)
         # push the results to the queue
@@ -131,15 +133,16 @@ class RiakMultiIndexQuery(object):
 
     def run(self, timeout=9000):
         """Run this Query. This will first query the bucket using indexes and
-        get the intersection of these keys. Later this keys are passed to MapReduce 
-        phase to fetch and sort the data.
+        get the intersection of these keys. Later this keys are passed to
+        MapReduce phase to fetch and sort the data.
         """
+
         index_key_sets = []
         index_query_threads = []
         queue = Queue.Queue()
         for (field, op, value) in self._filters:
             # spin off threads to do index queries
-            thd = threading.Thread(target=self._filter_to_index_query, 
+            thd = threading.Thread(target=self._filter_to_index_query,
                                    args=(field, op, value, queue))
             index_query_threads.append(thd)
             thd.start()
@@ -169,8 +172,8 @@ class RiakMultiIndexQuery(object):
         self._mr_query.map(JS_MAP_FUNCTION)
 
         if self._order:
-            self._mr_query.reduce(JS_REDUCE_ORDER_FUNC, 
-                                  {'arg': {'by': self._order[0], 
+            self._mr_query.reduce(JS_REDUCE_ORDER_FUNC,
+                                  {'arg': {'by': self._order[0],
                                            'order': self._order[1].lower()
                                            }
                                    })
@@ -178,19 +181,21 @@ class RiakMultiIndexQuery(object):
         if self._limit:
             start = self._offset
             end = self._offset + self._limit
-            if (end > len(mr_inputs)) and self._filters: end = 0;
+            if (end > len(mr_inputs)) and self._filters:
+                end = 0
             self._mr_query.reduce('Riak.reduceSlice', {'arg': [start, end]})
 
         for result in self._mr_query.run(timeout):
             yield result
 
     def __repr__(self):
-        return 'RiakMultiIndexQuery(bucket=%s).%s' % \
-            (self._bucket,
-            '.'.join(('.'.join(['filter(%s %s %r)' % filter for filter in self._filters]),
-                     'order(%s, %r)' % (self._order or ('None', 'ASC')),
-                     'offset(%s)' % self._offset,
-                     'limit(%s)' % self._limit)))
+        return 'RiakMultiIndexQuery(bucket=%s).%s' % (
+            self._bucket,
+            '.'.join(('.'.join(
+                ['filter(%s %s %r)' % filter for filter in self._filters]),
+                'order(%s, %r)' % (self._order or ('None', 'ASC')),
+                'offset(%s)' % self._offset,
+                'limit(%s)' % self._limit)))
 
 
 def test_multi_index_query():
@@ -210,7 +215,8 @@ def test_multi_index_query():
     print 'Last executed query: %r' % query
 
     query.reset()
-    for res in query.filter('age', '<', 50).filter('name', '==', 'Vishnu').run():
+    for res in query.filter('age', '<', 50).filter('name', '==',
+                                                   'Vishnu').run():
         print res
     print 'Last executed query: %r' % query
 

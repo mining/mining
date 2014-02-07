@@ -75,6 +75,6 @@ def df_generate(df, argument, str_field):
             _range = [i.strftime(mark)
                       for i in date_range(between[0], between[1]).tolist()]
         elif t == "int":
-            _range = [i for i in xrange(int(between[0]), int(between[1])+1)]
+            _range = [i for i in xrange(int(between[0]), int(between[1]) + 1)]
 
         return u"{} in {}".format(field, _range)
