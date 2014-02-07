@@ -4,6 +4,10 @@ openmining.io
 .. image:: https://raw.github.com/avelino/mining/master/assets/image/openmining.io.png
     :alt: OpenMining
 
+.. image:: https://travis-ci.org/avelino/mining.png?branch=master
+    :target: https://travis-ci.org/avelino/mining
+    :alt: Build Status - Travis CI
+
 Business Intelligence (BI) Application Server written in Python 
 
 
