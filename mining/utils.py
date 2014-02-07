@@ -38,7 +38,10 @@ def slugfy(text):
 def df_generate(df, argument, str_field):
     s = str_field.split('__')
     field = s[1]
-    operator = s[2]
+    try:
+        operator = s[2]
+    except:
+        operator = "is"
     value = argument(str_field)
 
     try:
