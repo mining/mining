@@ -53,9 +53,9 @@ def df_generate(df, argument, str_field):
             mark = "%Y-%m-%d"
 
     if operator == "gte":
-        return (df[field] > value)
+        return (df[field] >= value)
     elif operator == "lte":
-        return (df[field] < value)
+        return (df[field] <= value)
     elif operator == "is":
         return (df[field] == value)
     elif operator == "in":
