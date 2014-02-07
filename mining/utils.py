@@ -4,8 +4,7 @@ import unicodedata
 import re
 from decimal import Decimal
 
-from pandas import tslib
-from pandas.tseries.tools import to_datetime
+from pandas import tslib, date_range
 
 
 def fix_render(value):
@@ -45,18 +44,31 @@ def df_generate(df, argument, str_field):
     try:
         t = s[3]
     except:
-        t = str
+        t = "str"
 
     if t == "date":
-        pass
+        date = value.split(":")
+        try:
+            mark = s[4].replace(":", "%")
+        except:
+            mark = "%Y-%m-%d"
 
     if operator == "gte":
         return (df[field] > value)
     elif operator == "lte":
         return (df[field] < value)
     elif operator == "is":
-        return (df[field] == argument(str_field))
+        return (df[field] == value)
     elif operator == "in":
         return u"{} in {}".format(field, [i for i in value.split(',')])
     elif operator == "notin":
         return u"{} not in {}".format([i for i in value.split(',')], field)
+    elif operator == "between":
+        _range = []
+        if t == "date":
+            r = date_range(date[0], date[1]).tolist()
+            _range = [i.strftime(mark) for i in r]
+        elif t == "int":
+            pass
+
+        return u"{} in {}".format(field, _range)
