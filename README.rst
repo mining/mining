@@ -1,7 +1,7 @@
 openmining.io
 =============
 
-.. image:: /assets/image/openmining.io.png
+.. image:: https://raw.github.com/avelino/mining/master/assets/image/openmining.io.png
     :alt: OpenMining
 
 Business Intelligence (BI) Application Server written in Python 
