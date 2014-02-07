@@ -67,8 +67,8 @@ def df_generate(df, argument, str_field):
         between = value.split(":")
 
         if t == "date":
-            r = date_range(between[0], between[1]).tolist()
-            _range = [i.strftime(mark) for i in r]
+            _range = [i.strftime(mark)
+                      for i in date_range(between[0], between[1]).tolist()]
         elif t == "int":
             _range = [i for i in xrange(between[0], between[1]+1)]
 
