@@ -43,10 +43,10 @@ def df_generate(df, argument, str_field):
     except:
         operator = "is"
 
+    value = argument(str_field)
     try:
         t = s[3]
-        value = argument(str_field)
-        if t == "int":
+        if t == "int" and operator != "between":
             value = int(argument(str_field))
     except:
         t = "str"
@@ -58,11 +58,11 @@ def df_generate(df, argument, str_field):
             mark = "%Y-%m-%d"
 
     if operator == "gte":
-        return (df[field] >= value)
+        return u"{} >= {}".format(field, value)
     elif operator == "lte":
-        return (df[field] <= value)
+        return u"{} <= {}".format(field, value)
     elif operator == "is":
-        return (df[field] == value)
+        return u"{} == '{}'".format(field, value)
     elif operator == "in":
         return u"{} in {}".format(field, [i for i in value.split(',')])
     elif operator == "notin":
@@ -75,6 +75,6 @@ def df_generate(df, argument, str_field):
             _range = [i.strftime(mark)
                       for i in date_range(between[0], between[1]).tolist()]
         elif t == "int":
-            _range = [i for i in xrange(between[0], between[1]+1)]
+            _range = [i for i in xrange(int(between[0]), int(between[1])+1)]
 
         return u"{} in {}".format(field, _range)
