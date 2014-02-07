@@ -8,3 +8,4 @@ python-memcached
 wtforms-tornado
 python-dateutil
 numexpr
+nose
