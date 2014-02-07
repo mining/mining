@@ -8,7 +8,7 @@ tox-test: environment
 
 .PHONY: environment
 environment:
-	pip install -r requirements_dev.txt --use-mirrors
+	pip install -r requirements_dev.txt
 	python setup.py develop
 
 .PHONY: install
