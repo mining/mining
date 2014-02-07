@@ -42,10 +42,12 @@ def df_generate(df, argument, str_field):
         operator = s[2]
     except:
         operator = "is"
-    value = argument(str_field)
 
     try:
         t = s[3]
+        value = argument(str_field)
+        if t == "int":
+            value = int(argument(str_field))
     except:
         t = "str"
 
