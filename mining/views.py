@@ -87,11 +87,9 @@ class ProcessHandler(tornado.web.RequestHandler):
 
         read = df[fields]
         if len(filters) >= 1:
-            test = ()
             for f in filters:
-                test = df_generate(df, self.get_argument, f)
-            #read = test
-        convert = pandas_to_dict(read.query(test))
+                read = read.query(df_generate(df, self.get_argument, f))
+        convert = pandas_to_dict(read)
 
         write = json.dumps({'columns': fields, 'json': convert})
         mc.set(str(slug), write)
