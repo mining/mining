@@ -75,7 +75,7 @@ class ProcessHandler(tornado.web.RequestHandler):
                    if len(i[0].split('filter__')) > 1]
 
         fields_json = json.dumps(fields)
-        filters_json = json.dumps(filters)
+        filters_json = json.dumps({f: self.get_argument(f) for f in filters})
         if mc.get(str(slug)) and\
                 mc.get('{}-columns'.format(slug)) == fields_json and\
                 mc.get('{}-fulters'.format(slug)) == filters_json:
