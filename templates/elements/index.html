@@ -1,7 +1,11 @@
-{% for d in dashboard %}
-  {% if d['type'] == 'grid' %}
-    {% include "grid.html" %}
-  {% elif d['type'] == 'chart_line' %}
-    {% include "chart_line.html" %}
+{% try %}
+  {% for d in dashboard %}
+    {% if d['type'] == 'grid' %}
+      {% include "grid.html" %}
+    {% elif d['type'] == 'chart_line' %}
+      {% include "chart_line.html" %}
+    {% end %}
   {% end %}
+{% except %}
+  Dashboard does not exist!
 {% end %}
