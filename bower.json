@@ -5,7 +5,7 @@
   "authors": [
     "Thiago Avelino <thiago@avelino.xxx>"
   ],
-  "description": "Business Intelligence (BI) Application Server written in Python", 
+  "description": "Business Intelligence (BI) Application Server written in Python",
   "keywords": [
     "bi",
     "server",
@@ -27,6 +27,8 @@
     "angular-resource": "~1.2.10",
     "highcharts-ng": "~0.0.4",
     "highcharts": "~3.0.7",
-    "jquery": "~2.1.0"
+    "jquery": "~2.1.0",
+    "bootstrap": "~3.1.0",
+    "font-awesome": "~4.0.3"
   }
 }
