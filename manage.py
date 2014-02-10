@@ -10,7 +10,7 @@ from tornado.options import parse_command_line, define, options
 
 
 define('port', default=8888)
-define('ip', default='')
+define('ip', default='127.0.0.1')
 define('template_path', default='templates')
 define('PROJECT_PATH', default=os.path.join(
     os.path.abspath(os.path.dirname(__file__))))
