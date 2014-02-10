@@ -23,7 +23,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.2.10",
+    "angular": "1.2.10",
     "angular-resource": "~1.2.10",
     "highcharts-ng": "~0.0.4",
     "highcharts": "~3.0.7",
