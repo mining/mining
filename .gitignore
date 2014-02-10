@@ -34,4 +34,7 @@ nosetests.xml
 .project
 .pydevproject
 
+# Pycharm
+.idea
+
 assets/bower
