@@ -1,6 +1,5 @@
-<div id="chartline-{{d['slug']}}" ng-controller="Chart" ng-init="init('{{d['cube']}}', '{{d['categories']}}', '{{d['_type']}}')">
+<div id="chartline-{{d['slug']}}" ng-controller="Chart" ng-init="init('{{d['cube']}}', '{{d['categories']}}', '{{d['_type']}}', '{{d['name']}}')">
   <div class="row">
-    <highstock id="chart2" ng-model="chart"></highstock>
     <highchart id="chart1" config="chartConfig" class="span10"></highchart>
   </div>
 </div>
