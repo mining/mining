@@ -2,8 +2,8 @@
   {% for d in dashboard %}
     {% if d['type'] == 'grid' %}
       {% include "grid.html" %}
-    {% elif d['type'] == 'chart_line' %}
-      {% include "chart_line.html" %}
+    {% else %}
+      {% include "chart.html" %}
     {% end %}
   {% end %}
 {% except %}
