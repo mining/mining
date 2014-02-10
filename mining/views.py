@@ -71,19 +71,21 @@ class ProcessHandler(tornado.web.RequestHandler):
         if self.get_argument('fields', None):
             fields = self.get_argument('fields').split(',')
 
-        fields_json = json.dumps(fields)
-        if mc.get(str(slug)) and\
-                mc.get('{}-columns'.format(slug)) == fields_json:
-            #self.write(mc.get(str(slug)))
-            #self.finish()
-            pass
-
-        mc.set('{}-columns'.format(slug), fields_json)
-
-        df = read_json(myBucket.get(slug).data)
-
         filters = [i[0] for i in self.request.arguments.iteritems()
                    if len(i[0].split('filter__')) > 1]
+
+        fields_json = json.dumps(fields)
+        filters_json = json.dumps(filters)
+        if mc.get(str(slug)) and\
+                mc.get('{}-columns'.format(slug)) == fields_json and\
+                mc.get('{}-fulters'.format(slug)) == filters_json:
+            self.write(mc.get(str(slug)))
+            self.finish()
+
+        mc.set('{}-columns'.format(slug), fields_json)
+        mc.set('{}-filters'.format(slug), filters_json)
+
+        df = read_json(myBucket.get(slug).data)
 
         read = df[fields]
         if len(filters) >= 1:
