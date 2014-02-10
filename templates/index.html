@@ -1,11 +1,83 @@
+<!DOCTYPE html>
 <html ng-app="OpenMining" xmlns:ng="http://angularjs.org" lang="en">
-  <body>
-    <div id="content">
-      <ul>
-        {% for d in dashboard %}
-        <li><a href="/{{ d['slug'] }}">{{ d['name'] }}</a></li>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{% block title %}Dashboard - {% end %}Open Mining</title>
+    <link rel='shortcut icon' type='image/x-icon' href='/assets/image/favicon.ico' />
+
+    <!-- Bootstrap core CSS -->
+    <link href="/assets/bower/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="/assets/css/sb-admin.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/bower/font-awesome/css/font-awesome.min.css">
+    <!-- Page Specific CSS -->
+    <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">OpenMining</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav side-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-dashboard"></i> Dashboards <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        {% for d in dashboard %}
+                        <li><a href="/{{ d['slug'] }}">{{ d['name'] }}</a></li>
+                        {% end %}
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </nav>
+
+    <div id="page-wrapper">
+        {% block content %}
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>Dashboard <small>Statistics Overview</small></h1>
+                <ol class="breadcrumb">
+                    <li class="active"><i class="fa fa-dashboard"></i> Dashboard</li>
+                </ol>
+            </div>
+        </div><!-- /.row -->
         {% end %}
-      </ul>
-    </div>
-  </body>
+    </div><!-- /#page-wrapper -->
+</div><!-- /#wrapper -->
+
+<!-- JavaScript -->
+<script src="/assets/bower/jquery/jquery.min.js"></script>
+<script src="/assets/bower/jquery/jquery-migrate.min.js"></script>
+<script src="/assets/bower/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- Page Specific Plugins -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+<script type="text/javascript" src="/assets/bower/angular/angular.min.js"></script>
+<script type="text/javascript" src="/assets/bower/angular-resource/angular-resource.min.js"></script>
+<script type="text/javascript" src="/assets/bower/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/assets/bower/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="/assets/bower/highcharts-ng/dist/highcharts-ng.min.js"></script>
+<script type="text/javascript" src="/assets/javascript/script.js"></script>
+</body>
 </html>

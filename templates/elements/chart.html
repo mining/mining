@@ -1,5 +1,16 @@
-<div id="chartline-{{d['slug']}}" ng-controller="Chart" ng-init="init('{{d['cube']}}', '{{d['categories']}}', '{{d['_type']}}', '{{d['name']}}')">
-  <div class="row">
-    <highchart id="chart1" config="chartConfig" class="span10"></highchart>
-  </div>
-</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> {{d['name']}}</h3>
+            </div>
+            <div class="panel-body">
+                <div id="chartline-{{d['slug']}}" ng-controller="Chart" ng-init="init('{{d['cube']}}', '{{d['categories']}}', '{{d['_type']}}', '{{d['name']}}')">
+                    <div class="row">
+                        <highchart id="chart1" config="chartConfig" class="span10"></highchart>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- /.row -->
