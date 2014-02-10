@@ -21,7 +21,7 @@ angular.module('MiningAdmin', [])
     $http({method: 'GET',
       url: "/admin/api/element/cube/" + angular.element(document.querySelector('#cube')).val()}).
       success(function(data, status, headers, config) {
-        $scope.fields = data.columns;
+        $scope._fields = data.columns;
         $scope.loading = false;
       });
     $scope.$apply();
