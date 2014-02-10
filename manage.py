@@ -17,6 +17,7 @@ define('PROJECT_PATH', default=os.path.join(
 settings = dict(
     debug=True,
     gzip=True,
+    autoreload=True,
     template_path="{}/{}".format(options.PROJECT_PATH, options.template_path))
 
 
