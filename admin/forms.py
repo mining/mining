@@ -46,7 +46,8 @@ class ElementForm(Form):
 
     name = TextField(validators=[Required()])
     type = SelectField(choices=ELEMENT_TYPE, validators=[Required()])
-    cube = SelectField(validators=[Required()])
+    cube = SelectField(choices=ObjGenerate('cube', 'slug', 'name'),
+                       validators=[Required()])
 
 
 class DashboardForm(Form):
