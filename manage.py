@@ -10,6 +10,7 @@ from tornado.options import parse_command_line, define, options
 
 
 define('port', default=8888)
+define('ip', default='')
 define('template_path', default='templates')
 define('PROJECT_PATH', default=os.path.join(
     os.path.abspath(os.path.dirname(__file__))))
@@ -31,7 +32,7 @@ def main():
         print "openmining.io before reloading..."
 
     parse_command_line()
-    application.listen(options.port)
+    application.listen(options.port, options.ip)
     tornado.autoreload.add_reload_hook(fn)
     tornado.autoreload.start()
     tornado.ioloop.IOLoop.instance().start()
