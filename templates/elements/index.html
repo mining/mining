@@ -1,5 +1,5 @@
 {% try %}
-  {% for d in dashboard %}
+  {% for d in elements %}
     {% if d['type'] == 'grid' %}
       {% include "grid.html" %}
     {% elif d['type'] == 'chart_line' %}

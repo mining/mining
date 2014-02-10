@@ -35,10 +35,10 @@ class DashboardHandler(tornado.web.RequestHandler):
         myBucket = myClient.bucket('openmining-admin')
         get_bucket = myBucket.get('dashboard').data
 
-        dashboard = {}
+        elements = {}
         for d in get_bucket:
             if d['slug'] == slug:
-                dashboard['slug'] = slug
+                elements['slug'] = slug
 
                 # GET ELEMENT
                 _e = []
@@ -51,9 +51,9 @@ class DashboardHandler(tornado.web.RequestHandler):
                             except:
                                 e['_type'] = None
                             _e.append(e)
-                    dashboard = _e
+                    elements = _e
 
-        self.render('dashboard.html', dashboard=dashboard)
+        self.render('dashboard.html', elements=elements, dashboard=get_bucket)
 
 
 class ProcessHandler(tornado.web.RequestHandler):
