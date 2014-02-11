@@ -32,11 +32,11 @@ angular.module('OpenMining', ["highcharts-ng"])
     $scope.chartConfig = {};
     $scope.filters = {};
     $scope.operators =[
-      { key:'gte'     ,value : 'Greater than or equal to'},
-      { key:'lte'     ,value: 'Less than or equal to'},
-      { key:'is'      ,value: 'Equal to'},
-      { key:'in'      ,value: 'In a given list'},
-      { key:'between' ,value: 'Range'}
+      { key:'gte'     ,value : 'gte'},
+      { key:'lte'     ,value: 'lte'},
+      { key:'is'      ,value: 'is'},
+      { key:'in'      ,value: 'in'},
+      { key:'between' ,value: 'between'}
     ];
     $scope.types=[
       { key:'date'     ,value : 'Date'},
