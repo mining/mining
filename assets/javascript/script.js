@@ -39,7 +39,7 @@ angular.module('OpenMining', ["highcharts-ng"])
       { key:'between' ,value: 'between'}
     ];
     $scope.types=[
-      { key:'date'     ,value : 'Date'},
+      { key:'date__:Y-:m-:d'     ,value : 'Date'},
       { key:'int'     ,value: 'Integer'},
       { key:'str'      ,value: 'String'}
     ];
