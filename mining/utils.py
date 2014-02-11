@@ -21,7 +21,7 @@ def fix_type(value):
 
 
 def fix_render(_l):
-    return {k: fix_type(v) for k, v in _l.items()}
+    return dict(map(lambda (k, v): (k, fix_type(v)), _l.iteritems()))
 
 
 def pandas_to_dict(df):
