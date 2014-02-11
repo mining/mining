@@ -11,7 +11,7 @@ import tornado.autoreload
 
 from pandas import DataFrame
 
-from .utils import pandas_to_dict, df_generate
+from .utils import df_generate
 
 
 class MainHandler(tornado.web.RequestHandler):

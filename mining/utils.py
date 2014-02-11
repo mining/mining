@@ -24,12 +24,6 @@ def fix_render(_l):
     return dict(map(lambda (k, v): (k, fix_type(v)), _l.iteritems()))
 
 
-def pandas_to_dict(df):
-    return [{colname: fix_render(row[i])
-             for i, colname in enumerate(df.columns)}
-            for row in df.values]
-
-
 def slugfy(text):
     slug = unicodedata.normalize("NFKD", text).encode("UTF-8", "ignore")
     slug = re.sub(r"[^\w]+", " ", slug)
