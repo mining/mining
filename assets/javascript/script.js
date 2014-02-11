@@ -1,4 +1,25 @@
 "use strict";
+
+var getNestedProp = function (obj, propString, fallback) {
+
+  if (!propString) return obj;
+  var prop, props = propString.split('.');
+
+  //for (var i = 0, iLen = props.length - 1; i < iLen; i++) {
+  for (var i = 0, iLen = props.length - 1; i <= iLen; i++) {
+    prop = props[i];
+
+    if (typeof obj == 'object' && obj !== null && prop in obj) {
+      obj = obj[prop];
+    }
+    else
+      return fallback;
+  }
+
+  //return obj[props[i]];
+  return obj;
+};
+
 angular.module('OpenMining', ["highcharts-ng"])
   .factory('LineChart', function($http){
     var return_val = {
@@ -26,10 +47,10 @@ angular.module('OpenMining', ["highcharts-ng"])
     };
   })
   .controller('Chart',
-  function($scope, $http, $location, LineChart) {
+  function($scope, $http, $location, LineChart, $timeout) {
     $scope.loading = true;
+    $scope.chartConfig = [];
     $scope.columns = [];
-    $scope.chartConfig = {};
     $scope.filters = {};
     $scope.operators =[
       { key:'gte'     ,value : 'gte'},
@@ -46,12 +67,15 @@ angular.module('OpenMining', ["highcharts-ng"])
     $scope.addFilter = function(){
       $scope.filters['filter__'+$scope.filter_field+"__"+$scope.filter_operator.key+'__'+$scope.filter_type.key] = $scope.filter_value;
     };
+    $scope.removeFilter = function(index){
+      delete $scope.filters[index];
+    }
     function makeChart(API_URL, slug, categorie, type, title){
       LineChart.getConfig(API_URL)
         .success(function(data, status, headers, config) {
           $scope.columns = data.columns;
           var series = {};
-          var loopseries = {}
+          var loopseries = {};
           for (var j in data.json) {
             for (var c in data.json[j]) {
               if (typeof loopseries[c] == 'undefined'){
@@ -62,28 +86,20 @@ angular.module('OpenMining', ["highcharts-ng"])
               loopseries[c].data.push(data.json[j][c]);
             }
           }
-          series[slug] = []
+          series[slug] = [];
           for (var ls in loopseries){
             if (ls != categorie) {
               series[slug].push(loopseries[ls]);
             }
           }
-
-          $scope.chartConfig = {
-            options: {
-              chart: {
-                type: type
-              }
-            },
-            series: series[slug],
-            title: {
-              text: title
-            },
-            xAxis: {
-              categories: loopseries[categorie].data
-            }
-          };
-
+          $scope.chartConfig[slug].series = series[slug];
+          $scope.chartConfig[slug].xAxis.currentMax = getNestedProp(loopseries[categorie],'data', []).length;
+          $scope.chartConfig[slug].xAxis.categories = getNestedProp(loopseries[categorie],'data', []);
+          $timeout(function(){
+            $scope.$apply(function(){
+              $scope.chartConfig[slug].xAxis.currentMax = getNestedProp(loopseries[categorie],'data', []).length-1;
+            });
+          },0);
           $scope.loading = false;
         });
     }
@@ -100,6 +116,22 @@ angular.module('OpenMining', ["highcharts-ng"])
       for (var key in $location.search()){
         API_URL += key + "=" + $location.search()[key] + "&";
       }
+      $scope.chartConfig[slug] = {
+        options: {
+          chart: {
+            type: type
+          }
+        },
+        series: [],
+        title: {
+          text: title
+        },
+        xAxis: {
+          currentMin: 0,
+          currentMax: 0,
+          categories: []
+        }
+      };
       makeChart(API_URL, slug, categorie, type, title);
     };
   });
