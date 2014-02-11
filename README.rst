@@ -42,3 +42,15 @@ Contribute
 
 	pip install -r requirements_dev.txt
 
+
+Screenshot
+----------
+
+.. image:: https://raw.github.com/avelino/mining/master/docs/_static/dashboard-openmining.png
+    :alt: Dashboard OpenMining
+
+.. image:: https://raw.github.com/avelino/mining/master/docs/_static/dashboard-filter-openmining.png
+    :alt: Dashboard filter OpenMining
+
+.. image:: https://raw.github.com/avelino/mining/master/docs/_static/dashboard-apply-filter-openmining.png
+    :alt: Dashboard apply filter OpenMining
