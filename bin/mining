@@ -51,20 +51,16 @@ for cube in radmin.get('cube').data:
     pdict = map(fix_render, df.to_dict(outtype='records'))
 
     print "# SAVE DATA (JSON) ON RIAK: {}".format(slug)
-    b1 = rmining.new(slug, data=pdict)
-    b1.store()
+    b1 = rmining.new(slug, data=pdict).store()
 
     print "# SAVE COLUMNS ON RIAK: {}".format(slug)
     b2 = rmining.new(u'{}-columns'.format(slug),
-                     data=json.dumps([c for c in df.columns]))
-    b2.store()
+                     data=json.dumps([c for c in df.columns])).store()
 
     print "# SAVE CONNECT ON RIAK: {}".format(slug)
-    b3 = rmining.new(u'{}-connect'.format(slug), data=c)
-    b3.store()
+    b3 = rmining.new(u'{}-connect'.format(slug), data=c).store()
 
     print "# SAVE SQL ON RIAK: {}\n".format(slug)
-    b4 = rmining.new(u'{}-sql'.format(slug), data=sql)
-    b4.store()
+    b4 = rmining.new(u'{}-sql'.format(slug), data=sql).store()
 
 print "## FINISH"
