@@ -25,12 +25,17 @@ for cube in radmin.get('cube').data:
         if c['slug'] == cube['conection']:
             connection = c['conection']
 
-    print "\n# CLEAN MEMCACHE: {}".format(slug)
+    print "\n# CLEAN MEMCACHE/RIAK: {}".format(slug)
     mc = memcache.Client(['127.0.0.1:11211'], debug=0)
     mc.delete(str(slug))
     mc.delete(str('{}-columns'.format(slug)))
 
     rmining = myClient.bucket('openmining')
+
+    rmining.new(slug, data='').store()
+    rmining.new(u'{}-columns'.format(slug), data='').store()
+    rmining.new(u'{}-connect'.format(slug), data='').store()
+    rmining.new(u'{}-sql'.format(slug), data='').store()
 
     print "# CONNECT IN RELATION DATA BASE: {}".format(slug)
     e = create_engine(connection)
