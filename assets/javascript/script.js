@@ -1,12 +1,21 @@
+"use strict";
 angular.module('OpenMining', ["highcharts-ng"])
-.controller('Process',
+  .factory('LineChart', function($http){
+    var return_val = {
+      'getConfig':function(URL){
+        return $http.post(URL)
+      }
+    };
+    return return_val;
+  })
+  .controller('Process',
   function($scope, $http, $location) {
     $scope.loading = true;
     $scope.init = function(slug) {
-      API_URL = "/process/" + slug + ".json?";
+      var API_URL = "/process/" + slug + ".json?";
       for (var key in $location.search()){
         API_URL += key + "=" + $location.search()[key] + "&";
-      };
+      }
 
       $http({method: 'POST', url: API_URL}).
         success(function(data, status, headers, config) {
@@ -15,25 +24,36 @@ angular.module('OpenMining', ["highcharts-ng"])
           $scope.loading = false;
         });
     };
-})
-
-.controller('Chart',
-  function($scope, $http, $location) {
+  })
+  .controller('Chart',
+  function($scope, $http, $location, LineChart) {
     $scope.loading = true;
-    $scope.init = function(slug, categorie, type, title) {
-      API_URL = "/process/" + slug + ".json?";
-      for (var key in $location.search()){
-        API_URL += key + "=" + $location.search()[key] + "&";
-      };
-
-      $http({method: 'POST', url: API_URL}).
-        success(function(data, status, headers, config) {
-          $scope.loading = false;
-
+    $scope.columns = [];
+    $scope.chartConfig = {};
+    $scope.filters = {};
+    $scope.operators =[
+      { key:'gte'     ,value : 'Greater than or equal to'},
+      { key:'lte'     ,value: 'Less than or equal to'},
+      { key:'is'      ,value: 'Equal to'},
+      { key:'in'      ,value: 'In a given list'},
+      { key:'between' ,value: 'Range'}
+    ];
+    $scope.types=[
+      { key:'date'     ,value : 'Date'},
+      { key:'int'     ,value: 'Integer'},
+      { key:'str'      ,value: 'String'}
+    ];
+    $scope.addFilter = function(){
+      $scope.filters['filter__'+$scope.filter_field+"__"+$scope.filter_operator.key+'__'+$scope.filter_type.key] = $scope.filter_value;
+    };
+    function makeChart(API_URL, slug, categorie, type, title){
+      LineChart.getConfig(API_URL)
+        .success(function(data, status, headers, config) {
+          $scope.columns = data.columns;
           var series = {};
           var loopseries = {}
-          for (j in data.json) {
-            for (c in data.json[j]) {
+          for (var j in data.json) {
+            for (var c in data.json[j]) {
               if (typeof loopseries[c] == 'undefined'){
                 loopseries[c] = {};
                 loopseries[c].data = [];
@@ -43,7 +63,7 @@ angular.module('OpenMining', ["highcharts-ng"])
             }
           }
           series[slug] = []
-          for (ls in loopseries){
+          for (var ls in loopseries){
             if (ls != categorie) {
               series[slug].push(loopseries[ls]);
             }
@@ -64,5 +84,20 @@ angular.module('OpenMining', ["highcharts-ng"])
             }
           };
         });
+    }
+
+    $scope.applyFilters = function(slug, categorie, type, title){
+      var API_URL = "/process/" + slug + ".json?";
+      for (var key in $scope.filters){
+        API_URL += key + "=" + $scope.filters[key] + "&";
+      }
+      makeChart(API_URL, slug, categorie, type, title);
     };
-});
+    $scope.init = function(slug, categorie, type, title) {
+      var API_URL = "/process/" + slug + ".json?";
+      for (var key in $location.search()){
+        API_URL += key + "=" + $location.search()[key] + "&";
+      }
+      makeChart(API_URL, slug, categorie, type, title);
+    };
+  });

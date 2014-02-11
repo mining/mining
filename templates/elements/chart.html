@@ -1,11 +1,11 @@
-<div class="row">
+<div class="row" ng-controller="Chart">
     <div class="col-lg-12">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> {{d['name']}}</h3>
             </div>
             <div class="panel-body">
-                <div id="chartline-{{d['slug']}}" ng-controller="Chart" ng-init="init('{{d['cube']}}', '{{d['categories']}}', '{{d['_type']}}', '{{d['name']}}')">
+                <div id="chartline-{{d['slug']}}" ng-init="init('{{d['cube']}}', '{{d['categories']}}', '{{d['_type']}}', '{{d['name']}}')">
                     <div class="row">
                         <highchart id="chart1" config="chartConfig" class="span10"></highchart>
                     </div>
@@ -13,4 +13,37 @@
             </div>
         </div>
     </div>
-</div><!-- /.row -->
+    <div class="row">
+        <div class="col-lg-6">
+            <form role="form" name="form-filter">
+                <div class="form-group">
+                    <label>Field</label>
+                    <select class="form-control" ng-model="filter_field" ng-options="c for c in columns" required>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Operator</label>
+                    <select class="form-control" ng-model="filter_operator" ng-options="op.value for op in operators" required>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <select class="form-control" ng-model="filter_type" ng-options="ty.value for ty in types" required>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Value</label>
+                    <input class="form-control" ng-model="filter_value" required>
+                    <p class="help-block">For range filter use: <i>xx:yy.</i></p>
+                </div>
+                <button type="button" class="btn btn-default" ng-click="addFilter()">Add Filter</button>
+            </form><!-- /.row -->
+        </div>
+        <div class="col-lg-6">
+            <ul>
+                <li ng-repeat="(key,val) in filters">{{! key }} = {{! val }}</li>
+            </ul>
+            <button type="button" class="btn btn-default" ng-click="applyFilters('{{d['cube']}}', '{{d['categories']}}', '{{d['_type']}}', '{{d['name']}}')">Apply Filters</button>
+        </div>
+    </div>
+</div>
