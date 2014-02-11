@@ -7,17 +7,19 @@ from decimal import Decimal
 from pandas import tslib, date_range
 
 
-def fix_render(value):
-    if type(value) is str:
-        try:
-            return unicode(value)
-        except UnicodeDecodeError:
-            return unicode(value.decode('latin1'))
-    elif type(value) is tslib.Timestamp:
-        return value.strftime("%Y-%m-%d %H:%M:%S")
-    elif type(value) is Decimal:
-        return str(value)
-    return value
+def fix_render(l):
+    def fix(value):
+        if type(value) is str:
+            try:
+                return unicode(value)
+            except UnicodeDecodeError:
+                return unicode(value.decode('latin1'))
+        elif type(value) is tslib.Timestamp:
+            return value.strftime("%Y-%m-%d %H:%M:%S")
+        elif type(value) is Decimal:
+            return str(value)
+        return value
+    return map(fix, [l[i] for i in l])
 
 
 def pandas_to_dict(df):
