@@ -10,7 +10,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.sql import text
 
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-from mining.utils import pandas_to_dict
+from mining.utils import fix_render
 
 
 myClient = riak.RiakClient(protocol='http',
@@ -48,11 +48,10 @@ for cube in radmin.get('cube').data:
     df.columns = resoverall.keys()
     df.head()
 
-    convert = pandas_to_dict(df)
+    pdict = map(fix_render, df.to_dict(outtype='records'))
 
     print "# SAVE DATA (JSON) ON RIAK: {}".format(slug)
-    join = json.dumps(convert)
-    b1 = rmining.new(slug, data=join)
+    b1 = rmining.new(slug, data=pdict)
     b1.store()
 
     print "# SAVE COLUMNS ON RIAK: {}".format(slug)
