@@ -12,7 +12,7 @@
                 <div class="panel-body">
                     <div id="chartline-{{d['slug']}}" ng-init="init('{{d['cube']}}', '{{d['categories']}}', '{{d['_type']}}', '{{d['name']}}')">
                         <div class="row">
-                            <highchart id="chart1" config="chartConfig" class="span10"></highchart>
+                            <highchart id="chart1" config="chartConfig['{{d['cube']}}']" class="span10"></highchart>
                         </div>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <ul>
-                                        <li ng-repeat="(key,val) in filters">{{! key }} = {{! val }}</li>
+                                        <li ng-repeat="(key,val) in filters"><button ng-click="removeFilter(key)"><i class="glyphicon glyphicon-remove"></i></button>{{! key }} = {{! val }}</li>
                                     </ul>
                                     <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="applyFilters('{{d['cube']}}', '{{d['categories']}}', '{{d['_type']}}', '{{d['name']}}')">Apply Filters</button>
                                 </div>
