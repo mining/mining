@@ -46,11 +46,11 @@ Contribute
 Screenshot
 ----------
 
-.. image:: https://raw.github.com/avelino/mining/master/docs/_static/dashboard-openmining.png
+.. image:: https://raw.github.com/avelino/mining/master/docs/source/_static/dashboard-openmining.png
     :alt: Dashboard OpenMining
 
-.. image:: https://raw.github.com/avelino/mining/master/docs/_static/dashboard-filter-openmining.png
+.. image:: https://raw.github.com/avelino/mining/master/docs/source/_static/dashboard-filter-openmining.png
     :alt: Dashboard filter OpenMining
 
-.. image:: https://raw.github.com/avelino/mining/master/docs/_static/dashboard-apply-filter-openmining.png
+.. image:: https://raw.github.com/avelino/mining/master/docs/source/_static/dashboard-apply-filter-openmining.png
     :alt: Dashboard apply filter OpenMining
