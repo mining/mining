@@ -28,7 +28,6 @@ angular.module('OpenMining', ["highcharts-ng"])
 
       $http({method: 'POST', url: API_URL}).
         success(function(data, status, headers, config) {
-          $scope.loading = false;
 
           var series = {};
           var loopseries = {}
@@ -63,6 +62,8 @@ angular.module('OpenMining', ["highcharts-ng"])
               categories: loopseries[categorie].data
             }
           };
+
+          $scope.loading = false;
         });
     };
 });

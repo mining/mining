@@ -9,7 +9,7 @@ import tornado.web
 import tornado.gen
 import tornado.autoreload
 
-from pandas import read_json
+from pandas import DataFrame
 
 from .utils import pandas_to_dict, df_generate
 
@@ -85,13 +85,11 @@ class ProcessHandler(tornado.web.RequestHandler):
         mc.set('{}-columns'.format(slug), fields_json)
         mc.set('{}-filters'.format(slug), filters_json)
 
-        df = read_json(myBucket.get(slug).data)
-
-        read = df[fields]
+        df = DataFrame(myBucket.get(slug).data, columns=fields)
         if len(filters) >= 1:
             for f in filters:
-                read = read.query(df_generate(df, self.get_argument, f))
-        convert = pandas_to_dict(read)
+                df = df.query(df_generate(df, self.get_argument, f))
+        convert = df.to_dict(outtype='records')
 
         write = json.dumps({'columns': fields, 'json': convert})
         mc.set(str(slug), write)
