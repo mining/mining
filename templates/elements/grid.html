@@ -1,11 +1,28 @@
-<div id="element-{{d['cube']}}" ng-controller="Process" ng-init="init('{{d['cube']}}')">
-  <div class="spinner" ng-show="loading">Carregando...</div>
-  <table class="process">
-    <tr>
-      <th ng-repeat="c in columns"><a href="javascript:void(0);" ng-click="predicate = '{{!c}}'; reverse=!reverse">{{!c}}</a></th>
-    </tr>
-    <tr ng-repeat="p in process | orderBy:predicate:reverse">
-      <td ng-repeat="c in columns">{{!p[c]}}</td>
-    </tr>
-  </table>
+<div class="row" ng-controller="Process">
+    <div class="col-lg-12 panel-group">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-{{d['cube']}}">
+                        <i class="fa fa-bar-chart-o"></i> {{d['name']}}
+                    </a>
+                </h3>
+            </div>
+            <div id="collapse-{{d['cube']}}" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="table-responsive" id="element-{{d['cube']}}" ng-init="init('{{d['cube']}}')">
+                        <div class="spinner" ng-show="loading">Carregando...</div>
+                        <table class="process table table-bordered table-hover">
+                            <tr>
+                                <th ng-repeat="c in columns"><a href="javascript:void(0);" ng-click="predicate = '{{!c}}'; reverse=!reverse">{{!c}}</a></th>
+                            </tr>
+                            <tr ng-repeat="p in process | orderBy:predicate:reverse">
+                                <td ng-repeat="c in columns">{{!p[c]}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
