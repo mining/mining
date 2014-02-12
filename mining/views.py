@@ -22,7 +22,8 @@ class MainHandler(tornado.web.RequestHandler):
         myBucket = myClient.bucket('openmining-admin')
         dashboard = myBucket.get('dashboard').data
 
-        self.render('index.html', dashboard=dashboard)
+
+        self.render('index.html', dashboard=dashboard or [])
 
 
 class DashboardHandler(tornado.web.RequestHandler):
