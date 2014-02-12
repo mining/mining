@@ -64,6 +64,12 @@ angular.module('OpenMining', ["highcharts-ng"])
       { key:'int'     ,value: 'Integer'},
       { key:'str'      ,value: 'String'}
     ];
+    $scope.$watch('filter_type', function(newVal){
+      if(newVal.key == 'date')
+        $scope.filter_format = ":Y-:m-:d";
+      else
+        $scope.filter_format = "";
+    });
     $scope.addFilter = function(){
       var chave = 'filter__'+$scope.filter_field+"__"+$scope.filter_operator.key+'__'+$scope.filter_type.key;
       if ($scope.filter_format)
