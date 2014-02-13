@@ -3,14 +3,11 @@
 import json
 import riak
 import memcache
-import functools
 
 import tornado.ioloop
 import tornado.web
 import tornado.gen
 import tornado.autoreload
-
-from tornado.websocket import WebSocketHandler
 
 from pandas import DataFrame
 
@@ -24,7 +21,6 @@ class MainHandler(tornado.web.RequestHandler):
                                    host='127.0.0.1')
         myBucket = myClient.bucket('openmining-admin')
         dashboard = myBucket.get('dashboard').data
-
 
         self.render('index.html', dashboard=dashboard or [])
 
@@ -60,35 +56,34 @@ class DashboardHandler(tornado.web.RequestHandler):
         self.render('dashboard.html', elements=elements, dashboard=get_bucket)
 
 
-class ProcessWebSocketHandler(WebSocketHandler):
+class ProcessWebSocketHandler(tornado.web.RequestHandler):
     def _queue(self, _send, _type):
-        self.write_message(json.dumps({'type': _type, 'json': _send}))
+        self.write(json.dumps({'type': _type, 'json': _send}))
+        self.finish()
 
     @tornado.web.asynchronous
-    @tornado.gen.engine
-    def open(self, slug):
-        myClient = riak.RiakClient(protocol='http',
-                                   http_port=8098,
-                                   host='127.0.0.1')
-        myBucket = myClient.bucket('openmining')
+    def get(self, slug):
+        self.generator = self.generate_text(1000)
+        tornado.ioloop.IOLoop.instance().add_callback(self.loop)
 
-        columns = json.loads(myBucket.get('{}-columns'.format(slug)).data)
-        fields = columns
-        if self.get_argument('fields', None):
-            fields = self.get_argument('fields').split(',')
+    def loop(self):
+        try:
+            text = self.generator.next()
+            self.write(text)
+            tornado.ioloop.IOLoop.instance().add_callback(self.loop)
+        except StopIteration:
+            self.finish()
 
-        filters = [i[0] for i in self.request.arguments.iteritems()
-                   if len(i[0].split('filter__')) > 1]
-
-        df = DataFrame(myBucket.get(slug).data, columns=fields)
-        if len(filters) >= 1:
-            for f in filters:
-                df = df.query(df_generate(df, self.get_argument, f))
-
-        self._queue(_type=u'columns', _send=fields)
-        while True:
-            map(functools.partial(_type=u'series'),
-                df.to_dict(outtype='records'))
+    def generate_text(self, n):
+        for x in xrange(n):
+            if not x % 15:
+                yield "FizzBuzz\n"
+            elif not x % 5:
+                yield "Buzz\n"
+            elif not x % 3:
+                yield "Fizz\n"
+            else:
+                yield "%s\n" % x
 
 
 class ProcessHandler(tornado.web.RequestHandler):
