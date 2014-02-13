@@ -12,6 +12,7 @@ import tornado.autoreload
 from pandas import DataFrame
 
 from .utils import df_generate
+from .web import SSEHandler
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -56,12 +57,9 @@ class DashboardHandler(tornado.web.RequestHandler):
         self.render('dashboard.html', elements=elements, dashboard=get_bucket)
 
 
-class ProcessWebSocketHandler(tornado.web.RequestHandler):
-    def _queue(self, _send, _type):
-        self.write(json.dumps({'type': _type, 'json': _send}))
-        self.finish()
-
+class ProcessWebSocketHandler(SSEHandler):
     @tornado.web.asynchronous
+    @tornado.gen.engine
     def get(self, slug):
         self.generator = self.generate_text(1000)
         tornado.ioloop.IOLoop.instance().add_callback(self.loop)
@@ -69,7 +67,7 @@ class ProcessWebSocketHandler(tornado.web.RequestHandler):
     def loop(self):
         try:
             text = self.generator.next()
-            self.write(text)
+            self.emit(text)
             tornado.ioloop.IOLoop.instance().add_callback(self.loop)
         except StopIteration:
             self.finish()
