@@ -10,6 +10,7 @@ import tornado.gen
 from mining.utils import slugfy
 from admin.forms import ConnectionForm, CubeForm, ElementForm, DashboardForm
 from admin.forms import ObjGenerate
+from admin.models import MyBucket
 
 
 class AdminHandler(tornado.web.RequestHandler):
@@ -19,12 +20,8 @@ class AdminHandler(tornado.web.RequestHandler):
 
 class APIElementCubeHandler(tornado.web.RequestHandler):
     def get(self, slug):
-        myClient = riak.RiakClient(protocol='http',
-                                   http_port=8098,
-                                   host='127.0.0.1')
-        myBucket = myClient.bucket('openmining')
 
-        columns = json.loads(myBucket.get(u'{}-columns'.format(slug)).data)
+        columns = json.loads(MyBucket.get(u'{}-columns'.format(slug)).data or '{}')
 
         self.write({'columns': columns})
         self.finish()
@@ -35,12 +32,8 @@ class DashboardHandler(tornado.web.RequestHandler):
     def get(self, slug=None):
         form = DashboardForm()
         form.element.choices = ObjGenerate('element', 'slug', 'name')
-        myClient = riak.RiakClient(protocol='http',
-                                   http_port=8098,
-                                   host='127.0.0.1')
-        myBucket = myClient.bucket('openmining-admin')
 
-        get_bucket = myBucket.get('dashboard').data
+        get_bucket = MyBucket.get('dashboard').data
         if get_bucket is None:
             get_bucket = []
 
@@ -60,21 +53,16 @@ class DashboardHandler(tornado.web.RequestHandler):
             self.set_status(400)
             self.write(form.errors)
 
-        myClient = riak.RiakClient(protocol='http',
-                                   http_port=8098,
-                                   host='127.0.0.1')
-        myBucket = myClient.bucket('openmining-admin')
-
         data = form.data
         data['slug'] = slugfy(data.get('name'))
 
-        get_bucket = [b for b in myBucket.get('dashboard').data or []
+        get_bucket = [b for b in MyBucket.get('dashboard').data or []
                       if b['slug'] != data['slug']]
         if get_bucket is None:
             get_bucket = []
         get_bucket.append(data)
 
-        b1 = myBucket.new('dashboard', data=get_bucket)
+        b1 = MyBucket.new('dashboard', data=get_bucket)
         """
         for k in data:
             b1.add_index("{}_bin".format(k), data[k])
@@ -88,12 +76,8 @@ class ElementHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, slug=None):
         form = ElementForm()
-        myClient = riak.RiakClient(protocol='http',
-                                   http_port=8098,
-                                   host='127.0.0.1')
-        myBucket = myClient.bucket('openmining-admin')
 
-        get_bucket = myBucket.get('element').data
+        get_bucket = MyBucket.get('element').data
         if get_bucket is None:
             get_bucket = []
 
@@ -113,23 +97,18 @@ class ElementHandler(tornado.web.RequestHandler):
             self.set_status(400)
             self.write(form.errors)
 
-        myClient = riak.RiakClient(protocol='http',
-                                   http_port=8098,
-                                   host='127.0.0.1')
-        myBucket = myClient.bucket('openmining-admin')
-
         data = form.data
         data['slug'] = slugfy(data.get('name'))
         data['categories'] = self.request.arguments.get('categories',
                                                         [None])[0]
 
-        get_bucket = [b for b in myBucket.get('element').data or []
+        get_bucket = [b for b in MyBucket.get('element').data or []
                       if b['slug'] != data['slug']]
         if get_bucket is None:
             get_bucket = []
         get_bucket.append(data)
 
-        b1 = myBucket.new('element', data=get_bucket)
+        b1 = MyBucket.new('element', data=get_bucket)
         b1.add_index("slug_bin", data['slug'])
         b1.add_index("type_bin", data['type'])
         b1.add_index("cube_bin", data['cube'])
@@ -142,12 +121,8 @@ class CubeHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, slug=None):
         form = CubeForm()
-        myClient = riak.RiakClient(protocol='http',
-                                   http_port=8098,
-                                   host='127.0.0.1')
-        myBucket = myClient.bucket('openmining-admin')
 
-        get_bucket = myBucket.get('cube').data
+        get_bucket = MyBucket.get('cube').data
         if get_bucket is None:
             get_bucket = []
 
@@ -164,22 +139,17 @@ class CubeHandler(tornado.web.RequestHandler):
             self.set_status(400)
             self.write(form.errors)
 
-        myClient = riak.RiakClient(protocol='http',
-                                   http_port=8098,
-                                   host='127.0.0.1')
-        myBucket = myClient.bucket('openmining-admin')
-
         data = form.data
         data['slug'] = slugfy(data.get('name'))
         data['sql'] = data.get('sql').replace("\n", "").replace("\r", "")
 
-        get_bucket = [b for b in myBucket.get('cube').data or []
+        get_bucket = [b for b in MyBucket.get('cube').data or []
                       if b['slug'] != data['slug']]
         if get_bucket is None:
             get_bucket = []
         get_bucket.append(data)
 
-        b1 = myBucket.new('cube', data=get_bucket)
+        b1 = MyBucket.new('cube', data=get_bucket)
         b1.add_index("slug_bin", data['slug'])
         b1.add_index("conection_bin", data['conection'])
         b1.store()
@@ -191,12 +161,8 @@ class ConnectionHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self):
         form = ConnectionForm()
-        myClient = riak.RiakClient(protocol='http',
-                                   http_port=8098,
-                                   host='127.0.0.1')
-        myBucket = myClient.bucket('openmining-admin')
 
-        get_bucket = myBucket.get('connection').data
+        get_bucket = MyBucket.get('connection').data
         if get_bucket is None:
             get_bucket = []
 
@@ -208,20 +174,15 @@ class ConnectionHandler(tornado.web.RequestHandler):
             self.set_status(400)
             self.write(form.errors)
 
-        myClient = riak.RiakClient(protocol='http',
-                                   http_port=8098,
-                                   host='127.0.0.1')
-        myBucket = myClient.bucket('openmining-admin')
-
         data = form.data
         data['slug'] = slugfy(data.get('name'))
 
-        get_bucket = myBucket.get('connection').data
+        get_bucket = MyBucket.get('connection').data
         if get_bucket is None:
             get_bucket = []
         get_bucket.append(data)
 
-        b1 = myBucket.new('connection', data=get_bucket)
+        b1 = MyBucket.new('connection', data=get_bucket)
         b1.store()
 
         self.redirect('/admin/connection')
