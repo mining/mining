@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+      {% block nav %}
+      <li ><a href="/admin/connection">Connection</a></li>
+      <li><a href="/admin/cube">Cube</a></li>
+      <li class="active"><a href="/admin/element">Element</a></li>
+      <li><a href="/admin/dashboard">Dashboard</a></li>
+      {% end %}
 {% block content %}
 <form action="/admin/element{% if slug %}/{{slug}}{% end %}" method="post" accept-charset="utf-8">
   <table>
