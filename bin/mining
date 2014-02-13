@@ -18,49 +18,57 @@ myClient = riak.RiakClient(protocol='http',
                            host='127.0.0.1')
 radmin = myClient.bucket('openmining-admin')
 
-for cube in radmin.get('cube').data:
-    slug = cube['slug']
-    sql = """SELECT * FROM ({}) AS CUBE;""".format(cube['sql'])
-    for c in radmin.get('connection').data:
-        if c['slug'] == cube['conection']:
-            connection = c['conection']
+def run():
+    for cube in radmin.get('cube').data:
+        slug = cube['slug']
+        sql = """SELECT * FROM ({}) AS CUBE;""".format(cube['sql'])
+        for c in radmin.get('connection').data:
+            if c['slug'] == cube['conection']:
+                connection = c['conection']
 
-    print "\n# CLEAN MEMCACHE/RIAK: {}".format(slug)
-    mc = memcache.Client(['127.0.0.1:11211'], debug=0)
-    mc.delete(str(slug))
-    mc.delete(str('{}-columns'.format(slug)))
+        print "\n# CLEAN MEMCACHE/RIAK: {}".format(slug)
+        mc = memcache.Client(['127.0.0.1:11211'], debug=0)
+        mc.delete(str(slug))
+        mc.delete(str('{}-columns'.format(slug)))
 
-    rmining = myClient.bucket('openmining')
+        rmining = myClient.bucket('openmining')
 
-    rmining.new(slug, data='').store()
-    rmining.new(u'{}-columns'.format(slug), data='').store()
-    rmining.new(u'{}-connect'.format(slug), data='').store()
-    rmining.new(u'{}-sql'.format(slug), data='').store()
+        rmining.new(slug, data='').store()
+        rmining.new(u'{}-columns'.format(slug), data='').store()
+        rmining.new(u'{}-connect'.format(slug), data='').store()
+        rmining.new(u'{}-sql'.format(slug), data='').store()
 
-    print "# CONNECT IN RELATION DATA BASE: {}".format(slug)
-    e = create_engine(connection)
-    connection = e.connect()
+        print "# CONNECT IN RELATION DATA BASE: {}".format(slug)
+        e = create_engine(connection)
+        connection = e.connect()
 
-    resoverall = connection.execute(text(sql))
+        resoverall = connection.execute(text(sql))
 
-    print "# LOAD DATA ON DATAWAREHOUSE: {}".format(slug)
-    df = DataFrame(resoverall.fetchall())
-    df.columns = resoverall.keys()
-    df.head()
+        print "# LOAD DATA ON DATAWAREHOUSE: {}".format(slug)
+        df = DataFrame(resoverall.fetchall())
+        if df.empty:
+            print '[warnning]Empty cube: %s!!'%cube
+            return
+        df.columns = resoverall.keys()
+        df.head()
 
-    pdict = map(fix_render, df.to_dict(outtype='records'))
+        pdict = map(fix_render, df.to_dict(outtype='records'))
 
-    print "# SAVE DATA (JSON) ON RIAK: {}".format(slug)
-    b1 = rmining.new(slug, data=pdict).store()
+        print "# SAVE DATA (JSON) ON RIAK: {}".format(slug)
+        b1 = rmining.new(slug, data=pdict).store()
 
-    print "# SAVE COLUMNS ON RIAK: {}".format(slug)
-    b2 = rmining.new(u'{}-columns'.format(slug),
-                     data=json.dumps([c for c in df.columns])).store()
+        print "# SAVE COLUMNS ON RIAK: {}".format(slug)
+        b2 = rmining.new(u'{}-columns'.format(slug),
+                         data=json.dumps([c for c in df.columns])).store()
 
-    print "# SAVE CONNECT ON RIAK: {}".format(slug)
-    b3 = rmining.new(u'{}-connect'.format(slug), data=c).store()
+        print "# SAVE CONNECT ON RIAK: {}".format(slug)
+        b3 = rmining.new(u'{}-connect'.format(slug), data=c).store()
 
-    print "# SAVE SQL ON RIAK: {}\n".format(slug)
-    b4 = rmining.new(u'{}-sql'.format(slug), data=sql).store()
+        print "# SAVE SQL ON RIAK: {}\n".format(slug)
+        b4 = rmining.new(u'{}-sql'.format(slug), data=sql).store()
 
-print "## FINISH"
+    print "## FINISH"
+
+
+if __name__ == "__main__":
+    run()
