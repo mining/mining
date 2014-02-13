@@ -60,12 +60,21 @@ angular.module('OpenMining', ["highcharts-ng"])
       { key:'between' ,value: 'between'}
     ];
     $scope.types=[
-      { key:'date__:Y-:m-:d'     ,value : 'Date'},
+      { key:'date'     ,value : 'Date'},
       { key:'int'     ,value: 'Integer'},
       { key:'str'      ,value: 'String'}
     ];
+    $scope.$watch('filter_type', function(newVal){
+      if(newVal.key == 'date')
+        $scope.filter_format = ":Y-:m-:d";
+      else
+        $scope.filter_format = "";
+    });
     $scope.addFilter = function(){
-      $scope.filters['filter__'+$scope.filter_field+"__"+$scope.filter_operator.key+'__'+$scope.filter_type.key] = $scope.filter_value;
+      var chave = 'filter__'+$scope.filter_field+"__"+$scope.filter_operator.key+'__'+$scope.filter_type.key;
+      if ($scope.filter_format)
+        chave = chave + '__'+$scope.filter_format
+      $scope.filters[chave] = $scope.filter_value;
     };
     $scope.removeFilter = function(index){
       delete $scope.filters[index];

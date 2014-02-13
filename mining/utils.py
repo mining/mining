@@ -3,6 +3,7 @@
 import unicodedata
 import re
 from decimal import Decimal
+from datetime import date
 
 from pandas import tslib, date_range
 
@@ -15,6 +16,8 @@ def fix_type(value):
             return unicode(value.decode('latin1'))
     elif type(value) is tslib.Timestamp:
         return value.strftime("%Y-%m-%d %H:%M:%S")
+    elif type(value) is date:
+        return value.strftime("%Y-%m-%d")
     elif type(value) is Decimal:
         return float(value)
     return value
