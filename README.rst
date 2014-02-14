@@ -54,3 +54,9 @@ Screenshot
 
 .. image:: https://raw.github.com/avelino/mining/master/docs/source/_static/dashboard-apply-filter-openmining.png
     :alt: Dashboard apply filter OpenMining
+
+
+Sponsor
+-------
+
+* `UP! Essência <http://www.upessencia.com.br/>`_

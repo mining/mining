@@ -18,6 +18,7 @@ myClient = riak.RiakClient(protocol='http',
                            host='127.0.0.1')
 radmin = myClient.bucket('openmining-admin')
 
+
 def run():
     for cube in radmin.get('cube').data:
         slug = cube['slug']
@@ -47,7 +48,7 @@ def run():
         print "# LOAD DATA ON DATAWAREHOUSE: {}".format(slug)
         df = DataFrame(resoverall.fetchall())
         if df.empty:
-            print '[warnning]Empty cube: %s!!'%cube
+            print '[warnning]Empty cube: {}!!'.format(cube)
             return
         df.columns = resoverall.keys()
         df.head()
@@ -55,17 +56,17 @@ def run():
         pdict = map(fix_render, df.to_dict(outtype='records'))
 
         print "# SAVE DATA (JSON) ON RIAK: {}".format(slug)
-        b1 = rmining.new(slug, data=pdict).store()
+        rmining.new(slug, data=pdict).store()
 
         print "# SAVE COLUMNS ON RIAK: {}".format(slug)
-        b2 = rmining.new(u'{}-columns'.format(slug),
-                         data=json.dumps([c for c in df.columns])).store()
+        rmining.new(u'{}-columns'.format(slug),
+                    data=json.dumps([c for c in df.columns])).store()
 
         print "# SAVE CONNECT ON RIAK: {}".format(slug)
-        b3 = rmining.new(u'{}-connect'.format(slug), data=c).store()
+        rmining.new(u'{}-connect'.format(slug), data=c).store()
 
         print "# SAVE SQL ON RIAK: {}\n".format(slug)
-        b4 = rmining.new(u'{}-sql'.format(slug), data=sql).store()
+        rmining.new(u'{}-sql'.format(slug), data=sql).store()
 
     print "## FINISH"
 
