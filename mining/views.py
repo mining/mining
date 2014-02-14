@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
-import riak
 import memcache
 
 import tornado.ioloop
@@ -13,7 +12,6 @@ from tornado.websocket import WebSocketHandler
 from pandas import DataFrame
 
 from .utils import df_generate
-from .web import SSEHandler
 from .models import MyBucket, MyAdminBucket
 
 
