@@ -1,14 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import os
+import sys
+
 import riak
 
+#hacking for import global settings
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+sys.path.insert(0, PROJECT_DIR)
 
-MyClient = riak.RiakClient(protocol='http',
-                           http_port=8098,
-                           host='127.0.0.1')
+from settings import (RIAK_PROTOCOL, RIAK_HTTP_PORT,
+                      RIAK_HOST, ADMIN_BUCKET_NAME,
+                      MINING_BUCKET_NAME, MEMCACHE_CONNECTION, MEMCACHE_DEBUG)
 
-MyAdminBucket = MyClient.bucket('openmining-admin')
-MyBucket = MyClient.bucket('openmining')
+
+MyClient = riak.RiakClient(protocol=RIAK_PROTOCOL,
+                           http_port=RIAK_HTTP_PORT,
+                           host=RIAK_HOST)
+
+MyAdminBucket = MyClient.bucket(ADMIN_BUCKET_NAME)
+
+MyBucket = MyClient.bucket(MINING_BUCKET_NAME)
 
 
 def main():
