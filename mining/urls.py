@@ -5,6 +5,6 @@ from .views import MainHandler, ProcessHandler, DashboardHandler
 
 INCLUDE_URLS = [
     (r"/process/(?P<slug>[\w-]+).json", ProcessHandler),
-    (r"/(?P<slug>[\w-]+)", DashboardHandler),
+    (r"/dashboard/(?P<slug>[\w-]+)", DashboardHandler),
     (r"/", MainHandler),
 ]

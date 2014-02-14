@@ -43,7 +43,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-dashboard"></i> Dashboards <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         {% for d in dashboard %}
-                        <li><a href="/{{ d['slug'] }}">{{ d['name'] }}</a></li>
+                        <li><a href="/dashboard/{{ d['slug'] }}">{{ d['name'] }}</a></li>
                         {% end %}
                     </ul>
                 </li>
