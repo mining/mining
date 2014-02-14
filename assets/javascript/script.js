@@ -29,23 +29,37 @@ angular.module('OpenMining', ["highcharts-ng"])
     };
     return return_val;
   })
+
   .controller('Process',
-  function($scope, $http, $location) {
+  function($scope, $http, $location, $timeout) {
     $scope.loading = true;
+    $scope.process = [];
     $scope.init = function(slug) {
-      var API_URL = "/process/" + slug + ".json?";
+
+      var API_URL = "ws://"+ location.host +"/process/" + slug + ".ws?";
       for (var key in $location.search()){
         API_URL += key + "=" + $location.search()[key] + "&";
       }
 
-      $http({method: 'POST', url: API_URL}).
-        success(function(data, status, headers, config) {
-          $scope.process = data.json;
-          $scope.columns = data.columns;
-          $scope.loading = false;
+      var sock = new WebSocket(API_URL)
+      sock.onmessage = function (e) {
+        console.log(e)
+        var data = JSON.parse(e.data);
+
+        if (data.type == 'columns') {
+          $scope.columns = data.data;
+        }else if (data.type == 'data') {
+          $scope.process.push(data.data);
+        }
+        
+        $timeout(function (){
+          $scope.$apply();
         });
+        $scope.loading = false;
+      };
     };
   })
+
   .controller('Chart',
   function($scope, $http, $location, LineChart, $timeout) {
     $scope.loading = true;
@@ -53,16 +67,16 @@ angular.module('OpenMining', ["highcharts-ng"])
     $scope.columns = [];
     $scope.filters = {};
     $scope.operators =[
-      { key:'gte'     ,value : 'gte'},
-      { key:'lte'     ,value: 'lte'},
-      { key:'is'      ,value: 'is'},
-      { key:'in'      ,value: 'in'},
-      { key:'between' ,value: 'between'}
+      {key: 'gte', value : 'gte'},
+      {key: 'lte', value: 'lte'},
+      {key: 'is', value: 'is'},
+      {key: 'in', value: 'in'},
+      {key: 'between', value: 'between'}
     ];
     $scope.types=[
-      { key:'date'     ,value : 'Date'},
-      { key:'int'     ,value: 'Integer'},
-      { key:'str'      ,value: 'String'}
+      {key: 'date', value: 'Date'},
+      {key: 'int', value: 'Integer'},
+      {key: 'str', value: 'String'}
     ];
     $scope.$watch('filter_type', function(newVal){
       if(newVal.key == 'date')
