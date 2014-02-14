@@ -50,6 +50,8 @@ class DashboardHandler(tornado.web.RequestHandler):
 
 
 class ProcessWebSocket(WebSocketHandler):
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     def open(self, slug):
         columns = json.loads(MyBucket.get('{}-columns'.format(slug)).data)
         fields = columns
