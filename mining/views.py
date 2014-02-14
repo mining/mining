@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
-import riak
 import memcache
 
 import tornado.ioloop
@@ -13,7 +12,6 @@ from tornado.websocket import WebSocketHandler
 from pandas import DataFrame
 
 from .utils import df_generate
-from .web import SSEHandler
 from .models import MyBucket, MyAdminBucket
 
 
@@ -52,6 +50,8 @@ class DashboardHandler(tornado.web.RequestHandler):
 
 
 class ProcessWebSocket(WebSocketHandler):
+    @tornado.web.asynchronous
+    @tornado.gen.engine
     def open(self, slug):
         columns = json.loads(MyBucket.get('{}-columns'.format(slug)).data)
         fields = columns
