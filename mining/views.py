@@ -8,6 +8,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.gen
 import tornado.autoreload
+from tornado.websocket import WebSocketHandler
 
 from pandas import DataFrame
 
@@ -48,6 +49,35 @@ class DashboardHandler(tornado.web.RequestHandler):
                     elements = _e
 
         self.render('dashboard.html', elements=elements, dashboard=get_bucket)
+
+
+class ProcessWebSocket(WebSocketHandler):
+    def open(self, slug):
+        columns = json.loads(MyBucket.get('{}-columns'.format(slug)).data)
+        fields = columns
+        if self.get_argument('fields', None):
+            fields = self.get_argument('fields').split(',')
+
+        self.write_message({'type': 'columns', 'data': fields})
+
+        filters = [i[0] for i in self.request.arguments.iteritems()
+                   if len(i[0].split('filter__')) > 1]
+
+        df = DataFrame(MyBucket.get(slug).data, columns=fields)
+        if len(filters) >= 1:
+            for f in filters:
+                df = df.query(df_generate(df, self.get_argument, f))
+
+        for i in df.to_dict(outtype='records'):
+            self.write_message({'type': 'data', 'data': i})
+
+        self.close()
+
+    def on_message(self, message):
+        pass
+
+    def on_close(self):
+        print(u"closed.")
 
 
 class ProcessHandler(tornado.web.RequestHandler):
