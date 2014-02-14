@@ -20,8 +20,8 @@ class AdminHandler(tornado.web.RequestHandler):
 
 class APIElementCubeHandler(tornado.web.RequestHandler):
     def get(self, slug):
-
-        columns = json.loads(MyBucket.get(u'{}-columns'.format(slug)).data or '{}')
+        data = MyBucket.get(u'{}-columns'.format(slug)).data or '{}'
+        columns = json.loads(data)
 
         self.write({'columns': columns})
         self.finish()

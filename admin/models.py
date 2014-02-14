@@ -4,8 +4,8 @@ import riak
 
 
 MyClient = riak.RiakClient(protocol='http',
-                                   http_port=8098,
-                                   host='127.0.0.1')
+                           http_port=8098,
+                           host='127.0.0.1')
 
 MyBucket = MyClient.bucket('openmining-admin')
 

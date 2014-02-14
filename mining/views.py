@@ -22,7 +22,6 @@ class MainHandler(tornado.web.RequestHandler):
     def get(self):
         dashboard = MyAdminBucket.get('dashboard').data
 
-
         self.render('index.html', dashboard=dashboard or [])
 
 
