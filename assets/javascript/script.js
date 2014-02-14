@@ -79,7 +79,7 @@ angular.module('OpenMining', ["highcharts-ng"])
       {key: 'str', value: 'String'}
     ];
     $scope.$watch('filter_type', function(newVal){
-      if(newVal.key == 'date')
+      if(getNestedProp(newVal, 'key', '') == 'date')
         $scope.filter_format = ":Y-:m-:d";
       else
         $scope.filter_format = "";
