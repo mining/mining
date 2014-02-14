@@ -95,11 +95,69 @@ angular.module('OpenMining', ["highcharts-ng"])
     }
 
     $scope.applyFilters = function(slug, categorie, type, title){
-      var API_URL = "/process/" + slug + ".json?";
+      var API_URL = "ws://"+ location.host +"/process/" + slug + ".ws?";
       for (var key in $scope.filters){
         API_URL += key + "=" + $scope.filters[key] + "&";
       }
-//      makeChart(API_URL, slug, categorie, type, title);
+      $scope.columns = [];
+      $scope.process = [];
+      $scope.chartConfig[slug] = {
+        options: {
+          chart: {
+            type: type
+          }
+        },
+        series: [],
+        title: {
+          text: title
+        },
+        xAxis: {
+          currentMin: 0,
+          currentMax: 0,
+          categories: []
+        }
+      };
+      var sock = new WebSocket(API_URL);
+      sock.onmessage = function (e) {
+        var data = JSON.parse(e.data);
+
+        if (data.type == 'columns') {
+          $scope.columns = data.data;
+        }else if (data.type == 'data') {
+          $scope.process.push(data.data);
+        }
+        var series = {};
+        var loopseries = {};
+        for (var j in $scope.process) {
+          for (var c in $scope.process[j]) {
+            if (typeof loopseries[c] == 'undefined'){
+              loopseries[c] = {};
+              loopseries[c].data = [];
+            }
+            loopseries[c].name = c;
+            loopseries[c].data.push($scope.process[j][c]);
+          }
+        }
+        series[slug] = [];
+        for (var ls in loopseries){
+          if (ls != categorie) {
+            series[slug].push(loopseries[ls]);
+          }
+        }
+        $scope.chartConfig[slug].series = series[slug];
+        $scope.chartConfig[slug].xAxis.currentMax = getNestedProp(loopseries[categorie],'data', []).length;
+        $scope.chartConfig[slug].xAxis.categories = getNestedProp(loopseries[categorie],'data', []);
+        $timeout(function(){
+          $scope.$apply(function(){
+            $scope.chartConfig[slug].xAxis.currentMax = getNestedProp(loopseries[categorie],'data', []).length-1;
+          });
+        },0);
+
+        $timeout(function (){
+          $scope.$apply();
+        });
+        $scope.loading = false;
+      };
     };
     $scope.init = function(slug, categorie, type, title) {
       var API_URL = "ws://"+ location.host +"/process/" + slug + ".ws?";
