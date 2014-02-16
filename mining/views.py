@@ -1,15 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
-import riak
 import memcache
-import functools
 
 import tornado.ioloop
 import tornado.web
 import tornado.gen
 import tornado.autoreload
-
 from tornado.websocket import WebSocketHandler
 
 from pandas import DataFrame
@@ -52,18 +49,16 @@ class DashboardHandler(tornado.web.RequestHandler):
         self.render('dashboard.html', elements=elements, dashboard=get_bucket)
 
 
-class ProcessWebSocketHandler(WebSocketHandler):
-    def _queue(self, _send, _type):
-        self.write_message(json.dumps({'type': _type, 'json': _send}))
-
+class ProcessWebSocket(WebSocketHandler):
     @tornado.web.asynchronous
     @tornado.gen.engine
     def open(self, slug):
-
         columns = json.loads(MyBucket.get('{}-columns'.format(slug)).data)
         fields = columns
         if self.get_argument('fields', None):
             fields = self.get_argument('fields').split(',')
+
+        self.write_message({'type': 'columns', 'data': fields})
 
         filters = [i[0] for i in self.request.arguments.iteritems()
                    if len(i[0].split('filter__')) > 1]
@@ -73,10 +68,16 @@ class ProcessWebSocketHandler(WebSocketHandler):
             for f in filters:
                 df = df.query(df_generate(df, self.get_argument, f))
 
-        self._queue(_type=u'columns', _send=fields)
-        while True:
-            map(functools.partial(_type=u'series'),
-                df.to_dict(outtype='records'))
+        for i in df.to_dict(outtype='records'):
+            self.write_message({'type': 'data', 'data': i})
+
+        self.close()
+
+    def on_message(self, message):
+        pass
+
+    def on_close(self):
+        print(u"closed.")
 
 
 class ProcessHandler(tornado.web.RequestHandler):

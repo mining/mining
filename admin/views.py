@@ -159,16 +159,22 @@ class CubeHandler(tornado.web.RequestHandler):
 
 class ConnectionHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
-    def get(self):
+    def get(self, slug=None):
         form = ConnectionForm()
 
         get_bucket = MyAdminBucket.get('connection').data
         if get_bucket is None:
             get_bucket = []
 
-        self.render('admin/connection.html', form=form, connection=get_bucket)
+        for bload in get_bucket:
+            if bload['slug'] == slug:
+                for k in form._fields:
+                    getattr(form, k).data = bload[k]
 
-    def post(self):
+        self.render('admin/connection.html', form=form, slug=slug,
+                    connection=get_bucket)
+
+    def post(self, slug=None):
         form = ConnectionForm(self.request.arguments)
         if not form.validate():
             self.set_status(400)
@@ -177,7 +183,9 @@ class ConnectionHandler(tornado.web.RequestHandler):
         data = form.data
         data['slug'] = slugfy(data.get('name'))
 
-        get_bucket = MyAdminBucket.get('connection').data
+        get_bucket = MyAdminBucket.get('connection').data or []
+        get_bucket = [b for b in get_bucket if b['slug'] != data['slug']]
+        
         if get_bucket is None:
             get_bucket = []
         get_bucket.append(data)
