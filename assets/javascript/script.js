@@ -49,11 +49,10 @@ angular.module('OpenMining', ["highcharts-ng"])
           $scope.columns = data.data;
         }else if (data.type == 'data') {
           $scope.process.push(data.data);
+        }else if (data.type == 'close') {
+          sock.close();
         }
-
-        $timeout(function (){
-          $scope.$apply();
-        });
+        $scope.$apply();
         $scope.loading = false;
       };
     };
@@ -125,6 +124,8 @@ angular.module('OpenMining', ["highcharts-ng"])
           $scope.columns = data.data;
         }else if (data.type == 'data') {
           $scope.process.push(data.data);
+        }else if (data.type == 'close') {
+          sock.close();
         }
         var series = {};
         var loopseries = {};
@@ -152,10 +153,7 @@ angular.module('OpenMining', ["highcharts-ng"])
             $scope.chartConfig[slug].xAxis.currentMax = getNestedProp(loopseries[categorie],'data', []).length-1;
           });
         },0);
-
-        $timeout(function (){
-          $scope.$apply();
-        });
+        $scope.$apply();
         $scope.loading = false;
       };
     };
