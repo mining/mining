@@ -187,6 +187,8 @@ angular.module('OpenMining', ["highcharts-ng"])
           $scope.columns = data.data;
         }else if (data.type == 'data') {
           $scope.process.push(data.data);
+        }else if (data.type == 'close') {
+          sock.close();
         }
         var series = {};
         var loopseries = {};
