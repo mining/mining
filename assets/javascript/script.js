@@ -5,7 +5,6 @@ var getNestedProp = function (obj, propString, fallback) {
   if (!propString) return obj;
   var prop, props = propString.split('.');
 
-  //for (var i = 0, iLen = props.length - 1; i < iLen; i++) {
   for (var i = 0, iLen = props.length - 1; i <= iLen; i++) {
     prop = props[i];
 
@@ -16,7 +15,6 @@ var getNestedProp = function (obj, propString, fallback) {
       return fallback;
   }
 
-  //return obj[props[i]];
   return obj;
 };
 
