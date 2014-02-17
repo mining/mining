@@ -68,9 +68,16 @@ class ProcessWebSocket(WebSocketHandler):
             for f in filters:
                 df = df.query(df_generate(df, self.get_argument, f))
 
+        for e in MyAdminBucket.get('element').data:
+            if e['slug'] == slug:
+                ca = e['categories']
+
+        categories = []
         for i in df.to_dict(outtype='records'):
+            categories.append(i[ca])
             self.write_message({'type': 'data', 'data': i})
 
+        self.write_message({'type': 'categories', 'data': categories})
         self.write_message({'type': 'close'})
 
 
