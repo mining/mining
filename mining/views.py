@@ -71,13 +71,7 @@ class ProcessWebSocket(WebSocketHandler):
         for i in df.to_dict(outtype='records'):
             self.write_message({'type': 'data', 'data': i})
 
-        self.close()
-
-    def on_message(self, message):
-        pass
-
-    def on_close(self):
-        print(u"closed.")
+        self.write_message({'type': 'close'})
 
 
 class ProcessHandler(tornado.web.RequestHandler):
