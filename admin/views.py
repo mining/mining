@@ -10,7 +10,7 @@ import tornado.gen
 from mining.utils import slugfy
 from admin.forms import ConnectionForm, CubeForm, ElementForm, DashboardForm
 from admin.forms import ObjGenerate
-from admin.models import MyBucket
+from admin.models import MyAdminBucket
 
 
 class AdminHandler(tornado.web.RequestHandler):
@@ -20,7 +20,7 @@ class AdminHandler(tornado.web.RequestHandler):
 
 class APIElementCubeHandler(tornado.web.RequestHandler):
     def get(self, slug):
-        data = MyBucket.get(u'{}-columns'.format(slug)).data or '{}'
+        data = MyAdminBucket.get(u'{}-columns'.format(slug)).data or '{}'
         columns = json.loads(data)
 
         self.write({'columns': columns})
@@ -33,7 +33,7 @@ class DashboardHandler(tornado.web.RequestHandler):
         form = DashboardForm()
         form.element.choices = ObjGenerate('element', 'slug', 'name')
 
-        get_bucket = MyBucket.get('dashboard').data
+        get_bucket = MyAdminBucket.get('dashboard').data
         if get_bucket is None:
             get_bucket = []
 
@@ -56,13 +56,13 @@ class DashboardHandler(tornado.web.RequestHandler):
         data = form.data
         data['slug'] = slugfy(data.get('name'))
 
-        get_bucket = [b for b in MyBucket.get('dashboard').data or []
+        get_bucket = [b for b in MyAdminBucket.get('dashboard').data or []
                       if b['slug'] != data['slug']]
         if get_bucket is None:
             get_bucket = []
         get_bucket.append(data)
 
-        b1 = MyBucket.new('dashboard', data=get_bucket)
+        b1 = MyAdminBucket.new('dashboard', data=get_bucket)
         """
         for k in data:
             b1.add_index("{}_bin".format(k), data[k])
@@ -77,7 +77,7 @@ class ElementHandler(tornado.web.RequestHandler):
     def get(self, slug=None):
         form = ElementForm()
 
-        get_bucket = MyBucket.get('element').data
+        get_bucket = MyAdminBucket.get('element').data
         if get_bucket is None:
             get_bucket = []
 
@@ -102,13 +102,13 @@ class ElementHandler(tornado.web.RequestHandler):
         data['categories'] = self.request.arguments.get('categories',
                                                         [None])[0]
 
-        get_bucket = [b for b in MyBucket.get('element').data or []
+        get_bucket = [b for b in MyAdminBucket.get('element').data or []
                       if b['slug'] != data['slug']]
         if get_bucket is None:
             get_bucket = []
         get_bucket.append(data)
 
-        b1 = MyBucket.new('element', data=get_bucket)
+        b1 = MyAdminBucket.new('element', data=get_bucket)
         b1.add_index("slug_bin", data['slug'])
         b1.add_index("type_bin", data['type'])
         b1.add_index("cube_bin", data['cube'])
@@ -122,7 +122,7 @@ class CubeHandler(tornado.web.RequestHandler):
     def get(self, slug=None):
         form = CubeForm()
 
-        get_bucket = MyBucket.get('cube').data
+        get_bucket = MyAdminBucket.get('cube').data
         if get_bucket is None:
             get_bucket = []
 
@@ -143,13 +143,13 @@ class CubeHandler(tornado.web.RequestHandler):
         data['slug'] = slugfy(data.get('name'))
         data['sql'] = data.get('sql').replace("\n", "").replace("\r", "")
 
-        get_bucket = [b for b in MyBucket.get('cube').data or []
+        get_bucket = [b for b in MyAdminBucket.get('cube').data or []
                       if b['slug'] != data['slug']]
         if get_bucket is None:
             get_bucket = []
         get_bucket.append(data)
 
-        b1 = MyBucket.new('cube', data=get_bucket)
+        b1 = MyAdminBucket.new('cube', data=get_bucket)
         b1.add_index("slug_bin", data['slug'])
         b1.add_index("conection_bin", data['conection'])
         b1.store()
@@ -162,7 +162,7 @@ class ConnectionHandler(tornado.web.RequestHandler):
     def get(self, slug=None):
         form = ConnectionForm()
 
-        get_bucket = MyBucket.get('connection').data
+        get_bucket = MyAdminBucket.get('connection').data
         if get_bucket is None:
             get_bucket = []
 
@@ -183,13 +183,14 @@ class ConnectionHandler(tornado.web.RequestHandler):
         data = form.data
         data['slug'] = slugfy(data.get('name'))
 
-        get_bucket = [b for b in MyBucket.get('connection').data or []
-                      if b['slug'] != data['slug']]
+        get_bucket = MyAdminBucket.get('connection').data or []
+        get_bucket = [b for b in get_bucket if b['slug'] != data['slug']]
+        
         if get_bucket is None:
             get_bucket = []
         get_bucket.append(data)
 
-        b1 = MyBucket.new('connection', data=get_bucket)
+        b1 = MyAdminBucket.new('connection', data=get_bucket)
         b1.store()
 
         self.redirect('/admin/connection')

@@ -7,14 +7,11 @@ from wtforms.fields import SelectField, SelectMultipleField
 from wtforms.validators import Required
 from wtforms_tornado import Form
 
+from .models import MyAdminBucket
+
 
 def ObjGenerate(bucket, key, value=None, _type=tuple):
-    myClient = riak.RiakClient(protocol='http',
-                               http_port=8098,
-                               host='127.0.0.1')
-    myBucket = myClient.bucket('openmining-admin')
-
-    bconnection = myBucket.get(bucket).data
+    bconnection = MyAdminBucket.get(bucket).data
 
     try:
         if _type is tuple:
