@@ -112,10 +112,10 @@ angular.module('OpenMining', ["highcharts-ng"])
         },
         xAxis: {
           currentMin: 0,
-          currentMax: 0,
           categories: []
         }
       };
+
       var sock = new WebSocket(API_URL);
       sock.onmessage = function (e) {
         var data = JSON.parse(e.data);
@@ -124,10 +124,12 @@ angular.module('OpenMining', ["highcharts-ng"])
           $scope.columns = data.data;
         }else if (data.type == 'data') {
           $scope.process.push(data.data);
+        }else if (data.type == 'categories') {
+          $scope.chartConfig[slug].xAxis.categories = data.data;
         }else if (data.type == 'close') {
           sock.close();
         }
-        var series = {};
+
         var loopseries = {};
         for (var j in $scope.process) {
           for (var c in $scope.process[j]) {
@@ -139,24 +141,21 @@ angular.module('OpenMining', ["highcharts-ng"])
             loopseries[c].data.push($scope.process[j][c]);
           }
         }
-        series[slug] = [];
+
+        $scope.chartConfig[slug].series = [];
         for (var ls in loopseries){
           if (ls != categorie) {
-            series[slug].push(loopseries[ls]);
+            $scope.chartConfig[slug].series.push(loopseries[ls]);
           }
         }
-        $scope.chartConfig[slug].series = series[slug];
-        $scope.chartConfig[slug].xAxis.currentMax = getNestedProp(loopseries[categorie],'data', []).length;
-        $scope.chartConfig[slug].xAxis.categories = getNestedProp(loopseries[categorie],'data', []);
+
         $timeout(function(){
-          $scope.$apply(function(){
-            $scope.chartConfig[slug].xAxis.currentMax = getNestedProp(loopseries[categorie],'data', []).length-1;
-          });
-        },0);
-        $scope.$apply();
+          $scope.$apply();
+        });
         $scope.loading = false;
       };
     };
+
     $scope.init = function(slug, categorie, type, title) {
       var API_URL = "ws://"+ location.host +"/process/" + slug + ".ws?";
       for (var key in $location.search()){
@@ -175,7 +174,6 @@ angular.module('OpenMining', ["highcharts-ng"])
         },
         xAxis: {
           currentMin: 0,
-          currentMax: 0,
           categories: []
         }
       };
@@ -189,7 +187,6 @@ angular.module('OpenMining', ["highcharts-ng"])
           $scope.process.push(data.data);
         }else if (data.type == 'categories') {
           $scope.chartConfig[slug].xAxis.categories = data.data;
-          $scope.chartConfig[slug].xAxis.currentMax = data.data.length-1;
         }else if (data.type == 'close') {
           sock.close();
         }
