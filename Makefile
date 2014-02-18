@@ -1,5 +1,6 @@
 .PHONY: test
 test: pep8 clean
+	@coverage report
 	@python setup.py test
 
 .PHONY: tox-test
