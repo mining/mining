@@ -19,6 +19,23 @@ var getNestedProp = function (obj, propString, fallback) {
 };
 
 angular.module('OpenMining', ["highcharts-ng"])
+
+  .run(function($rootScope){
+    $rootScope.operators = [
+      {key: 'gte', value: 'gte'},
+      {key: 'lte', value: 'lte'},
+      {key: 'is', value: 'is'},
+      {key: 'in', value: 'in'},
+      {key: 'between', value: 'between'}
+    ];
+    $rootScope.types = [
+      {key: 'date', value: 'Date'},
+      {key: 'int', value: 'Integer'},
+      {key: 'str', value: 'String'}
+    ];
+
+  })
+
   .factory('LineChart', function($http){
     var return_val = {
       'getConfig':function(URL){
@@ -31,12 +48,30 @@ angular.module('OpenMining', ["highcharts-ng"])
   .controller('Process',
   function($scope, $http, $location, $timeout) {
     $scope.loading = true;
-    $scope.process = [];
-    $scope.init = function(slug) {
+    $scope.filters = {};
+
+    $scope.$watch('filter_type', function(newVal){
+      if(getNestedProp(newVal, 'key', '') == 'date')
+        $scope.filter_format = ":Y-:m-:d";
+      else
+        $scope.filter_format = "";
+    });
+    $scope.addFilter = function(){
+      var chave = 'filter__'+$scope.filter_field+"__"+$scope.filter_operator.key+'__'+$scope.filter_type.key;
+      if ($scope.filter_format)
+        chave = chave + '__'+$scope.filter_format
+      $scope.filters[chave] = $scope.filter_value;
+    };
+    $scope.removeFilter = function(index){
+      delete $scope.filters[index];
+    }
+
+    $scope.gridload = function(slug) {
+      $scope.process = [];
 
       var API_URL = "ws://"+ location.host +"/process/" + slug + ".ws?";
-      for (var key in $location.search()){
-        API_URL += key + "=" + $location.search()[key] + "&";
+      for (var key in $scope.filters){
+        API_URL += key + "=" + $scope.filters[key] + "&";
       }
 
       var sock = new WebSocket(API_URL);
@@ -50,9 +85,20 @@ angular.module('OpenMining', ["highcharts-ng"])
         }else if (data.type == 'close') {
           sock.close();
         }
-        $scope.$apply();
+
+        $timeout(function(){
+          $scope.$apply();
+        });
+
         $scope.loading = false;
       };
+    };
+
+    $scope.applyFilters = function(slug){
+      $scope.gridload(slug);
+    };
+    $scope.init = function(slug) {
+      $scope.gridload(slug)
     };
   })
 
@@ -63,18 +109,7 @@ angular.module('OpenMining', ["highcharts-ng"])
     $scope.columns = [];
     $scope.process = [];
     $scope.filters = {};
-    $scope.operators =[
-      {key: 'gte', value : 'gte'},
-      {key: 'lte', value: 'lte'},
-      {key: 'is', value: 'is'},
-      {key: 'in', value: 'in'},
-      {key: 'between', value: 'between'}
-    ];
-    $scope.types=[
-      {key: 'date', value: 'Date'},
-      {key: 'int', value: 'Integer'},
-      {key: 'str', value: 'String'}
-    ];
+
     $scope.$watch('filter_type', function(newVal){
       if(getNestedProp(newVal, 'key', '') == 'date')
         $scope.filter_format = ":Y-:m-:d";
@@ -158,7 +193,6 @@ angular.module('OpenMining', ["highcharts-ng"])
     $scope.applyFilters = function(slug, categorie, type, title){
       $scope.chartload(slug, categorie, type, title);
     };
-
     $scope.init = function(slug, categorie, type, title) {
       $scope.chartload(slug, categorie, type, title);
     };
