@@ -11,10 +11,11 @@ environment:
 	@pip install -r requirements_dev.txt
 	@pip install -r requirements.txt
 	@pip install numexpr==2.3
+	@python setup.py develop
 
 .PHONY: install
 install:
-	@python setup.py develop
+	@python setup.py install
 
 .PHONY: pep8
 pep8:
