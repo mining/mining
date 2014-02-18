@@ -26,7 +26,7 @@ class DashboardHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, slug):
 
-        get_bucket = MyAdminBucket.get('dashboard').data
+        get_bucket = MyAdminBucket.get('dashboard').data or []
 
         elements = {}
         for d in get_bucket:
