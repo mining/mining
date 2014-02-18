@@ -24,6 +24,7 @@ Install
 .. code-block:: bash
 
     pip install -r requirements.txt
+    pip install numexpr==2.3
     bower install
 
 

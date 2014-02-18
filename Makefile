@@ -1,6 +1,6 @@
 .PHONY: test
 test: pep8 clean
-	python setup.py test
+	@python setup.py test
 
 .PHONY: tox-test
 tox-test: environment
@@ -8,12 +8,13 @@ tox-test: environment
 
 .PHONY: environment
 environment:
-	pip install -r requirements_dev.txt
-	python setup.py develop
+	@pip install -r requirements_dev.txt
+	@pip install -r requirements.txt
+	@pip install numexpr==2.3
 
 .PHONY: install
 install:
-	python setup.py develop
+	@python setup.py develop
 
 .PHONY: pep8
 pep8:
