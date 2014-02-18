@@ -6,7 +6,7 @@ from datetime import date, datetime
 from decimal import Decimal
 from pandas import tslib
 
-from mining.utils import slugfy, fix_type
+from mining.utils import slugfy, fix_type, fix_render
 
 
 class df_slugfy_test(unittest.TestCase):
@@ -46,3 +46,10 @@ class fix_type_test(unittest.TestCase):
         d = Decimal(10.10)
         self.assertEquals(fix_type(d), float(10.1))
         self.assertEquals(type(fix_type(d)), float)
+
+
+class fix_render_test(unittest.TestCase):
+    def test_render_dict(self):
+        data = [{'h': 1, 'v': 'a'}, {'h': 1, 'v': 'a'}]
+        for d in data:
+            self.assertEquals(fix_render(d), {'h': 1, 'v': u'a'})
