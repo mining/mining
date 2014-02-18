@@ -186,7 +186,7 @@ class ConnectionHandler(tornado.web.RequestHandler):
 
         get_bucket = MyAdminBucket.get('connection').data or []
         get_bucket = [b for b in get_bucket if b['slug'] != data['slug']]
-        
+
         if get_bucket is None:
             get_bucket = []
         get_bucket.append(data)
