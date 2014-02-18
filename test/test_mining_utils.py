@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 
+from datetime import datetime
 from pandas import tslib
 
 from mining.utils import slugfy, fix_type
@@ -29,3 +30,8 @@ class fix_type_test(unittest.TestCase):
         t = tslib.Timestamp.now()
         self.assertEquals(fix_type(t), t.strftime("%Y-%m-%d %H:%M:%S"))
         self.assertEquals(type(fix_type(t)), str)
+
+    def test_datetime(self):
+        d = datetime.now()
+        self.assertEquals(fix_type(d), d.strftime("%Y-%m-%d"))
+        self.assertEquals(type(fix_type(d)), str)
