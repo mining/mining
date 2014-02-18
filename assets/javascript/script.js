@@ -91,7 +91,8 @@ angular.module('OpenMining', ["highcharts-ng"])
       delete $scope.filters[index];
     }
 
-    $scope.applyFilters = function(slug, categorie, type, title){
+    $scope.chartload = function(slug, categorie, type, title){
+
       var API_URL = "ws://"+ location.host +"/process/" + slug + ".ws?";
       for (var key in $scope.filters){
         API_URL += key + "=" + $scope.filters[key] + "&";
@@ -154,65 +155,11 @@ angular.module('OpenMining', ["highcharts-ng"])
       };
     };
 
+    $scope.applyFilters = function(slug, categorie, type, title){
+      $scope.chartload(slug, categorie, type, title);
+    };
+
     $scope.init = function(slug, categorie, type, title) {
-      var API_URL = "ws://"+ location.host +"/process/" + slug + ".ws?";
-      for (var key in $location.search()){
-        API_URL += key + "=" + $location.search()[key] + "&";
-      }
-
-      $scope.chartConfig[slug] = {
-        options: {
-          chart: {
-            type: type
-          }
-        },
-        series: [],
-        title: {
-          text: title
-        },
-        xAxis: {
-          currentMin: 0,
-          categories: []
-        }
-      };
-      var sock = new WebSocket(API_URL);
-      sock.onmessage = function (e) {
-        var data = JSON.parse(e.data);
-
-        if (data.type == 'columns') {
-          $scope.columns = data.data;
-        }else if (data.type == 'data') {
-          $scope.process.push(data.data);
-        }else if (data.type == 'categories') {
-          $scope.chartConfig[slug].xAxis.categories = data.data;
-        }else if (data.type == 'close') {
-          sock.close();
-        }
-
-        var loopseries = {};
-        for (var j in $scope.process) {
-          for (var c in $scope.process[j]) {
-            if (typeof loopseries[c] == 'undefined'){
-              loopseries[c] = {};
-              loopseries[c].data = [];
-            }
-            loopseries[c].name = c;
-            loopseries[c].data.push($scope.process[j][c]);
-          }
-        }
-
-        $scope.chartConfig[slug].series = [];
-        for (var ls in loopseries){
-          if (ls != categorie) {
-            $scope.chartConfig[slug].series.push(loopseries[ls]);
-          }
-        }
-
-        $timeout(function (){
-          $scope.$apply();
-        });
-
-        $scope.loading = false;
-      };
+      $scope.chartload(slug, categorie, type, title);
     };
   });
