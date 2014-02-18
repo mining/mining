@@ -21,10 +21,3 @@ MyClient = riak.RiakClient(protocol=RIAK_PROTOCOL,
 MyAdminBucket = MyClient.bucket(ADMIN_BUCKET_NAME)
 
 MyBucket = MyClient.bucket(MINING_BUCKET_NAME)
-
-
-def main():
-    pass
-
-if __name__ == '__main__':
-    main()
