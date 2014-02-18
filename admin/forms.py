@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import riak
-
 from wtforms.fields import TextField, TextAreaField
 from wtforms.fields import SelectField, SelectMultipleField
 from wtforms.validators import Required
