@@ -19,3 +19,6 @@ class fix_type_test(unittest.TestCase):
         self.assertEquals(fix_type("test".encode('latin1')), u"test")
         self.assertEqual(type(fix_type("test".encode("latin1"))), unicode)
 
+    def test_str(self):
+        self.assertEquals(fix_type("test"), u"test")
+        self.assertEqual(type(fix_type("test")), unicode)
