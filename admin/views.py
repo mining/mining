@@ -6,10 +6,11 @@ import tornado.ioloop
 import tornado.web
 import tornado.gen
 
+from settings import MINING_BUCKET_NAME
 from mining.utils import slugfy
 from admin.forms import ConnectionForm, CubeForm, ElementForm, DashboardForm
 from admin.forms import ObjGenerate
-from admin.models import MyAdminBucket
+from admin.models import MyAdminBucket, MyClient
 
 
 class AdminHandler(tornado.web.RequestHandler):
@@ -19,7 +20,8 @@ class AdminHandler(tornado.web.RequestHandler):
 
 class APIElementCubeHandler(tornado.web.RequestHandler):
     def get(self, slug):
-        data = MyAdminBucket.get(u'{}-columns'.format(slug)).data or '{}'
+        MyBucket = MyClient.bucket(MINING_BUCKET_NAME)
+        data = MyBucket.get(u'{}-columns'.format(slug)).data or '{}'
         columns = json.loads(data)
 
         self.write({'columns': columns})
