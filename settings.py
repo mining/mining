@@ -9,7 +9,6 @@ RIAK_HOST = '127.0.0.1'
 ADMIN_BUCKET_NAME = 'openminig-admin'
 MINING_BUCKET_NAME = 'openmining'
 
-
 #memcache settings
 MEMCACHE_CONNECTION = '127.0.0.1:11211'
 MEMCACHE_DEBUG = 0
