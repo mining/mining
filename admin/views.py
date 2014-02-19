@@ -6,6 +6,9 @@ import tornado.ioloop
 import tornado.web
 import tornado.gen
 
+from redis import Redis
+from rq import Queue
+
 from settings import MINING_BUCKET_NAME
 from mining.utils import slugfy
 from admin.forms import ConnectionForm, CubeForm, ElementForm, DashboardForm
@@ -154,6 +157,11 @@ class CubeHandler(tornado.web.RequestHandler):
         b1.add_index("slug_bin", data['slug'])
         b1.add_index("conection_bin", data['conection'])
         b1.store()
+
+        Queue(connection=Redis()).enqueue_call(
+            func='bin.mining.run',
+            args=(slug,)
+        )
 
         self.redirect('/admin/cube')
 
