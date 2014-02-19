@@ -36,7 +36,7 @@ def slugfy(text):
     return slug
 
 
-def df_generate(df, argument, str_field):
+def df_generate(df, value, str_field):
     s = str_field.split('__')
     field = s[1]
     try:
@@ -44,11 +44,10 @@ def df_generate(df, argument, str_field):
     except:
         operator = "is"
 
-    value = argument(str_field)
     try:
         t = s[3]
         if t == "int" and operator != "between":
-            value = int(argument(str_field))
+            value = int(value)
     except:
         t = "str"
 
