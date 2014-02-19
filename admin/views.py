@@ -10,7 +10,7 @@ from redis import Redis
 from rq import Queue
 
 from settings import MINING_BUCKET_NAME
-from mining.utils import slugfy
+from utils import slugfy
 from admin.forms import ConnectionForm, CubeForm, ElementForm, DashboardForm
 from admin.forms import ObjGenerate
 from admin.models import MyAdminBucket, MyClient
