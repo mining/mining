@@ -48,6 +48,6 @@ setup(name='mining',
       package_dir={'mining': 'mining'},
       install_requires=REQUIREMENTS,
       dependency_links=dependency_links,
-      scripts=['bin/mining'],
+      scripts=['bin/mining.py'],
       test_suite='nose.main',
       include_package_data=True)
