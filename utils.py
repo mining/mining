@@ -62,6 +62,8 @@ def df_generate(df, value, str_field):
     elif operator == "lte":
         return u"{} <= {}".format(field, value)
     elif operator == "is":
+        if t == 'int':
+            return u"{} == {}".format(field, value)
         return u"{} == '{}'".format(field, value)
     elif operator == "in":
         return u"{} in {}".format(field, [i for i in value.split(',')])
