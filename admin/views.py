@@ -146,6 +146,7 @@ class CubeHandler(tornado.web.RequestHandler):
         data = form.data
         data['slug'] = slugfy(data.get('name'))
         data['sql'] = data.get('sql').replace("\n", "").replace("\r", "")
+        data['sql'] = data.get('sql').replace("\t", " ")
 
         get_bucket = [b for b in MyAdminBucket.get('cube').data or []
                       if b['slug'] != data['slug']]
