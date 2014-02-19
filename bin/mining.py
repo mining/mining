@@ -77,6 +77,7 @@ def run(cube_slug=None):
         MyBucket.new(u'{}-sql'.format(slug), data=sql).store()
 
     print "## FINISH"
+    return True
 
 
 if __name__ == "__main__":
