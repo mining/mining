@@ -8,3 +8,5 @@ python-memcached
 wtforms-tornado
 python-dateutil
 nose
+redis==2.4.11
+rq==0.3.4

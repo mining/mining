@@ -14,7 +14,8 @@ Business Intelligence (BI) Application Server written in Python
 Requirements
 ------------
 
-* Riak
+* Riak (Data Warehouse)
+* Redis (Queue)
 * Memcache
 
 
@@ -33,7 +34,7 @@ Run
 
 .. code-block:: bash
 
-    python manage.py
+    python manage.py && rqworker
 
 
 Contribute
