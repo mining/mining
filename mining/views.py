@@ -11,7 +11,7 @@ from tornado.websocket import WebSocketHandler
 
 from pandas import DataFrame
 
-from .utils import df_generate
+from utils import df_generate
 from .models import MyBucket, MyAdminBucket
 
 
