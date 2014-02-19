@@ -68,7 +68,7 @@ def run(cube_slug=None):
 
         print "# SAVE COLUMNS ON RIAK: {}".format(slug)
         MyBucket.new(u'{}-columns'.format(slug),
-                    data=json.dumps([c for c in df.columns])).store()
+                     data=json.dumps([c for c in df.columns])).store()
 
         print "# SAVE CONNECT ON RIAK: {}".format(slug)
         MyBucket.new(u'{}-connect'.format(slug), data=c).store()
