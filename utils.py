@@ -46,7 +46,7 @@ def df_generate(df, value, str_field):
 
     try:
         t = s[3]
-        if t == "int" and operator != "between":
+        if t == "int" and operator not in ["in", "between"]:
             value = int(value)
     except:
         t = "str"
@@ -66,6 +66,9 @@ def df_generate(df, value, str_field):
             return u"{} == {}".format(field, value)
         return u"{} == '{}'".format(field, value)
     elif operator == "in":
+        if t == 'int':
+            return u"{} in {}".format(field,
+                                      [int(i) for i in value.split(',')])
         return u"{} in {}".format(field, [i for i in value.split(',')])
     elif operator == "notin":
         return u"{} not in {}".format([i for i in value.split(',')], field)
