@@ -66,7 +66,7 @@ class ProcessWebSocket(WebSocketHandler):
         df = DataFrame(MyBucket.get(slug).data, columns=fields)
         if len(filters) >= 1:
             for f in filters:
-                df = df.query(df_generate(df, self.get_argument, f))
+                df = df.query(df_generate(df, self.get_argument(f), f))
 
         ca = None
         for e in MyAdminBucket.get('element').data:
