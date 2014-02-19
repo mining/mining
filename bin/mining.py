@@ -10,7 +10,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.sql import text
 
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-from mining.utils import fix_render
+from utils import fix_render
 from settings import (RIAK_PROTOCOL, RIAK_HTTP_PORT,
                       RIAK_HOST, ADMIN_BUCKET_NAME,
                       MINING_BUCKET_NAME, MEMCACHE_CONNECTION, MEMCACHE_DEBUG)
@@ -25,9 +25,13 @@ MyAdminBucket = MyClient.bucket(ADMIN_BUCKET_NAME)
 MyBucket = MyClient.bucket(MINING_BUCKET_NAME)
 
 
-def run():
+def run(cube_slug=None):
     for cube in MyAdminBucket.get('cube').data:
         slug = cube['slug']
+
+        if cube_slug and cube_slug != slug:
+            continue
+
         sql = """SELECT * FROM ({}) AS CUBE;""".format(cube['sql'])
         for c in MyAdminBucket.get('connection').data:
             if c['slug'] == cube['conection']:
@@ -37,7 +41,6 @@ def run():
         mc = memcache.Client(['127.0.0.1:11211'], debug=0)
         mc.delete(str(slug))
         mc.delete(str('{}-columns'.format(slug)))
-
 
         MyBucket.new(slug, data='').store()
         MyBucket.new(u'{}-columns'.format(slug), data='').store()
