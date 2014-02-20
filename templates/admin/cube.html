@@ -2,13 +2,13 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-lg-12">
-      <h1><i class="fa fa-th"></i> Cube</h1>
-        <ol class="breadcrumb">
-          <li><a href="/"><i class="icon-dashboard"></i> Admin</a></li>
-          <li class="active">Cube</li>
-        </ol>
-    </div>
+  <div class="col-lg-12">
+    <h1><i class="fa fa-th"></i> Cube</h1>
+      <ol class="breadcrumb">
+        <li><a href="/"><i class="icon-dashboard"></i> Admin</a></li>
+        <li class="active">Cube</li>
+      </ol>
+  </div>
 
   <form action="/admin/cube{% if slug %}/{{slug}}{% end %}" method="post" accept-charset="utf-8">
     <table>
@@ -26,8 +26,8 @@
     {% for c in cube %}
     <li>
       <ul>
-        <li><a href="/{{c['slug']}}" target="_black">view</a></li>
         <li><a href="/admin/cube/{{c['slug']}}">edit</a></li>
+        <li><a href="/admin/delete/cube/{{c['slug']}}">delete</a></li>
         <li>{{c['name']}} - {{c['conection']}} - {{c['sql']}}</li>
       </ul>
     </li>
