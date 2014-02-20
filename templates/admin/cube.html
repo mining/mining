@@ -1,34 +1,37 @@
-{% extends "base.html" %}
-      {% block nav %}
-      <li ><a href="/admin/connection">Connection</a></li>
-      <li class="active"><a href="/admin/cube">Cube</a></li>
-      <li><a href="/admin/element">Element</a></li>
-      <li><a href="/admin/dashboard">Dashboard</a></li>
-      {% end %}
+{% extends "../index.html" %}
 
 {% block content %}
-<form action="/admin/cube{% if slug %}/{{slug}}{% end %}" method="post" accept-charset="utf-8">
-  <table>
-  {% for field in form %}
-  <tr>
-    <th>{% raw field.label %} {% if field.flags.required %}*{% end %}</th>
-    <td>{% raw field %}</td>
-  </tr>
-  {% end %}
-  </table>
-  <input type="submit" value="Save" />
-</form>
+<div class="row">
+    <div class="col-lg-12">
+      <h1><i class="fa fa-th"></i> Cube</h1>
+        <ol class="breadcrumb">
+          <li><a href="/"><i class="icon-dashboard"></i> Admin</a></li>
+          <li class="active">Cube</li>
+        </ol>
+    </div>
 
-<ul>
-  {% for c in cube %}
-  <li>
-    <ul>
-      <li><a href="/{{c['slug']}}" target="_black">view</a></li>
-      <li><a href="/admin/cube/{{c['slug']}}">edit</a></li>
-      <li>{{c['name']}} - {{c['conection']}} - {{c['sql']}}</li>
-    </ul>
-  </li>
-  {% end %}
-</ul>
+  <form action="/admin/cube{% if slug %}/{{slug}}{% end %}" method="post" accept-charset="utf-8">
+    <table>
+    {% for field in form %}
+    <tr>
+      <th>{% raw field.label %} {% if field.flags.required %}*{% end %}</th>
+      <td>{% raw field %}</td>
+    </tr>
+    {% end %}
+    </table>
+    <input class="btn btn-default" type="submit" value="Save" />
+  </form>
 
+  <ul>
+    {% for c in cube %}
+    <li>
+      <ul>
+        <li><a href="/{{c['slug']}}" target="_black">view</a></li>
+        <li><a href="/admin/cube/{{c['slug']}}">edit</a></li>
+        <li>{{c['name']}} - {{c['conection']}} - {{c['sql']}}</li>
+      </ul>
+    </li>
+    {% end %}
+  </ul>
+</div>
 {% end %}

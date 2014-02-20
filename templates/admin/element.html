@@ -1,43 +1,47 @@
-{% extends "base.html" %}
+{% extends "../index.html" %}
 
-      {% block nav %}
-      <li ><a href="/admin/connection">Connection</a></li>
-      <li><a href="/admin/cube">Cube</a></li>
-      <li class="active"><a href="/admin/element">Element</a></li>
-      <li><a href="/admin/dashboard">Dashboard</a></li>
-      {% end %}
 {% block content %}
-<form action="/admin/element{% if slug %}/{{slug}}{% end %}" method="post" accept-charset="utf-8">
-  <table>
-  {% for field in form %}
-  <tr>
-    <th>{% raw field.label %} {% if field.flags.required %}*{% end %}</th>
-    <td>{% raw field %}</td>
-  </tr>
-  {% end %}
-  <tr ng-controller="ElementCube" ng-show="chart">
-    <th>Fields description</th>
-    <td>
-      <select name="categories" ng-model="fields">
-        <option value=""></option>
-        <option value="{{!f}}" ng-repeat="f in _fields">{{!f}}</option>
-      </select>
-    </td>
-  </tr>
-  </table>
-  <pre>
-  </pre>
-  <input type="submit" value="Save" />
-</form>
+<div class="row">
+    <div class="col-lg-12">
+      <h1><i class="fa fa-sitemap"></i> Element</h1>
+        <ol class="breadcrumb">
+          <li><a href="/"><i class="icon-dashboard"></i> Admin</a></li>
+          <li class="active">Element</li>
+        </ol>
+    </div>
 
-<ul>
-  {% for c in element %}
-  <li>
-    <ul>
-      <li><a href="/admin/element/{{c['slug']}}">edit</a></li>
-      <li>{{c['name']}} - {{c['cube']}} - {{c['type']}}</li>
-    </ul>
-  </li>
-  {% end %}
-</ul>
+  <form action="/admin/element{% if slug %}/{{slug}}{% end %}" method="post" accept-charset="utf-8">
+    <table>
+    {% for field in form %}
+    <tr>
+      <th>{% raw field.label %} {% if field.flags.required %}*{% end %}</th>
+      <td>{% raw field %}</td>
+    </tr>
+    {% end %}
+    <tr ng-controller="ElementCube" ng-show="chart">
+      <th>Fields description</th>
+      <td>
+        <select name="categories" ng-model="fields">
+          <option value=""></option>
+          <option value="{{!f}}" ng-repeat="f in _fields">{{!f}}</option>
+        </select>
+      </td>
+    </tr>
+    </table>
+    <pre>
+    </pre>
+    <input class="btn btn-default" type="submit" value="Save" />
+  </form>
+
+  <ul>
+    {% for c in element %}
+    <li>
+      <ul>
+        <li><a href="/admin/element/{{c['slug']}}">edit</a></li>
+        <li>{{c['name']}} - {{c['cube']}} - {{c['type']}}</li>
+      </ul>
+    </li>
+    {% end %}
+  </ul>
+</div>
 {% end %}
