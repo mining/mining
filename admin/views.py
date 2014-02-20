@@ -80,6 +80,7 @@ class ElementHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, slug=None):
         form = ElementForm()
+        form.cube.choices = ObjGenerate('cube', 'slug', 'name')
 
         get_bucket = MyAdminBucket.get('element').data
         if get_bucket is None:
@@ -125,6 +126,7 @@ class CubeHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, slug=None):
         form = CubeForm()
+        form.conection.choices = ObjGenerate('connection', 'slug', 'name')
 
         get_bucket = MyAdminBucket.get('cube').data
         if get_bucket is None:
