@@ -25,6 +25,7 @@
     <ul>
       {% for c in connection %}
       <li><a href="/admin/connection/{{c['slug']}}">edit</a><br />
+      <li><a href="/admin/delete/connection/{{c['slug']}}">delete</a><br />
       {{c['name']}} - {{c['conection']}}</li>
       {% end %}
     </ul>
