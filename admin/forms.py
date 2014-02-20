@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from wtforms.fields import TextField, TextAreaField
 from wtforms.fields import SelectField, SelectMultipleField
+from wtforms.widgets.core import HTMLString, html_params, escape, text_type
 from wtforms.validators import Required
 from wtforms_tornado import Form
 
@@ -26,11 +27,20 @@ class ConnectionForm(Form):
                           description=u"mysql://user:pass@127.0.0.1/db")
 
 
+class TextSQL(object):
+    def __call__(self, field, **kwargs):
+        kwargs.setdefault('id', field.id)
+        return HTMLString('<textarea rows="10" cols="100" '
+                          '%s>%s</textarea>' % (
+                              html_params(name=field.name, **kwargs),
+                              escape(text_type(field._value()))))
+
+
 class CubeForm(Form):
     name = TextField(validators=[Required()])
     conection = SelectField(validators=[Required()],
                             choices=ObjGenerate('connection', 'slug', 'name'))
-    sql = TextAreaField(validators=[Required()])
+    sql = TextAreaField(validators=[Required()], widget=TextSQL())
 
 
 class ElementForm(Form):
