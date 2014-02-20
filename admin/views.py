@@ -16,11 +16,6 @@ from admin.forms import ObjGenerate
 from admin.models import MyAdminBucket, MyClient
 
 
-class AdminHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.render('admin/base.html')
-
-
 class APIElementCubeHandler(tornado.web.RequestHandler):
     def get(self, slug):
         MyBucket = MyClient.bucket(MINING_BUCKET_NAME)
