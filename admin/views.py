@@ -201,3 +201,13 @@ class ConnectionHandler(tornado.web.RequestHandler):
         b1.store()
 
         self.redirect('/admin/connection')
+
+
+class DeleteHandler(tornado.web.RequestHandler):
+    def get(self, bucket, slug):
+        get_bucket = MyAdminBucket.get(bucket).data or []
+        get_bucket = [b for b in get_bucket if b['slug'] != slug]
+
+        MyAdminBucket.new(bucket, data=get_bucket).store()
+
+        self.redirect('/admin/{}'.format(bucket))
