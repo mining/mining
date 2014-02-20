@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os
+import os, sys
 
 import tornado.ioloop
 import tornado.web
@@ -8,6 +8,9 @@ import tornado.autoreload
 
 from tornado.options import parse_command_line, define, options
 
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 define('port', default=8888)
 define('ip', default='127.0.0.1')
