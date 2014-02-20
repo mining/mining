@@ -1,10 +1,9 @@
 {% extends "index.html" %}
 {% block content %}
   <div class="col-lg-12">
-    <h1><i class="fa fa-dashboard"></i> {{dashboard[0]['name']}}</h1>
+    <h1><i class="fa fa-dashboard"></i> Dashboard</h1>
       <ol class="breadcrumb">
-        <li><a href="/"><i class="icon-dashboard"></i> Dashboard</a></li>
-        <li class="active">{{dashboard[0]['name']}}</li>
+        <li class="active"><a href="/"><i class="icon-dashboard"></i> Dashboard</a></li>
       </ol>
   </div>
   {% include "elements/index.html" %}
