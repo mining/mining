@@ -196,4 +196,11 @@ angular.module('OpenMining', ["highcharts-ng"])
     $scope.init = function(slug, categorie, type, title) {
       $scope.chartload(slug, categorie, type, title);
     };
+  })
+
+  .controller('LoadDashboard',
+  function($scope, $http, $timeout) {
+    $http.get("/api/dashboard.json").success(function(data){
+      $scope.dashboard_list = data;
+    })
   });
