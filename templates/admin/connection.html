@@ -1,23 +1,32 @@
-{% extends "base.html" %}
+{% extends "../index.html" %}
 
 {% block content %}
-<form action="/admin/connection{% if slug %}/{{slug}}{% end %}" method="post" accept-charset="utf-8">
-  <table>
-  {% for field in form %}
-  <tr>
-    <th>{% raw field.label %} {% if field.flags.required %}*{% end %}</th>
-    <td>{% raw field %}</td>
-  </tr>
-  {% end %}
-  </table>
-  <input type="submit" value="Salve" />
-</form>
+<div class="row">
+    <div class="col-lg-12">
+      <h1><i class="fa fa-globe"></i> Connection</h1>
+        <ol class="breadcrumb">
+          <li><a href="/"><i class="icon-dashboard"></i> Admin</a></li>
+          <li class="active">Connection</li>
+        </ol>
+    </div>
 
-<ul>
-  {% for c in connection %}
-  <li><a href="/admin/connection/{{c['slug']}}">edit</a><br />
-  {{c['name']}} - {{c['conection']}}</li>
-  {% end %}
-</ul>
+    <form action="/admin/connection{% if slug %}/{{slug}}{% end %}" method="post" accept-charset="utf-8">
+      <table>
+      {% for field in form %}
+      <tr>
+        <th>{% raw field.label %} {% if field.flags.required %}*{% end %}</th>
+        <td>{% raw field %}</td>
+      </tr>
+      {% end %}
+      </table>
+      <input type="submit" value="Salve" />
+    </form>
 
+    <ul>
+      {% for c in connection %}
+      <li><a href="/admin/connection/{{c['slug']}}">edit</a><br />
+      {{c['name']}} - {{c['conection']}}</li>
+      {% end %}
+    </ul>
+</div><!-- /.row -->
 {% end %}
