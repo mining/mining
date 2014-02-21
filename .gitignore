@@ -38,3 +38,4 @@ nosetests.xml
 .idea
 
 assets/bower
+assets/exports
