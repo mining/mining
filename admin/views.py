@@ -121,11 +121,9 @@ class CubeHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, slug=None):
         form = CubeForm()
-        form.conection.choices = ObjGenerate('connection', 'slug', 'name')
+        form.connection.choices = ObjGenerate('connection', 'slug', 'name')
 
-        get_bucket = MyAdminBucket.get('cube').data
-        if get_bucket is None:
-            get_bucket = []
+        get_bucket = MyAdminBucket.get('cube').data or []
 
         for bload in get_bucket:
             if bload['slug'] == slug:
@@ -153,7 +151,7 @@ class CubeHandler(tornado.web.RequestHandler):
 
         b1 = MyAdminBucket.new('cube', data=get_bucket)
         b1.add_index("slug_bin", data['slug'])
-        b1.add_index("conection_bin", data['conection'])
+        b1.add_index("connection_bin", data['connection'])
         b1.store()
 
         Queue(connection=Redis()).enqueue_call(
@@ -169,9 +167,7 @@ class ConnectionHandler(tornado.web.RequestHandler):
     def get(self, slug=None):
         form = ConnectionForm()
 
-        get_bucket = MyAdminBucket.get('connection').data
-        if get_bucket is None:
-            get_bucket = []
+        get_bucket = MyAdminBucket.get('connection').data or []
 
         for bload in get_bucket:
             if bload['slug'] == slug:

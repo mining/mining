@@ -35,8 +35,8 @@ def run(cube_slug=None):
 
             sql = """SELECT * FROM ({}) AS CUBE;""".format(cube['sql'])
             for c in MyAdminBucket.get('connection').data:
-                if c['slug'] == cube['conection']:
-                    connection = c['conection']
+                if c['slug'] == cube['connection']:
+                    connection = c['connection']
 
             print "\n# CLEAN MEMCACHE/RIAK: {}".format(slug)
             mc = memcache.Client(['127.0.0.1:11211'], debug=0)

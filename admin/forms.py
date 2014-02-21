@@ -23,8 +23,8 @@ def ObjGenerate(bucket, key, value=None, _type=tuple):
 
 class ConnectionForm(Form):
     name = TextField(validators=[Required()])
-    conection = TextField(validators=[Required()],
-                          description=u"mysql://user:pass@127.0.0.1/db")
+    connection = TextField(validators=[Required()],
+                           description=u"mysql://user:pass@127.0.0.1/db")
 
 
 class TextSQL(object):
@@ -38,8 +38,8 @@ class TextSQL(object):
 
 class CubeForm(Form):
     name = TextField(validators=[Required()])
-    conection = SelectField(validators=[Required()],
-                            choices=ObjGenerate('connection', 'slug', 'name'))
+    connection = SelectField(validators=[Required()],
+                             choices=ObjGenerate('connection', 'slug', 'name'))
     sql = TextAreaField(validators=[Required()], widget=TextSQL())
 
 
