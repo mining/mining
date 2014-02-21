@@ -202,8 +202,18 @@ class ConnectionHandler(tornado.web.RequestHandler):
 class DeleteHandler(tornado.web.RequestHandler):
     def get(self, bucket, slug):
         get_bucket = MyAdminBucket.get(bucket).data or []
+
+        value = None
+        for i in get_bucket:
+            if i.get(bucket) == slug:
+                value = i.get(bucket)
         get_bucket = [b for b in get_bucket if b['slug'] != slug]
 
         MyAdminBucket.new(bucket, data=get_bucket).store()
+
+        Queue(connection=Redis()).enqueue_call(
+            func='admin.tasks.related_delete',
+            args=(bucket, slug, value)
+        )
 
         self.redirect('/admin/{}'.format(bucket))
