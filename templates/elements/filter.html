@@ -3,9 +3,9 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#filter-collapse-{{d['slug']}}">
-                    <i class="fa fa-bar-chart-o"></i> Filters
-                </a>
+                <a data-toggle="collapse" data-parent="#accordion" href="#filter-collapse-{{d['slug']}}"><i class="fa fa-bar-chart-o"></i> Filters</a>
+                <a href="/process/{{d['cube']}}.xls"><i class="fa fa-arrow-circle-o-down"></i> Excel</a>
+                <a href="/process/{{d['cube']}}.csv"><i class="fa fa-arrow-circle-o-down"></i> CSV</a>
             </h3>
         </div>
         <div id="filter-collapse-{{d['slug']}}" class="panel-collapse collapse">
