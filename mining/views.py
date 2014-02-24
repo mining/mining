@@ -83,43 +83,6 @@ class ProcessWebSocket(WebSocketHandler):
         self.write_message({'type': 'close'})
 
 
-class ProcessHandler(tornado.web.RequestHandler):
-    @tornado.web.asynchronous
-    @tornado.gen.engine
-    def post(self, slug):
-        mc = memcache.Client(['127.0.0.1:11211'], debug=0)
-
-        columns = json.loads(MyBucket.get('{}-columns'.format(slug)).data)
-        fields = columns
-        if self.get_argument('fields', None):
-            fields = self.get_argument('fields').split(',')
-
-        filters = [i[0] for i in self.request.arguments.iteritems()
-                   if len(i[0].split('filter__')) > 1]
-
-        fields_json = json.dumps(fields)
-        filters_json = json.dumps({f: self.get_argument(f) for f in filters})
-        if mc.get(str(slug)) and\
-                mc.get('{}-columns'.format(slug)) == fields_json and\
-                mc.get('{}-fulters'.format(slug)) == filters_json:
-            self.write(mc.get(str(slug)))
-            self.finish()
-
-        mc.set('{}-columns'.format(slug), fields_json)
-        mc.set('{}-filters'.format(slug), filters_json)
-
-        df = DataFrame(MyBucket.get(slug).data, columns=fields)
-        if len(filters) >= 1:
-            for f in filters:
-                df = df.query(df_generate(df, self.get_argument, f))
-        convert = df.to_dict(outtype='records')
-
-        write = json.dumps({'columns': fields, 'json': convert})
-        mc.set(str(slug), write)
-        self.write(write)
-        self.finish()
-
-
 class ExportHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     @tornado.gen.engine
