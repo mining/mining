@@ -127,4 +127,5 @@ class ExportHandler(tornado.web.RequestHandler):
 
         ifile = open(file_name, "r")
         self.write(ifile.read())
+        ifile.close()
         self.finish()
