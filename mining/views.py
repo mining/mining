@@ -116,12 +116,15 @@ class ExportHandler(tornado.web.RequestHandler):
         file_name = 'assets/exports/openmining-{}.{}'.format(slug, ext)
         if ext == 'csv':
             df.to_csv(file_name)
+            contenttype = 'text/csv'
         else:
             df.to_excel(file_name)
-        ifile = open(file_name, "r")
+            contenttype = 'application/vnd.ms-excel'
 
-        self.set_header('Content-Type', 'text/csv')
-        self.set_header('ContenT-dISPOSITION', 'attachment; '
+        self.set_header('Content-Type', contenttype)
+        self.set_header('Content-disposition', 'attachment; '
                         'filename={}.{}'.format(slug, ext))
+
+        ifile = open(file_name, "r")
         self.write(ifile.read())
         self.finish()
