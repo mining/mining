@@ -50,9 +50,9 @@ class fix_type_test(unittest.TestCase):
 
 class fix_render_test(unittest.TestCase):
     def test_render_dict(self):
-        data = [{'h': 1, 'v': 'a'}, {'h': 1, 'v': 'a'}]
-        for d in data:
-            self.assertEquals(fix_render(d), {'h': 1, 'v': u'a'})
+        data = [{'h': 1, 'v': 'a'}, {'h': 2, 'v': 'b'}]
+        self.assertEquals(fix_render(data[0]), {'h': 1, 'v': u'a'})
+        self.assertEquals(fix_render(data[1]), {'h': 2, 'v': u'b'})
 
 
 class df_generate_test(unittest.TestCase):
