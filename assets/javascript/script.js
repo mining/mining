@@ -210,25 +210,43 @@ angular.module('OpenMining', ["highcharts-ng"])
       $scope.loading = true;
   })
 
-  .controller('ElementCube', function($scope, $http) {
+  .controller('ElementCube', function($scope, $http, $timeout) {
+    $scope.categorie = '';
 
-    angular.element(document.querySelector('#type')).bind('change', function(){
-      if (angular.element(document.querySelector('#type')).val() != "grid") {
-        $scope.chart = true;
-      } else {
-        $scope.chart = false;
-      }
-      $scope.$apply();
-    });
-
-    angular.element(document.querySelector('#cube')).bind('change', function(){
-      $scope.loading = true;
+    var loadFields = function(){
       $http({method: 'GET',
         url: "/admin/api/element/cube/" + angular.element(document.querySelector('#cube')).val()}).
         success(function(data, status, headers, config) {
           $scope._fields = data.columns;
-          $scope.loading = false;
+
+          if($scope.categorie != ""){
+            $timeout(function(){
+              $scope.$apply(function(){
+                $scope.fields = $scope.categorie;
+              });
+            });
+          }
         });
-      $scope.$apply();
+    };
+
+    var showCategories = function(){
+      if (angular.element(document.querySelector('#type')).val() != "grid") {
+        loadFields();
+        $scope.chart = true;
+      } else {
+        $scope.chart = false;
+      }
+    };
+
+    angular.element(document.querySelector('#type')).bind('change', function(){
+      showCategories();
     });
+
+    angular.element(document.querySelector('#cube')).bind('change', function(){
+      $scope.loading = true;
+      loadFields();
+      $scope.loading = false;
+    });
+
+    showCategories();
   });
