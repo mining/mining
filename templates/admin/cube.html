@@ -19,8 +19,9 @@
     </tr>
     {% end %}
     </table>
-    <input class="btn btn-primary" type="submit" value="Save" />
+    <input class="btn btn-primary" type="submit" value="Save" ng-show="loadcubequery" />
     <input class="btn btn-info" type="button" value="Query test" ng-click="testquery()" />
+    <div>{{!status}}</div>
   </form>
 
   <ul>
