@@ -210,6 +210,20 @@ angular.module('OpenMining', ["highcharts-ng"])
       $scope.loading = true;
   })
 
+  .controller('CubeQuery', function($scope, $http, $timeout) {
+    $scope.testquery = function(){
+      $scope.loadcubequery = false;
+      var sql = angular.element('#sql').val();
+      var connection = angular.element('#connection').val();
+
+      $http.post("/api/cubequery.json", {'sql': sql, 'connection': connection})
+      .success(function(a){
+        $scope.loadcubequery = true;
+        $scope.status = a.msg;
+      })
+    };
+  })
+
   .controller('ElementCube', function($scope, $http, $timeout) {
     $scope.categorie = '';
 
