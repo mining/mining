@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import json
 import memcache
+import gc
 
 import tornado.ioloop
 import tornado.web
@@ -68,6 +69,10 @@ class ProcessWebSocket(WebSocketHandler):
             for f in filters:
                 df = df.query(df_generate(df, self.get_argument(f), f))
 
+        # CLEAN MEMORY
+        del filters, fields, columns
+        gc.collect()
+
         ca = None
         for e in MyAdminBucket.get('element').data:
             if e['slug'] == slug:
@@ -79,8 +84,16 @@ class ProcessWebSocket(WebSocketHandler):
                 categories.append(i[ca])
             self.write_message({'type': 'data', 'data': i})
 
+        # CLEAN MEMORY
+        del df
+        gc.collect()
+
         self.write_message({'type': 'categories', 'data': categories})
         self.write_message({'type': 'close'})
+
+        # CLEAN MEMORY
+        del categories
+        gc.collect()
 
 
 class ExportHandler(tornado.web.RequestHandler):
