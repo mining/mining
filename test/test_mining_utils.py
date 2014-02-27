@@ -61,6 +61,8 @@ class df_generate_test(unittest.TestCase):
                              {'date': '2014-02-01', 'int': 2},
                              {'date': '2014-03-01', 'int': 3}])
 
+
+class df_generate_between_test(df_generate_test):
     def test_between_date(self):
         g = df_generate(self.df, "2014-01-01:2014-02-01",
                         "filter__date__between__date__:Y-:m-:d")
@@ -76,6 +78,9 @@ class df_generate_test(unittest.TestCase):
                           "'2014-01-24', '2014-01-25', '2014-01-26', "
                           "'2014-01-27', '2014-01-28', '2014-01-29', "
                           "'2014-01-30', '2014-01-31', '2014-02-01']")
+
+
+class df_generate_is_test(df_generate_test):
 
     def test_is(self):
         g = df_generate(self.df, "2014-01-01", "filter__date")
