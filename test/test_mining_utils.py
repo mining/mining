@@ -85,3 +85,6 @@ class df_generate_test(unittest.TestCase):
         g = df_generate(self.df, "1", "filter__int__is__int")
         self.assertEquals(g, u"int == 1")
 
+    def test_is_type_str(self):
+        g = df_generate(self.df, "1", "filter__int__is__str")
+        self.assertEquals(g, u"int == '1'")
