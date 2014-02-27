@@ -4,6 +4,7 @@ from os import sys, path
 import json
 import riak
 import memcache
+import gc
 
 from pandas import DataFrame
 from sqlalchemy import create_engine
@@ -26,6 +27,7 @@ MyBucket = MyClient.bucket(MINING_BUCKET_NAME)
 
 
 def run(cube_slug=None):
+    mc = memcache.Client(['127.0.0.1:11211'], debug=0)
     for cube in MyAdminBucket.get('cube').data:
         try:
             slug = cube['slug']
@@ -39,7 +41,6 @@ def run(cube_slug=None):
                     connection = c['connection']
 
             print "\n# CLEAN MEMCACHE/RIAK: {}".format(slug)
-            mc = memcache.Client(['127.0.0.1:11211'], debug=0)
             mc.delete(str(slug))
             mc.delete(str('{}-columns'.format(slug)))
 
@@ -74,8 +75,12 @@ def run(cube_slug=None):
             print "# SAVE CONNECT ON RIAK: {}".format(slug)
             MyBucket.new(u'{}-connect'.format(slug), data=c).store()
 
-            print "# SAVE SQL ON RIAK: {}\n".format(slug)
+            print "# SAVE SQL ON RIAK: {}".format(slug)
             MyBucket.new(u'{}-sql'.format(slug), data=sql).store()
+
+            print "# CLEAN MEMORY: {}\n".format(slug)
+            del pdict, df
+            gc.collect()
         except:
             pass
 
