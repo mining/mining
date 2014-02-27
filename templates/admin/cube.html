@@ -10,7 +10,7 @@
       </ol>
   </div>
 
-  <form action="/admin/cube{% if slug %}/{{slug}}{% end %}" method="post" accept-charset="utf-8">
+  <form action="/admin/cube{% if slug %}/{{slug}}{% end %}" method="post" accept-charset="utf-8" ng-controller="CubeQuery">
     <table>
     {% for field in form %}
     <tr>
@@ -20,6 +20,7 @@
     {% end %}
     </table>
     <input class="btn btn-primary" type="submit" value="Save" />
+    <input class="btn btn-info" type="button" value="Query test" ng-click="testquery()" />
   </form>
 
   <ul>
