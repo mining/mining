@@ -56,11 +56,13 @@ class fix_render_test(unittest.TestCase):
 
 
 class df_generate_test(unittest.TestCase):
+    def setUp(self):
+        self.df = DataFrame([{'date': '2014-01-01', 'int': 1},
+                             {'date': '2014-02-01', 'int': 2},
+                             {'date': '2014-03-01', 'int': 3}])
+
     def test_between_date(self):
-        df = DataFrame([{'date': '2014-01-01'},
-                        {'date': '2014-02-01'},
-                        {'date': '2014-03-01'}])
-        g = df_generate(df, "2014-01-01:2014-02-01",
+        g = df_generate(self.df, "2014-01-01:2014-02-01",
                         "filter__date__between__date__:Y-:m-:d")
 
         self.assertEquals(g, u"date in ['2014-01-01', '2014-01-02', "
@@ -74,3 +76,4 @@ class df_generate_test(unittest.TestCase):
                           "'2014-01-24', '2014-01-25', '2014-01-26', "
                           "'2014-01-27', '2014-01-28', '2014-01-29', "
                           "'2014-01-30', '2014-01-31', '2014-02-01']")
+
