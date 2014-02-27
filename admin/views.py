@@ -81,14 +81,17 @@ class ElementHandler(tornado.web.RequestHandler):
         if get_bucket is None:
             get_bucket = []
 
+        categorie = None
         for bload in get_bucket:
             if bload['slug'] == slug:
                 for k in form._fields:
                     getattr(form, k).data = bload[k]
+                categorie = bload.get('categories')
 
         self.render('admin/element.html',
                     form=form,
                     element=get_bucket,
+                    categorie=categorie,
                     slug=slug)
 
     def post(self, slug=None):
