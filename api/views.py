@@ -45,7 +45,11 @@ class CubeQuery(tornado.web.RequestHandler):
 
         e = create_engine(connection)
         connection = e.connect()
-        resoverall = connection.execute(text(sql))
+        try:
+            resoverall = connection.execute(text(sql))
+        except:
+            self.write({'sql': '', 'msg': 'Error!'})
+            self.finish()
 
         df = DataFrame(resoverall.fetchall())
         if df.empty:
@@ -53,5 +57,5 @@ class CubeQuery(tornado.web.RequestHandler):
         df.columns = resoverall.keys()
         df.head()
 
-        self.write(df.to_json(orient='records'))
+        self.write({'sql': df.to_json(orient='records'), 'msg': 'Success!'})
         self.finish()
