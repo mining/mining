@@ -218,7 +218,11 @@ angular.module('OpenMining', ["highcharts-ng"])
 
       $http.post("/api/cubequery.json", {'sql': sql, 'connection': connection})
       .success(function(a){
-        $scope.loadcubequery = true;
+        if(a.msg != "Error!"){
+          $scope.loadcubequery = true;
+        }else{
+          $scope.loadcubequery = false;
+        };
         $scope.status = a.msg;
       })
     };
