@@ -47,7 +47,8 @@ class ElementForm(Form):
     ELEMENT_TYPE = ((u'', u''),
                     (u'grid', u'Grid'),
                     (u'chart_line', u'Chart line'),
-                    (u"chart_bar", u"Chart bar"))
+                    (u"chart_bar", u"Chart bar"),
+                    (u"chart_pie", u"Chart pie"))
 
     name = TextField(validators=[Required()])
     type = SelectField(choices=ELEMENT_TYPE, validators=[Required()])
