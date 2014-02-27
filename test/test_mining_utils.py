@@ -77,3 +77,7 @@ class df_generate_test(unittest.TestCase):
                           "'2014-01-27', '2014-01-28', '2014-01-29', "
                           "'2014-01-30', '2014-01-31', '2014-02-01']")
 
+    def test_is(self):
+        g = df_generate(self.df, "2014-01-01", "filter__date")
+        self.assertEquals(g, u"date == '2014-01-01'")
+
