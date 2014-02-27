@@ -18,7 +18,7 @@
       <td>{% raw field %}</td>
     </tr>
     {% end %}
-    <tr ng-controller="ElementCube" ng-show="chart">
+    <tr ng-controller="ElementCube" ng-init="categorie='{{categorie}}'" ng-show="chart">
       <th>Fields description</th>
       <td>
         <select name="categories" ng-model="fields">
