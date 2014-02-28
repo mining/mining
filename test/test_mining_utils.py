@@ -93,3 +93,11 @@ class df_generate_is_test(df_generate_test):
     def test_is_type_str(self):
         g = df_generate(self.df, "1", "filter__int__is__str")
         self.assertEquals(g, u"int == '1'")
+
+
+class df_generate_gte_test(df_generate_test):
+
+    def test_gte(self):
+        g = df_generate(self.df, "1", "filter__int__gte")
+        self.assertEquals(g, u"int >= 1")
+
