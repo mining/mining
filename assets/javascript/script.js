@@ -213,6 +213,7 @@ angular.module('OpenMining', ["highcharts-ng"])
   .controller('CubeQuery', function($scope, $http, $timeout) {
     $scope.testquery = function(){
       $scope.loadcubequery = false;
+      $scope.ajaxload = true;
       var sql = angular.element('#sql').val();
       var connection = angular.element('#connection').val();
 
@@ -224,6 +225,7 @@ angular.module('OpenMining', ["highcharts-ng"])
           $scope.loadcubequery = false;
         };
         $scope.status = a.msg;
+        $scope.ajaxload = false;
       })
     };
   })
