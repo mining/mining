@@ -3,6 +3,7 @@ python:
   - "2.7"
 services:
   - riak
+  - redis-server
   - memcached
 install: make environment
 script: make test
