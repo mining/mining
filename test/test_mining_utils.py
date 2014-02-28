@@ -80,8 +80,17 @@ class df_generate_between_test(df_generate_test):
                           "'2014-01-30', '2014-01-31', '2014-02-01']")
 
 
-class df_generate_is_test(df_generate_test):
+class df_generate_in_test(df_generate_test):
+    def test_in_str(self):
+        g = df_generate(self.df, "1,2,3", "filter__int__in")
+        self.assertEquals(g, u"int in ['1', '2', '3']")
 
+    def test_in_int(self):
+        g = df_generate(self.df, "1,2,3", "filter__int__in__int")
+        self.assertEquals(g, u"int in [1, 2, 3]")
+
+
+class df_generate_is_test(df_generate_test):
     def test_is(self):
         g = df_generate(self.df, "2014-01-01", "filter__date")
         self.assertEquals(g, u"date == '2014-01-01'")
@@ -96,14 +105,12 @@ class df_generate_is_test(df_generate_test):
 
 
 class df_generate_gte_test(df_generate_test):
-
     def test_gte(self):
         g = df_generate(self.df, "1", "filter__int__gte")
         self.assertEquals(g, u"int >= 1")
 
 
 class df_generate_lte_test(df_generate_test):
-
     def test_lte(self):
         g = df_generate(self.df, "1", "filter__int__lte")
         self.assertEquals(g, u"int <= 1")
