@@ -124,7 +124,7 @@ class ExportHandler(tornado.web.RequestHandler):
         df = DataFrame(MyBucket.get(slug).data, columns=fields)
         if len(filters) >= 1:
             for f in filters:
-                df = df.query(df_generate(df, self.get_argument, f))
+                df = df.query(df_generate(df, self.get_argument(f), f))
 
         file_name = 'assets/exports/openmining-{}.{}'.format(slug, ext)
         if ext == 'csv':

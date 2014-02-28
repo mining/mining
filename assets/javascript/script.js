@@ -37,12 +37,11 @@ angular.module('OpenMining', ["highcharts-ng"])
   })
 
   .factory('LineChart', function($http){
-    var return_val = {
+    return {
       'getConfig':function(URL){
         return $http.post(URL)
       }
     };
-    return return_val;
   })
 
   .controller('Process',
@@ -59,12 +58,20 @@ angular.module('OpenMining', ["highcharts-ng"])
     $scope.addFilter = function(){
       var chave = 'filter__'+$scope.filter_field+"__"+$scope.filter_operator.key+'__'+$scope.filter_type.key;
       if ($scope.filter_format)
-        chave = chave + '__'+$scope.filter_format
+        chave = chave + '__'+$scope.filter_format;
       $scope.filters[chave] = $scope.filter_value;
     };
     $scope.removeFilter = function(index){
       delete $scope.filters[index];
-    }
+    };
+
+    $scope.export = function(type, link){
+      var url = link+'.'+type+'?';
+      for (var key in $scope.filters){
+        url += key + "=" + $scope.filters[key] + "&";
+      }
+      window.open(url);
+    };
 
     $scope.gridload = function(slug) {
       $scope.process = [];
@@ -76,7 +83,7 @@ angular.module('OpenMining', ["highcharts-ng"])
 
       var sock = new WebSocket(API_URL);
       sock.onmessage = function (e) {
-        var data = JSON.parse(e.data);
+        var data = JSON.parse(e.data.replace(/NaN/g,'null'));
 
         if (data.type == 'columns') {
           $scope.columns = data.data;
@@ -119,12 +126,12 @@ angular.module('OpenMining', ["highcharts-ng"])
     $scope.addFilter = function(){
       var chave = 'filter__'+$scope.filter_field+"__"+$scope.filter_operator.key+'__'+$scope.filter_type.key;
       if ($scope.filter_format)
-        chave = chave + '__'+$scope.filter_format
+        chave = chave + '__'+$scope.filter_format;
       $scope.filters[chave] = $scope.filter_value;
     };
     $scope.removeFilter = function(index){
       delete $scope.filters[index];
-    }
+    };
 
     $scope.chartload = function(slug, categorie, type, title){
 
@@ -199,14 +206,14 @@ angular.module('OpenMining', ["highcharts-ng"])
   })
 
   .controller('LoadDashboard',
-  function($scope, $http, $timeout) {
+  function($scope, $http) {
     $http.get("/api/dashboard.json").success(function(data){
       $scope.dashboard_list = data;
     })
   })
 
   .controller('Ctrl',
-    function($scope, $http) {
+    function($scope) {
       $scope.loading = true;
   })
 
@@ -236,7 +243,7 @@ angular.module('OpenMining', ["highcharts-ng"])
     var loadFields = function(){
       $http({method: 'GET',
         url: "/admin/api/element/cube/" + angular.element(document.querySelector('#cube')).val()}).
-        success(function(data, status, headers, config) {
+        success(function(data) {
           $scope._fields = data.columns;
 
           if($scope.categorie != ""){
