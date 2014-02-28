@@ -57,9 +57,10 @@ class fix_render_test(unittest.TestCase):
 
 class df_generate_test(unittest.TestCase):
     def setUp(self):
-        self.df = DataFrame([{'date': '2014-01-01', 'int': 1},
-                             {'date': '2014-02-01', 'int': 2},
-                             {'date': '2014-03-01', 'int': 3}])
+        self.df = DataFrame([
+            {'date': '2014-01-01', 'int': 1, 'str': 'Angular'},
+            {'date': '2014-02-01', 'int': 2, 'str': 'Credit'},
+            {'date': '2014-03-01', 'int': 3, 'str': 'Diamon'}])
 
 
 class df_generate_between_test(df_generate_test):
@@ -104,6 +105,10 @@ class df_generate_is_test(df_generate_test):
     def test_is(self):
         g = df_generate(self.df, "2014-01-01", "filter__date")
         self.assertEquals(g, u"date == '2014-01-01'")
+
+    def test_is_type_str_text(self):
+        g = df_generate(self.df, "Diamon", "filter__nivel__is__str")
+        self.assertEquals(g, u"nivel == 'Diamon'")
 
     def test_is_type_int(self):
         g = df_generate(self.df, "1", "filter__int__is__int")
