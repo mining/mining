@@ -101,3 +101,9 @@ class df_generate_gte_test(df_generate_test):
         g = df_generate(self.df, "1", "filter__int__gte")
         self.assertEquals(g, u"int >= 1")
 
+
+class df_generate_lte_test(df_generate_test):
+
+    def test_lte(self):
+        g = df_generate(self.df, "1", "filter__int__lte")
+        self.assertEquals(g, u"int <= 1")
