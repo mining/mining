@@ -10,7 +10,7 @@
       </ol>
   </div>
 
-  <form action="/admin/cube{% if slug %}/{{slug}}{% end %}" method="post" accept-charset="utf-8" ng-controller="CubeQuery">
+  <form action="/admin/cube{% if slug %}/{{slug}}{% end %}" method="post" accept-charset="utf-8" ng-controller="CubeQuery" ng-init="force_save=true">
     <table>
     {% for field in form %}
     <tr>
@@ -19,7 +19,9 @@
     </tr>
     {% end %}
     </table>
-    <input class="btn btn-primary" type="submit" value="Save" ng-show="loadcubequery" />
+      {{! force_validation }}
+    <label><input type="checkbox" ng-model="force_save" checked /> Force save</label>
+    <input class="btn btn-primary" type="submit" value="Save" ng-show="force_save||loadcubequery" />
     <input class="btn btn-info" type="button" value="Query test" ng-disabled="ajaxload" ng-click="testquery()" />
     <img src="/assets/image/load.gif" ng-show="ajaxload">
     <div>{{!status}}</div>
