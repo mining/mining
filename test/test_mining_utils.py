@@ -90,6 +90,16 @@ class df_generate_in_test(df_generate_test):
         self.assertEquals(g, u"int in [1, 2, 3]")
 
 
+class df_generate_notin_test(df_generate_test):
+    def test_notin_str(self):
+        g = df_generate(self.df, "1,2,3", "filter__int__notin")
+        self.assertEquals(g, u"['1', '2', '3'] not in int")
+
+    def test_notin_int(self):
+        g = df_generate(self.df, "1,2,3", "filter__int__notin__int")
+        self.assertEquals(g, u"[1, 2, 3] not in int")
+
+
 class df_generate_is_test(df_generate_test):
     def test_is(self):
         g = df_generate(self.df, "2014-01-01", "filter__date")
