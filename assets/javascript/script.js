@@ -65,6 +65,14 @@ angular.module('OpenMining', ["highcharts-ng"])
       delete $scope.filters[index];
     };
 
+    $scope.export = function(type, link){
+      var url = link+'.'+type+'?';
+      for (var key in $scope.filters){
+        url += key + "=" + $scope.filters[key] + "&";
+      }
+      window.open(url);
+    };
+
     $scope.gridload = function(slug) {
       $scope.process = [];
 

@@ -86,6 +86,10 @@ class df_generate_in_test(df_generate_test):
         g = df_generate(self.df, "1,2,3", "filter__int__in")
         self.assertEquals(g, u"int in ['1', '2', '3']")
 
+    def test_in_str_text(self):
+        g = df_generate(self.df, "Diamond,Angular", "filter__str__in__str")
+        self.assertEquals(g, u"str in ['Diamond', 'Angular']")
+
     def test_in_int(self):
         g = df_generate(self.df, "1,2,3", "filter__int__in__int")
         self.assertEquals(g, u"int in [1, 2, 3]")
