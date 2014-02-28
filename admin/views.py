@@ -102,8 +102,7 @@ class ElementHandler(tornado.web.RequestHandler):
 
         data = form.data
         data['slug'] = slugfy(data.get('name'))
-        data['categories'] = self.request.arguments.get('categories',
-                                                        [None])[0]
+        data['categories'] = self.request.arguments.get('categories')[0]
 
         get_bucket = [b for b in MyAdminBucket.get('element').data or []
                       if b['slug'] != data['slug']]
