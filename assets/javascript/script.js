@@ -214,6 +214,7 @@ angular.module('OpenMining', ["highcharts-ng"])
     $scope.testquery = function(){
       $scope.loadcubequery = false;
       $scope.ajaxload = true;
+      $scope.force_save=true;
       var sql = angular.element('#sql').val();
       var connection = angular.element('#connection').val();
 
