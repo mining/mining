@@ -50,17 +50,21 @@ class fix_type_test(unittest.TestCase):
 
 class fix_render_test(unittest.TestCase):
     def test_render_dict(self):
-        data = [{'h': 1, 'v': 'a'}, {'h': 1, 'v': 'a'}]
-        for d in data:
-            self.assertEquals(fix_render(d), {'h': 1, 'v': u'a'})
+        data = [{'h': 1, 'v': 'a'}, {'h': 2, 'v': 'b'}]
+        self.assertEquals(fix_render(data[0]), {'h': 1, 'v': u'a'})
+        self.assertEquals(fix_render(data[1]), {'h': 2, 'v': u'b'})
 
 
 class df_generate_test(unittest.TestCase):
+    def setUp(self):
+        self.df = DataFrame([{'date': '2014-01-01', 'int': 1},
+                             {'date': '2014-02-01', 'int': 2},
+                             {'date': '2014-03-01', 'int': 3}])
+
+
+class df_generate_between_test(df_generate_test):
     def test_between_date(self):
-        df = DataFrame([{'date': '2014-01-01'},
-                        {'date': '2014-02-01'},
-                        {'date': '2014-03-01'}])
-        g = df_generate(df, "2014-01-01:2014-02-01",
+        g = df_generate(self.df, "2014-01-01:2014-02-01",
                         "filter__date__between__date__:Y-:m-:d")
 
         self.assertEquals(g, u"date in ['2014-01-01', '2014-01-02', "
@@ -74,3 +78,49 @@ class df_generate_test(unittest.TestCase):
                           "'2014-01-24', '2014-01-25', '2014-01-26', "
                           "'2014-01-27', '2014-01-28', '2014-01-29', "
                           "'2014-01-30', '2014-01-31', '2014-02-01']")
+
+
+class df_generate_in_test(df_generate_test):
+    def test_in_str(self):
+        g = df_generate(self.df, "1,2,3", "filter__int__in")
+        self.assertEquals(g, u"int in ['1', '2', '3']")
+
+    def test_in_int(self):
+        g = df_generate(self.df, "1,2,3", "filter__int__in__int")
+        self.assertEquals(g, u"int in [1, 2, 3]")
+
+
+class df_generate_notin_test(df_generate_test):
+    def test_notin_str(self):
+        g = df_generate(self.df, "1,2,3", "filter__int__notin")
+        self.assertEquals(g, u"['1', '2', '3'] not in int")
+
+    def test_notin_int(self):
+        g = df_generate(self.df, "1,2,3", "filter__int__notin__int")
+        self.assertEquals(g, u"[1, 2, 3] not in int")
+
+
+class df_generate_is_test(df_generate_test):
+    def test_is(self):
+        g = df_generate(self.df, "2014-01-01", "filter__date")
+        self.assertEquals(g, u"date == '2014-01-01'")
+
+    def test_is_type_int(self):
+        g = df_generate(self.df, "1", "filter__int__is__int")
+        self.assertEquals(g, u"int == 1")
+
+    def test_is_type_str(self):
+        g = df_generate(self.df, "1", "filter__int__is__str")
+        self.assertEquals(g, u"int == '1'")
+
+
+class df_generate_gte_test(df_generate_test):
+    def test_gte(self):
+        g = df_generate(self.df, "1", "filter__int__gte")
+        self.assertEquals(g, u"int >= 1")
+
+
+class df_generate_lte_test(df_generate_test):
+    def test_lte(self):
+        g = df_generate(self.df, "1", "filter__int__lte")
+        self.assertEquals(g, u"int <= 1")
