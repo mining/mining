@@ -64,7 +64,22 @@ class ProcessWebSocket(WebSocketHandler):
         filters = [i[0] for i in self.request.arguments.iteritems()
                    if len(i[0].split('filter__')) > 1]
 
-        df = DataFrame(MyBucket.get(slug).data, columns=fields)
+        ca = None
+        for e in MyAdminBucket.get('element').data:
+            if e['slug'] == slug:
+                ca = e['categories']
+
+        page = int(self.get_argument('page', 1))
+        page_start = 0
+        page_end = 50
+        if page >= 2:
+            page_end = 50 * page
+            page_start = page_end - 50
+
+        data = MyBucket.get(slug).data
+        data = data[page_start:page_end]
+
+        df = DataFrame(data, columns=fields)
         if len(filters) >= 1:
             for f in filters:
                 df = df.query(df_generate(df, self.get_argument(f), f))
@@ -72,11 +87,6 @@ class ProcessWebSocket(WebSocketHandler):
         # CLEAN MEMORY
         del filters, fields, columns
         gc.collect()
-
-        ca = None
-        for e in MyAdminBucket.get('element').data:
-            if e['slug'] == slug:
-                ca = e['categories']
 
         categories = []
         for i in df.to_dict(outtype='records'):
