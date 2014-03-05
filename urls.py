@@ -10,6 +10,8 @@ from api.urls import INCLUDE_URLS as API_URLS
 
 
 CORE = [(r'/assets/(.*)', tornado.web.StaticFileHandler,
-         {'path': "{}/{}".format(options.PROJECT_PATH, "assets")})]
+         {'path': "{}/{}".format(options.PROJECT_PATH, "assets")}),
+        (r'/views/(.*)', tornado.web.StaticFileHandler,
+         {'path': "{}/{}".format(options.PROJECT_PATH, "assets/app/views")}),]
 
 URLS = CORE + ADMIN_URLS + MINING_URLS + API_URLS
