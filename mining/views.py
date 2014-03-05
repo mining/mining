@@ -77,7 +77,7 @@ class ProcessWebSocket(WebSocketHandler):
             page_start = page_end - 50
 
         data = MyBucket.get(slug).data
-        self.write_message({'type': 'page_len', 'data': len(data)})
+        self.write_message({'type': 'max_page', 'data': len(data)})
         data = data[page_start:page_end]
 
         df = DataFrame(data, columns=fields)
