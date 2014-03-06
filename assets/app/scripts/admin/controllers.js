@@ -1,18 +1,21 @@
 'use strict';
 admin
-  .controller('ConnectionCtrl', ['$scope', 'Connection', 'getConnections',
-    function($scope, Connection, getConnections){
-      $scope.connections = [];
+  .controller('ConnectionCtrl', ['$scope', 'Connection',
+    function($scope, Connection){
+      $scope.connections = Connection.query();
       $scope.connection = {
         'slug':'',
         'name': '',
         'connection': ''
       };
       $scope.selectConnection = function(c){
-
+        $scope.connection = c;
       };
       $scope.deleteConnection = function(c){
 
+      };
+      $scope.save = function(){
+        $scope.connection.$save();
       };
     }])
   .controller('CubeQuery', function($scope, $http, $timeout) {

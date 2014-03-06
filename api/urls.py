@@ -7,7 +7,7 @@ INCLUDE_URLS = [
     (r"/api/dashboard/", Dashboard),
     (r"/api/dashboard/(?P<slug>[\w-]+)", Dashboard),
 
-    (r"/api/connection/", Connection),
+    (r"/api/connection", Connection),
     (r"/api/connection/(?P<slug>[\w-]+)", Connection),
 
     (r"/api/cube/", Cube),

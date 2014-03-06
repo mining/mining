@@ -16,11 +16,6 @@ var miningApp = angular.module('miningApp', [
         templateUrl: 'views/home.html',
         controller: 'HomeCtrl'
       })
-      .when('/admin/connection', {
-        templateUrl: 'views/connection.html',
-        controller: 'ConnectionCtrl',
-        resolvers: admin['resolvers']['connection']
-      })
       .otherwise({
         redirectTo: '/'
       });

@@ -2,7 +2,9 @@
 admin
   .factory('Connection', ['$resource',
     function($resource){
-      return $resource('/api/connection/:slug', {'slug':''}, {});
+      return $resource('/api/connection/:slug', {'slug':''},{
+        'update':{method:'PUT'}
+      });
     }])
   .factory('Element', ['$resource',
     function($resource){

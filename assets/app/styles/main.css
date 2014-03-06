@@ -85,3 +85,7 @@ body {
         border-bottom: 0;
     }
 }
+
+a {
+    cursor: pointer;
+}
