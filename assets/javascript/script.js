@@ -233,7 +233,7 @@ angular.module('OpenMining', ["highcharts-ng"])
 
   .controller('LoadDashboard',
   function($scope, $http) {
-    $http.get("/api/dashboard.json").success(function(data){
+    $http.get("/api/dashboard/").success(function(data){
       $scope.dashboard_list = data;
     })
   })
