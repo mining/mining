@@ -76,21 +76,18 @@ class ProcessWebSocket(WebSocketHandler):
             page_end = 50 * page
             page_start = page_end - 50
 
-        data = MyBucket.get(slug).data
-        self.write_message({'type': 'max_page', 'data': len(data)})
-        data = data[page_start:page_end]
-
-        df = DataFrame(data, columns=fields)
+        df = DataFrame(MyBucket.get(slug).data, columns=fields)
         if len(filters) >= 1:
             for f in filters:
                 df = df.query(df_generate(df, self.get_argument(f), f))
+        self.write_message({'type': 'max_page', 'data': len(df)})
 
         # CLEAN MEMORY
-        del filters, fields, columns, data
+        del filters, fields, columns
         gc.collect()
 
         categories = []
-        for i in df.to_dict(outtype='records'):
+        for i in df.to_dict(outtype='records')[page_start:page_end]:
             if ca:
                 categories.append(i[ca])
             self.write_message({'type': 'data', 'data': i})

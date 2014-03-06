@@ -35,7 +35,7 @@ class ApiHandler(tornado.web.RequestHandler):
         self.finish()
 
     def post(self):
-        data = {k: self.get_argument(k) for k in self.request.arguments}
+        data = json.loads(self.request.body)
         data['slug'] = slugfy(data.get('name'))
 
         bucket = [b for b in self.bucket.data or []

@@ -8,6 +8,8 @@ import tornado.autoreload
 
 from tornado.options import parse_command_line, define, options
 
+from gevent import monkey
+
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -28,6 +30,7 @@ settings = dict(
 def main():
     from urls import URLS
 
+    monkey.patch_all()
     application = tornado.web.Application(URLS, **settings)
 
     print "openmining.io server starting..."
