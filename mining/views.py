@@ -86,7 +86,7 @@ class ProcessWebSocket(WebSocketHandler):
                 df = df.query(df_generate(df, self.get_argument(f), f))
 
         # CLEAN MEMORY
-        del filters, fields, columns
+        del filters, fields, columns, data
         gc.collect()
 
         categories = []
