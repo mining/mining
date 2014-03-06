@@ -48,6 +48,25 @@ angular.module('OpenMining', ["highcharts-ng"])
   function($scope, $http, $location, $timeout) {
     $scope.loading = true;
     $scope.filters = {};
+    $scope.current_page = 1;
+    $scope.total_pages = undefined;
+    $scope.pages = [];
+
+    $scope.getPages = function(){
+      $scope.pages = [];
+      for(var x = $scope.current_page-3; x<=$scope.current_page+3; x++){
+        if(x>0 && x<=$scope.total_pages)
+          $scope.pages.push(x);
+      }
+      return $scope.pages;
+    };
+
+    $scope.selectPage = function(slug, p){
+      if(p!=$scope.current_page){
+        $scope.current_page = p;
+        $scope.gridload(slug);
+      }
+    };
 
     $scope.$watch('filter_type', function(newVal){
       if(getNestedProp(newVal, 'key', '') == 'date')
@@ -55,6 +74,7 @@ angular.module('OpenMining', ["highcharts-ng"])
       else
         $scope.filter_format = "";
     });
+
     $scope.addFilter = function(){
       var chave = 'filter__'+$scope.filter_field+"__"+$scope.filter_operator.key+'__'+$scope.filter_type.key;
       if ($scope.filter_format)
@@ -80,6 +100,7 @@ angular.module('OpenMining', ["highcharts-ng"])
       for (var key in $scope.filters){
         API_URL += key + "=" + $scope.filters[key] + "&";
       }
+      API_URL += 'page=' + $scope.current_page + "&";
 
       var sock = new WebSocket(API_URL);
       sock.onmessage = function (e) {
@@ -87,6 +108,8 @@ angular.module('OpenMining', ["highcharts-ng"])
 
         if (data.type == 'columns') {
           $scope.columns = data.data;
+        }else if (data.type == 'max_page') {
+          $scope.total_pages = Math.ceil(data.data/50);
         }else if (data.type == 'data') {
           $scope.process.push(data.data);
         }else if (data.type == 'close') {
@@ -102,10 +125,13 @@ angular.module('OpenMining', ["highcharts-ng"])
     };
 
     $scope.applyFilters = function(slug){
+      $scope.current_page = 1;
+      $scope.total_pages = undefined;
+      $scope.pages = [];
       $scope.gridload(slug);
     };
     $scope.init = function(slug) {
-      $scope.gridload(slug)
+      $scope.gridload(slug);
     };
   })
 
@@ -213,8 +239,8 @@ angular.module('OpenMining', ["highcharts-ng"])
   })
 
   .controller('Ctrl',
-    function($scope) {
-      $scope.loading = true;
+  function($scope) {
+    $scope.loading = true;
   })
 
   .controller('CubeQuery', function($scope, $http, $timeout) {
@@ -226,15 +252,15 @@ angular.module('OpenMining', ["highcharts-ng"])
       var connection = angular.element('#connection').val();
 
       $http.post("/api/cubequery.json", {'sql': sql, 'connection': connection})
-      .success(function(a){
-        if(a.msg != "Error!"){
-          $scope.loadcubequery = true;
-        }else{
-          $scope.loadcubequery = false;
-        };
-        $scope.status = a.msg;
-        $scope.ajaxload = false;
-      })
+        .success(function(a){
+          if(a.msg != "Error!"){
+            $scope.loadcubequery = true;
+          }else{
+            $scope.loadcubequery = false;
+          };
+          $scope.status = a.msg;
+          $scope.ajaxload = false;
+        })
     };
   })
 
