@@ -15,4 +15,5 @@ def related_delete(bucket, slug, value):
 
         MyAdminBucket.new(bucket, data=get_bucket).store()
 
+    MyAdminBucket.clear_properties()
     return True
