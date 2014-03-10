@@ -11,9 +11,9 @@ from pandas import tslib, date_range
 def fix_type(value):
     if type(value) is str:
         try:
-            return unicode(value)
+            return value.decode('utf-8')
         except UnicodeDecodeError:
-            return unicode(value.decode('latin1'))
+            return value.decode('latin1')
     elif type(value) is tslib.Timestamp:
         return value.strftime("%Y-%m-%d %H:%M:%S")
     elif type(value) is date or type(value) is datetime:
