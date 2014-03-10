@@ -62,6 +62,7 @@ class DashboardHandler(tornado.web.RequestHandler):
         get_bucket.append(data)
 
         b1 = MyAdminBucket.new('dashboard', data=get_bucket)
+        MyAdminBucket.clear_properties()
         """
         for k in data:
             b1.add_index("{}_bin".format(k), data[k])
@@ -115,6 +116,7 @@ class ElementHandler(tornado.web.RequestHandler):
         b1.add_index("type_bin", data['type'])
         b1.add_index("cube_bin", data['cube'])
         b1.store()
+        MyAdminBucket.clear_properties()
 
         self.redirect('/admin/element')
 
@@ -155,6 +157,7 @@ class CubeHandler(tornado.web.RequestHandler):
         b1.add_index("slug_bin", data['slug'])
         b1.add_index("connection_bin", data['connection'])
         b1.store()
+        MyAdminBucket.clear_properties()
 
         Queue(connection=Redis()).enqueue_call(
             func='bin.mining.run',
@@ -197,6 +200,7 @@ class ConnectionHandler(tornado.web.RequestHandler):
 
         b1 = MyAdminBucket.new('connection', data=get_bucket)
         b1.store()
+        MyAdminBucket.clear_properties()
 
         self.redirect('/admin/connection')
 
@@ -212,6 +216,7 @@ class DeleteHandler(tornado.web.RequestHandler):
         get_bucket = [b for b in get_bucket if b['slug'] != slug]
 
         MyAdminBucket.new(bucket, data=get_bucket).store()
+        MyAdminBucket.clear_properties()
 
         Queue(connection=Redis()).enqueue_call(
             func='admin.tasks.related_delete',
