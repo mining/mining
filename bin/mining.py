@@ -33,7 +33,7 @@ def run(cube_slug=None):
             if cube_slug and cube_slug != slug:
                 continue
 
-            sql = """SELECT * FROM ({}) AS CUBE;""".format(text(cube['sql']))
+            sql = u"""SELECT * FROM ({}) AS CUBE;""".format(cube['sql'])
             for c in MyAdminBucket.get('connection').data:
                 if c['slug'] == cube['connection']:
                     connection = c['connection']
