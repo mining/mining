@@ -10,7 +10,7 @@ INCLUDE_URLS = [
     (r"/api/connection", Connection),
     (r"/api/connection/(?P<slug>[\w-]+)", Connection),
 
-    (r"/api/cube/", Cube),
+    (r"/api/cube", Cube),
     (r"/api/cube/(?P<slug>[\w-]+)", Cube),
 
     (r"/api/element/", Element),

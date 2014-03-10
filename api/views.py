@@ -22,7 +22,8 @@ class ApiHandler(tornado.web.RequestHandler):
 
     @tornado.web.asynchronous
     def get(self, slug=None):
-        bucket = self.bucket.data or []
+        # bucket = self.bucket.data or []
+        bucket = MyAdminBucket.get(self.str_bucket).data or []
 
         if slug:
             value = {}
@@ -37,14 +38,14 @@ class ApiHandler(tornado.web.RequestHandler):
     def post(self):
         data = json.loads(self.request.body)
         data['slug'] = slugfy(data.get('name'))
+        my_bucket = MyAdminBucket.get(self.str_bucket)
 
-        bucket = [b for b in self.bucket.data or []
+        bucket = [b for b in MyAdminBucket.get(self.str_bucket).data or []
                   if b['slug'] != data['slug']]
         bucket.append(data)
 
-        MyAdminBucket.new(self.bucket.key, data=bucket).store()
-
-        self.write("Post or Put ok!")
+        MyAdminBucket.new(my_bucket.key, data=bucket).store()
+        self.write(json.dumps(data))
         self.finish()
 
     def put(self, slug=None):
@@ -52,19 +53,19 @@ class ApiHandler(tornado.web.RequestHandler):
 
     @tornado.web.asynchronous
     def delete(self, slug):
-        bucket = self.bucket.data or []
-
+        bucket = MyAdminBucket.get(self.str_bucket).data or []
+        my_bucket = MyAdminBucket.get(self.str_bucket)
         value = None
         for i in bucket:
-            if i.get(self.bucket.key) == slug:
-                value = i.get(self.bucket.key)
+            if i.get(my_bucket.key) == slug:
+                value = i.get(my_bucket.key)
         new_bucket = [b for b in bucket if b['slug'] != slug]
 
-        MyAdminBucket.new(self.bucket.key, data=new_bucket).store()
+        MyAdminBucket.new(my_bucket.key, data=new_bucket).store()
 
         Queue(connection=Redis()).enqueue_call(
             func='admin.tasks.related_delete',
-            args=(self.bucket.key, slug, value)
+            args=(my_bucket.key, slug, value)
         )
 
         self.write("Delete ok!")
@@ -72,19 +73,19 @@ class ApiHandler(tornado.web.RequestHandler):
 
 
 class Connection(ApiHandler):
-    bucket = MyAdminBucket.get('connection')
+    str_bucket = 'connection'
 
 
 class Cube(ApiHandler):
-    bucket = MyAdminBucket.get('cube')
+    str_bucket = 'cube'
 
 
 class Dashboard(ApiHandler):
-    bucket = MyAdminBucket.get('dashboard')
+    str_bucket = 'dashboard'
 
 
 class Element(ApiHandler):
-    bucket = MyAdminBucket.get('element')
+    str_bucket = 'element'
 
 
 class CubeQuery(tornado.web.RequestHandler):
@@ -111,7 +112,7 @@ class CubeQuery(tornado.web.RequestHandler):
         try:
             resoverall = connection.execute(text(sql))
         except:
-            self.write({'sql': '', 'msg': 'Error!'})
+            self.write({'sql': '', 'msg': 'Error!', 'status':'error'})
             self.finish()
 
         df = DataFrame(resoverall.fetchall())
@@ -120,5 +121,5 @@ class CubeQuery(tornado.web.RequestHandler):
         df.columns = resoverall.keys()
         df.head()
 
-        self.write({'sql': df.to_json(orient='records'), 'msg': 'Success!'})
+        self.write({'sql': df.to_json(orient='records'), 'msg': 'Success!', 'status':'success'})
         self.finish()

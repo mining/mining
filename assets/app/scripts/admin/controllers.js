@@ -1,21 +1,59 @@
 'use strict';
 admin
-  .controller('ConnectionCtrl', ['$scope', 'Connection',
-    function($scope, Connection){
+  .controller('ConnectionCtrl', ['$scope', 'Connection', 'AlertService',
+    function($scope, Connection, AlertService){
       $scope.connections = Connection.query();
-      $scope.connection = {
-        'slug':'',
-        'name': '',
-        'connection': ''
-      };
+      $scope.connection = new Connection();
       $scope.selectConnection = function(c){
         $scope.connection = c;
       };
-      $scope.deleteConnection = function(c){
-
+      $scope.deleteConnection = function(connection){
+        Connection.delete(connection);
+        $scope.connections.splice($scope.connections.indexOf(connection),1);
       };
       $scope.save = function(){
-        $scope.connection.$save();
+        if($scope.connection.slug){
+          Connection.update({'slug':$scope.connection.slug},$scope.connection);
+        }else{
+          $scope.connection.$save().then(function(response) {
+            AlertService.add('success', 'Save ok');
+            $scope.connections.push(response);
+          });
+        }
+        $scope.connection = new Connection();
+      };
+    }])
+  .controller('CubeCtrl', ['$scope', 'Cube', 'Connection', 'AlertService',
+    function($scope, Cube,Connection, AlertService){
+      $scope.connections = Connection.query();
+      $scope.cubes = Cube.query();
+      $scope.cube = new Cube();
+      $scope.selectCube = function(c){
+        $scope.cube = c;
+      };
+      $scope.deleteCube = function(cube){
+        Cube.delete(cube);
+        $scope.cubes.splice($scope.cubes.indexOf(cube),1);
+      };
+      $scope.save = function(){
+        if($scope.cube.slug){
+          Cube.update({'slug':$scope.cube.slug},$scope.cube);
+        }else{
+          $scope.cube.$save().then(function(response) {
+            AlertService.add('success', 'Save ok');
+            $scope.cubes.push(response);
+          });
+        }
+        $scope.cube = new Cube();
+      };
+      $scope.testquery = function(){
+        Cube.testquery($scope.cube, function(response){
+          if(response.status == 'success'){
+            AlertService.add('success', 'Query is Ok!');
+          }else{
+            AlertService.add('error', 'Query is not Ok!');
+          }
+        });
       };
     }])
   .controller('CubeQuery', function($scope, $http, $timeout) {

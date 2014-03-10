@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1><i class="fa fa-globe"></i> Cube</h1>
+        <ol class="breadcrumb">
+            <li><a href="#/"><i class="icon-dashboard"></i> Admin</a></li>
+            <li class="active">Cube</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <form name="form_connection" accept-charset="utf-8" role="form" ng-submit="save(cube)">
+            <div class="form-group">
+                <label for="connection_name">Name</label>
+                <input type="text" id="connection_name" ng-model="cube.name" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="connection_connection">Connection</label>
+                <select id="connection_connection" ng-options="c.slug as c.name for c in connections" ng-model="cube.connection" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label for="cube_query">Query</label>
+                <textarea id="cube_query" ng-model="cube.query" class="form-control" rows="15"></textarea>
+            </div>
+            <label><input type="checkbox" ng-model="force_save" checked /> Force save</label>
+            <button type="submit" class="btn btn-default" ng-show="force_save||loadcubequery">Save</button>
+            <input class="btn btn-info" type="button" value="Query test" ng-disabled="ajaxload" ng-click="testquery()" />
+        </form>
+    </div>
+    <div class="col-lg-6">
+        <table class="table table-bordered table-responsive table-hover">
+            <thead>
+                <th>
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Connection
+                </th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="c in cubes">
+                    <td>
+                        <a ng-click="selectCube(c)"><i class="fa fa-pencil"></i></a>
+                        <a ng-click="deleteCube($index)"><i class="fa fa-trash-o"></i></a>
+                    </td>
+                    <td>
+                        {{c.name}}
+                    </td>
+                    <td>
+                        {{c.connection}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div><!-- /.row -->

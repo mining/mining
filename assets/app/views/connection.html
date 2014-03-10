@@ -9,7 +9,7 @@
 </div>
 <div class="row">
     <div class="col-lg-6">
-        <form name="form_connection" accept-charset="utf-8" role="form">
+        <form name="form_connection" accept-charset="utf-8" role="form" ng-submit="save(post)">
             <div class="form-group">
                 <label for="connection_name">Name</label>
                 <input type="text" id="connection_name" ng-model="connection.name" class="form-control">
@@ -19,16 +19,35 @@
                 <input type="text" id="connection_connection" ng-model="connection.connection" class="form-control">
                 <p class="help-block">mysql://[user]:[password]@[host][:port]/[database]</p>
             </div>
-            <button type="button" class="btn btn-default" ng-click="save()">Save</button>
+            <button type="submit" class="btn btn-default">Save</button>
         </form>
-        <ul>
-            <li ng-repeat="c in connections">
-                <ul>
-                    <li><a ng-click="selectConnection(c)">edit</a></li>
-                    <li><a ng-click="deleteConnection(c)">delete</a></li>
-                    <li>{{c.name}} - {{c.connection}}</li>
-                </ul>
-            </li>
-        </ul>
+    </div>
+    <div class="col-lg-6">
+        <table class="table table-bordered table-responsive table-hover">
+            <thead>
+                <th>
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Connection
+                </th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="c in connections">
+                    <td>
+                        <a ng-click="selectConnection(c)"><i class="fa fa-pencil"></i></a>
+                        <a ng-click="deleteConnection(c)"><i class="fa fa-trash-o"></i></a>
+                    </td>
+                    <td>
+                        {{c.name}}
+                    </td>
+                    <td>
+                        {{c.connection}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div><!-- /.row -->

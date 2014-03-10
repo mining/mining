@@ -60,8 +60,14 @@
             </ul>
         </div><!-- /.navbar-collapse -->
     </nav>
-
-    <div id="page-wrapper" ng-view=""></div><!-- /#page-wrapper -->
+    <div id="page-wrapper">
+        <div ng-repeat="alert in alerts" class="alert alert-dismissable"
+             ng-class="{'alert-danger':alert.type=='error', 'alert-success': alert.type=='success', 'alert-info':alert.type=='info'}">
+            <button type="button" class="close" ng-click="closeAlert($index)">×</button>
+            {{! alert.msg }}
+        </div>
+        <div ng-view=""></div>
+    </div><!-- /#page-wrapper -->
 </div><!-- /#wrapper -->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
