@@ -1,48 +1,61 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os, sys
+import os
+import sys
 
-import tornado.ioloop
-import tornado.web
-import tornado.autoreload
+import argparse
 
-from tornado.options import parse_command_line, define, options
+from bottle import static_file, Bottle, template, TEMPLATE_PATH, run
 
-from gevent import monkey
+from gevent.pywsgi import WSGIServer
+
+from controllers.api import api_app
 
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-define('port', default=8888)
-define('ip', default='127.0.0.1')
-define('template_path', default='templates')
-define('PROJECT_PATH', default=os.path.join(
-    os.path.abspath(os.path.dirname(__file__))))
+parser = argparse.ArgumentParser(description=u'OpenMining Application Server')
+parser.add_argument('--port', help=u'Set application server port!',
+                    type=int, default=8888)
+parser.add_argument('--ip', help=u'Set application server IP!',
+                    type=str, default=u'0.0.0.0')
+parser.add_argument('--debug', '-v', help=u'Set application server debug!',
+                    action='count')
+args = parser.parse_args()
 
-settings = dict(
-    debug=True,
-    gzip=True,
-    autoreload=True,
-    template_path="{}/{}".format(options.PROJECT_PATH, options.template_path))
+PROJECT_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)))
+TEMPLATE_PATH.insert(0, u'{}/{}'.format(PROJECT_PATH, 'views'))
+
+app = Bottle()
+app.mount('/api', api_app)
+
+
+@app.route('/asserts/<path:path>')
+def static(path):
+    yield static_file(path, root=u'{}/{}'.format(PROJECT_PATH, u'asserts'))
+
+
+@app.route('/')
+def index():
+    return template('index.html')
 
 
 def main():
-    from urls import URLS
+    print u'OpenMining start server at: {}:{}'.format(args.ip,
+                                                      args.port)
 
-    monkey.patch_all()
-    application = tornado.web.Application(URLS, **settings)
+    if args.debug is None:
+        from gevent import monkey
 
-    print "openmining.io server starting..."
+        monkey.patch_all()
 
-    def fn():
-        print "openmining.io before reloading..."
+        server = WSGIServer((args.ip, args.port), app)
+        server.serve_forever()
 
-    parse_command_line()
-    application.listen(options.port, options.ip)
-    tornado.autoreload.add_reload_hook(fn)
-    tornado.autoreload.start()
-    tornado.ioloop.IOLoop.instance().start()
+    run(app=app, host=args.ip, port=args.port, debug=args.debug,
+        reloader=True)
+
 
 if __name__ == "__main__":
     main()
