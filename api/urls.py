@@ -13,7 +13,7 @@ INCLUDE_URLS = [
     (r"/api/cube", Cube),
     (r"/api/cube/(?P<slug>[\w-]+)", Cube),
 
-    (r"/api/element/", Element),
+    (r"/api/element", Element),
     (r"/api/element/(?P<slug>[\w-]+)", Element),
 
     (r"/api/cubequery.json", CubeQuery),

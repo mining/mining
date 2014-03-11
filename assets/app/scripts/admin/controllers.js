@@ -24,7 +24,7 @@ admin
       };
     }])
   .controller('CubeCtrl', ['$scope', 'Cube', 'Connection', 'AlertService',
-    function($scope, Cube,Connection, AlertService){
+    function($scope, Cube, Connection, AlertService){
       $scope.connections = Connection.query();
       $scope.cubes = Cube.query();
       $scope.cube = new Cube();
@@ -56,26 +56,50 @@ admin
         });
       };
     }])
-  .controller('CubeQuery', function($scope, $http, $timeout) {
-    $scope.testquery = function(){
-      $scope.loadcubequery = false;
-      $scope.ajaxload = true;
-      $scope.force_save=true;
-      var sql = angular.element('#sql').val();
-      var connection = angular.element('#connection').val();
-
-      $http.post("/api/cubequery.json", {'sql': sql, 'connection': connection})
-        .success(function(a){
-          if(a.msg != "Error!"){
-            $scope.loadcubequery = true;
-          }else{
-            $scope.loadcubequery = false;
-          };
-          $scope.status = a.msg;
-          $scope.ajaxload = false;
-        })
-    };
-  })
+  .controller('ElementCtrl', ['$scope', 'Cube', 'Element', 'AlertService', '$http',
+    function($scope, Cube, Element, AlertService, $http){
+      $scope.types = [
+        {'slug':"grid","name":"Grid"},
+        {'slug':"chart_line", "name":"Chart line"},
+        {'slug':"chart_bar","name":"Chart bar"},
+        {'slug':"chart_pie","name":"Chart pie"}
+      ];
+      $scope.cubes = Cube.query();
+      $scope.elements = Element.query();
+      $scope.element = new Element();
+      $scope.fields = [];
+      $scope.selectElement = function(e){
+        $scope.element = e;
+      };
+      $scope.deleteElement = function(element){
+        Element.delete(element);
+        $scope.elements.splice($scope.elements.indexOf(element),1);
+      };
+      $scope.save = function(element){
+        if($scope.element.slug){
+          Element.update({'slug':$scope.element.slug},$scope.element);
+        }else{
+          $scope.element.$save().then(function(response) {
+            AlertService.add('success', 'Save ok');
+            $scope.elements.push(response);
+          });
+        }
+        $scope.element = new Cube();
+      };
+      $scope.loadFields = function(){
+        $http.get('/admin/api/element/cube/'+$scope.element.cube)
+          .success(function(retorno){
+            if(retorno.status=='success'){
+              $scope.fields = retorno.columns;
+            }else{
+              AlertService.add('error', 'Error!');
+            }
+          })
+          .error(function(retorno){
+            AlertService.add('error', 'Error!');
+          })
+      }
+    }])
   .controller('ElementCube', function($scope, $http, $timeout) {
     $scope.categorie = '';
 

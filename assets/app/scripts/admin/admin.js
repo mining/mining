@@ -10,6 +10,10 @@ var admin = angular.module('miningApp.admin',[])
         templateUrl: 'views/cube.html',
         controller: 'CubeCtrl'
       })
+      .when('/admin/element', {
+        templateUrl: 'views/element.html',
+        controller: 'ElementCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
