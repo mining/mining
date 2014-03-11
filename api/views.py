@@ -42,7 +42,7 @@ class ApiHandler(tornado.web.RequestHandler):
         bucket = [b for b in my_bucket.data or [] if b['slug'] != data['slug']]
         bucket.append(data)
 
-        MyAdminBucket.new(bucket.key, data=bucket.data or []).store()
+        MyAdminBucket.new(my_bucket.key, data=bucket or []).store()
 
         self.write(json.dumps(data))
         self.finish()
