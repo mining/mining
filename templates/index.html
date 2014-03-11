@@ -44,8 +44,8 @@
             <ul class="nav navbar-nav side-nav">
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-dashboard"></i> Dashboards <b class="caret"></b></a>
-                    <ul class="dropdown-menu" ng-controller="LoadDashboard">
-                        <li ng-repeat="d in dashboard_list"><a href="#/dashboard/{{!d.slug}}">{{!d.name}}</a></li>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="d in dashboards"><a ng-href="#/dashboard/{{!d.slug}}">{{!d.name}}</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">

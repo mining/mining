@@ -4,7 +4,7 @@ from .views import Dashboard, CubeQuery, Connection, Cube, Element
 
 
 INCLUDE_URLS = [
-    (r"/api/dashboard/", Dashboard),
+    (r"/api/dashboard", Dashboard),
     (r"/api/dashboard/(?P<slug>[\w-]+)", Dashboard),
 
     (r"/api/connection", Connection),

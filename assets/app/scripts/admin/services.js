@@ -22,6 +22,8 @@ admin
     }])
   .factory('Dashboard', ['$resource',
     function($resource){
-      return $resource('/api/dashboard/:slug', {'slug':''}, {});
+      return $resource('/api/dashboard/:slug', {'slug':''}, {
+        update:{method:'PUT', params: {'slug':'@slug'}}
+      });
     }])
 ;

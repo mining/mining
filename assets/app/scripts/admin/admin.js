@@ -14,8 +14,16 @@ var admin = angular.module('miningApp.admin',[])
         templateUrl: 'views/element.html',
         controller: 'ElementCtrl'
       })
+      .when('/admin/dashboard', {
+        templateUrl: 'views/dashboard.html',
+        controller: 'DashboardCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
   }])
+    .run(['$rootScope', 'Dashboard',
+    function($rootScope, Dashboard){
+      $rootScope.dashboard = Dashboard.query();
+    }])
 ;

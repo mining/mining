@@ -111,44 +111,30 @@ admin
         $scope.element = new Element();
       };
     }])
-  .controller('ElementCube', function($scope, $http, $timeout) {
-    $scope.categorie = '';
-
-    var loadFields = function(){
-      $http({method: 'GET',
-        url: "/admin/api/element/cube/" + angular.element(document.querySelector('#cube')).val()}).
-        success(function(data) {
-          $scope._fields = data.columns;
-
-          if($scope.categorie != ""){
-            $timeout(function(){
-              $scope.$apply(function(){
-                $scope.fields = $scope.categorie;
-              });
-            });
-          }
-        });
-    };
-
-    var showCategories = function(){
-      if (angular.element(document.querySelector('#type')).val() != "grid") {
-        loadFields();
-        $scope.chart = true;
-      } else {
-        $scope.chart = false;
-      }
-    };
-
-    angular.element(document.querySelector('#type')).bind('change', function(){
-      showCategories();
-    });
-
-    angular.element(document.querySelector('#cube')).bind('change', function(){
-      $scope.loading = true;
-      loadFields();
-      $scope.loading = false;
-    });
-
-    showCategories();
-  });
-
+  .controller('DashboardCtrl', ['$scope', 'Dashboard', 'Element', 'AlertService', '$rootScope',
+    function($scope, Dashboard, Element, AlertService, $rootScope){
+      $rootScope.dashboards = Dashboard.query();
+      $scope.elements = Element.query();
+      $scope.dashboard = new Dashboard();
+      $scope.selectDashboard = function(d){
+        $scope.dashboard = d;
+      };
+      $scope.deleteElement = function(dashboard){
+        Dashboard.delete(dashboard);
+        $rootScope.dashboards.splice($rootScope.dashboards.indexOf(dashboard),1);
+      };
+      $scope.save = function(dashboard){
+        if($scope.dashboard.slug){
+          Dashboard.update({'slug':$scope.dashboard.slug},$scope.dashboard);
+        }else{
+          $scope.dashboard.$save().then(function(response) {
+            AlertService.add('success', 'Save ok');
+            $rootScope.dashboards.push(response);
+          });
+        }
+        $scope.dashboard = new Dashboard();
+      };
+      $scope.newForm = function(){
+        $scope.dashboard = new Dashboard();
+      };
+    }]);
