@@ -78,6 +78,15 @@ class Connection(ApiHandler):
 class Cube(ApiHandler):
     str_bucket = 'cube'
 
+    def post(self):
+        super(Cube, self).post()
+        data = json.loads(self.request.body)
+        data['slug'] = slugfy(data.get('name'))
+        Queue(connection=Redis()).enqueue_call(
+            func='bin.mining.run',
+            args=(data['slug'],)
+        )
+
 
 class Dashboard(ApiHandler):
     str_bucket = 'dashboard'
