@@ -22,9 +22,8 @@ class ApiHandler(tornado.web.RequestHandler):
 
     @tornado.web.asynchronous
     def get(self, slug=None):
-        bucket = MyAdminBucket.get(self.str_bucket).data or []
         my_bucket = MyAdminBucket.get(self.str_bucket)
-
+        bucket = my_bucket.data or []
         if slug:
             value = {}
             for i in bucket:
@@ -38,16 +37,14 @@ class ApiHandler(tornado.web.RequestHandler):
     def post(self):
         data = json.loads(self.request.body)
         data['slug'] = slugfy(data.get('name'))
-
-        bucket = MyAdminBucket.get(self.str_bucket).data or []
         my_bucket = MyAdminBucket.get(self.str_bucket)
 
-        bucket = [b for b in bucket if b['slug'] != data['slug']]
+        bucket = [b for b in my_bucket.data or [] if b['slug'] != data['slug']]
         bucket.append(data)
 
-        MyAdminBucket.new(my_bucket.key, data=bucket).store()
+        MyAdminBucket.new(my_bucket.key, data=bucket or []).store()
 
-        self.write("Post or Put ok!")
+        self.write(json.dumps(data))
         self.finish()
 
     def put(self, slug=None):
@@ -55,14 +52,13 @@ class ApiHandler(tornado.web.RequestHandler):
 
     @tornado.web.asynchronous
     def delete(self, slug):
-        bucket = MyAdminBucket.get(self.str_bucket).data or []
         my_bucket = MyAdminBucket.get(self.str_bucket)
 
         value = None
-        for i in bucket:
+        for i in my_bucket.data or []:
             if i.get(my_bucket.key) == slug:
                 value = i.get(my_bucket.key)
-        new_bucket = [b for b in bucket if b['slug'] != slug]
+        new_bucket = [b for b in my_bucket.data or [] if b['slug'] != slug]
 
         MyAdminBucket.new(my_bucket.key, data=new_bucket).store()
 
