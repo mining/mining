@@ -37,15 +37,14 @@ class ApiHandler(tornado.web.RequestHandler):
     def post(self):
         data = json.loads(self.request.body)
         data['slug'] = slugfy(data.get('name'))
-
         my_bucket = MyAdminBucket.get(self.str_bucket)
 
         bucket = [b for b in my_bucket.data or [] if b['slug'] != data['slug']]
         bucket.append(data)
 
-        MyAdminBucket.new(my_bucket.key, data=bucket).store()
+        MyAdminBucket.new(my_bucket.key, data=bucket or []).store()
 
-        self.write("Post or Put ok!")
+        self.write(json.dumps(data))
         self.finish()
 
     def put(self, slug=None):
