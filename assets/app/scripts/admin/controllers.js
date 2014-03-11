@@ -22,9 +22,13 @@ admin
         }
         $scope.connection = new Connection();
       };
+      $scope.newForm = function(){
+        $scope.connection = new Connection();
+      };
     }])
   .controller('CubeCtrl', ['$scope', 'Cube', 'Connection', 'AlertService',
     function($scope, Cube, Connection, AlertService){
+      $scope.cube_valid = false;
       $scope.connections = Connection.query();
       $scope.cubes = Cube.query();
       $scope.cube = new Cube();
@@ -49,11 +53,15 @@ admin
       $scope.testquery = function(){
         Cube.testquery($scope.cube, function(response){
           if(response.status == 'success'){
+            $scope.cube_valid = true;
             AlertService.add('success', 'Query is Ok!');
           }else{
             AlertService.add('error', 'Query is not Ok!');
           }
         });
+      };
+      $scope.newForm = function(){
+        $scope.cube = new Cube();
       };
     }])
   .controller('ElementCtrl', ['$scope', 'Cube', 'Element', 'AlertService', '$http',
@@ -98,7 +106,10 @@ admin
           .error(function(retorno){
             AlertService.add('error', 'Error!');
           })
-      }
+      };
+      $scope.newForm = function(){
+        $scope.element = new Element();
+      };
     }])
   .controller('ElementCube', function($scope, $http, $timeout) {
     $scope.categorie = '';

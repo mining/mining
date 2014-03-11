@@ -17,7 +17,7 @@ admin
     function($resource){
       return $resource('/api/cube/:slug', {'slug':'@slug'}, {
         update:{method:'PUT', params: {'slug':'@slug'}},
-        testquery: {method:'POST', url:"/api/cubequery.json", params: {'sql': '@sql', 'connection': '@connection'}}
+        testquery: {method:'POST', url:"/api/cubequery.json"}
       });
     }])
   .factory('Dashboard', ['$resource',
