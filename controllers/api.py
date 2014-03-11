@@ -19,7 +19,9 @@ def api_base():
     response.content_type = 'application/json'
 
 
-def api_get(mongodb, collection, slug=None):
+def api_get(mongodb, collection, slug):
+    if slug:
+        return dumps(mongodb[collection].find({'slug': slug}))
     return dumps(mongodb[collection].find())
 
 
@@ -28,6 +30,7 @@ def index():
     return 'OpenMining API!'
 
 
-@api_app.route('/connection/')
-def connection_get(mongodb):
-    return api_get(mongodb, 'connection')
+@api_app.route('/connection', method='GET')
+@api_app.route('/connection/:slug', method='GET')
+def connection_get(mongodb, slug=None):
+    return api_get(mongodb, 'connection', slug)
