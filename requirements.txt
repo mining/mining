@@ -3,7 +3,7 @@ pandas==0.13.1
 ipython==1.1.0
 SQLAlchemy==0.9.1
 bottle
--e git+https://github.com/avelino/bottle-mongodb-plugin.git#egg=bottle-mongodb
+bottle-mongo
 riak
 python-memcached
 python-dateutil
