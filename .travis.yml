@@ -5,6 +5,9 @@ services:
   - riak
   - redis-server
   - memcached
+cache:
+  - pip
+  - apt
 install: make environment
 script: make test
 notifications:
