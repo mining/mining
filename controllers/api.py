@@ -20,9 +20,16 @@ def api_base():
 
 
 def api_get(mongodb, collection, slug):
+    api_base()
     if slug:
         return dumps(mongodb[collection].find({'slug': slug}))
     return dumps(mongodb[collection].find())
+
+
+def api_post(mongodb, collection, request):
+    api_base()
+    request.GET.items()
+    return {}
 
 
 @api_app.route('/')
@@ -34,3 +41,9 @@ def index():
 @api_app.route('/connection/:slug', method='GET')
 def connection_get(mongodb, slug=None):
     return api_get(mongodb, 'connection', slug)
+
+
+@api_app.route('/connection', method='POST')
+@api_app.route('/connection/:slug', method='POST')
+def connection_post(mongodb, slug=None):
+    return api_post(mongodb, 'connection', request)
