@@ -22,12 +22,11 @@ class ApiHandler(tornado.web.RequestHandler):
 
     @tornado.web.asynchronous
     def get(self, slug=None):
-        # bucket = self.bucket.data or []
-        bucket = MyAdminBucket.get(self.str_bucket).data or []
+        bucket = MyAdminBucket.get(self.str_bucket)
 
         if slug:
             value = {}
-            for i in bucket:
+            for i in bucket.data or []:
                 if i.get('slug') == slug:
                     value = i
             bucket = value
@@ -38,13 +37,13 @@ class ApiHandler(tornado.web.RequestHandler):
     def post(self):
         data = json.loads(self.request.body)
         data['slug'] = slugfy(data.get('name'))
-        my_bucket = MyAdminBucket.get(self.str_bucket)
+        bucket = MyAdminBucket.get(self.str_bucket)
 
-        bucket = [b for b in MyAdminBucket.get(self.str_bucket).data or []
-                  if b['slug'] != data['slug']]
+        bucket = [b for b in bucket.data or [] if b['slug'] != data['slug']]
         bucket.append(data)
 
-        MyAdminBucket.new(my_bucket.key, data=bucket).store()
+        MyAdminBucket.new(bucket.key, data=bucket.data or []).store()
+
         self.write(json.dumps(data))
         self.finish()
 
@@ -53,19 +52,19 @@ class ApiHandler(tornado.web.RequestHandler):
 
     @tornado.web.asynchronous
     def delete(self, slug):
-        bucket = MyAdminBucket.get(self.str_bucket).data or []
-        my_bucket = MyAdminBucket.get(self.str_bucket)
-        value = None
-        for i in bucket:
-            if i.get(my_bucket.key) == slug:
-                value = i.get(my_bucket.key)
-        new_bucket = [b for b in bucket if b['slug'] != slug]
+        bucket = MyAdminBucket.get(self.str_bucket)
 
-        MyAdminBucket.new(my_bucket.key, data=new_bucket).store()
+        value = None
+        for i in bucket.data or []:
+            if i.get(bucket.key) == slug:
+                value = i.get(bucket.key)
+        new_bucket = [b for b in bucket.data or [] if b['slug'] != slug]
+
+        MyAdminBucket.new(bucket.key, data=new_bucket).store()
 
         Queue(connection=Redis()).enqueue_call(
             func='admin.tasks.related_delete',
-            args=(my_bucket.key, slug, value)
+            args=(bucket.key, slug, value)
         )
 
         self.write("Delete ok!")

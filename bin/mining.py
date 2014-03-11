@@ -3,7 +3,6 @@
 from os import sys, path
 import json
 import riak
-import memcache
 import gc
 
 from pandas import DataFrame
@@ -27,7 +26,6 @@ MyBucket = MyClient.bucket(MINING_BUCKET_NAME)
 
 
 def run(cube_slug=None):
-    mc = memcache.Client(['127.0.0.1:11211'], debug=0)
     for cube in MyAdminBucket.get('cube').data:
         try:
             slug = cube['slug']
@@ -35,14 +33,10 @@ def run(cube_slug=None):
             if cube_slug and cube_slug != slug:
                 continue
 
-            sql = """SELECT * FROM ({}) AS CUBE;""".format(cube['sql'])
+            sql = u"""SELECT * FROM ({}) AS CUBE;""".format(cube['sql'])
             for c in MyAdminBucket.get('connection').data:
                 if c['slug'] == cube['connection']:
                     connection = c['connection']
-
-            print "\n# CLEAN MEMCACHE/RIAK: {}".format(slug)
-            mc.delete(str(slug))
-            mc.delete(str('{}-columns'.format(slug)))
 
             MyBucket.new(slug, data='').store()
             MyBucket.new(u'{}-columns'.format(slug), data='').store()
