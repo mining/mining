@@ -1,19 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from bottle import Bottle, response, request
-from bottle.ext.mongo import MongoPlugin
+from bottle import response, request
 
 from bson.json_util import dumps
 
 from utils import slugfy
-
-
-ADMIN_BUCKET_NAME = 'openminig-admin'
-
-api_app = Bottle()
-mongo = MongoPlugin(uri="mongodb://127.0.0.1", db=ADMIN_BUCKET_NAME,
-                    json_mongo=True)
-api_app.install(mongo)
 
 
 def api_base():
@@ -55,29 +46,3 @@ def api_delete(mongodb, collection, slug):
     api_base()
     mongodb[collection].remove({'slug': slug})
     return {'status': 'success'}
-
-
-@api_app.route('/')
-def index():
-    return 'OpenMining API!'
-
-
-@api_app.route('/connection', method='GET')
-@api_app.route('/connection/:slug', method='GET')
-def connection_get(mongodb, slug=None):
-    return api_get(mongodb, 'connection', slug)
-
-
-@api_app.route('/connection', method='POST')
-def connection_post(mongodb, slug=None):
-    return api_post(mongodb, 'connection')
-
-
-@api_app.route('/connection/:slug', method='PUT')
-def connection_put(mongodb, slug=None):
-    return api_put(mongodb, 'connection', slug)
-
-
-@api_app.route('/connection/:slug', method='DELETE')
-def connection_delete(mongodb, slug=None):
-    return api_delete(mongodb, 'connection', slug)
