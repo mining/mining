@@ -28,7 +28,7 @@ def api_get(mongodb, collection, slug):
     return dumps(mongodb[collection].find())
 
 
-def api_post(mongodb, collection, request):
+def api_post(mongodb, collection):
     api_base()
     data = request.json
     data['slug'] = slugfy(data['name'])
@@ -37,6 +37,18 @@ def api_post(mongodb, collection, request):
         mongodb[collection].insert(data)
         return {'status': 'success', 'data': data}
     return {'status': 'error', 'message': 'Object exist, please send PUT!'}
+
+
+def api_put(mongodb, collection, slug):
+    api_base()
+    data = request.json
+    data['slug'] = slug
+    get = mongodb[collection].find_one({'slug': slug})
+    if get:
+        mongodb[collection].update({'slug': slug}, data)
+        return {'status': 'success', 'data': data}
+    return {'status': 'error',
+            'message': 'Object not exist, please send POST to create!'}
 
 
 @api_app.route('/')
@@ -51,6 +63,10 @@ def connection_get(mongodb, slug=None):
 
 
 @api_app.route('/connection', method='POST')
-@api_app.route('/connection/:slug', method='POST')
 def connection_post(mongodb, slug=None):
-    return api_post(mongodb, 'connection', request)
+    return api_post(mongodb, 'connection')
+
+
+@api_app.route('/connection/:slug', method='PUT')
+def connection_put(mongodb, slug=None):
+    return api_put(mongodb, 'connection', slug)
