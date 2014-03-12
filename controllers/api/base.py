@@ -7,20 +7,20 @@ from bson.json_util import dumps
 from utils import slugfy
 
 
-def api_base():
+def base():
     response.set_header('charset', 'utf-8')
     response.content_type = 'application/json'
 
 
-def api_get(mongodb, collection, slug):
-    api_base()
+def get(mongodb, collection, slug):
+    base()
     if slug:
         return dumps(mongodb[collection].find({'slug': slug}))
     return dumps(mongodb[collection].find())
 
 
-def api_post(mongodb, collection):
-    api_base()
+def post(mongodb, collection):
+    base()
     data = request.json
     data['slug'] = slugfy(data['name'])
     get = mongodb[collection].find({'slug': data['slug']})
@@ -30,8 +30,8 @@ def api_post(mongodb, collection):
     return {'status': 'error', 'message': 'Object exist, please send PUT!'}
 
 
-def api_put(mongodb, collection, slug):
-    api_base()
+def put(mongodb, collection, slug):
+    base()
     data = request.json
     data['slug'] = slug
     get = mongodb[collection].find_one({'slug': slug})
@@ -42,7 +42,7 @@ def api_put(mongodb, collection, slug):
             'message': 'Object not exist, please send POST to create!'}
 
 
-def api_delete(mongodb, collection, slug):
-    api_base()
+def delete(mongodb, collection, slug):
+    base()
     mongodb[collection].remove({'slug': slug})
     return {'status': 'success'}
