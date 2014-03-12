@@ -5,6 +5,8 @@ from bottle.ext.mongo import MongoPlugin
 
 from bson.json_util import dumps
 
+from utils import slugfy
+
 
 ADMIN_BUCKET_NAME = 'openminig-admin'
 
@@ -28,8 +30,13 @@ def api_get(mongodb, collection, slug):
 
 def api_post(mongodb, collection, request):
     api_base()
-    request.GET.items()
-    return {}
+    data = request.json
+    data['slug'] = slugfy(data['name'])
+    get = mongodb[collection].find({'slug': data['slug']})
+    if get.count() == 0:
+        mongodb[collection].insert(data)
+        return {'status': 'success', 'data': data}
+    return {'status': 'error', 'message': 'Object exist, please send PUT!'}
 
 
 @api_app.route('/')
