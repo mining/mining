@@ -51,6 +51,12 @@ def api_put(mongodb, collection, slug):
             'message': 'Object not exist, please send POST to create!'}
 
 
+def api_delete(mongodb, collection, slug):
+    api_base()
+    mongodb[collection].remove({'slug': slug})
+    return {'status': 'success'}
+
+
 @api_app.route('/')
 def index():
     return 'OpenMining API!'
@@ -70,3 +76,8 @@ def connection_post(mongodb, slug=None):
 @api_app.route('/connection/:slug', method='PUT')
 def connection_put(mongodb, slug=None):
     return api_put(mongodb, 'connection', slug)
+
+
+@api_app.route('/connection/:slug', method='DELETE')
+def connection_delete(mongodb, slug=None):
+    return api_delete(mongodb, 'connection', slug)
