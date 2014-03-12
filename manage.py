@@ -51,6 +51,14 @@ def main():
                                                       args.port)
 
     monkey.patch_all()
-    
+    if args.debug is None:
+        server = WSGIServer((args.ip, args.port), app,
+                            handler_class=WebSocketHandler)
+        server.serve_forever()
+
+    run(app=app, host=args.ip, port=args.port, debug=args.debug,
+        reloader=True, server=GeventWebSocketServer)
+
+
 if __name__ == "__main__":
     main()
