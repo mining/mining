@@ -16,7 +16,7 @@ cube_app.install(mongo)
 
 
 @cube_app.route('/', method='GET')
-@cube_app.route('/:slug', method='GET')
+@cube_app.route('/<slug>', method='GET')
 def cube_get(mongodb, slug=None):
     return get(mongodb, collection, slug)
 
@@ -26,11 +26,11 @@ def cube_post(mongodb, slug=None):
     return post(mongodb, collection)
 
 
-@cube_app.route('/:slug', method='PUT')
+@cube_app.route('/<slug>', method='PUT')
 def cube_put(mongodb, slug=None):
     return put(mongodb, collection, slug)
 
 
-@cube_app.route('/:slug', method='DELETE')
+@cube_app.route('/<slug>', method='DELETE')
 def cube_delete(mongodb, slug=None):
     return delete(mongodb, collection, slug)

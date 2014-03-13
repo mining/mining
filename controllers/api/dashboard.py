@@ -16,7 +16,7 @@ dashboard_app.install(mongo)
 
 
 @dashboard_app.route('/', method='GET')
-@dashboard_app.route('/:slug', method='GET')
+@dashboard_app.route('/<slug>', method='GET')
 def dashboard_get(mongodb, slug=None):
     return get(mongodb, collection, slug)
 
@@ -26,11 +26,11 @@ def dashboard_post(mongodb, slug=None):
     return post(mongodb, collection)
 
 
-@dashboard_app.route('/:slug', method='PUT')
+@dashboard_app.route('/<slug>', method='PUT')
 def dashboard_put(mongodb, slug=None):
     return put(mongodb, collection, slug)
 
 
-@dashboard_app.route('/:slug', method='DELETE')
+@dashboard_app.route('/<slug>', method='DELETE')
 def dashboard_delete(mongodb, slug=None):
     return delete(mongodb, collection, slug)

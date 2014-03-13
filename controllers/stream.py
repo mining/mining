@@ -29,7 +29,7 @@ mongo = MongoPlugin(uri="mongodb://127.0.0.1", db=ADMIN_BUCKET_NAME,
 stream_app.install(mongo)
 
 
-@stream_app.route('/data/:slug', apply=[websocket])
+@stream_app.route('/data/<slug>', apply=[websocket])
 def data(ws, mongodb, slug):
     if not ws:
         abort(400, 'Expected WebSocket request.')
@@ -64,8 +64,7 @@ def data(ws, mongodb, slug):
 
     # CLEAN MEMORY
     del filters, fields, columns
-    gc.collect()
-
+    gc.collect() 
     categories = []
     for i in df.to_dict(outtype='records')[page_start:page_end]:
         if ca:

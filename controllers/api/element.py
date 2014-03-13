@@ -16,7 +16,7 @@ element_app.install(mongo)
 
 
 @element_app.route('/', method='GET')
-@element_app.route('/:slug', method='GET')
+@element_app.route('/<slug>', method='GET')
 def element_get(mongodb, slug=None):
     return get(mongodb, collection, slug)
 
@@ -26,11 +26,11 @@ def element_post(mongodb, slug=None):
     return post(mongodb, collection)
 
 
-@element_app.route('/:slug', method='PUT')
+@element_app.route('/<slug>', method='PUT')
 def element_put(mongodb, slug=None):
     return put(mongodb, collection, slug)
 
 
-@element_app.route('/:slug', method='DELETE')
+@element_app.route('/<slug>', method='DELETE')
 def element_delete(mongodb, slug=None):
     return delete(mongodb, collection, slug)
