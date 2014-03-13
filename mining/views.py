@@ -9,6 +9,7 @@ import tornado.web
 import tornado.gen
 import tornado.autoreload
 from tornado.websocket import WebSocketHandler
+from tornado.options import options
 
 from pandas import DataFrame
 
@@ -134,7 +135,8 @@ class ExportHandler(tornado.web.RequestHandler):
             for f in filters:
                 df = df.query(df_generate(df, self.get_argument(f), f))
 
-        file_name = 'assets/exports/openmining-{}.{}'.format(slug, ext)
+        file_name = '{}/assets/exports/openmining-{}.{}'.format(
+            options.PROJECT_PATH, slug, ext)
         if ext == 'csv':
             df.to_csv(file_name)
             contenttype = 'text/csv'
