@@ -1,20 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os
 import sys
 
 import argparse
 
-from bottle import static_file, Bottle, template, TEMPLATE_PATH, run
+from bottle import static_file, Bottle, template, run
+from bottle import TEMPLATE_PATH as T
+from bottle.ext.websocket import GeventWebSocketServer
 
 from gevent import monkey
 from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
-from bottle.ext.websocket import GeventWebSocketServer
 
 from controllers.api import api_app
 from controllers.stream import stream_app
 from controllers.export import export_app
+
+from settings import TEMPLATE_PATH, STATIC_PATH, MINING_PORT, MINING_IP
 
 
 reload(sys)
@@ -22,15 +24,14 @@ sys.setdefaultencoding('utf-8')
 
 parser = argparse.ArgumentParser(description=u'OpenMining Application Server')
 parser.add_argument('--port', help=u'Set application server port!',
-                    type=int, default=8888)
+                    type=int, default=MINING_PORT)
 parser.add_argument('--ip', help=u'Set application server IP!',
-                    type=str, default=u'0.0.0.0')
+                    type=str, default=MINING_IP)
 parser.add_argument('--debug', '-v', help=u'Set application server debug!',
                     action='count')
 args = parser.parse_args()
 
-PROJECT_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)))
-TEMPLATE_PATH.insert(0, u'{}/{}'.format(PROJECT_PATH, 'views'))
+T.insert(0, TEMPLATE_PATH)
 
 app = Bottle()
 app.mount('/api', api_app)
@@ -40,7 +41,7 @@ app.mount('/export', export_app)
 
 @app.route('/asserts/<path:path>')
 def static(path):
-    yield static_file(path, root=u'{}/{}'.format(PROJECT_PATH, u'asserts'))
+    yield static_file(path, root=STATIC_PATH)
 
 
 @app.route('/')
