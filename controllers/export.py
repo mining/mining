@@ -43,6 +43,10 @@ def data(mongodb, slug, ext='xls'):
         for f in filters:
             df = df.query(df_generate(df, request.GET.get(f), f))
 
+    groupby = request.GET.get('groupby').split(',')
+    if len(groupby) >= 1:
+        df = df.groupby(groupby)
+
     # CLEAN MEMORY
     del filters, fields, columns
     gc.collect()
