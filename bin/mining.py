@@ -16,16 +16,15 @@ from settings import (RIAK_PROTOCOL, RIAK_HTTP_PORT,
                       MINING_BUCKET_NAME, MEMCACHE_CONNECTION, MEMCACHE_DEBUG)
 
 
-MyClient = riak.RiakClient(protocol=RIAK_PROTOCOL,
-                           http_port=RIAK_HTTP_PORT,
-                           host=RIAK_HOST)
-
-MyAdminBucket = MyClient.bucket(ADMIN_BUCKET_NAME)
-
-MyBucket = MyClient.bucket(MINING_BUCKET_NAME)
-
-
 def run(cube_slug=None):
+    MyClient = riak.RiakClient(protocol=RIAK_PROTOCOL,
+                               http_port=RIAK_HTTP_PORT,
+                               host=RIAK_HOST)
+
+    MyAdminBucket = MyClient.bucket(ADMIN_BUCKET_NAME)
+
+    MyBucket = MyClient.bucket(MINING_BUCKET_NAME)
+
     for cube in MyAdminBucket.get('cube').data:
         try:
             slug = cube['slug']
