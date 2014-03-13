@@ -17,17 +17,16 @@ from settings import MINING_BUCKET_NAME, ADMIN_BUCKET_NAME
 from bottle.ext.mongo import MongoPlugin
 
 
-mongo = MongoPlugin(uri="mongodb://127.0.0.1", db=ADMIN_BUCKET_NAME,
-                    json_mongo=True).get_mongo()
-
-MyClient = riak.RiakClient(protocol=RIAK_PROTOCOL,
-                           http_port=RIAK_HTTP_PORT,
-                           host=RIAK_HOST)
-
-MyBucket = MyClient.bucket(MINING_BUCKET_NAME)
-
-
 def run(cube_slug=None):
+    mongo = MongoPlugin(uri="mongodb://127.0.0.1", db=ADMIN_BUCKET_NAME,
+                        json_mongo=True).get_mongo()
+
+    MyClient = riak.RiakClient(protocol=RIAK_PROTOCOL,
+                               http_port=RIAK_HTTP_PORT,
+                               host=RIAK_HOST)
+
+    MyBucket = MyClient.bucket(MINING_BUCKET_NAME)
+
     print "## START"
     for cube in mongo['cube'].find():
         try:
