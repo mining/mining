@@ -28,7 +28,7 @@ mongo = MongoPlugin(uri="mongodb://127.0.0.1", db=ADMIN_BUCKET_NAME,
 export_app.install(mongo)
 
 
-@export_app.route('/')
+@export_app.route('/data/<slug>')
 def data(mongodb, slug, ext='xls'):
     columns = json.loads(MyBucket.get('{}-columns'.format(slug)).data)
     fields = columns
