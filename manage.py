@@ -14,6 +14,7 @@ from bottle.ext.websocket import GeventWebSocketServer
 
 from controllers.api import api_app
 from controllers.stream import stream_app
+from controllers.export import export_app
 
 
 reload(sys)
@@ -34,6 +35,7 @@ TEMPLATE_PATH.insert(0, u'{}/{}'.format(PROJECT_PATH, 'views'))
 app = Bottle()
 app.mount('/api', api_app)
 app.mount('/stream', stream_app)
+app.mount('/export', export_app)
 
 
 @app.route('/asserts/<path:path>')
