@@ -25,12 +25,30 @@ class ApiHandler(tornado.web.RequestHandler):
         my_bucket = MyAdminBucket.get(self.str_bucket)
         bucket = my_bucket.data or []
         if slug:
-            value = {}
-            for i in bucket:
-                if i.get('slug') == slug:
-                    value = i
-            bucket = value
-
+            if not len(self.get_arguments('full')) > 0:
+                value = {}
+                for i in bucket:
+                    if i.get('slug') == slug:
+                        value = i
+                bucket = value
+            else:
+                elements = {}
+                for d in bucket:
+                    if d['slug'] == slug:
+                        elements['slug'] = slug
+                        # GET ELEMENT
+                        _e = []
+                        for dash_element in d['element']:
+                            element = MyAdminBucket.get('element').data
+                            for e in element:
+                                if dash_element == e['slug']:
+                                    try:
+                                        e['_type'] = e['type'].split('_')[1]
+                                    except:
+                                        e['_type'] = None
+                                    _e.append(e)
+                            elements = _e
+                bucket[0]['element'] = elements
         self.write(json.dumps(bucket))
         self.finish()
 

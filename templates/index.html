@@ -16,6 +16,7 @@
     <link href="/assets/css/sb-admin.css" rel="stylesheet">
     <link rel="stylesheet" href="/assets/app/styles/main.css">
     <link rel="stylesheet" href="/assets/bower/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/bower/morris.js/morris.css">
     <!-- Page Specific CSS -->
   </head>
   <body ng-app="miningApp">
@@ -45,7 +46,7 @@
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-dashboard"></i> Dashboards <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li ng-repeat="d in dashboards"><a ng-href="#/dashboard/{{!d.slug}}">{{!d.name}}</a></li>
+                        <li ng-repeat="d in dashboards" ng-class="{'active':d.slug==selected_dashboard.slug}"><a ng-href="#/dashboard/{{!d.slug}}">{{!d.name}}</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -96,6 +97,8 @@
     <script src="/assets/bower/angular-sanitize/angular-sanitize.js"></script>
     <script src="/assets/bower/angular-route/angular-route.js"></script>
     <script src="/assets/bower/highcharts-ng/dist/highcharts-ng.js"></script>
+    <script src="/assets/bower/raphael/raphael-min.js"></script>
+    <script src="/assets/bower/morris.js/morris.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -108,6 +111,7 @@
     <script src="/assets/app/scripts/dashboard/dashboard.js"></script>
     <script src="/assets/app/scripts/dashboard/controllers.js"></script>
     <script src="/assets/app/scripts/dashboard/services.js"></script>
+    <script src="/assets/app/scripts/dashboard/directives.js"></script>
     <script src="/assets/app/scripts/report/report.js"></script>
     <script src="/assets/app/scripts/report/controllers.js"></script>
     <script src="/assets/app/scripts/report/services.js"></script>
