@@ -15,8 +15,14 @@ def base():
 def get(mongodb, collection, slug):
     base()
     if slug:
-        return dumps(mongodb[collection].find({'slug': slug}))
-    return dumps(mongodb[collection].find())
+        data = mongodb[collection].find({'slug': slug})
+    else:
+        data = mongodb[collection].find()
+    response = []
+    for d in data:
+        del d['_id']
+        response.append(d)
+    return dumps(response)
 
 
 def post(mongodb, collection):
@@ -26,7 +32,7 @@ def post(mongodb, collection):
     get = mongodb[collection].find({'slug': data['slug']})
     if get.count() == 0:
         mongodb[collection].insert(data)
-        return {'status': 'success', 'data': data}
+        return data
     return {'status': 'error', 'message': 'Object exist, please send PUT!'}
 
 
@@ -37,7 +43,7 @@ def put(mongodb, collection, slug):
     get = mongodb[collection].find_one({'slug': slug})
     if get:
         mongodb[collection].update({'slug': slug}, data)
-        return {'status': 'success', 'data': data}
+        return data
     return {'status': 'error',
             'message': 'Object not exist, please send POST to create!'}
 

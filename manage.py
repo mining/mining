@@ -39,7 +39,7 @@ app.mount('/stream', stream_app)
 app.mount('/export', export_app)
 
 
-@app.route('/asserts/<path:path>')
+@app.route('/assets/<path:path>')
 def static(path):
     yield static_file(path, root=STATIC_PATH)
 

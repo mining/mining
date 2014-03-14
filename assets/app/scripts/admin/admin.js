@@ -3,19 +3,19 @@ var admin = angular.module('miningApp.admin',[])
 .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
       .when('/admin/connection', {
-        templateUrl: 'views/connection.html',
+        templateUrl: 'assets/app/views/connection.html',
         controller: 'ConnectionCtrl'
       })
       .when('/admin/cube', {
-        templateUrl: 'views/cube.html',
+        templateUrl: 'assets/app/views/cube.html',
         controller: 'CubeCtrl'
       })
       .when('/admin/element', {
-        templateUrl: 'views/element.html',
+        templateUrl: 'assets/app/views/element.html',
         controller: 'ElementCtrl'
       })
       .when('/admin/dashboard', {
-        templateUrl: 'views/dashboard.html',
+        templateUrl: 'assets/app/views/dashboard.html',
         controller: 'DashboardCtrl'
       })
       .otherwise({

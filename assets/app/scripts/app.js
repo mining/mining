@@ -52,7 +52,8 @@ var miningApp = angular.module('miningApp', [
 
       return alertService;
     }])
-  .config(['$routeProvider', function ($routeProvider) {
+  .config(['$routeProvider', '$interpolateProvider', 
+    function ($routeProvider, $interpolateProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/home.html',
@@ -61,6 +62,8 @@ var miningApp = angular.module('miningApp', [
       .otherwise({
         redirectTo: '/'
       });
+      $interpolateProvider.startSymbol('[['); 
+      $interpolateProvider.endSymbol(']]');
   }])
   .run(['$rootScope', 'AlertService',
     function($rootScope, AlertService){
