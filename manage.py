@@ -4,7 +4,7 @@ import sys
 
 import argparse
 
-from bottle import static_file, Bottle, template, run
+from bottle import static_file, Bottle, template, run, view
 from bottle import TEMPLATE_PATH as T
 from bottle.ext.websocket import GeventWebSocketServer
 
@@ -45,8 +45,9 @@ def static(path):
 
 
 @app.route('/')
+@view('index.html')
 def index():
-    return template('index.html')
+    return {'get_url': app.get_url}
 
 
 def main():
