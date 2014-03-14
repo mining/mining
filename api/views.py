@@ -25,12 +25,30 @@ class ApiHandler(tornado.web.RequestHandler):
         my_bucket = MyAdminBucket.get(self.str_bucket)
         bucket = my_bucket.data or []
         if slug:
-            value = {}
-            for i in bucket:
-                if i.get('slug') == slug:
-                    value = i
-            bucket = value
-
+            if not len(self.get_arguments('full')) > 0:
+                value = {}
+                for i in bucket:
+                    if i.get('slug') == slug:
+                        value = i
+                bucket = value
+            else:
+                elements = {}
+                for d in bucket:
+                    if d['slug'] == slug:
+                        elements['slug'] = slug
+                        # GET ELEMENT
+                        _e = []
+                        for dash_element in d['element']:
+                            element = MyAdminBucket.get('element').data
+                            for e in element:
+                                if dash_element == e['slug']:
+                                    try:
+                                        e['_type'] = e['type'].split('_')[1]
+                                    except:
+                                        e['_type'] = None
+                                    _e.append(e)
+                            elements = _e
+                bucket[0]['element'] = elements
         self.write(json.dumps(bucket))
         self.finish()
 
@@ -78,6 +96,15 @@ class Connection(ApiHandler):
 class Cube(ApiHandler):
     str_bucket = 'cube'
 
+    def post(self):
+        super(Cube, self).post()
+        data = json.loads(self.request.body)
+        data['slug'] = slugfy(data.get('name'))
+        Queue(connection=Redis()).enqueue_call(
+            func='bin.mining.run',
+            args=(data['slug'],)
+        )
+
 
 class Dashboard(ApiHandler):
     str_bucket = 'dashboard'
@@ -111,7 +138,7 @@ class CubeQuery(tornado.web.RequestHandler):
         try:
             resoverall = connection.execute(text(sql))
         except:
-            self.write({'sql': '', 'msg': 'Error!'})
+            self.write({'sql': '', 'msg': 'Error!', 'status':'error'})
             self.finish()
 
         df = DataFrame(resoverall.fetchall())
@@ -120,5 +147,5 @@ class CubeQuery(tornado.web.RequestHandler):
         df.columns = resoverall.keys()
         df.head()
 
-        self.write({'sql': df.to_json(orient='records'), 'msg': 'Success!'})
+        self.write({'sql': df.to_json(orient='records'), 'msg': 'Success!', 'status':'success'})
         self.finish()

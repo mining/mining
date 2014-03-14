@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1><i class="fa fa-globe"></i> {{ selected_dashboard.name }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="/"><i class="icon-dashboard"></i> Dashboard</a></li>
+            <li class="active">{{ selected_dashboard.name }}</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <pre>
+        {{ selected_dashboard | json }}
+    </pre>
+    <div ng-repeat="e in selected_dashboard.element">
+      <h3>{{ e | json }}</h3>
+      <chart element="e"></chart>
+      <div>
+        {{ filters | json }}
+      </div>
+    </div>
+</div>
