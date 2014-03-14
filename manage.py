@@ -4,11 +4,13 @@ import sys
 
 import argparse
 
-from bottle import static_file, Bottle, template, run, view
+from gevent import monkey
+monkey.patch_all()
+
+from bottle import static_file, Bottle, run, view
 from bottle import TEMPLATE_PATH as T
 from bottle.ext.websocket import GeventWebSocketServer
 
-from gevent import monkey
 from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
 
@@ -54,7 +56,6 @@ def main():
     print u'OpenMining start server at: {}:{}'.format(args.ip,
                                                       args.port)
 
-    monkey.patch_all()
     if args.debug is None:
         server = WSGIServer((args.ip, args.port), app,
                             handler_class=WebSocketHandler)
