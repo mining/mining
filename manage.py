@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import sys
+from gevent import monkey
+monkey.patch_all()
 
+import sys
 import argparse
 
-from bottle import static_file, Bottle, template, run, view
+from bottle import static_file, Bottle, run, view
 from bottle import TEMPLATE_PATH as T
 from bottle.ext.websocket import GeventWebSocketServer
 
-from gevent import monkey
 from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
 
@@ -39,7 +40,7 @@ app.mount('/stream', stream_app)
 app.mount('/export', export_app)
 
 
-@app.route('/assets/<path:path>')
+@app.route('/assets/<path:path>', name='assets')
 def static(path):
     yield static_file(path, root=STATIC_PATH)
 
@@ -54,7 +55,6 @@ def main():
     print u'OpenMining start server at: {}:{}'.format(args.ip,
                                                       args.port)
 
-    monkey.patch_all()
     if args.debug is None:
         server = WSGIServer((args.ip, args.port), app,
                             handler_class=WebSocketHandler)
