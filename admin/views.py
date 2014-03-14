@@ -22,7 +22,7 @@ class APIElementCubeHandler(tornado.web.RequestHandler):
         data = MyBucket.get(u'{}-columns'.format(slug)).data or '{}'
         columns = json.loads(data)
 
-        self.write({'columns': columns, 'status':'success'})
+        self.write({'columns': columns, 'status': 'success'})
         self.finish()
 
 
