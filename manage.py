@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import sys
-
-import argparse
-
 from gevent import monkey
 monkey.patch_all()
+
+import sys
+import argparse
 
 from bottle import static_file, Bottle, run, view
 from bottle import TEMPLATE_PATH as T
