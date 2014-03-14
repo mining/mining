@@ -36,8 +36,8 @@ def run(cube_slug=None):
                 continue
 
             sql = u"""SELECT * FROM ({}) AS CUBE;""".format(cube['sql'])
-            connection = mongo['connection'].find_one(
-                {"cube": slug})['connection']
+            
+            connection = mongo['connection'].find_one({'slug':cube['connection']})['connection']
 
             MyBucket.new(slug, data='').store()
             MyBucket.new(u'{}-columns'.format(slug), data='').store()
