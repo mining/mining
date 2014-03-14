@@ -95,17 +95,19 @@ admin
         $scope.element = new Cube();
       };
       $scope.loadFields = function(){
-        $http.get('/admin/api/element/cube/'+$scope.element.cube)
-          .success(function(retorno){
-            if(retorno.status=='success'){
-              $scope.fields = retorno.columns;
-            }else{
-              AlertService.add('error', 'Error!');
-            }
-          })
-          .error(function(retorno){
-            AlertService.add('error', 'Error!');
-          })
+        if($scope.element.type != 'grid'){
+            $http.get('/admin/api/element/cube/'+$scope.element.cube)
+              .success(function(retorno){
+                if(retorno.status=='success'){
+                  $scope.fields = retorno.columns;
+                }else{
+                  AlertService.add('error', 'Error!');
+                }
+              })
+              .error(function(retorno){
+                AlertService.add('error', 'Error!');
+              });
+          }
       };
       $scope.newForm = function(){
         $scope.element = new Element();
