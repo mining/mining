@@ -32,6 +32,7 @@ def post(mongodb, collection):
     get = mongodb[collection].find({'slug': data['slug']})
     if get.count() == 0:
         mongodb[collection].insert(data)
+        del data['_id']
         return data
     return {'status': 'error', 'message': 'Object exist, please send PUT!'}
 
