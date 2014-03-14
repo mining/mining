@@ -60,11 +60,16 @@ def data(ws, mongodb, slug):
     if len(filters) >= 1:
         for f in filters:
             df = df.query(df_generate(df, request.GET.get(f), f))
+
+    groupby = request.GET.get('groupby').split(',')
+    if len(groupby) >= 1:
+        df = df.groupby(groupby)
+
     ws.send({'type': 'max_page', 'data': len(df)})
 
     # CLEAN MEMORY
     del filters, fields, columns
-    gc.collect() 
+    gc.collect()
     categories = []
     for i in df.to_dict(outtype='records')[page_start:page_end]:
         if ca:
