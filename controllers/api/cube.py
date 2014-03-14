@@ -3,6 +3,9 @@
 from bottle import Bottle
 from bottle.ext.mongo import MongoPlugin
 
+from redis import Redis
+from rq import Queue
+
 from .base import get, post, put, delete
 
 
@@ -23,12 +26,26 @@ def cube_get(mongodb, slug=None):
 
 @cube_app.route('/', method='POST')
 def cube_post(mongodb, slug=None):
-    return post(mongodb, collection)
+    ret = post(mongodb, collection)
+    if ret['status'] == 'success':
+        Queue(connection=Redis()).enqueue_call(
+            func='bin.mining_new.run',
+            args=(ret['data']['slug'],)
+        )
+
+    return ret
 
 
 @cube_app.route('/<slug>', method='PUT')
 def cube_put(mongodb, slug=None):
-    return put(mongodb, collection, slug)
+    ret = put(mongodb, collection, slug)
+    if ret['status'] == 'success':
+        Queue(connection=Redis()).enqueue_call(
+            func='bin.mining_new.run',
+            args=(ret['data']['slug'],)
+        )
+
+    return ret
 
 
 @cube_app.route('/<slug>', method='DELETE')
