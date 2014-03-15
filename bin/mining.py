@@ -11,21 +11,24 @@ from sqlalchemy.sql import text
 
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from utils import fix_render
-from settings import (RIAK_PROTOCOL, RIAK_HTTP_PORT,
-                      RIAK_HOST, ADMIN_BUCKET_NAME,
-                      MINING_BUCKET_NAME, MEMCACHE_CONNECTION, MEMCACHE_DEBUG)
+from settings import RIAK_PROTOCOL, RIAK_HTTP_PORT, RIAK_HOST
+from settings import MINING_BUCKET_NAME, ADMIN_BUCKET_NAME
+
+from bottle.ext.mongo import MongoPlugin
 
 
 def run(cube_slug=None):
+    mongo = MongoPlugin(uri="mongodb://127.0.0.1", db=ADMIN_BUCKET_NAME,
+                        json_mongo=True).get_mongo()
+
     MyClient = riak.RiakClient(protocol=RIAK_PROTOCOL,
                                http_port=RIAK_HTTP_PORT,
                                host=RIAK_HOST)
 
-    MyAdminBucket = MyClient.bucket(ADMIN_BUCKET_NAME)
-
     MyBucket = MyClient.bucket(MINING_BUCKET_NAME)
 
-    for cube in MyAdminBucket.get('cube').data:
+    print "## START"
+    for cube in mongo['cube'].find():
         try:
             slug = cube['slug']
 
@@ -33,9 +36,9 @@ def run(cube_slug=None):
                 continue
 
             sql = u"""SELECT * FROM ({}) AS CUBE;""".format(cube['sql'])
-            for c in MyAdminBucket.get('connection').data:
-                if c['slug'] == cube['connection']:
-                    connection = c['connection']
+
+            connection = mongo['connection'].find_one({
+                'slug': cube['connection']})['connection']
 
             MyBucket.new(slug, data='').store()
             MyBucket.new(u'{}-columns'.format(slug), data='').store()
@@ -77,7 +80,7 @@ def run(cube_slug=None):
         except:
             pass
 
-    print "## FINISH"
+    print "## END"
     return True
 
 

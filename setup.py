@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from setuptools import setup, find_packages
-import mining_new as mining
+import mining
 
 
 REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()
@@ -13,6 +13,7 @@ dependency_links = [i.strip() for i in open("requirements.txt").readlines()
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Environment :: Web Environment",
+    'Framework :: Bottle',
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
