@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from setuptools import setup, find_packages
-import manage as mining
+import mining_new as mining
 
 
 REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()
