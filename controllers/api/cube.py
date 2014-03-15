@@ -29,7 +29,7 @@ def cube_post(mongodb, slug=None):
     ret = post(mongodb, collection)
     if 'status' not in ret:
         Queue(connection=Redis()).enqueue_call(
-            func='bin.mining_new.run',
+            func='bin.mining.run',
             args=(ret['slug'],)
         )
 
@@ -41,7 +41,7 @@ def cube_put(mongodb, slug=None):
     ret = put(mongodb, collection, slug)
     if 'status' not in ret:
         Queue(connection=Redis()).enqueue_call(
-            func='bin.mining_new.run',
+            func='bin.mining.run',
             args=(ret['slug'],)
         )
 
