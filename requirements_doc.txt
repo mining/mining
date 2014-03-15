@@ -4,3 +4,4 @@ sphinxcontrib-blockdiag
 sphinxcontrib-issuetracker
 sphinxcontrib-spelling
 pyenchant
+-e git+git://github.com/davisp/ghp-import.git#egg=ghp-import
