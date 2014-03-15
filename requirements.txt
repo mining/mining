@@ -6,6 +6,7 @@ bottle
 bottle-mongo
 bottle-websocket
 riak
+pymongo
 python-memcached
 python-dateutil
 nose
