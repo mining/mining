@@ -1,0 +1,6 @@
+sphinx
+bw_sphinxtheme
+sphinxcontrib-blockdiag
+sphinxcontrib-issuetracker
+sphinxcontrib-spelling
+pyenchant
