@@ -3,7 +3,7 @@ var dashboard = angular.module('miningApp.dashboard', [])
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
       .when('/dashboard/:slug', {
-        templateUrl: 'views/dashboard_detail.html',
+        templateUrl: 'assets/app/views/dashboard_detail.html',
         controller: 'DashboardDetailCtrl',
         resolve: {
           'current_dashboard': ['Dashboard', '$route', 

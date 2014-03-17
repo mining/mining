@@ -13,7 +13,7 @@
     </pre>
     <div ng-repeat="e in selected_dashboard.element">
       <h3>[[ e | json ]]</h3>
-      <chart element="e"></chart>
+      <chart element="[[e]]"></chart>
       <div>
         [[ filters | json ]]
       </div>

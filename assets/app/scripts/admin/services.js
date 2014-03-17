@@ -24,7 +24,7 @@ admin
     function($resource){
       return $resource('/api/dashboard/:slug', {'slug':''}, {
         update : { method: 'PUT', params: {'slug': '@slug'}},
-        getFull : { method: 'GET', params: {'slug': '@slug', 'full': true}, isArray: true}
+        getFull : { method: 'GET', params: {'slug': '@slug', 'full': true}}
       });
     }])
 ;
