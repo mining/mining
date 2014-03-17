@@ -6,6 +6,7 @@ from bottle.ext.mongo import MongoPlugin
 from redis import Redis
 from rq import Queue
 
+from settings import MONGO_URI
 from .base import get, post, put, delete
 
 
@@ -13,8 +14,7 @@ ADMIN_BUCKET_NAME = 'openminig-admin'
 collection = 'cube'
 
 cube_app = Bottle()
-mongo = MongoPlugin(uri="mongodb://127.0.0.1", db=ADMIN_BUCKET_NAME,
-                    json_mongo=True)
+mongo = MongoPlugin(uri=MONGO_URI, db=ADMIN_BUCKET_NAME, json_mongo=True)
 cube_app.install(mongo)
 
 
