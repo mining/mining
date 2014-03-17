@@ -26,7 +26,7 @@ Cube, Dimensions, Facts and Measures
 
 The application models the data as a cube with multiple dimensions:
 
-.. figure:: _static/cubes-slice_and_dice-cell.png
+.. figure:: static/cubes-slice_and_dice-cell.png
     :align: center
     :width: 400px
 
