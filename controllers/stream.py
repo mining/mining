@@ -41,7 +41,7 @@ def data(ws, mongodb, slug):
     if request.GET.get('fields', None):
         fields = request.GET.get('fields').split(',')
 
-    ws.send({'type': 'columns', 'data': fields})
+    ws.send(json.dumps({'type': 'columns', 'data': fields}))
 
     filters = [i[0] for i in request.GET.iteritems()
                if len(i[0].split('filter__')) > 1]
@@ -64,7 +64,7 @@ def data(ws, mongodb, slug):
     if len(groupby) >= 1:
         df = df.groupby(groupby)
 
-    ws.send({'type': 'max_page', 'data': len(df)})
+    ws.send(json.dumps({'type': 'max_page', 'data': len(df)}))
 
     # CLEAN MEMORY
     del filters, fields, columns
@@ -73,14 +73,14 @@ def data(ws, mongodb, slug):
     for i in df.to_dict(outtype='records')[page_start:page_end]:
         if element.get('categories', None):
             categories.append(i[element.get('categories')])
-        ws.send({'type': 'data', 'data': i})
+        ws.send(json.dumps({'type': 'data', 'data': i}))
 
     # CLEAN MEMORY
     del df
     gc.collect()
 
-    ws.send({'type': 'categories', 'data': categories})
-    ws.send({'type': 'close'})
+    ws.send(json.dumps({'type': 'categories', 'data': categories}))
+    ws.send(json.dumps({'type': 'close'}))
 
     # CLEAN MEMORY
     del categories
