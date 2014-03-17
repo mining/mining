@@ -9,9 +9,9 @@ tox-test: environment
 
 .PHONY: environment
 environment:
-	@pip install -r requirements_dev.txt
-	@pip install -r requirements.txt
-	@pip install numexpr==2.3
+	@pip install -r requirements_dev.txt --use-mirrors
+	@pip install -r requirements.txt --use-mirrors
+	@pip install numexpr==2.3 --use-mirrors
 	@python setup.py develop
 
 .PHONY: install
@@ -20,7 +20,7 @@ install:
 
 .PHONY: pep8
 pep8:
-	@flake8 mining admin bin db test --ignore=F403,F401
+	@flake8 mining bin db test --ignore=F403,F401
 
 .PHONY: sdist
 sdist: test

@@ -25,10 +25,11 @@ def get(mongodb, collection, slug):
     return dumps(response)
 
 
-def post(mongodb, collection):
+def post(mongodb, collection, opt={}):
     base()
     data = request.json
     data['slug'] = slugfy(data['name'])
+    data += opt
     get = mongodb[collection].find({'slug': data['slug']})
     if get.count() == 0:
         mongodb[collection].insert(data)
@@ -37,7 +38,7 @@ def post(mongodb, collection):
     return {'status': 'error', 'message': 'Object exist, please send PUT!'}
 
 
-def put(mongodb, collection, slug):
+def put(mongodb, collection, slug, opt={}):
     base()
     data = request.json
     data['slug'] = slug

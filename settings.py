@@ -22,3 +22,6 @@ MINING_BUCKET_NAME = u'openmining'
 # Memcache
 MEMCACHE_CONNECTION = u'127.0.0.1:11211'
 MEMCACHE_DEBUG = 0
+
+# MongoDB
+MONGO_URI = 'mongodb://127.0.0.1'

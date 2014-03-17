@@ -6,6 +6,7 @@ from bottle.ext.mongo import MongoPlugin
 from redis import Redis
 from rq import Queue
 
+from settings import MONGO_URI
 from .base import get, post, put, delete
 
 
@@ -13,8 +14,7 @@ ADMIN_BUCKET_NAME = 'openminig-admin'
 collection = 'cube'
 
 cube_app = Bottle()
-mongo = MongoPlugin(uri="mongodb://127.0.0.1", db=ADMIN_BUCKET_NAME,
-                    json_mongo=True)
+mongo = MongoPlugin(uri=MONGO_URI, db=ADMIN_BUCKET_NAME, json_mongo=True)
 cube_app.install(mongo)
 
 
@@ -26,7 +26,7 @@ def cube_get(mongodb, slug=None):
 
 @cube_app.route('/', method='POST')
 def cube_post(mongodb, slug=None):
-    ret = post(mongodb, collection)
+    ret = post(mongodb, collection, opt={'status': False})
     if 'status' not in ret:
         Queue(connection=Redis()).enqueue_call(
             func='bin.mining.run',
@@ -38,7 +38,7 @@ def cube_post(mongodb, slug=None):
 
 @cube_app.route('/<slug>', method='PUT')
 def cube_put(mongodb, slug=None):
-    ret = put(mongodb, collection, slug)
+    ret = put(mongodb, collection, slug, opt={'status': False})
     if 'status' not in ret:
         Queue(connection=Redis()).enqueue_call(
             func='bin.mining.run',

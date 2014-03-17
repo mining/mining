@@ -10,7 +10,7 @@ from bottle.ext.mongo import MongoPlugin
 from pandas import DataFrame
 
 from utils import df_generate
-from settings import RIAK_PROTOCOL, RIAK_HTTP_PORT, RIAK_HOST
+from settings import RIAK_PROTOCOL, RIAK_HTTP_PORT, RIAK_HOST, MONGO_URI
 from settings import MINING_BUCKET_NAME, ADMIN_BUCKET_NAME, PROJECT_PATH
 
 
@@ -22,9 +22,7 @@ MyBucket = MyClient.bucket(MINING_BUCKET_NAME)
 
 
 export_app = Bottle()
-mongo = MongoPlugin(uri="mongodb://127.0.0.1", db=ADMIN_BUCKET_NAME,
-                    json_mongo=True)
-
+mongo = MongoPlugin(uri=MONGO_URI, db=ADMIN_BUCKET_NAME, json_mongo=True)
 export_app.install(mongo)
 
 

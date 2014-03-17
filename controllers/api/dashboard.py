@@ -4,6 +4,7 @@ import json
 from bottle import Bottle, request
 from bottle.ext.mongo import MongoPlugin
 
+from settings import MONGO_URI
 from .base import get, post, put, delete
 
 from element import collection as collection_element
@@ -12,8 +13,7 @@ ADMIN_BUCKET_NAME = 'openminig-admin'
 collection = 'dashboard'
 
 dashboard_app = Bottle()
-mongo = MongoPlugin(uri="mongodb://127.0.0.1", db=ADMIN_BUCKET_NAME,
-                    json_mongo=True)
+mongo = MongoPlugin(uri=MONGO_URI, db=ADMIN_BUCKET_NAME, json_mongo=True)
 dashboard_app.install(mongo)
 
 
