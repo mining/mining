@@ -39,7 +39,12 @@ extensions = [
     'sphinxcontrib.blockdiag',
     'sphinxcontrib.issuetracker',
     'sphinxcontrib.spelling',
+    'sphinxtogithub',
 ]
+
+sphinx_to_github = True
+sphinx_to_github_verbose = True
+sphinx_to_github_encoding = "utf-8"
 
 ### Extensions configuration
 
