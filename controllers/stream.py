@@ -15,13 +15,6 @@ from settings import RIAK_PROTOCOL, RIAK_HTTP_PORT, RIAK_HOST
 from settings import MINING_BUCKET_NAME, ADMIN_BUCKET_NAME, MONGO_URI
 
 
-MyClient = riak.RiakClient(protocol=RIAK_PROTOCOL,
-                           http_port=RIAK_HTTP_PORT,
-                           host=RIAK_HOST)
-
-MyBucket = MyClient.bucket(MINING_BUCKET_NAME)
-
-
 stream_app = Bottle()
 mongo = MongoPlugin(uri=MONGO_URI, db=ADMIN_BUCKET_NAME, json_mongo=True)
 stream_app.install(mongo)
@@ -29,10 +22,21 @@ stream_app.install(mongo)
 
 @stream_app.route('/data/<slug>', apply=[websocket])
 def data(ws, mongodb, slug):
+
     if not ws:
         abort(400, 'Expected WebSocket request.')
 
-    columns = json.loads(MyBucket.get('{}-columns'.format(slug)).data)
+    MyClient = riak.RiakClient(protocol=RIAK_PROTOCOL,
+                               http_port=RIAK_HTTP_PORT,
+                               host=RIAK_HOST)
+
+    MyBucket = MyClient.bucket(MINING_BUCKET_NAME)
+
+    element = mongodb['element'].find_one({'slug': slug})
+
+    columns = json.loads(MyBucket.get(
+        '{}-columns'.format(element.get('cube'))).data or [])
+
     fields = columns
     if request.GET.get('fields', None):
         fields = request.GET.get('fields').split(',')
@@ -42,11 +46,6 @@ def data(ws, mongodb, slug):
     filters = [i[0] for i in request.GET.iteritems()
                if len(i[0].split('filter__')) > 1]
 
-    try:
-        ca = mongo['element'].find_one({'slug': slug})['categories']
-    except:
-        ca = None
-
     page = int(request.GET.get('page', 1))
     page_start = 0
     page_end = 50
@@ -54,12 +53,14 @@ def data(ws, mongodb, slug):
         page_end = 50 * page
         page_start = page_end - 50
 
-    df = DataFrame(MyBucket.get(slug).data, columns=fields)
+    df = DataFrame(MyBucket.get(element.get('cube')).data, columns=fields)
     if len(filters) >= 1:
         for f in filters:
             df = df.query(df_generate(df, request.GET.get(f), f))
 
-    groupby = request.GET.get('groupby').split(',')
+    groupby = []
+    if request.GET.get('groupby', None):
+        groupby = request.GET.get('groupby', ).split(',')
     if len(groupby) >= 1:
         df = df.groupby(groupby)
 
@@ -70,8 +71,8 @@ def data(ws, mongodb, slug):
     gc.collect()
     categories = []
     for i in df.to_dict(outtype='records')[page_start:page_end]:
-        if ca:
-            categories.append(i[ca])
+        if element.get('categories', None):
+            categories.append(i[element.get('categories')])
         ws.send({'type': 'data', 'data': i})
 
     # CLEAN MEMORY

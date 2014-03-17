@@ -29,7 +29,7 @@ def post(mongodb, collection, opt={}):
     base()
     data = request.json
     data['slug'] = slugfy(data['name'])
-    data += opt
+    data = dict(data.items() + opt.items())
     get = mongodb[collection].find({'slug': data['slug']})
     if get.count() == 0:
         mongodb[collection].insert(data)
@@ -42,6 +42,7 @@ def put(mongodb, collection, slug, opt={}):
     base()
     data = request.json
     data['slug'] = slug
+    data = dict(data.items() + opt.items())
     get = mongodb[collection].find_one({'slug': slug})
     if get:
         mongodb[collection].update({'slug': slug}, data)
