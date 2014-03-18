@@ -23,7 +23,8 @@ var dashboard = angular.module('miningApp.dashboard', [])
         redirectTo: '/'
       });
   }])
-  .run(['$rootScope', function($rootScope){
+  .run(['$rootScope', 'Dashboard', function($rootScope, Dashboard){
     $rootScope.selected_dashboard = {'name':'xxxxxxxxxx'};
+    $rootScope.dashboards = Dashboard.query();
   }])
 ;

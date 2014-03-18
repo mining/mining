@@ -8,7 +8,7 @@
   </div>
 </div>
 <div class="row ng-scope" ng-repeat="e in selected_dashboard.element">
-  <pre>[[ e | json ]]</pre>
+  <!-- <pre>[[ e | json ]]</pre> -->
   <div ng-if="e.type=='grid'" class="col-lg-12 panel-group">
     <div class="panel panel-primary">
       <div class="panel-heading">
@@ -18,19 +18,19 @@
           </a>
         </h3>
       </div>
-      <div id="collapse-[[ e.slug ]]" class="panel-collapse collapse">
+      <div id="collapse-[[ e.slug ]]" class="panel-collapse collapse in">
         <div class="panel-body">
           <div class="table-responsive" id="element-[[ e.slug ]]">
             <div>
               <ul class="pagination">
                 <li ng-class="{'disabled':e.current_page==1}">
-                  <a ng-click="selectPage('[[ e.slug ]]',1)">First</a>
+                  <a ng-click="selectPage(e,1)">First</a>
                 </li>
                 <li ng-repeat="(key,p) in getPages(e)" ng-class="{'active':p==e.current_page}">
-                  <a ng-click="selectPage('[[ e.slug ]]', p)">[[ p ]]</a>
+                  <a ng-click="selectPage(e, p)">[[ p ]]</a>
                 </li>
                 <li ng-class="{'disabled':e.current_page==e.total_pages}">
-                  <a ng-click="selectPage('[[ e.slug ]]', e.total_pages)">Last</a>
+                  <a ng-click="selectPage(e, e.total_pages)">Last</a>
                 </li>
               </ul>
             </div>
