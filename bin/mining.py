@@ -77,8 +77,9 @@ def run(cube_slug=None):
             print "# CLEAN MEMORY: {}\n".format(slug)
             del pdict, df
             gc.collect()
-        except:
-            pass
+        except Exception, e:
+            print e
+            # pass
 
     print "## END"
     return True
