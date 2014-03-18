@@ -1,21 +1,120 @@
 <div class="row">
-    <div class="col-lg-12">
-        <h1><i class="fa fa-globe"></i> [[ selected_dashboard.name ]]</h1>
-        <ol class="breadcrumb">
-            <li><a href="/"><i class="icon-dashboard"></i> Dashboard</a></li>
-            <li class="active">[[ selected_dashboard.name ]]</li>
-        </ol>
-    </div>
+  <div class="col-lg-12">
+    <h1><i class="fa fa-globe"></i> [[ selected_dashboard.name ]]</h1>
+    <ol class="breadcrumb">
+      <li><a><i class="icon-dashboard"></i> Dashboard</a></li>
+      <li class="active">[[ selected_dashboard.name ]]</li>
+    </ol>
+  </div>
 </div>
-<div class="row">
-    <pre>
-        [[ selected_dashboard | json ]]
-    </pre>
-    <div ng-repeat="e in selected_dashboard.element">
-      <h3>[[ e | json ]]</h3>
-      <chart element="[[e]]"></chart>
-      <div>
-        [[ filters | json ]]
+<div class="row ng-scope" ng-repeat="e in selected_dashboard.element">
+  <pre>[[ e | json ]]</pre>
+  <div ng-if="e.type=='grid'" class="col-lg-12 panel-group">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" ng-href="#collapse-[[ e.slug ]]">
+            <i class="fa fa-bar-chart-o"></i> [[ e.name ]]
+          </a>
+        </h3>
+      </div>
+      <div id="collapse-[[ e.slug ]]" class="panel-collapse collapse">
+        <div class="panel-body">
+          <div class="table-responsive" id="element-[[ e.slug ]]">
+            <div>
+              <ul class="pagination">
+                <li ng-class="{'disabled':e.current_page==1}">
+                  <a ng-click="selectPage('[[ e.slug ]]',1)">First</a>
+                </li>
+                <li ng-repeat="(key,p) in getPages(e)" ng-class="{'active':p==e.current_page}">
+                  <a ng-click="selectPage('[[ e.slug ]]', p)">[[ p ]]</a>
+                </li>
+                <li ng-class="{'disabled':e.current_page==e.total_pages}">
+                  <a ng-click="selectPage('[[ e.slug ]]', e.total_pages)">Last</a>
+                </li>
+              </ul>
+            </div>
+            <table class="process table table-bordered table-hover">
+              <tbody>
+                <tr>
+                  <th ng-repeat="c in e.columns">
+                    <a>[[ c ]]</a>
+                  </th>
+                </tr>
+                <tr ng-repeat="p in e.process">
+                  <td ng-repeat="c in e.columns">[[ p[c] ]]</td>
+                </tr>
+              </tbody>
+            </table>
+            <div>
+              <ul class="pagination">
+                <li ng-class="{'disabled':e.current_page==1}">
+                  <a ng-click="selectPage('[[ e.slug ]]',1)">First</a>
+                </li>
+                <li ng-repeat="(key,p) in getPages(e)" ng-class="{'active':p==e.current_page}">
+                  <a ng-click="selectPage('[[ e.slug ]]', p)">[[ p ]]</a>
+                </li>
+                <li ng-class="{'disabled':e.current_page==e.total_pages}">
+                  <a ng-click="selectPage('[[ e.slug ]]', e.total_pages)">Last</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="col-lg-12 panel-group">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#filter-collapse-[[ e.slug ]]"><i class="fa fa-bar-chart-o"></i> Filters</a>
+              <a id="export-xls-[[ e.slug ]]" ng-click="export('xls','/process/[[ e.slug ]]')"><i class="fa fa-table"></i> Excel</a>
+              <a id="export-csv-[[ e.slug ]]" ng-click="export('csv','/process/[[ e.slug ]]')"><i class="fa fa-file-text-o"></i> CSV</a>
+            </h3>
+          </div>
+          <div id="filter-collapse-[[ e.slug ]]" class="panel-collapse collapse">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-lg-6">
+                  <form role="form" name="form-filter">
+                    <div class="form-group">
+                      <label>Field</label>
+                      <select ng-model="e.filter_field" ng-options="c for c in e.columns" required=""></select>
+                    </div>
+                    <div class="form-group">
+                      <label>Operator</label>
+                      <select ng-model="e.filter_operator" ng-options="op.value for op in operators" required=""></select>
+                    </div>
+                    <div class="form-group">
+                      <label>Type</label>
+                      <select ng-model="e.filter_type" ng-options="ty.value for ty in types" required=""></select>
+                    </div>
+                    <div class="form-group">
+                      <label>Format</label>
+                      <input class="form-control" ng-model="e.filter_format" required="">
+                    </div>
+                    <div class="form-group">
+                      <label>Value</label>
+                      <input class="form-control" ng-model="e.filter_value" required="">
+                      <p class="help-block">For range filter use: <i>xx:yy.</i></p>
+                    </div>
+                    <button type="button" class="btn btn-success btn-lg btn-block" ng-click="addFilter(e)">Add Filter</button>
+                  </form><!-- /.row -->
+                </div>
+                <div class="col-lg-6">
+                  <ul>
+                    <li ng-repeat="(key,val) in e.filters">
+                      [[ key ]] : [[ val ]]
+                    </li>
+                    <!-- ngRepeat: (key,val) in filters -->
+                  </ul>
+                  <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="applyFilters(e)">Apply Filters</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
 </div>

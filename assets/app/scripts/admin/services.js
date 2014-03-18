@@ -10,7 +10,8 @@ admin
   .factory('Element', ['$resource',
     function($resource){
       return $resource('/api/element/:slug', {'slug':'@slug'}, {
-        update:{method:'PUT', params: {'slug':'@slug'}}
+        update: {method:'PUT', params: {'slug': '@slug'}},
+        loadData: {method:'GET', params: {'slug': '@slug', 'page': '@page'}}
       });
     }])
   .factory('Cube', ['$resource',
@@ -24,7 +25,7 @@ admin
     function($resource){
       return $resource('/api/dashboard/:slug', {'slug':''}, {
         update : { method: 'PUT', params: {'slug': '@slug'}},
-        getFull : { method: 'GET', params: {'slug': '@slug', 'full': true}}
+        // getFull : { method: 'GET', params: {'slug': '@slug', 'full': true}, url: "ws://"+ location.host +"/process/:slug.ws?"}
       });
     }])
 ;

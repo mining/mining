@@ -5,9 +5,10 @@
  */
 
 dashboard
-  .directive('chart', [function() {
-    var gridTemplate = '<table class="process table table-bordered table-hover"><tr><th ng-repeat="c in columns"><a href="javascript:void(0);" ng-click="predicate = \'[[c]]\'; reverse=!reverse">[[c]]</a></th></tr><tr ng-repeat="p in process | orderBy:predicate:reverse"><td ng-repeat="c in columns">[[p[c]]]</td></tr></table>\
-    <ul class="pagination"><li ng-class="{\'disabled\':current_page==1}"><a ng-click="selectPage(\'[[d[\'cube\']]]\',1)">First</a></li><li ng-repeat="(key,p) in getPages()" ng-class="{\'active\':p==current_page}"><a ng-click="selectPage(\'[[d[\'cube\']]]\', p)">[[ p ]]</a></li><li ng-class="{\'disabled\':current_page==total_pages}"><a ng-click="selectPage(\'[[d[\'cube\']]]\', total_pages)">Last</a></li></ul>';
+  .directive('chart', ['$compile', 
+    function($compile) {
+    var gridTemplate = '<pre>[[ columns | json ]]</pre>';
+    var x='<table class="process table table-bordered table-hover"><tr><th ng-repeat="c in columns"><a ng-click="predicate = \'[[c]]\'; reverse=!reverse">[[c]]</a></th></tr><tr ng-repeat="p in process | orderBy:predicate:reverse"><td ng-repeat="c in columns">[[ p[c] ]]</td></tr></table><ul class="pagination"><li ng-class="{\'disabled\':current_page==1}"><a ng-click="selectPage(\'[[d[\'cube\']]]\',1)">First</a></li><li ng-repeat="(key,p) in getPages()" ng-class="{\'active\':p==current_page}"><a ng-click="selectPage(\'[[d[\'cube\']]]\', p)">[[ p ]]</a></li><li ng-class="{\'disabled\':current_page==total_pages}"><a ng-click="selectPage(\'[[d[\'cube\']]]\', total_pages)">Last</a></li></ul>';
     var getTemplate = function(contentType) {
       var template = '';
       switch(contentType) {
@@ -34,11 +35,9 @@ dashboard
       $scope.process = [];
       $scope.current_page = 0;
       $scope.columns = [];
-      debugger;
 
       var sock = new WebSocket(API_URL);
       sock.onmessage = function (e) {
-        debugger;
         var data = JSON.parse(e.data.replace(/NaN/g,'null'));
         if(dashboard_element.type == 'grid'){
           API_URL += 'page=' + $scope.current_page + "&";
@@ -49,10 +48,12 @@ dashboard
           }else if (data.type == 'data') {
             $scope.process.push(data.data);
           }else if (data.type == 'close') {
+            console.log('fechou');
             sock.close();
+            element.html(getTemplate('grid')).show();
+            $compile(element.contents())($scope);
+            console.log('compilou');
           }
-          element.html(getTemplate('grid')).show();
-          $compile(element.contents())($scope);
         }else if(dashboard_element.type=='chart line'){
           var data = JSON.parse(e.data);
           console.log(data);
@@ -93,5 +94,6 @@ dashboard
         'fil': '@filters'
       }
     };
-  }])
+  }]
+  )
 ;
