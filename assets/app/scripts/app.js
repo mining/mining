@@ -8,7 +8,8 @@ var miningApp = angular.module('miningApp', [
     'highcharts-ng',
     'miningApp.dashboard',
     'miningApp.report',
-    'miningApp.admin'
+    'miningApp.admin',
+    'ui.bootstrap'
   ])
   .factory('AlertService', ['$rootScope',
     function ($rootScope) {
