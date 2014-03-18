@@ -68,8 +68,8 @@
           <div class="panel-heading">
             <h3 class="panel-title">
               <a ng-click="e.filterIsCollapsed=!e.filterIsCollapsed"><i class="fa fa-bar-chart-o"></i> Filters</a>
-              <a id="export-xls-[[ e.slug ]]" ng-click="export('xls','/process/[[ e.slug ]]')"><i class="fa fa-table"></i> Excel</a>
-              <a id="export-csv-[[ e.slug ]]" ng-click="export('csv','/process/[[ e.slug ]]')"><i class="fa fa-file-text-o"></i> CSV</a>
+              <a id="export-xls-[[ e.slug ]]" ng-click="export(e, 'xls','/export/data/'+[[ e.slug ]])"><i class="fa fa-table"></i> Excel</a>
+              <a id="export-csv-[[ e.slug ]]" ng-click="export(e, 'csv','/export/data/'+[[ e.slug ]])"><i class="fa fa-file-text-o"></i> CSV</a>
             </h3>
           </div>
           <div class="panel-collapse" collapse="e.filterIsCollapsed">
