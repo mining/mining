@@ -74,6 +74,9 @@ def run(cube_slug=None):
             print "# SAVE SQL ON RIAK: {}".format(slug)
             MyBucket.new(u'{}-sql'.format(slug), data=sql).store()
 
+            cube['status'] = True
+            mongo['cube'].update({'slug': cube['slug']}, cube)
+
             print "# CLEAN MEMORY: {}\n".format(slug)
             del pdict, df
             gc.collect()
