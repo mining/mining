@@ -19,7 +19,6 @@ dashboard
         API_URL += key + "=" + el.filters[key] + "&";
       }
       API_URL += 'page=' + el.current_page + "&";
-      console.log(API_URL);
       var sock = new WebSocket(API_URL);
       sock.onmessage = function (e) {
         var data = JSON.parse(e.data.replace(/NaN/g,'null'));
@@ -54,9 +53,46 @@ dashboard
       }
     };
 
+    // $scope.$watch('selected_dashboard.element.filter_format', function(newVal, oldVal, scope){
+    //   if(getNestedProp(newVal, 'key', '') == 'date'){
+    //     debugger;
+    //     $scope.filter_format = ":Y-:m-:d";
+    //   }else{
+    //     $scope.filter_format = "";
+    //   }
+    // });
+
+    $scope.addFilter = function(el){
+      var chave = 'filter__'+el.filter_field+"__"+el.filter_operator.key+'__'+el.filter_type.key;
+      if (el.filter_format)
+        chave = chave + '__'+el.filter_format;
+      var ind = $scope.selected_dashboard.element.indexOf(el);
+      $scope.selected_dashboard.element[ind].filters[chave] = el.filter_value;
+    };
+    $scope.removeFilter = function(el, index){
+      delete el.filters[index];
+    };
+    $scope.applyFilters = function(el){
+      el.current_page = 1;
+      el.total_pages = undefined;
+      el.pages = [];
+      loadGrid(el);
+    };
+
+    $scope.export = function(el, type, link){
+      var url = link+'.'+type+'?';
+      for (var key in el.filters){
+        url += key + "=" + el.filters[key] + "&";
+      }
+      window.open(url);
+    };
+
     $scope.selected_dashboard = current_dashboard.data;
+    
     $($scope.selected_dashboard.element).each(function(ind, val){
       angular.extend($scope.selected_dashboard.element[ind], {
+        isCollapsed: false,
+        filterIsCollapsed: true,
         current_page : 1,
         total_pages : 0,
         filter_operator : '',
@@ -64,7 +100,7 @@ dashboard
         filter_type : '',
         filter_format : '',
         filter_value : '',
-        filters : [],
+        filters : {},
         columns : [],
         process : [],
       });

@@ -20,9 +20,8 @@ mongo = MongoPlugin(uri=MONGO_URI, db=ADMIN_BUCKET_NAME, json_mongo=True)
 export_app.install(mongo)
 
 
-@export_app.route('/data/<slug>', apply=[websocket])
+@export_app.route('/data/<slug>.<ext>')
 def data(mongodb, slug, ext='xls'):
-
     MyClient = riak.RiakClient(protocol=RIAK_PROTOCOL,
                                http_port=RIAK_HTTP_PORT,
                                host=RIAK_HOST)

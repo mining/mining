@@ -13,12 +13,12 @@
     <div class="panel panel-primary">
       <div class="panel-heading">
         <h3 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" ng-href="#collapse-[[ e.slug ]]">
+          <a ng-click="e.isCollapsed=!e.isCollapsed">
             <i class="fa fa-bar-chart-o"></i> [[ e.name ]]
           </a>
         </h3>
       </div>
-      <div id="collapse-[[ e.slug ]]" class="panel-collapse collapse in">
+      <div collapse="e.isCollapsed" class="panel-collapse">
         <div class="panel-body">
           <div class="table-responsive" id="element-[[ e.slug ]]">
             <div>
@@ -67,27 +67,27 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">
-              <a data-toggle="collapse" data-parent="#accordion" href="#filter-collapse-[[ e.slug ]]"><i class="fa fa-bar-chart-o"></i> Filters</a>
-              <a id="export-xls-[[ e.slug ]]" ng-click="export('xls','/process/[[ e.slug ]]')"><i class="fa fa-table"></i> Excel</a>
-              <a id="export-csv-[[ e.slug ]]" ng-click="export('csv','/process/[[ e.slug ]]')"><i class="fa fa-file-text-o"></i> CSV</a>
+              <a ng-click="e.filterIsCollapsed=!e.filterIsCollapsed"><i class="fa fa-bar-chart-o"></i> Filters</a>
+              <a id="export-xls-[[ e.slug ]]" ng-click="export(e, 'xls','/export/data/'+[[ e.slug ]])"><i class="fa fa-table"></i> Excel</a>
+              <a id="export-csv-[[ e.slug ]]" ng-click="export(e, 'csv','/export/data/'+[[ e.slug ]])"><i class="fa fa-file-text-o"></i> CSV</a>
             </h3>
           </div>
-          <div id="filter-collapse-[[ e.slug ]]" class="panel-collapse collapse">
+          <div class="panel-collapse" collapse="e.filterIsCollapsed">
             <div class="panel-body">
               <div class="row">
                 <div class="col-lg-6">
                   <form role="form" name="form-filter">
                     <div class="form-group">
                       <label>Field</label>
-                      <select ng-model="e.filter_field" ng-options="c for c in e.columns" required=""></select>
+                      <select class="form-control" ng-model="e.filter_field" ng-options="c for c in e.columns" required=""></select>
                     </div>
                     <div class="form-group">
                       <label>Operator</label>
-                      <select ng-model="e.filter_operator" ng-options="op.value for op in operators" required=""></select>
+                      <select class="form-control" ng-model="e.filter_operator" ng-options="op.value for op in operators" required=""></select>
                     </div>
                     <div class="form-group">
                       <label>Type</label>
-                      <select ng-model="e.filter_type" ng-options="ty.value for ty in types" required=""></select>
+                      <select class="form-control" ng-model="e.filter_type" ng-options="ty.value for ty in types" required=""></select>
                     </div>
                     <div class="form-group">
                       <label>Format</label>
