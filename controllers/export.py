@@ -15,12 +15,12 @@ from settings import RIAK_PROTOCOL, RIAK_HTTP_PORT, RIAK_HOST, PROJECT_PATH
 from settings import MINING_BUCKET_NAME, ADMIN_BUCKET_NAME, MONGO_URI
 
 
-stream_app = Bottle()
+export_app = Bottle()
 mongo = MongoPlugin(uri=MONGO_URI, db=ADMIN_BUCKET_NAME, json_mongo=True)
-stream_app.install(mongo)
+export_app.install(mongo)
 
 
-@stream_app.route('/data/<slug>', apply=[websocket])
+@export_app.route('/data/<slug>', apply=[websocket])
 def data(mongodb, slug, ext='xls'):
 
     MyClient = riak.RiakClient(protocol=RIAK_PROTOCOL,

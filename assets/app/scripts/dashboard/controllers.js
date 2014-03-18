@@ -18,7 +18,6 @@ dashboard
         API_URL += key + "=" + el.filters[key] + "&";
       }
       API_URL += 'page=' + el.current_page + "&";
-      debugger;
 
       var sock = new WebSocket(API_URL);
       sock.onmessage = function (e) {
