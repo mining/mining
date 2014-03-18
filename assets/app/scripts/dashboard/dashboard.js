@@ -9,7 +9,7 @@ var dashboard = angular.module('miningApp.dashboard', [])
           'current_dashboard': ['Dashboard', '$route', '$http',
             function(Dashboard, $route, $http){
               if($route.current.params.slug){
-                return $http.get('/api/dashboard/?slug='+$route.current.params.slug+'&full=' + true);
+                return $http.get('/api/dashboard/'+$route.current.params.slug+'?full=' + true);
                 // return Dashboard.getFull({'slug':$route.current.params.slug});
               }else{
                 AlertService.add('error', 'Error!');

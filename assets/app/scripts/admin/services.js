@@ -23,7 +23,7 @@ admin
     }])
   .factory('Dashboard', ['$resource',
     function($resource){
-      return $resource('/api/dashboard/:slug', {'slug':''}, {
+      return $resource('/api/dashboard/:slug', {
         update : { method: 'PUT', params: {'slug': '@slug'}},
         // getFull : { method: 'GET', params: {'slug': '@slug', 'full': true}, url: "ws://"+ location.host +"/process/:slug.ws?"}
       });
