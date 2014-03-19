@@ -21,11 +21,13 @@ def rules(cube):
     scheduler_interval = cube.get('scheduler_interval', 60)
 
     if scheduler_type == 'minutes':
-        t = schedule.every(scheduler_interval).minutes
+        t = schedule.every(int(scheduler_interval)).minutes
     elif scheduler_type == 'hour':
         t = schedule.every().hour
     elif scheduler_type == 'day':
         t = schedule.every().day
+    else:
+        return None
     t.do(job, slug=cube.get('slug'))
 
 
