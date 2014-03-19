@@ -34,7 +34,9 @@ Run
 
 .. code-block:: bash
 
-    python manage.py && rqworker
+    python manage.py
+    python bin/scheduler.py
+    rqworker
 
 
 Contribute
