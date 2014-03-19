@@ -70,3 +70,9 @@ var miningApp = angular.module('miningApp', [
     function($rootScope, AlertService){
       $rootScope.closeAlert = AlertService.closeAlert;
     }]);
+var mining = {};
+mining['utils'] = {
+  padLeft: function (nr, n, str) {
+    return Array(n - String(nr).length + 1).join(str || '0') + nr;
+  }
+};

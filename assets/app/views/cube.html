@@ -9,21 +9,33 @@
 </div>
 <div class="row">
     <div class="col-lg-6">
-        <form name="form_connection" accept-charset="utf-8" role="form" ng-submit="save(cube)">
+        <form name="form_cube" accept-charset="utf-8" role="form" ng-submit="save(cube)">
             <div class="form-group">
-                <label for="connection_name">Name</label>
-                <input type="text" id="connection_name" ng-model="cube.name" class="form-control">
+                <label for="cube_name">Name *</label>
+                <input type="text" id="cube_name" ng-model="cube.name" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="connection_connection">Connection</label>
-                <select id="connection_connection" ng-options="c.slug as c.name for c in connections" ng-model="cube.connection" class="form-control"></select>
+                <label for="cube_connection">Connection *</label>
+                <select id="cube_connection" ng-options="c.slug as c.name for c in connections" ng-model="cube.connection" class="form-control" required></select>
             </div>
             <div class="form-group">
-                <label for="cube_query">Query</label>
-                <textarea id="cube_query" ng-model="cube.sql" class="form-control" rows="15"></textarea>
+                <label for="cube_schedule_type">Scheduler</label>
+                <select id="cube_schedule_type" ng-change="changeSchedulerType()" ng-options="t.key as t.val for t in scheduler_types" ng-model="cube.scheduler_type" class="form-control">
+                  <option value="" selected="selected">No</option>
+                </select>
+                <div ng-show="show_h">
+                  <label>Hour</label><input class="form-control" id="hour" ng-model="hour" type="number" min="0" max="23" />
+                </div>
+                <div ng-show="show_m">
+                  <label>Min</label><input class="form-control" id="min" ng-model="min" type="number" min="0" max="59"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="cube_sql">Query *</label>
+                <textarea id="cube_sql" ng-model="cube.sql" class="form-control" rows="15" required></textarea>
             </div>
             <label><input type="checkbox" ng-model="force_save" checked /> Force save</label>
-            <button type="submit" class="btn btn-default" ng-disabled="!force_save && !cube_valid">Save</button>
+            <button type="submit" class="btn btn-default" ng-disabled="form_cube.$invalid || (!force_save && !cube_valid)">Save</button>
             <input class="btn btn-info" type="button" value="Query test" ng-disabled="ajaxload" ng-click="testquery()" />
             <button type="button" ng-click="newForm()">New</button>
         </form>
