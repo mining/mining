@@ -46,12 +46,16 @@ def data(ws, mongodb, slug):
     filters = [i[0] for i in request.GET.iteritems()
                if len(i[0].split('filter__')) > 1]
 
-    page = int(request.GET.get('page', 1))
-    page_start = 0
-    page_end = 50
-    if page >= 2:
-        page_end = 50 * page
-        page_start = page_end - 50
+    if element['type'] == 'grid':
+        page = int(request.GET.get('page', 1))
+        page_start = 0
+        page_end = 50
+        if page >= 2:
+            page_end = 50 * page
+            page_start = page_end - 50
+    else:
+        page_start = None
+        page_end = None
 
     df = DataFrame(MyBucket.get(element.get('cube')).data, columns=fields)
     if len(filters) >= 1:

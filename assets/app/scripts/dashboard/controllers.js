@@ -4,8 +4,8 @@ dashboard
   ['$scope', function($scope) {
   }])
 .controller('DashboardDetailCtrl', 
-  ['$scope', '$routeParams', 'AlertService', 'current_dashboard', 'Element', '$anchorScroll', '$timeout',
-  function($scope, $routeParams, AlertService, current_dashboard, Element, $anchorScroll, $timeout){
+  ['$scope', '$routeParams', 'AlertService', 'current_dashboard', 'Element', '$anchorScroll', '$timeout', '$http',
+  function($scope, $routeParams, AlertService, current_dashboard, Element, $anchorScroll, $timeout, $http){
 
     $scope.gotoBottom = function (hash){
       $location.hash(hash);
@@ -105,8 +105,40 @@ dashboard
         process : [],
       });
       // Element.loadData({'slug': val.slug, 'page': val.current_page, 'filters': val.filters});
-      loadGrid(val);
+      if($scope.selected_dashboard.element[ind].type == 'grid')
+        loadGrid(val);
     });
-  }
-  ])
+    // $scope.xkey = 'range';
+
+    // $scope.ykeys = ['total_tasks', 'total_overdue'];
+
+    // $scope.labels = ['Total Tasks', 'Out of Budget Tasks'];
+
+    // $scope.myModel = [
+    // { range: 'January', total_tasks: 5, total_overdue: 5 },
+    // { range: 'January', total_tasks: 35, total_overdue: 8 },
+    // { range: 'January', total_tasks: 20, total_overdue: 1 },
+    // { range: 'January', total_tasks: 20, total_overdue: 6 }
+    // ];
+
+    // $http({method: 'GET', url: '/api/element/cube/top-bonus'}).
+    // success(function(data, status, headers, config) {
+    //     // here I would populate myModel with values from above url. 
+    //     // But for simplicity, I'm just hardcoding the values(changed slightly) again.
+    //     $scope.myModel = [
+    //     // changing just one value in first row.
+    //     { range: 'January', total_tasks: 25, total_overdue: 5 },
+    //     { range: 'January', total_tasks: 35, total_overdue: 8 },
+    //     { range: 'January', total_tasks: 20, total_overdue: 1 },
+    //     { range: 'January', total_tasks: 20, total_overdue: 6 }
+    //     ];
+    //     console.log('success ' + $scope.myModel[0].total_tasks);
+
+    //   }).
+    // error(function(data, status, headers, config) {
+    //   console.log('error');
+    // });
+
+    }
+])
 ;

@@ -157,13 +157,9 @@ admin
     };
     $scope.loadFields = function(){
       if($scope.element.type != 'grid'){
-        $http.get('/admin/api/element/cube/'+$scope.element.cube)
+        $http.get('/api/element/cube/'+$scope.element.cube)
         .success(function(retorno){
-          if(retorno.status=='success'){
-            $scope.fields = retorno.columns;
-          }else{
-            AlertService.add('error', 'Error!');
-          }
+          $scope.fields = retorno.columns;
         })
         .error(function(retorno){
           AlertService.add('error', 'Error!');
