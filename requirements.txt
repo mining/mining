@@ -14,3 +14,4 @@ redis
 rq
 xlwt
 gevent
+schedule
