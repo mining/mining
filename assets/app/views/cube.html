@@ -51,6 +51,9 @@
                 <th>
                     Connection
                 </th>
+                <th>
+                    Status
+                </th>
             </thead>
             <tbody ng-repeat="c in cubes">
                 <tr>
@@ -64,9 +67,12 @@
                     <td>
                         [[c.connection]]
                     </td>
+                    <td>
+                        <i class="fa" ng-class="{'fa-thumbs-up':c.status, 'fa-thumbs-down': !c.status}"></i>
+                    </td>
                 </tr>
                 <tr>
-                  <td colspan="3">
+                  <td colspan="4">
                     [[ c.sql ]]
                   </td>
                 </tr>
