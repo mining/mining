@@ -28,6 +28,12 @@ admin
   }])
 .controller('CubeCtrl', ['$scope', 'Cube', 'Connection', 'AlertService',
   function($scope, Cube, Connection, AlertService){
+    $scope.editorOptions = {
+        lineWrapping : true,
+        lineNumbers: true,
+        readOnly: false,
+        mode: 'text/x-sql'
+    };
     $scope.cube_valid = false;
     $scope.connections = Connection.query();
     $scope.cubes = Cube.query();

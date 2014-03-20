@@ -9,7 +9,8 @@ var miningApp = angular.module('miningApp', [
     'miningApp.dashboard',
     'miningApp.report',
     'miningApp.admin',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'ui.codemirror'
   ])
   .factory('AlertService', ['$rootScope',
     function ($rootScope) {
