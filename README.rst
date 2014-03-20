@@ -15,6 +15,7 @@ Requirements
 ------------
 
 * Riak (Data Warehouse)
+* MongoDB (Admin)
 * Redis (Queue)
 * Memcache
 
