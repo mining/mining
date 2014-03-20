@@ -27,11 +27,10 @@ def cube_get(mongodb, slug=None):
 @cube_app.route('/', method='POST')
 def cube_post(mongodb, slug=None):
     ret = post(mongodb, collection, opt={'status': False})
-    if 'status' not in ret:
-        Queue(connection=Redis()).enqueue_call(
-            func='bin.mining.run',
-            args=(ret['slug'],)
-        )
+    Queue(connection=Redis()).enqueue_call(
+        func='bin.mining.run',
+        args=(ret['slug'],)
+    )
 
     return ret
 
@@ -39,11 +38,10 @@ def cube_post(mongodb, slug=None):
 @cube_app.route('/<slug>', method='PUT')
 def cube_put(mongodb, slug=None):
     ret = put(mongodb, collection, slug, opt={'status': False})
-    if 'status' not in ret:
-        Queue(connection=Redis()).enqueue_call(
-            func='bin.mining.run',
-            args=(ret['slug'],)
-        )
+    Queue(connection=Redis()).enqueue_call(
+        func='bin.mining.run',
+        args=(ret['slug'],)
+    )
 
     return ret
 
