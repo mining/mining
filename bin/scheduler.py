@@ -3,11 +3,13 @@
 from gevent import monkey
 monkey.patch_all()
 
+from os import sys, path
 import time
 import schedule
 
 from bottle.ext.mongo import MongoPlugin
 
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from settings import ADMIN_BUCKET_NAME, MONGO_URI
 from bin.mining import run
 
