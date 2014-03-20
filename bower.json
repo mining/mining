@@ -36,6 +36,7 @@
     "angular-sanitize": "~1.2.6",
     "angular-route": "~1.2.6",
     "morris.js": "~0.4.3",
-    "angular-bootstrap": "~0.10.0"
+    "angular-bootstrap": "~0.10.0",
+    "angular-ui-codemirror": "bower"
   }
 }
