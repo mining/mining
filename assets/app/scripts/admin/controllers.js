@@ -87,8 +87,8 @@ admin
       $scope.cubes.splice($scope.cubes.indexOf(cube),1);
     };
     $scope.save = function(){
+      $scope.cube.scheduler_status = false;
       if($scope.cube.scheduler_type){
-        $scope.cube.scheduler_status = true;
         if($scope.cube.scheduler_type == 'day'){
           $scope.cube.scheduler_interval = mining.utils.padLeft(parseInt($scope.hour),2) +':'+ mining.utils.padLeft(parseInt($scope.min),2);
         }else if($scope.cube.scheduler_type == 'minute'){
