@@ -76,7 +76,13 @@ dashboard
       el.current_page = 1;
       el.total_pages = undefined;
       el.pages = [];
-      loadGrid(el);
+      if(el.type == 'grid'){
+        loadGrid(el);
+      }else if(el.type == 'chart_bar'){
+        loadBar(el);
+      }else if(el.type == 'chart_line'){
+        loadLine(el);
+      }
     };
 
     $scope.export = function(el, type, link){
@@ -107,38 +113,110 @@ dashboard
       // Element.loadData({'slug': val.slug, 'page': val.current_page, 'filters': val.filters});
       if($scope.selected_dashboard.element[ind].type == 'grid')
         loadGrid(val);
+      else if($scope.selected_dashboard.element[ind].type == 'chart_bar'){
+        $scope.selected_dashboard.element[ind].xkey = [$scope.selected_dashboard.element[ind].field_x];
+        $scope.selected_dashboard.element[ind].ykeys = [$scope.selected_dashboard.element[ind].field_y];
+        $scope.selected_dashboard.element[ind].labels = [$scope.selected_dashboard.element[ind].field_y];
+        loadBar(val);
+      }else if($scope.selected_dashboard.element[ind].type == 'chart_line'){
+        $scope.selected_dashboard.element[ind].xkey = [$scope.selected_dashboard.element[ind].field_x];
+        $scope.selected_dashboard.element[ind].labels = [$scope.selected_dashboard.element[ind].field_y];
+        loadLine(val);
+      }
     });
-    // $scope.xkey = 'range';
 
-    // $scope.ykeys = ['total_tasks', 'total_overdue'];
-
-    // $scope.labels = ['Total Tasks', 'Out of Budget Tasks'];
-
-    // $scope.myModel = [
-    // { range: 'January', total_tasks: 5, total_overdue: 5 },
-    // { range: 'January', total_tasks: 35, total_overdue: 8 },
-    // { range: 'January', total_tasks: 20, total_overdue: 1 },
-    // { range: 'January', total_tasks: 20, total_overdue: 6 }
-    // ];
-
-    // $http({method: 'GET', url: '/api/element/cube/top-bonus'}).
-    // success(function(data, status, headers, config) {
-    //     // here I would populate myModel with values from above url. 
-    //     // But for simplicity, I'm just hardcoding the values(changed slightly) again.
-    //     $scope.myModel = [
-    //     // changing just one value in first row.
-    //     { range: 'January', total_tasks: 25, total_overdue: 5 },
-    //     { range: 'January', total_tasks: 35, total_overdue: 8 },
-    //     { range: 'January', total_tasks: 20, total_overdue: 1 },
-    //     { range: 'January', total_tasks: 20, total_overdue: 6 }
-    //     ];
-    //     console.log('success ' + $scope.myModel[0].total_tasks);
-
-    //   }).
-    // error(function(data, status, headers, config) {
-    //   console.log('error');
-    // });
-
+    function loadBar(el){
+      el.process = [];
+      var element = 'bar-chart-'+el.slug;
+      if(angular.element('#'+element))
+        angular.element('#'+element).html('');
+      var API_URL = "ws://"+ location.host +"/stream/data/" + el.slug + "?";
+      for (var key in el.filters){
+        API_URL += key + "=" + el.filters[key] + "&";
+      }
+      API_URL += 'page=' + el.current_page + "&";
+      var sock = new WebSocket(API_URL);
+      sock.onmessage = function (e) {
+        var data = JSON.parse(e.data.replace(/NaN/g,'null'));
+        if (data.type == 'columns') {
+          el.columns = data.data;
+        }else if (data.type == 'max_page') {
+          el.total_pages = Math.ceil(data.data/50);
+        }else if (data.type == 'data') {
+          el.process.push(data.data);
+        }else if (data.type == 'close') {
+          sock.close();
+          $timeout(function(){
+            $scope.$apply(function(){
+              Morris.Bar({
+                element: element,
+                data: el.process,
+                xkey: el.xkey,
+                ykeys: el.ykeys,
+                labels: el.labels
+              });
+            });
+          });
+        }
+      };
     }
+    function loadLine(el){
+      el.process = [];
+      el.labels = [];
+      el.ykeys = [];
+      var count = 0;
+      var element = 'chart-line-'+el.slug;
+      if(angular.element('#'+element))
+        angular.element('#'+element).html('');
+      var API_URL = "ws://"+ location.host +"/stream/data/" + el.slug + "?";
+      for (var key in el.filters){
+        API_URL += key + "=" + el.filters[key] + "&";
+      }
+      API_URL += 'page=' + el.current_page + "&";
+      var sock = new WebSocket(API_URL);
+      sock.onmessage = function (e) {
+        var data = JSON.parse(e.data.replace(/NaN/g,'null'));
+        if (data.type == 'columns') {
+          el.columns = data.data;
+        }else if (data.type == 'max_page') {
+          el.total_pages = Math.ceil(data.data/50);
+        }else if (data.type == 'data') {
+          count=count+1;
+          if(el.labels.indexOf(data.data[el.field_serie]) < 0)
+              el.labels.push(data.data[el.field_serie]);
+          if(el.ykeys.indexOf(data.data[el.field_serie]) < 0)
+            el.ykeys.push(data.data[el.field_serie]);
+          var have = false;
+          var key = -1;
+          $(el.process).each(function(i_key, val){
+            if(val[el.field_x] == data.data[el.field_x]){
+              have = true;
+              key = i_key;
+            }
+          });
+          if (!have){
+            data.data[data.data[el.field_serie]] = data.data[el.field_y];
+            el.process.push(data.data);
+          }else{
+            el.process[key][data.data[el.field_serie]] = data.data[el.field_y];
+          }
+        }else if (data.type == 'close') {
+          sock.close();
+          console.log(count);
+          $timeout(function(){
+            $scope.$apply(function(){
+              Morris.Line({
+                element: element,
+                data: el.process,
+                xkey: el.xkey,
+                ykeys: el.ykeys,
+                labels: el.labels
+              });
+            });
+          });
+        }
+      };
+    }
+  }
 ])
 ;

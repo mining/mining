@@ -23,8 +23,16 @@
                 <select id="element_cube" ng-model="element.cube"  ng-options="c.slug as c.name for c in cubes" class="form-control" ng-change="loadFields()"></select>
             </div>
             <div class="form-group" ng-show="element.type!='grid'">
-                <label for="element_field">Field</label>
-                <select id="element_field" ng-model="element.field"  ng-options="c as c for c in fields" class="form-control"></select>
+                <label for="element_field">Field (x)</label>
+                <select id="element_field" ng-model="element.field_x"  ng-options="c as c for c in fields" class="form-control"></select>
+            </div>
+            <div class="form-group" ng-show="element.type!='grid'">
+                <label for="element_field">Field (y)</label>
+                <select id="element_field" ng-model="element.field_y"  ng-options="c as c for c in fields" class="form-control"></select>
+            </div>
+            <div class="form-group" ng-show="element.type=='chart_line'">
+                <label for="element_field">Series (line)</label>
+                <select id="element_field" ng-model="element.field_serie"  ng-options="c as c for c in fields" class="form-control"></select>
             </div>
             <button type="submit" class="btn btn-default">Save</button>
             <button type="button" ng-click="newForm()">New</button>
