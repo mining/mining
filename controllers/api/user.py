@@ -29,13 +29,16 @@ user_app.install(mongo)
 @user_app.route('/login', method='POST')
 def login(mongodb):
 
+    login = request.POST
     if request.content_type == "application/json":
         login = request.json
-    else:
-        login = request.POST
 
-    d = mongodb[collection].find_one({'username': login['username'],
-                                      'password': login['password']})
+    if login.get("apikey"):
+        d = mongodb[collection].find_one({'username': login['username'],
+                                          'apikey': login['apikey']})
+    else:
+        d = mongodb[collection].find_one({'username': login['username'],
+                                          'password': login['password']})
     d.pop('_id', None)
     d.pop('password', None)
     return d
