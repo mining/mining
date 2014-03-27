@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import unicodedata
 import re
+import unicodedata
+import ConfigParser
 from decimal import Decimal
 from datetime import date, datetime
 
@@ -92,3 +93,16 @@ def df_generate(df, value, str_field):
             _range = [i for i in xrange(int(between[0]), int(between[1]) + 1)]
 
         return u"{} in {}".format(field, _range)
+
+
+def conf(section):
+    config = ConfigParser.ConfigParser()
+    config.read("mining.ini")
+    _dict = {}
+    options = config.options(section)
+    for option in options:
+        try:
+            _dict[option] = config.get(section, option)
+        except:
+            _dict[option] = None
+    return _dict
