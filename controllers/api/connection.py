@@ -3,15 +3,17 @@
 from bottle import Bottle
 from bottle.ext.mongo import MongoPlugin
 
-from settings import MONGO_URI
+from utils import conf
 from .base import get, post, put, delete
 
 
-ADMIN_BUCKET_NAME = 'openminig-admin'
 collection = 'connection'
 
 connection_app = Bottle()
-mongo = MongoPlugin(uri=MONGO_URI, db=ADMIN_BUCKET_NAME, json_mongo=True)
+mongo = MongoPlugin(
+    uri=conf("mongodb")["uri"],
+    db=conf("mongodb")["db"],
+    json_mongo=True)
 connection_app.install(mongo)
 
 

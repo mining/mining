@@ -10,22 +10,23 @@ from sqlalchemy import create_engine
 from sqlalchemy.sql import text
 
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-from utils import fix_render
-from settings import RIAK_PROTOCOL, RIAK_HTTP_PORT, RIAK_HOST
-from settings import MINING_BUCKET_NAME, ADMIN_BUCKET_NAME
+from utils import fix_render, conf
 
 from bottle.ext.mongo import MongoPlugin
 
 
 def run(cube_slug=None):
-    mongo = MongoPlugin(uri="mongodb://127.0.0.1", db=ADMIN_BUCKET_NAME,
-                        json_mongo=True).get_mongo()
+    mongo = MongoPlugin(
+        uri=conf("mongodb")["uri"],
+        db=conf("mongodb")["db"],
+        json_mongo=True).get_mongo()
 
-    MyClient = riak.RiakClient(protocol=RIAK_PROTOCOL,
-                               http_port=RIAK_HTTP_PORT,
-                               host=RIAK_HOST)
+    MyClient = riak.RiakClient(
+        protocol=conf("riak")["protocol"],
+        http_port=conf("riak")["http_port"],
+        host=conf("riak")["host"])
 
-    MyBucket = MyClient.bucket(MINING_BUCKET_NAME)
+    MyBucket = MyClient.bucket(conf("riak")["bucket"])
 
     print "## START"
     for cube in mongo['cube'].find():

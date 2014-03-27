@@ -17,7 +17,8 @@ from controllers.api import api_app
 from controllers.stream import stream_app
 from controllers.export import export_app
 
-from settings import TEMPLATE_PATH, STATIC_PATH, MINING_PORT, MINING_IP
+from utils import conf
+from settings import TEMPLATE_PATH, STATIC_PATH
 
 
 reload(sys)
@@ -25,12 +26,13 @@ sys.setdefaultencoding('utf-8')
 
 parser = argparse.ArgumentParser(description=u'OpenMining Application Server')
 parser.add_argument('--port', help=u'Set application server port!',
-                    type=int, default=MINING_PORT)
+                    type=int, default=conf('openmining')['port'])
 parser.add_argument('--ip', help=u'Set application server IP!',
-                    type=str, default=MINING_IP)
+                    type=str, default=conf('openmining')['ip'])
 parser.add_argument('--debug', '-v', help=u'Set application server debug!',
                     action='count')
 args = parser.parse_args()
+
 
 T.insert(0, TEMPLATE_PATH)
 

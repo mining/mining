@@ -10,8 +10,8 @@ import schedule
 from bottle.ext.mongo import MongoPlugin
 
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-from settings import ADMIN_BUCKET_NAME, MONGO_URI
 from bin.mining import run
+from utils import conf
 
 
 def job(slug):
@@ -33,8 +33,10 @@ def rules(cube):
     t.do(job, slug=cube.get('slug'))
 
 
-mongo = MongoPlugin(uri=MONGO_URI, db=ADMIN_BUCKET_NAME,
-                    json_mongo=True).get_mongo()
+mongo = MongoPlugin(
+    uri=conf("mongodb")["uri"],
+    db=conf("mongodb")["db"],
+    json_mongo=True).get_mongo()
 
 register = []
 for cube in mongo['cube'].find({'scheduler': True}):

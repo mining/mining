@@ -10,13 +10,14 @@ from bottle.ext.mongo import MongoPlugin
 
 from pandas import DataFrame
 
-from utils import df_generate
-from settings import RIAK_PROTOCOL, RIAK_HTTP_PORT, RIAK_HOST
-from settings import MINING_BUCKET_NAME, ADMIN_BUCKET_NAME, MONGO_URI
+from utils import df_generate, conf
 
 
 stream_app = Bottle()
-mongo = MongoPlugin(uri=MONGO_URI, db=ADMIN_BUCKET_NAME, json_mongo=True)
+mongo = MongoPlugin(
+    uri=conf("mongodb")["uri"],
+    db=conf("mongodb")["db"],
+    json_mongo=True)
 stream_app.install(mongo)
 
 
@@ -26,11 +27,11 @@ def data(ws, mongodb, slug):
     if not ws:
         abort(400, 'Expected WebSocket request.')
 
-    MyClient = riak.RiakClient(protocol=RIAK_PROTOCOL,
-                               http_port=RIAK_HTTP_PORT,
-                               host=RIAK_HOST)
+    MyClient = riak.RiakClient(protocol=conf("riak")["protocol"],
+                               http_port=conf("riak")["http_port"],
+                               host=conf("riak")["host"])
 
-    MyBucket = MyClient.bucket(MINING_BUCKET_NAME)
+    MyBucket = MyClient.bucket(conf("riak")["bucket"])
 
     element = mongodb['element'].find_one({'slug': slug})
 

@@ -3,19 +3,19 @@
 from bottle import Bottle
 from bottle.ext.mongo import MongoPlugin
 
-from settings import MONGO_URI, RIAK_PROTOCOL, RIAK_HTTP_PORT
-from settings import RIAK_HOST, MINING_BUCKET_NAME
+from utils import conf
 from .base import get, post, put, delete
 
 import riak
 import json
 
-ADMIN_BUCKET_NAME = 'openminig-admin'
 collection = 'element'
 
 element_app = Bottle()
-mongo = MongoPlugin(uri=MONGO_URI, db=ADMIN_BUCKET_NAME,
-                    json_mongo=True)
+mongo = MongoPlugin(
+    uri=conf("mongodb")["uri"],
+    db=conf("mongodb")["db"],
+    json_mongo=True)
 element_app.install(mongo)
 
 
@@ -39,12 +39,14 @@ def element_put(mongodb, slug=None):
 def element_delete(mongodb, slug=None):
     return delete(mongodb, collection, slug)
 
+
 @element_app.route('/cube/<slug>', method='GET')
-def element_get(mongodb, slug=None):
-    MyClient = riak.RiakClient(protocol=RIAK_PROTOCOL,
-                               http_port=RIAK_HTTP_PORT,
-                               host=RIAK_HOST)
-    MyBucket = MyClient.bucket(MINING_BUCKET_NAME)
+def element_cube(mongodb, slug=None):
+    MyClient = riak.RiakClient(
+        protocol=conf("riak")["protocol"],
+        http_port=conf("riak")["http_port"],
+        host=conf("riak")["host"])
+    MyBucket = MyClient.bucket(conf("riak")["bucket"])
     data = MyBucket.get(u'{}-columns'.format(slug)).data or '{}'
     columns = json.loads(data)
-    return {'columns':columns}
+    return {'columns': columns}
