@@ -4,29 +4,30 @@ import json
 import gc
 import riak
 
-from bottle import Bottle, abort, request, response
-from bottle.ext.websocket import websocket
+from bottle import Bottle, request, response
 from bottle.ext.mongo import MongoPlugin
 
 from pandas import DataFrame
 
-from utils import df_generate
-from settings import RIAK_PROTOCOL, RIAK_HTTP_PORT, RIAK_HOST, PROJECT_PATH
-from settings import MINING_BUCKET_NAME, ADMIN_BUCKET_NAME, MONGO_URI
+from settings import PROJECT_PATH
+from utils import df_generate, conf
 
 
 export_app = Bottle()
-mongo = MongoPlugin(uri=MONGO_URI, db=ADMIN_BUCKET_NAME, json_mongo=True)
+mongo = MongoPlugin(
+    uri=conf("mongodb")["uri"],
+    db=conf("mongodb")["db"],
+    json_mongo=True)
 export_app.install(mongo)
 
 
 @export_app.route('/data/<slug>.<ext>')
 def data(mongodb, slug, ext='xls'):
-    MyClient = riak.RiakClient(protocol=RIAK_PROTOCOL,
-                               http_port=RIAK_HTTP_PORT,
-                               host=RIAK_HOST)
+    MyClient = riak.RiakClient(protocol=conf("riak")["protocol"],
+                               http_port=conf("riak")["http_port"],
+                               host=conf("riak")["host"])
 
-    MyBucket = MyClient.bucket(MINING_BUCKET_NAME)
+    MyBucket = MyClient.bucket(conf("riak")["bucket"])
 
     element = mongodb['element'].find_one({'slug': slug})
 
