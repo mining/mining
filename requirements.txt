@@ -6,6 +6,7 @@ bottle
 bottle-mongo
 bottle-websocket
 bottle-beaker
+beaker
 riak
 pymongo
 python-memcached
