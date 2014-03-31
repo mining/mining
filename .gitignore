@@ -43,3 +43,5 @@ _build
 assets/bower
 assets/exports
 mining.ini
+
+data
