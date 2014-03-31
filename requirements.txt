@@ -5,6 +5,7 @@ SQLAlchemy==0.9.1
 bottle
 bottle-mongo
 bottle-websocket
+bottle-beaker
 riak
 pymongo
 python-memcached
