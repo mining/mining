@@ -25,15 +25,22 @@ def dashboard_get(mongodb, slug=None):
     da = get(mongodb, collection, slug)
     if 'full' not in request.GET:
         return da
-    response = json.loads(da)[0]
-    elements = response['element']
-    response['element'] = []
-    for el in elements:
-        n_el = mongodb[collection_element].find_one({'slug': el})
-        if n_el:
-            del n_el['_id']
-            response['element'].append(n_el)
-    return response
+    response = json.loads(da)
+    new_resp = []
+    def full_elements(das):
+        elements = das['element']
+        das['element'] = []
+        for el in elements:
+            n_el = mongodb[collection_element].find_one({'slug': el})
+            if n_el:
+                del n_el['_id']
+                das['element'].append(n_el)
+        return das
+    for r in response:
+        new_resp.append(full_elements(r))
+    if slug:
+        return json.dumps(new_resp[0])
+    return json.dumps(new_resp)
 
 
 @dashboard_app.route('/', method='POST')
