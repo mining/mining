@@ -32,10 +32,10 @@
             </div>
             <div class="form-group">
                 <label for="cube_sql">Query *</label>
-                <textarea ui-codemirror="editorOptions" id="cube_sql" ng-model="cube.sql" required></textarea>
+                <textarea ui-codemirror="editorOptions" id="cube_sql" ng-model="cube.sql"></textarea>
             </div>
             <label><input type="checkbox" ng-model="force_save" checked /> Force save</label>
-            <button type="submit" class="btn btn-default" ng-disabled="form_cube.$invalid || (!force_save && !cube_valid)">Save</button>
+            <button type="submit" class="btn btn-default" ng-disabled="(form_cube.$invalid && !cube.sql) || (!force_save && !cube_valid)">Save</button>
             <input class="btn btn-info" type="button" value="Query test" ng-disabled="ajaxload" ng-click="testquery()" />
             <button type="button" ng-click="newForm()">New</button>
         </form>

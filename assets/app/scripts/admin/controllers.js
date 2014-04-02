@@ -26,13 +26,20 @@ admin
       $scope.connection = new Connection();
     };
   }])
-.controller('CubeCtrl', ['$scope', 'Cube', 'Connection', 'AlertService',
-  function($scope, Cube, Connection, AlertService){
+.controller('CubeCtrl', ['$scope', 'Cube', 'Connection', 'AlertService', '$timeout',
+  function($scope, Cube, Connection, AlertService, $timeout){
     $scope.editorOptions = {
-        lineWrapping : true,
-        lineNumbers: true,
-        readOnly: false,
-        mode: 'text/x-sql'
+      lineWrapping : true,
+      lineNumbers: true,
+      readOnly: false,
+      mode: 'text/x-sql',
+      onLoad: function(editor) { // FIX TEMP ISSUE: https://github.com/angular-ui/ui-codemirror/issues/35
+        editor.on('blur', function() {
+          $timeout(function() {
+            $scope.cube.sql = editor.getValue();
+          });
+        })
+      }
     };
     $scope.cube_valid = false;
     $scope.connections = Connection.query();
@@ -184,7 +191,7 @@ admin
     $scope.selectDashboard = function(d){
       $scope.dashboard = d;
     };
-    $scope.deleteElement = function(dashboard){
+    $scope.deleteDashboard = function(dashboard){
       Dashboard.delete(dashboard);
       $rootScope.dashboards.splice($rootScope.dashboards.indexOf(dashboard),1);
     };
@@ -202,4 +209,80 @@ admin
     $scope.newForm = function(){
       $scope.dashboard = new Dashboard();
     };
-  }]);
+  }])
+.controller('UserCtrl', ['$scope', 'User', 'AlertService', 'Dashboard',
+  function($scope, User, AlertService, Dashboard){
+    $scope.users = User.query();
+    $scope.permissions = Dashboard.getFullList();
+    $scope.user = new User();
+    $scope.editing = false;
+    $scope.change_pass = false;
+    $scope.rules = ['user', 'admin', 'root'];
+    function clearPermissions(){
+      $($scope.permissions).each(function(key, dash){
+          dash.permitted = false;
+          $(dash.element).each(function(key, elem){
+              elem.permitted = false;
+          });
+      });
+    }
+    $scope.selectUser = function(us){
+      $scope.user = us;
+      $scope.editing = true;
+      $scope.change_pass = false;
+      clearPermissions();
+      $($scope.permissions).each(function(key, dash){
+        if($scope.user.permissions[dash.slug]){
+          dash.permitted = true;
+          $(dash.element).each(function(key, elem){
+            if($scope.user.permissions[dash.slug].indexOf(elem.slug) >= 0)
+              elem.permitted = true;
+          });
+        }
+      });
+    };
+    $scope.selectDashboard = function(da){
+      for(var x=0; x < da.element.length; x++){
+        da.element[x].permitted = !da.permitted;
+      }
+    };
+    $scope.deleteUser = function(user){
+      User.delete(user);
+      $scope.users.splice($scope.users.indexOf(user),1);
+      $scope.newForm();
+    };
+    $scope.changePass = function(user){
+      $scope.user = user;
+      $scope.editing = false;
+      $scope.change_pass = true;
+      clearPermissions();
+    };
+    $scope.save = function(){
+      $scope.user.permissions={};
+      $($scope.permissions).each(function(key, dash){
+        if(dash.permitted){
+          $scope.user.permissions[dash.slug]=[];
+          $(dash.element).each(function(key, elem){
+            if(elem.permitted)
+              $scope.user.permissions[dash.slug].push(elem.slug);
+          });
+        }
+      });
+      if($scope.editing){
+        User.update({'username':$scope.user.username},$scope.user);
+      }else{
+        $scope.user.$save().then(function(response) {
+          AlertService.add('success', 'Save ok');
+          $scope.users.push(response);
+        });
+      }
+      $scope.newForm();
+    };
+    $scope.newForm = function(){
+      $scope.user = new User();
+      $scope.editing = false;
+      $scope.change_pass = false;
+      clearPermissions();
+    };
+  }])
+;
