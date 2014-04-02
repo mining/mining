@@ -26,13 +26,20 @@ admin
       $scope.connection = new Connection();
     };
   }])
-.controller('CubeCtrl', ['$scope', 'Cube', 'Connection', 'AlertService',
-  function($scope, Cube, Connection, AlertService){
+.controller('CubeCtrl', ['$scope', 'Cube', 'Connection', 'AlertService', '$timeout',
+  function($scope, Cube, Connection, AlertService, $timeout){
     $scope.editorOptions = {
-        lineWrapping : true,
-        lineNumbers: true,
-        readOnly: false,
-        mode: 'text/x-sql'
+      lineWrapping : true,
+      lineNumbers: true,
+      readOnly: false,
+      mode: 'text/x-sql',
+      onLoad: function(editor) { // FIX TEMP ISSUE: https://github.com/angular-ui/ui-codemirror/issues/35
+        editor.on('blur', function() {
+          $timeout(function() {
+            $scope.cube.sql = editor.getValue();
+          });
+        })
+      }
     };
     $scope.cube_valid = false;
     $scope.connections = Connection.query();
@@ -184,7 +191,7 @@ admin
     $scope.selectDashboard = function(d){
       $scope.dashboard = d;
     };
-    $scope.deleteElement = function(dashboard){
+    $scope.deleteDashboard = function(dashboard){
       Dashboard.delete(dashboard);
       $rootScope.dashboards.splice($rootScope.dashboards.indexOf(dashboard),1);
     };
@@ -210,6 +217,7 @@ admin
     $scope.user = new User();
     $scope.editing = false;
     $scope.change_pass = false;
+    $scope.rules = ['user', 'admin', 'root'];
     function clearPermissions(){
       $($scope.permissions).each(function(key, dash){
           dash.permitted = false;
@@ -241,8 +249,6 @@ admin
     $scope.deleteUser = function(user){
       User.delete(user);
       $scope.users.splice($scope.users.indexOf(user),1);
-      $scope.change_pass = false;
-      $scope.editing = false;
       $scope.newForm();
     };
     $scope.changePass = function(user){
@@ -270,9 +276,7 @@ admin
           $scope.users.push(response);
         });
       }
-      $scope.user = new User();
-      $scope.editing = false;
-      $scope.change_pass = false;
+      $scope.newForm();
     };
     $scope.newForm = function(){
       $scope.user = new User();
