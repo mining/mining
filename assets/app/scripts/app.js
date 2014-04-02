@@ -6,6 +6,7 @@ var miningApp = angular.module('miningApp', [
     'ngSanitize',
     'ngRoute',
     'highcharts-ng',
+//    'miningApp.auth',
     'miningApp.dashboard',
     'miningApp.report',
     'miningApp.admin',
@@ -54,7 +55,7 @@ var miningApp = angular.module('miningApp', [
 
       return alertService;
     }])
-  .config(['$routeProvider', '$interpolateProvider', 
+  .config(['$routeProvider', '$interpolateProvider',
     function ($routeProvider, $interpolateProvider) {
     $routeProvider
       .when('/', {
@@ -67,10 +68,12 @@ var miningApp = angular.module('miningApp', [
       $interpolateProvider.startSymbol('[['); 
       $interpolateProvider.endSymbol(']]');
   }])
-  .run(['$rootScope', 'AlertService',
-    function($rootScope, AlertService){
+  .run(['$rootScope', 'AlertService', '$locale',
+    function($rootScope, AlertService, $locale){
       $rootScope.closeAlert = AlertService.closeAlert;
-    }]);
+      $locale.id = 'pt-br';
+    }])
+  .controller('HomeCtrl', function(){});
 var mining = {};
 mining['utils'] = {
   padLeft: function (nr, n, str) {

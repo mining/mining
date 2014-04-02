@@ -59,7 +59,6 @@
                     <li><a ng-href="#/admin/element"><i class="fa fa-sitemap"></i> Element</a></li>
                     <li><a ng-href="#/admin/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
                     <li><a ng-href="#/admin/user"><i class="fa fa-user"></i> Users</a></li>
-                    <li><a ng-href="#/admin/permission"><i class="fa fa-th"></i> Permissions</a></li>
                   </ul>
                 </li>
             </ul>
@@ -97,6 +96,8 @@
     <script src="{{ get_url('assets', path='bower/codemirror/lib/codemirror.js') }}"></script>
     <script src="{{ get_url('assets', path='bower/codemirror/mode/sql/sql.js') }}"></script>
     <script src="{{ get_url('assets', path='bower/angular/angular.js') }}"></script>
+    <script src="{{ get_url('assets', path='bower/angular-i18n/angular-locale_pt-br.js') }}"></script>
+    <script src="{{ get_url('assets', path='bower/angular-i18n/angular-locale_en-us.js') }}"></script>
     <script src="{{ get_url('assets', path='bower/bootstrap/dist/js/bootstrap.js') }}"></script>
     <script src="{{ get_url('assets', path='bower/angular-resource/angular-resource.js') }}"></script>
     <script src="{{ get_url('assets', path='bower/angular-cookies/angular-cookies.js') }}"></script>
@@ -112,6 +113,9 @@
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="{{ get_url('assets', path='app/scripts/app.js') }}"></script>
+    <script src="{{ get_url('assets', path='app/scripts/auth/auth.js') }}"></script>
+    <script src="{{ get_url('assets', path='app/scripts/auth/directives.js') }}"></script>
+    <script src="{{ get_url('assets', path='app/scripts/auth/services.js') }}"></script>
     <script src="{{ get_url('assets', path='app/scripts/admin/admin.js') }}"></script>
     <script src="{{ get_url('assets', path='app/scripts/admin/controllers.js') }}"></script>
     <script src="{{ get_url('assets', path='app/scripts/admin/services.js') }}"></script>
