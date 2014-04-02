@@ -41,7 +41,7 @@ def post(mongodb, collection, opt={}, field={'key': 'slug', 'value': 'name'}):
 def put(mongodb, collection, slug, opt={}, field={'key': 'slug'},
         request_json=request.json):
     base()
-    data = request_json
+    data = request_json or request.json or {}
     data[field['key']] = slug
     data = dict(data.items() + opt.items())
     get = mongodb[collection].find_one({field['key']: slug})
