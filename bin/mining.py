@@ -4,6 +4,7 @@ from os import sys, path
 import json
 import riak
 import gc
+from datetime import datetime
 
 from pandas import DataFrame
 from sqlalchemy import create_engine
@@ -76,6 +77,7 @@ def run(cube_slug=None):
             MyBucket.new(u'{}-sql'.format(slug), data=sql).store()
 
             cube['status'] = True
+            cube['lastupdate'] = datetime.now()
             mongo['cube'].update({'slug': cube['slug']}, cube)
 
             print "# CLEAN MEMORY: {}\n".format(slug)
