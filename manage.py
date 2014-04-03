@@ -13,6 +13,7 @@ from bottle.ext.auth.decorator import login
 
 from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
+from beaker.middleware import SessionMiddleware
 
 from controllers.api import api_app
 from controllers.stream import stream_app
@@ -38,27 +39,34 @@ args = parser.parse_args()
 
 T.insert(0, TEMPLATE_PATH)
 
-app = Bottle()
-app.mount('/api', api_app)
-app.mount('/stream', stream_app)
-app.mount('/export', export_app)
+session_opts = {
+    'session.type': 'file',
+    'session.cookie_expires': 300,
+    'session.data_dir': './data',
+    'session.auto': True
+}
 
-app.install(auth)
+app = SessionMiddleware(Bottle(), session_opts)
+app.wrap_app.mount('/api', api_app)
+app.wrap_app.mount('/stream', stream_app)
+app.wrap_app.mount('/export', export_app)
+
+app.wrap_app.install(auth)
 
 
-@app.route('/assets/<path:path>', name='assets')
+@app.wrap_app.route('/assets/<path:path>', name='assets')
 def static(path):
     yield static_file(path, root=STATIC_PATH)
 
 
-@app.route('/')
+@app.wrap_app.route('/')
 @login(auth)
 @view('index.html')
 def index():
-    return {'get_url': app.get_url}
+    return {'get_url': app.wrap_app.get_url}
 
 
-@app.route('/login')
+@app.wrap_app.route('/login')
 @view('login.html')
 def login():
     return {}
