@@ -17,3 +17,4 @@ rq
 xlwt
 gevent
 schedule
+-e git+https://github.com/avelino/bottle-auth.git#egg=bottle_auth
