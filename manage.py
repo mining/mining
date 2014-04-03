@@ -9,6 +9,7 @@ import argparse
 from bottle import static_file, Bottle, run, view
 from bottle import TEMPLATE_PATH as T
 from bottle.ext.websocket import GeventWebSocketServer
+from bottle.ext.auth.decorator import login
 
 from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
@@ -18,6 +19,7 @@ from controllers.stream import stream_app
 from controllers.export import export_app
 
 from utils import conf
+from auth import auth
 from settings import TEMPLATE_PATH, STATIC_PATH
 
 
@@ -41,6 +43,8 @@ app.mount('/api', api_app)
 app.mount('/stream', stream_app)
 app.mount('/export', export_app)
 
+app.install(auth)
+
 
 @app.route('/assets/<path:path>', name='assets')
 def static(path):
@@ -48,9 +52,16 @@ def static(path):
 
 
 @app.route('/')
+@login(auth)
 @view('index.html')
 def index():
     return {'get_url': app.get_url}
+
+
+@app.route('/login')
+@view('login.html')
+def login():
+    return {}
 
 
 def main():
