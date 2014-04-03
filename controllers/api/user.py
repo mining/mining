@@ -51,11 +51,29 @@ def login(mongodb):
     else:
         doc = mongodb[collection].find_one({'username': login['username'],
                                             'password': login['password']})
-    doc.pop('_id', None)
-    doc.pop('password', None)
+
+    if not doc:
+        doc = {}
+    try:
+        doc.pop('_id', None)
+    except:
+        pass
+    try:
+        doc.pop('password', None)
+    except:
+        pass
+
     session.update(doc)
     session.save()
     return doc
+
+
+@user_app.wrap_app.route('/logout')
+def logout(mongodb):
+
+    session = request.environ.get('beaker.session')
+    session.delete()
+    return session
 
 
 @user_app.wrap_app.route('/', method='GET')
