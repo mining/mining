@@ -14,7 +14,7 @@
       <div class="panel-heading">
         <h3 class="panel-title">
           <a ng-click="e.isCollapsed=!e.isCollapsed">
-            <i class="fa fa-bar-chart-o"></i> [[ e.name ]]
+            <i class="fa fa-bar-chart-o"></i> [[ e.name ]] (Last Update: [[ e.cube.lastupdate|date ]])
           </a>
         </h3>
       </div>
@@ -104,7 +104,7 @@
                 <div class="col-lg-6">
                   <ul>
                     <li ng-repeat="(key,val) in e.filters">
-                      [[ key ]] : [[ val ]]
+                      <button ng-click="removeFilter(e, key)"><i class="glyphicon glyphicon-remove"></i></button> [[ key ]] : [[ val ]]
                     </li>
                     <!-- ngRepeat: (key,val) in filters -->
                   </ul>
@@ -122,7 +122,7 @@
       <div class="panel-heading">
         <h3 class="panel-title">
           <a ng-click="e.isCollapsed=!e.isCollapsed">
-            <i class="fa fa-bar-chart-o"></i> [[ e.name ]]
+            <i class="fa fa-bar-chart-o"></i> [[ e.name ]] - (Last Update: [[ e.cube.lastupdate|date ]])
           </a>
         </h3>
       </div>
@@ -175,7 +175,7 @@
                 <div class="col-lg-6">
                   <ul>
                     <li ng-repeat="(key,val) in e.filters">
-                      [[ key ]] : [[ val ]]
+                      <button ng-click="removeFilter(e, key)"><i class="glyphicon glyphicon-remove"></i></button> [[ key ]] : [[ val ]]
                     </li>
                     <!-- ngRepeat: (key,val) in filters -->
                   </ul>
@@ -193,7 +193,7 @@
       <div class="panel-heading">
         <h3 class="panel-title">
           <a ng-click="e.isCollapsed=!e.isCollapsed">
-            <i class="fa fa-bar-chart-o"></i> [[ e.name ]]
+            <i class="fa fa-bar-chart-o"></i> [[ e.name ]] - (Last Update: [[ e.cube.lastupdate|date:'yyyy-MM-dd hh:mm:ss' ]])
           </a>
         </h3>
       </div>

@@ -17,7 +17,13 @@ var dashboard = angular.module('miningApp.dashboard', [])
               }
             }
           ]
-        }
+        },
+        permission: ['$location',function($location){
+          var dashboard_slug = '';
+          debugger;
+          console.log($location.path());
+          return dashboard_slug;
+        }]
       })
       .otherwise({
         redirectTo: '/'

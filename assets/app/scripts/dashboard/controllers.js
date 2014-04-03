@@ -10,7 +10,7 @@ dashboard
     $scope.gotoBottom = function (hash){
       $location.hash(hash);
       $anchorScroll();
-    }
+    };
 
     function loadGrid(el){
       el.process = [];
@@ -108,7 +108,7 @@ dashboard
         filter_value : '',
         filters : {},
         columns : [],
-        process : [],
+        process : []
       });
       // Element.loadData({'slug': val.slug, 'page': val.current_page, 'filters': val.filters});
       if($scope.selected_dashboard.element[ind].type == 'grid')

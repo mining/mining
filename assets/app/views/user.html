@@ -18,6 +18,10 @@
                 <label for="user_password">Password</label>
                 <input type="password" ng-disabled="editing" id="user_password" ng-model="user.password" class="form-control">
             </div>
+            <div class="form-group" ng-show="!change_pass">
+                <label for="user_rule">Rule</label>
+                <select id="user_rule" ng-options="r as r for r in rules" ng-disabled="change_pass" class="form-control" ng-model="user.rule" required></select>
+            </div>
             <div class="form-group" ng-show="change_pass">
                 <label for="user_password_current">Current Password</label>
                 <input type="password" id="user_password_current" ng-model="user.password" class="form-control">

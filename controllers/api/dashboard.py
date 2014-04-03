@@ -8,6 +8,7 @@ from utils import conf
 from .base import get, post, put, delete
 
 from element import collection as collection_element
+from cube import collection as collection_cube
 
 collection = 'dashboard'
 
@@ -34,6 +35,12 @@ def dashboard_get(mongodb, slug=None):
             n_el = mongodb[collection_element].find_one({'slug': el})
             if n_el:
                 del n_el['_id']
+                _cube = mongodb[collection_cube].find_one({'slug':n_el['cube']},
+                                                          {'name':True,'slug':True,'lastupdate':True})
+                if _cube:
+                    del _cube['_id']
+                    _cube['lastupdate'] = str(_cube['lastupdate'] or '').replace(' ', 'T')
+                    n_el['cube']=_cube
                 das['element'].append(n_el)
         return das
     for r in response:
