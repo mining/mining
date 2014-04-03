@@ -10,31 +10,23 @@ except ImportError:
     import sha
     sha1 = sha.sha
 
-from bottle import Bottle, request
+from bottle import Bottle, request, redirect
 from bottle.ext.mongo import MongoPlugin
-from beaker.middleware import SessionMiddleware
 
 from utils import conf
 from .base import get, post, put, delete
 
-session_opts = {
-    'session.type': 'file',
-    'session.cookie_expires': 300,
-    'session.data_dir': './data',
-    'session.auto': True
-}
-
 collection = 'user'
 
-user_app = SessionMiddleware(Bottle(), session_opts)
+user_app = Bottle()
 mongo = MongoPlugin(
     uri=conf("mongodb")["uri"],
     db=conf("mongodb")["db"],
     json_mongo=True)
-user_app.wrap_app.install(mongo)
+user_app.install(mongo)
 
 
-@user_app.wrap_app.route('/login', method='POST')
+@user_app.route('/login', method='POST')
 def login(mongodb):
 
     login = request.POST
@@ -43,6 +35,8 @@ def login(mongodb):
 
     session = request.environ.get('beaker.session')
     if session.get("username", None) and session.get("apikey", None):
+        if request.content_type != "application/json":
+            redirect("/login")
         return session
 
     if login.get("apikey"):
@@ -65,19 +59,21 @@ def login(mongodb):
 
     session.update(doc)
     session.save()
+    if request.content_type != "application/json":
+        return redirect('/')
     return doc
 
 
-@user_app.wrap_app.route('/logout')
+@user_app.route('/logout')
 def logout(mongodb):
 
     session = request.environ.get('beaker.session')
     session.delete()
-    return session
+    return redirect('/login')
 
 
-@user_app.wrap_app.route('/', method='GET')
-@user_app.wrap_app.route('/<slug>', method='GET')
+@user_app.route('/', method='GET')
+@user_app.route('/<slug>', method='GET')
 def user_get(mongodb, slug=None):
     _get = json.loads(get(mongodb, collection, slug))
     data = []
@@ -88,7 +84,7 @@ def user_get(mongodb, slug=None):
     return json.dumps(data)
 
 
-@user_app.wrap_app.route('/', method='POST')
+@user_app.route('/', method='POST')
 def user_post(mongodb, slug=None):
     new_uuid = uuid.uuid4()
     opt = {}
@@ -97,7 +93,7 @@ def user_post(mongodb, slug=None):
                 {'key': 'username', 'value': 'username'})
 
 
-@user_app.wrap_app.route('/<slug>', method='PUT')
+@user_app.route('/<slug>', method='PUT')
 def user_put(mongodb, slug=None):
     data = request.json
     data.pop("apikey", None)
@@ -105,6 +101,6 @@ def user_put(mongodb, slug=None):
                request_json=data)
 
 
-@user_app.wrap_app.route('/<slug>', method='DELETE')
+@user_app.route('/<slug>', method='DELETE')
 def user_delete(mongodb, slug=None):
     return delete(mongodb, collection, slug)
