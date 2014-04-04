@@ -5,6 +5,7 @@ SQLAlchemy==0.9.1
 bottle
 bottle-mongo
 bottle-websocket
+bottle-auth
 bottle-beaker
 beaker
 riak
@@ -17,4 +18,3 @@ rq
 xlwt
 gevent
 schedule
--e git+https://github.com/avelino/bottle-auth.git#egg=bottle_auth
