@@ -69,7 +69,7 @@ def index():
 @app.wrap_app.route('/login')
 @view('login.html')
 def login():
-    return {}
+    return {'get_url': app.wrap_app.get_url}
 
 
 def main():
