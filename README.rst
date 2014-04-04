@@ -1,5 +1,5 @@
-openmining.io
-=============
+Open Mining
+===========
 
 .. image:: https://raw.github.com/avelino/mining/master/assets/image/openmining.io.png
     :alt: OpenMining
