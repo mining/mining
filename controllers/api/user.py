@@ -28,7 +28,8 @@ user_app.install(mongo)
 
 @user_app.route('/session', method='GET')
 def session(mongodb):
-    return request.environ.get('beaker.session')
+    session = dict(request.environ.get('beaker.session'))
+    return json.dumps(session)
 
 
 @user_app.route('/login', method='POST')
