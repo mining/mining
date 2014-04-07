@@ -44,17 +44,18 @@ var auth = angular.module('miningApp.auth', [])
 
     $httpProvider.responseInterceptors.push(logsOutUserOn401);
   }])
-  .run(['$rootScope', '$location', 'AuthenticationService',
-    function ($rootScope, $location, AuthenticationService) {
+  .run(['$rootScope', '$location', 'AuthenticationService', 'getCurrentUser', 'AlertService',
+    function ($rootScope, $location, AuthenticationService, getCurrentUser, AlertService) {
     'use strict';
     $rootScope.AuthService = AuthenticationService;
+    AuthenticationService.setUser(getCurrentUser);
 
     $rootScope.$on('$routeChangeStart', function (ev, to, toParams, from, fromParams) {
       // if route requires auth and user is not logged in
       if(AuthenticationService.isLoggedIn()){
         if($location.path().split('/')[1] == 'dashboard'){
           if (!AuthenticationService.hasPermission(to.params.slug, 'dashboard')) {
-            $rootScope.$broadcast('alert',{'msg':'Oops, You not have permission!', 'type': 'info', 'hold': true});
+            AlertService.add({'msg':'Oops, You not have permission!', 'type': 'warning', 'hold': true});
             $location.path('/');
           }
         }

@@ -13,8 +13,8 @@ var miningApp = angular.module('miningApp', [
     'ui.bootstrap',
     'ui.codemirror'
   ])
-  .factory('AlertService', ['$rootScope',
-    function ($rootScope) {
+  .factory('AlertService', ['$rootScope', '$timeout',
+    function ($rootScope, $timeout) {
       var alertService = {};
 
       // create an array of alerts available globally

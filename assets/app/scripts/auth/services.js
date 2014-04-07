@@ -16,6 +16,16 @@ auth
           return deferred.promise;
         },
 
+        logout: function(){
+          $http.get('/api/user/logout')
+            .success(function(response){
+              window.location.href='/';
+            })
+            .error(function(response){
+              window.location.href='/';
+            });
+        },
+
         isLoggedIn: function () {
           return SessionService.currentUser !== null;
         },
@@ -38,6 +48,10 @@ auth
             deferred.resolve(yuri);
           }, 2000);
           return deferred.promise;
+        },
+
+        setUser: function(data){
+          SessionService.currentUser = data;
         },
 
         hasPermission: function(permission, type, dashboard){

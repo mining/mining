@@ -20,7 +20,7 @@
     <link href="{{ get_url('assets', path='bower/codemirror/lib/codemirror.css') }}" rel="stylesheet">
     <!-- Page Specific CSS -->
   </head>
-  <body ng-app="miningApp">
+  <body>
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -38,7 +38,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">OpenMining [[ AuthService.isLoggedIn() ]]</a>
+            <a class="navbar-brand" href="/">OpenMining</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -70,7 +70,7 @@
                         <!--<li><a href="#"><i class="fa fa-envelope"></i> Inbox <span class="badge">7</span></a></li>-->
                         <!--<li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>-->
                         <!--<li class="divider"></li>-->
-                        <li><a ng-href="#/logout"><i class="fa fa-power-off"></i> Log Out</a></li>
+                        <li><a ng-click="AuthService.logout()"><i class="fa fa-power-off"></i> Logout</a></li>
                     </ul>
                 </li>
               </ul>
@@ -78,7 +78,7 @@
     </nav>
     <div id="page-wrapper">
         <div ng-repeat="alert in alerts" class="alert alert-dismissable"
-             ng-class="{'alert-danger':alert.type=='error', 'alert-success': alert.type=='success', 'alert-info':alert.type=='info'}">
+             ng-class="{'alert-danger':alert.type=='error', 'alert-success': alert.type=='success', 'alert-info':alert.type=='info', 'alert-warning':alert.type=='warning'}">
             <button type="button" class="close" ng-click="closeAlert($index)">×</button>
             [[ alert.msg ]]
         </div>
@@ -140,5 +140,25 @@
     <script src="{{ get_url('assets', path='app/scripts/report/controllers.js') }}"></script>
     <script src="{{ get_url('assets', path='app/scripts/report/services.js') }}"></script>
     <!-- endbuild -->
+    <script>
+      $(function() {
+        $.ajax({
+            'url':'/api/user/session',
+            'type':'GET'
+          })
+        .done(function(response){
+          var userData = jQuery.parseJSON(response);
+          if(userData.username){
+            angular.module('miningApp').constant('getCurrentUser', userData);
+            angular.bootstrap(document, ['miningApp']);
+          }else{
+            window.location.href="/login";
+          }
+        })
+        .fail(function(retorno){
+          window.location.href="/login";
+        })
+      });
+    </script>
 </body>
 </html>
