@@ -42,7 +42,7 @@ T.insert(0, TEMPLATE_PATH)
 
 session_opts = {
     'session.type': 'file',
-    'session.cookie_expires': 300,
+    'session.cookie_expires': 50000,
     'session.data_dir': './data',
     'session.auto': True
 }
