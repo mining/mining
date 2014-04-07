@@ -20,7 +20,7 @@
     <link href="{{ get_url('assets', path='bower/codemirror/lib/codemirror.css') }}" rel="stylesheet">
     <!-- Page Specific CSS -->
   </head>
-  <body>
+  <body class="ng-cloak">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -128,6 +128,7 @@
     <script src="{{ get_url('assets', path='app/scripts/auth/auth.js') }}"></script>
     <script src="{{ get_url('assets', path='app/scripts/auth/directives.js') }}"></script>
     <script src="{{ get_url('assets', path='app/scripts/auth/services.js') }}"></script>
+    <script src="{{ get_url('assets', path='app/scripts/auth/filters.js') }}"></script>
     <script src="{{ get_url('assets', path='app/scripts/admin/admin.js') }}"></script>
     <script src="{{ get_url('assets', path='app/scripts/admin/controllers.js') }}"></script>
     <script src="{{ get_url('assets', path='app/scripts/admin/services.js') }}"></script>

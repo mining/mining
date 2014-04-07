@@ -210,8 +210,8 @@ admin
       $scope.dashboard = new Dashboard();
     };
   }])
-.controller('UserCtrl', ['$scope', 'User', 'AlertService', 'Dashboard',
-  function($scope, User, AlertService, Dashboard){
+.controller('UserCtrl', ['$scope', 'User', 'AlertService', 'Dashboard', 'AuthenticationService',
+  function($scope, User, AlertService, Dashboard, AuthenticationService){
     $scope.users = User.query();
     $scope.permissions = Dashboard.getFullList();
     $scope.user = new User();
@@ -257,6 +257,9 @@ admin
       $scope.change_pass = true;
       clearPermissions();
     };
+    $scope.selectElement = function(dashboard){
+      dashboard.permitted = true;
+    };
     $scope.save = function(){
       $scope.user.permissions={};
       $($scope.permissions).each(function(key, dash){
@@ -270,6 +273,9 @@ admin
       });
       if($scope.editing){
         User.update({'username':$scope.user.username},$scope.user);
+        if($scope.user.username == AuthenticationService.getUser().username){
+          AuthenticationService.setUser($scope.user);
+        }
       }else{
         $scope.user.$save().then(function(response) {
           AlertService.add('success', 'Save ok');

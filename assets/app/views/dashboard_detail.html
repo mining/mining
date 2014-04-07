@@ -7,7 +7,7 @@
     </ol>
   </div>
 </div>
-<div class="row ng-scope" ng-repeat="e in selected_dashboard.element">
+<div class="row ng-scope" ng-repeat="e in selected_dashboard.element|checkElementPermission:selected_dashboard.slug">
   <!-- <pre>[[ e | json ]]</pre> -->
   <div ng-if="e.type=='grid'" class="col-lg-12 panel-group">
     <div class="panel panel-primary">

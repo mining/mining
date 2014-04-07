@@ -5,7 +5,9 @@ dashboard
   }])
 .controller('DashboardDetailCtrl', 
   ['$scope', '$routeParams', 'AlertService', 'current_dashboard', 'Element', '$anchorScroll', '$timeout', '$http',
-  function($scope, $routeParams, AlertService, current_dashboard, Element, $anchorScroll, $timeout, $http){
+    'AuthenticationService',
+  function($scope, $routeParams, AlertService, current_dashboard, Element, $anchorScroll, $timeout, $http,
+    AuthenticationService){
 
     $scope.gotoBottom = function (hash){
       $location.hash(hash);
@@ -96,32 +98,34 @@ dashboard
     $scope.selected_dashboard = current_dashboard.data;
     
     $($scope.selected_dashboard.element).each(function(ind, val){
-      angular.extend($scope.selected_dashboard.element[ind], {
-        isCollapsed: false,
-        filterIsCollapsed: true,
-        current_page : 1,
-        total_pages : 0,
-        filter_operator : '',
-        filter_field : '',
-        filter_type : '',
-        filter_format : '',
-        filter_value : '',
-        filters : {},
-        columns : [],
-        process : []
-      });
-      // Element.loadData({'slug': val.slug, 'page': val.current_page, 'filters': val.filters});
-      if($scope.selected_dashboard.element[ind].type == 'grid')
-        loadGrid(val);
-      else if($scope.selected_dashboard.element[ind].type == 'chart_bar'){
-        $scope.selected_dashboard.element[ind].xkey = [$scope.selected_dashboard.element[ind].field_x];
-        $scope.selected_dashboard.element[ind].ykeys = [$scope.selected_dashboard.element[ind].field_y];
-        $scope.selected_dashboard.element[ind].labels = [$scope.selected_dashboard.element[ind].field_y];
-        loadBar(val);
-      }else if($scope.selected_dashboard.element[ind].type == 'chart_line'){
-        $scope.selected_dashboard.element[ind].xkey = [$scope.selected_dashboard.element[ind].field_x];
-        $scope.selected_dashboard.element[ind].labels = [$scope.selected_dashboard.element[ind].field_y];
-        loadLine(val);
+      if(AuthenticationService.hasPermission(val.slug, 'element', $scope.selected_dashboard.slug)){
+        angular.extend($scope.selected_dashboard.element[ind], {
+          isCollapsed: false,
+          filterIsCollapsed: true,
+          current_page : 1,
+          total_pages : 0,
+          filter_operator : '',
+          filter_field : '',
+          filter_type : '',
+          filter_format : '',
+          filter_value : '',
+          filters : {},
+          columns : [],
+          process : []
+        });
+        // Element.loadData({'slug': val.slug, 'page': val.current_page, 'filters': val.filters});
+        if($scope.selected_dashboard.element[ind].type == 'grid')
+          loadGrid(val);
+        else if($scope.selected_dashboard.element[ind].type == 'chart_bar'){
+          $scope.selected_dashboard.element[ind].xkey = [$scope.selected_dashboard.element[ind].field_x];
+          $scope.selected_dashboard.element[ind].ykeys = [$scope.selected_dashboard.element[ind].field_y];
+          $scope.selected_dashboard.element[ind].labels = [$scope.selected_dashboard.element[ind].field_y];
+          loadBar(val);
+        }else if($scope.selected_dashboard.element[ind].type == 'chart_line'){
+          $scope.selected_dashboard.element[ind].xkey = [$scope.selected_dashboard.element[ind].field_x];
+          $scope.selected_dashboard.element[ind].labels = [$scope.selected_dashboard.element[ind].field_y];
+          loadLine(val);
+        }
       }
     });
 

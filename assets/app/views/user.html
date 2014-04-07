@@ -44,7 +44,7 @@
                             <input type="checkbox" id="dashboard_[[ dashboard.slug ]]" ng-model="dashboard.permitted" ng-click="selectDashboard(dashboard)" />
                             <i class="fa fa-bar-chart-o"></i> [[ dashboard.name ]]
                             <a ng-click="dashboard.isCollapsed=!dashboard.isCollapsed">
-                                <i class="fa" ng-class="{'fa-sort-desc':dashboard.isCollapsed, 'fa-sort-asc':!dashboard.isCollapsed}"></i>
+                                <i class="fa pull-right" ng-class="{'fa-sort-desc':dashboard.isCollapsed, 'fa-sort-asc':!dashboard.isCollapsed}"></i>
                             </a>
                         </h3>
                     </div>
@@ -53,7 +53,7 @@
                             <h4>Elements</h4>
                             <ul>
                                 <li ng-repeat="element in dashboard.element">
-                                    <label><input type="checkbox" ng-model="element.permitted" />[[ element.name ]]</label>
+                                    <label><input type="checkbox" ng-click="selectElement(dashboard)" ng-model="element.permitted" />[[ element.name ]]</label>
                                 </li>
                             </ul>
                         </div>
