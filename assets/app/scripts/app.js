@@ -6,7 +6,7 @@ var miningApp = angular.module('miningApp', [
     'ngSanitize',
     'ngRoute',
     'highcharts-ng',
-//    'miningApp.auth',
+    'miningApp.auth',
     'miningApp.dashboard',
     'miningApp.report',
     'miningApp.admin',
@@ -20,9 +20,20 @@ var miningApp = angular.module('miningApp', [
       // create an array of alerts available globally
       $rootScope.alerts = [];
 
-      alertService.add = function (type, msg, persistente) {
-        $rootScope.alerts.push({'type': type, 'msg': msg, 'persistente': persistente || false});
+      alertService.add = function (al) {
+        $rootScope.alerts.push(al);
+        if(al['hold']){
+          var messageStack = $rootScope.alerts;
+          $timeout(function() {
+              var msgIndex = $.inArray(al, messageStack);
+
+              if (msgIndex !== -1)
+                  messageStack.splice(msgIndex, 1);
+          }, 5000);
+        }
       };
+
+      $rootScope.$on('alert', alertService.add);
 
       alertService.getAll = function () {
         return $rootScope.alerts;
@@ -35,7 +46,7 @@ var miningApp = angular.module('miningApp', [
       alertService.clearTemporarios = function () {
         for (var a = $rootScope.alerts.length; a <= $rootScope.alerts.length && a>=0; a--) {
           if ($rootScope.alerts[a] !== undefined) {
-            if (!$rootScope.alerts[a].persistente) {
+            if (!$rootScope.alerts[a].hold) {
               $rootScope.alerts.splice(a, 1);
             }
           }
@@ -59,7 +70,7 @@ var miningApp = angular.module('miningApp', [
     function ($routeProvider, $interpolateProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/home.html',
+        templateUrl: 'assets/app/views/home.html',
         controller: 'HomeCtrl'
       })
       .otherwise({

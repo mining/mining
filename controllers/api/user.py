@@ -28,10 +28,11 @@ user_app.install(mongo)
 
 @user_app.route('/login', method='POST')
 def login(mongodb):
-
     login = request.POST
     if request.content_type == "application/json":
         login = request.json
+    else:
+        login = request.POST
 
     session = request.environ.get('beaker.session')
     if session.get("username", None) and session.get("apikey", None):
@@ -56,7 +57,6 @@ def login(mongodb):
         doc.pop('password', None)
     except:
         pass
-
     session.update(doc)
     session.save()
     if request.content_type != "application/json":

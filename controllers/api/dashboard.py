@@ -29,19 +29,20 @@ def dashboard_get(mongodb, slug=None):
     response = json.loads(da)
     new_resp = []
     def full_elements(das):
-        elements = das['element']
-        das['element'] = []
-        for el in elements:
-            n_el = mongodb[collection_element].find_one({'slug': el})
-            if n_el:
-                del n_el['_id']
-                _cube = mongodb[collection_cube].find_one({'slug':n_el['cube']},
-                                                          {'name':True,'slug':True,'lastupdate':True})
-                if _cube:
-                    del _cube['_id']
-                    _cube['lastupdate'] = str(_cube['lastupdate'] or '').replace(' ', 'T')
-                    n_el['cube']=_cube
-                das['element'].append(n_el)
+        if 'element' in das:
+            elements = das['element']
+            das['element'] = []
+            for el in elements:
+                n_el = mongodb[collection_element].find_one({'slug': el})
+                if n_el:
+                    del n_el['_id']
+                    _cube = mongodb[collection_cube].find_one({'slug':n_el['cube']},
+                                                              {'name':True,'slug':True,'lastupdate':True})
+                    if _cube:
+                        del _cube['_id']
+                        _cube['lastupdate'] = str(_cube['lastupdate'] or '').replace(' ', 'T')
+                        n_el['cube']=_cube
+                    das['element'].append(n_el)
         return das
     for r in response:
         new_resp.append(full_elements(r))

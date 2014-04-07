@@ -21,7 +21,7 @@ var auth = angular.module('miningApp.auth', [])
   .config(['$httpProvider', function ($httpProvider) {
     'use strict';
 
-    var logsOutUserOn401 = ['$q', '$location', function ($q, $location) {
+    var logsOutUserOn401 = ['$q', function ($q) {
       var success = function (response) {
         return response;
       };
@@ -29,7 +29,7 @@ var auth = angular.module('miningApp.auth', [])
       var error = function (response) {
         if (response.status === 401) {
           //redirect them back to login page
-          $location.path('/login');
+          window.location.href="/login";
 
           return $q.reject(response);
         } else {
@@ -44,26 +44,64 @@ var auth = angular.module('miningApp.auth', [])
 
     $httpProvider.responseInterceptors.push(logsOutUserOn401);
   }])
-  .run(['$rootScope', '$location', 'AuthenticationService', 'SessionService',
-    function ($rootScope, $location, AuthenticationService, SessionService) {
+  .run(['$rootScope', '$location', 'AuthenticationService',
+    function ($rootScope, $location, AuthenticationService) {
     'use strict';
-    var yuri = {"username": "yuripiratello", "rule": "root", "permissions": {"dashboard-bar": ["tipo-bonus-bar"], "dashboard-2-graficos": ["tipo-bonus-bar"]}};
-    AuthenticationService.login(yuri);
+    $rootScope.AuthService = AuthenticationService;
 
     $rootScope.$on('$routeChangeStart', function (ev, to, toParams, from, fromParams) {
       // if route requires auth and user is not logged in
-      if (!AuthenticationService.hasPermission(to.params.slug, 'dashboard'))
-        $location.path('/');
-//      if (!routeClean($location.url()) && !AuthenticationService.isLoggedIn()) {
-//        // redirect back to login
-//        ev.preventDefault();
-//        $location.path('/login');
-//      }
-//      else if (routeAdmin($location.url()) && !RoleService.validateRoleAdmin(SessionService.currentUser)) {
-//        // redirect back to login
-//        ev.preventDefault();
-//        $location.path('/error');
-//      }
+      if(AuthenticationService.isLoggedIn()){
+        if($location.path().split('/')[1] == 'dashboard'){
+          if (!AuthenticationService.hasPermission(to.params.slug, 'dashboard')) {
+            $rootScope.$broadcast('alert',{'msg':'Oops, You not have permission!', 'type': 'info', 'hold': true});
+            $location.path('/');
+          }
+        }
+      }else{
+        ev.preventDefault();
+        window.location.href='/login';
+      }
     });
   }])
+  .controller('LoginCtrl', ['$scope', 'AuthenticationService', '$location', 'SessionService',
+    function ($scope, AuthenticationService, $location, SessionService) {
+      'use strict';
+      var obj_user = {
+        "username": "yuripiratello",
+        "rule": "root",
+        "permissions": {
+          "dashboard-bar": ["tipo-bonus-bar"],
+          "dashboard-2-graficos": ["tipo-bonus-bar"]
+        }
+      };
+      $scope.loginUser = function () {
+        // this should be replaced with a call to your API for user verification (or you could also do it in the service)
+        AuthenticationService.login(obj_user)
+          .then(function(response){
+            SessionService.currentUser = response;
+            $location.path('/');
+          }, function(response){
+            console.log('Login error');
+          })
+          .finally(function(){
+            console.log('Login finally');
+          });
+      };
+
+      $scope.loginAdmin = function () {
+        // this should be replaced with a call to your API for user verification (or you could also do it in the service)
+        AuthenticationService.login(obj_user)
+          .then(function(response){
+            SessionService.currentUser = response;
+            $location.path('/');
+          }, function(response){
+            console.log('Login error');
+          })
+          .finally(function(){
+            console.log('Login finally');
+          });
+      };
+    }
+  ])
 ;

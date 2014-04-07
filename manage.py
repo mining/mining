@@ -16,6 +16,7 @@ from geventwebsocket.handler import WebSocketHandler
 from beaker.middleware import SessionMiddleware
 
 from controllers.api import api_app
+from controllers.api import user
 from controllers.stream import stream_app
 from controllers.export import export_app
 

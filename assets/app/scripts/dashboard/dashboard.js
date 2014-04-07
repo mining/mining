@@ -17,20 +17,18 @@ var dashboard = angular.module('miningApp.dashboard', [])
               }
             }
           ]
-        },
-        permission: ['$location',function($location){
-          var dashboard_slug = '';
-          debugger;
-          console.log($location.path());
-          return dashboard_slug;
-        }]
+        }
       })
       .otherwise({
         redirectTo: '/'
       });
   }])
-  .run(['$rootScope', 'Dashboard', function($rootScope, Dashboard){
-    $rootScope.selected_dashboard = {'name':'xxxxxxxxxx'};
-    $rootScope.dashboards = Dashboard.query();
-  }])
+  .run(['$rootScope', 'Dashboard', 'AlertService',
+    function($rootScope, Dashboard, AlertService){
+      $rootScope.dashboards = Dashboard.query();
+      $rootScope.$on('$routeChangeStart', function (ev, to, toParams, from, fromParams) {
+        AlertService.clearTemporarios();
+      });
+    }
+  ])
 ;

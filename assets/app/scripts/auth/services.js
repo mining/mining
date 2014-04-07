@@ -1,51 +1,61 @@
 'use strict';
 auth
-  .factory('AuthenticationService', ['$http', 'SessionService', function ($http, SessionService) {
+  .factory('AuthenticationService', ['$http', 'SessionService', '$q', '$timeout',
+    function ($http, SessionService, $q, $timeout) {
+      'use strict';
 
-    'use strict';
+      return {
 
-    return {
+        login: function (user) {
+          // this method could be used to call the API and set the user instead of taking it in the function params
+          var deferred = $q.defer();
+          // TODO: make url to login
+          $timeout(function(){
+            deferred.resolve(user);
+          }, 200);
+          return deferred.promise;
+        },
 
-      login: function (user) {
-        // this method could be used to call the API and set the user instead of taking it in the function params
-        SessionService.currentUser = user;
-      },
+        isLoggedIn: function () {
+          return SessionService.currentUser !== null;
+        },
 
-      isLoggedIn: function () {
-        return SessionService.currentUser !== null;
-      },
-      hasPermission: function(permission, type, dashboard){
-        return true;
-        if (type == 'dashboard')
-          return SessionService.currentUser.permissions.indexOf() >= 0
-        else if(type == 'element' && dashboard)
-          return SessionService.currentUser.permissions[dashboard].indexOf() >= 0
-        return false;
-      }
-    };
-  }])
+        getUser: function () {
+          return SessionService.currentUser;
+        },
+
+        refreshUser: function(){
+          var deferred = $q.defer();
+          // TODO: make url get
+          $timeout(function(){
+            var yuri = {
+              "username": "yuripiratello",
+              "rule": "root",
+              "permissions": {
+                "dashboard-bar": ["tipo-bonus-bar"], "dashboard-2-graficos": ["tipo-bonus-bar"]
+              }
+            };
+            deferred.resolve(yuri);
+          }, 2000);
+          return deferred.promise;
+        },
+
+        hasPermission: function(permission, type, dashboard){
+          if (type == 'dashboard')
+            return SessionService.currentUser.permissions.hasOwnProperty(permission);
+          else if(type == 'element' && dashboard)
+            return SessionService.currentUser.permissions[dashboard].indexOf(permission) >= 0;
+          return false;
+        }
+      };
+    }
+  ])
   .factory('SessionService', function () {
 
     'use strict';
 
     return {
       currentUser: null
-    };
-  })
-  .factory('permissions', function ($rootScope) {
-    var permissionList;
-    return {
-      setPermissions: function (permissions) {
-        permissionList = permissions;
-        $rootScope.$broadcast('permissionsChanged')
-      },
-      hasPermission: function (permission) {
-        permission = permission.trim();
-        return _.some(permissionList, function (item) {
-          if (_.isString(item.Name))
-            return item.Name.trim() === permission
-        });
-      }
     };
   })
 ;
