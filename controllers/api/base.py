@@ -54,5 +54,9 @@ def put(mongodb, collection, slug, opt={}, field={'key': 'slug'},
 
 def delete(mongodb, collection, slug, field={"key": "slug"}):
     base()
-    mongodb[collection].remove({'slug': slug})
-    return {'status': 'success'}
+    get = mongodb[collection].find_one({field['key']: slug})
+    if get:
+        mongodb[collection].remove({field['key']: slug})
+        return {'status': 'success'}
+    return {'status': 'error',
+            'message': 'Object not exist, please send POST to create!'}

@@ -109,4 +109,4 @@ def user_put(mongodb, slug=None):
 
 @user_app.route('/<slug>', method='DELETE')
 def user_delete(mongodb, slug=None):
-    return delete(mongodb, collection, slug)
+    return delete(mongodb, collection, slug, {'key': 'username', 'value': 'username'})
