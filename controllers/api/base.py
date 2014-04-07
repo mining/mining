@@ -46,7 +46,7 @@ def put(mongodb, collection, slug, opt={}, field={'key': 'slug'},
     data = dict(data.items() + opt.items())
     get = mongodb[collection].find_one({field['key']: slug})
     if get:
-        mongodb[collection].update({field['key']: slug}, data)
+        mongodb[collection].update({field['key']: slug}, {'$set': data})
         return data
     return {'status': 'error',
             'message': 'Object not exist, please send POST to create!'}
