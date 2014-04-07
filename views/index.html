@@ -44,14 +44,14 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav side-nav" ng-show="AuthService.isLoggedIn()">
-                <li class="dropdown">
+                <li class="dropdown" ng-class="{'open':inDashboard}">
                     <a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-dashboard"></i> Dashboards <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                      <li ng-repeat="d in dashboards" ng-class="{'active':d.slug==selected_dashboard.slug}">
+                      <li ng-repeat="d in dashboards|checkDashboardPermission" ng-class="{'active':d.slug==selected_dashboard.slug}">
                         <a ng-href="#/dashboard/[[d.slug]]">[[d.name]]</a></li>
                     </ul>
                 </li>
-                <li class="dropdown">
+                <li class="dropdown" ng-class="{'open':inSettings}">
                   <a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gears"></i> Settings <b class="caret"></b></a>
                   <ul class="dropdown-menu">
                     <li><a ng-href="#/admin/connection"><i class="fa fa-globe"></i> Connection</a></li>

@@ -83,6 +83,11 @@ var miningApp = angular.module('miningApp', [
     function($rootScope, AlertService, $locale){
       $rootScope.closeAlert = AlertService.closeAlert;
       $locale.id = 'pt-br';
+
+      $rootScope.$on('$routeChangeStart', function (ev, to, toParams, from, fromParams) {
+        $rootScope.inSettings = false;
+        $rootScope.inDashboard = false;
+      });
     }])
   .controller('HomeCtrl', function(){});
 var mining = {};

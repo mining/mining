@@ -14,4 +14,18 @@ auth
       }
     ]
   )
+  .filter('checkDashboardPermission',
+    ['AuthenticationService',
+      function(AuthenticationService){
+        return function(dashboards){
+          return dashboards.filter(
+            function(dashboard, index, array){
+              if(AuthenticationService.hasPermission(dashboard.slug, 'dashboard'))
+                return dashboard;
+            }
+          );
+        }
+      }
+    ]
+  )
 ;

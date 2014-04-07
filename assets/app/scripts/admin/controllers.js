@@ -1,7 +1,8 @@
 'use strict';
 admin
-.controller('ConnectionCtrl', ['$scope', 'Connection', 'AlertService',
-  function($scope, Connection, AlertService){
+.controller('ConnectionCtrl', ['$scope', 'Connection', 'AlertService', '$rootScope',
+  function($scope, Connection, AlertService, $rootScope){
+    $rootScope.inSettings = true;
     $scope.connections = Connection.query();
     $scope.connection = new Connection();
     $scope.selectConnection = function(c){
@@ -26,8 +27,9 @@ admin
       $scope.connection = new Connection();
     };
   }])
-.controller('CubeCtrl', ['$scope', 'Cube', 'Connection', 'AlertService', '$timeout',
-  function($scope, Cube, Connection, AlertService, $timeout){
+.controller('CubeCtrl', ['$scope', 'Cube', 'Connection', 'AlertService', '$timeout', '$rootScope',
+  function($scope, Cube, Connection, AlertService, $timeout, $rootScope){
+    $rootScope.inSettings = true;
     $scope.editorOptions = {
       lineWrapping : true,
       lineNumbers: true,
@@ -138,8 +140,9 @@ admin
       $scope.min = 0;
     };
   }])
-.controller('ElementCtrl', ['$scope', 'Cube', 'Element', 'AlertService', '$http',
-  function($scope, Cube, Element, AlertService, $http){
+.controller('ElementCtrl', ['$scope', 'Cube', 'Element', 'AlertService', '$http', '$rootScope',
+  function($scope, Cube, Element, AlertService, $http, $rootScope){
+    $rootScope.inSettings = true;
     $scope.types = [
     {'slug':"grid","name":"Grid"},
     {'slug':"chart_line", "name":"Chart line"},
@@ -185,6 +188,7 @@ admin
   }])
 .controller('DashboardCtrl', ['$scope', 'Dashboard', 'Element', 'AlertService', '$rootScope',
   function($scope, Dashboard, Element, AlertService, $rootScope){
+    $rootScope.inSettings = true;
     $rootScope.dashboards = Dashboard.query();
     $scope.elements = Element.query();
     $scope.dashboard = new Dashboard();
@@ -210,8 +214,9 @@ admin
       $scope.dashboard = new Dashboard();
     };
   }])
-.controller('UserCtrl', ['$scope', 'User', 'AlertService', 'Dashboard', 'AuthenticationService',
-  function($scope, User, AlertService, Dashboard, AuthenticationService){
+.controller('UserCtrl', ['$scope', 'User', 'AlertService', 'Dashboard', 'AuthenticationService', '$rootScope',
+  function($scope, User, AlertService, Dashboard, AuthenticationService, $rootScope){
+    $rootScope.inSettings = true;
     $scope.users = User.query();
     $scope.permissions = Dashboard.getFullList();
     $scope.user = new User();

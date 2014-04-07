@@ -5,9 +5,10 @@ dashboard
   }])
 .controller('DashboardDetailCtrl', 
   ['$scope', '$routeParams', 'AlertService', 'current_dashboard', 'Element', '$anchorScroll', '$timeout', '$http',
-    'AuthenticationService',
+    'AuthenticationService', '$rootScope',
   function($scope, $routeParams, AlertService, current_dashboard, Element, $anchorScroll, $timeout, $http,
-    AuthenticationService){
+    AuthenticationService, $rootScope){
+    $rootScope.inDashboard = true;
 
     $scope.gotoBottom = function (hash){
       $location.hash(hash);
