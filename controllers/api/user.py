@@ -26,6 +26,11 @@ mongo = MongoPlugin(
 user_app.install(mongo)
 
 
+@user_app.route('/session', method='GET')
+def session(mongodb):
+    return request.environ.get('beaker.session')
+
+
 @user_app.route('/login', method='POST')
 def login(mongodb):
     login = request.POST
