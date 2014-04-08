@@ -20,7 +20,7 @@
     <link href="{{ get_url('assets', path='bower/codemirror/lib/codemirror.css') }}" rel="stylesheet">
     <!-- Page Specific CSS -->
   </head>
-  <body class="ng-cloak">
+  <body class="ng-cloak" ng-cloak>
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -42,7 +42,7 @@
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <div class="collapse navbar-collapse navbar-ex1-collapse" ng-cloak>
             <ul class="nav navbar-nav side-nav" ng-show="AuthService.isLoggedIn()">
                 <li class="dropdown" ng-class="{'open':inDashboard}">
                     <a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-dashboard"></i> Dashboards <b class="caret"></b></a>
@@ -51,7 +51,7 @@
                         <a ng-href="#/dashboard/[[d.slug]]">[[d.name]]</a></li>
                     </ul>
                 </li>
-                <li class="dropdown" ng-class="{'open':inSettings}">
+                <li class="dropdown" ng-class="{'open':inSettings}" ng-show="AuthService.getUser().rule != 'user'">
                   <a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gears"></i> Settings <b class="caret"></b></a>
                   <ul class="dropdown-menu">
                     <li><a ng-href="#/admin/connection"><i class="fa fa-globe"></i> Connection</a></li>
