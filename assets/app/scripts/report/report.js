@@ -2,11 +2,11 @@
 var report = angular.module('miningApp.report', [])
   .run(['$rootScope', function($rootScope){
     $rootScope.operators = [
-      {key: 'gte', value: 'gte'},
-      {key: 'lte', value: 'lte'},
-      {key: 'is', value: 'is'},
-      {key: 'in', value: 'in'},
-      {key: 'between', value: 'between'}
+      {key: 'gte', value: 'Greater than or equal to'},
+      {key: 'lte', value: 'Less than or equal to'},
+      {key: 'is', value: 'Equal to'},
+      {key: 'in', value: 'In a given list'},
+      {key: 'between', value: 'Range'}
     ];
     $rootScope.types = [
       {key: 'date', value: 'Date'},
