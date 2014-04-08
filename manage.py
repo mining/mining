@@ -40,9 +40,8 @@ args = parser.parse_args()
 T.insert(0, TEMPLATE_PATH)
 
 session_opts = {
-    'session.type': 'file',
+    'session.type': 'memory',
     'session.cookie_expires': 50000,
-    'session.data_dir': './data',
     'session.auto': True
 }
 
