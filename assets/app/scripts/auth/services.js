@@ -55,6 +55,8 @@ auth
         },
 
         hasPermission: function(permission, type, dashboard){
+          if (SessionService.currentUser.rule == 'root' || SessionService.currentUser.rule == 'admin')
+            return true;
           if (type == 'dashboard')
             return SessionService.currentUser.permissions.hasOwnProperty(permission);
           else if(type == 'element' && dashboard)
