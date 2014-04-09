@@ -37,7 +37,10 @@ def run(cube_slug=None):
             if cube_slug and cube_slug != slug:
                 continue
 
-            sql = u"""SELECT * FROM ({}) AS CUBE;""".format(cube['sql'])
+            _sql = cube['sql']
+            if _sql[-1] == ';':
+                _sql = _sql[:-1]
+            sql = u"""SELECT * FROM ({}) AS CUBE;""".format(_sql)
 
             connection = mongo['connection'].find_one({
                 'slug': cube['connection']})['connection']
