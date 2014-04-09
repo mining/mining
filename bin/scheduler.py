@@ -46,13 +46,15 @@ mongo = MongoPlugin(
     json_mongo=True).get_mongo()
 
 register = []
-for cube in mongo['cube'].find({'scheduler': True}):
+for cube in mongo['cube'].find({'scheduler_status': True}):
+    print cube['slug']
     rules(cube)
     register.append(cube['slug'])
 
 
 while True:
-    for cube in mongo['cube'].find({'scheduler': True}):
+    print 'aqui {}'.format(register)
+    for cube in mongo['cube'].find({'scheduler_status': True}):
         if cube['slug'] not in register:
             rules(cube)
 
