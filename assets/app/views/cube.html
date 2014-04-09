@@ -71,6 +71,17 @@
                         <i class="fa" ng-class="{'fa-thumbs-up':c.status, 'fa-thumbs-down': !c.status}"></i>
                     </td>
                 </tr>
+                <tr ng-show="c.scheduler_status">
+                    <td colspan="2">
+                        Scheduler
+                    </td>
+                    <td>
+                        [[ c.scheduler_type ]]
+                    </td>
+                    <td>
+                        [[ c.scheduler_interval ]]
+                    </td>
+                </tr>
                 <tr>
                   <td colspan="4">
                     [[ c.sql ]]

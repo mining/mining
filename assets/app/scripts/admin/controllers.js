@@ -48,7 +48,7 @@ admin
     $scope.cubes = Cube.query();
     $scope.cube = new Cube();
     $scope.scheduler_types = [
-    {key:'minute', val: 'minute'},
+    {key:'minutes', val: 'minutes'},
     {key:'hour', val: 'hour'},
     {key:'day', val: 'day'}
     ];
@@ -60,7 +60,7 @@ admin
       if($scope.cube.scheduler_type == 'day'){
         $scope.show_h = true;
         $scope.show_m = true;
-      }else if($scope.cube.scheduler_type == 'minute'){
+      }else if($scope.cube.scheduler_type == 'minutes'){
         $scope.show_h = false;
         $scope.show_m = true;
       }else if($scope.cube.scheduler_type == 'hour'){
@@ -78,7 +78,7 @@ admin
         $scope.show_m = true;
         $scope.hour = parseInt($scope.cube.scheduler_interval.split(':')[0]);
         $scope.min = parseInt($scope.cube.scheduler_interval.split(':')[1]);
-      }else if($scope.cube.scheduler_type == 'minute'){
+      }else if($scope.cube.scheduler_type == 'minutes'){
         $scope.min = parseInt($scope.cube.scheduler_interval);
         $scope.show_h = false;
         $scope.show_m = true;
@@ -101,7 +101,7 @@ admin
         $scope.cube.scheduler_status = true;
         if($scope.cube.scheduler_type == 'day'){
           $scope.cube.scheduler_interval = mining.utils.padLeft(parseInt($scope.hour),2) +':'+ mining.utils.padLeft(parseInt($scope.min),2);
-        }else if($scope.cube.scheduler_type == 'minute'){
+        }else if($scope.cube.scheduler_type == 'minutes'){
           $scope.cube.scheduler_interval = parseInt($scope.min);
         }else if($scope.cube.scheduler_type == 'hour'){
           $scope.cube.scheduler_interval = parseInt($scope.hour);
