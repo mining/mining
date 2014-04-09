@@ -12,23 +12,30 @@ def base():
     response.content_type = 'application/json'
 
 
-def get(mongodb, collection, slug):
+def get(mongodb, collection, slug, field={'key': 'slug'}):
     base()
     if slug:
-        data = mongodb[collection].find({'slug': slug})
+        data = mongodb[collection].find_one({field['key']: slug})
+        if data:
+            data.pop('_id', None)
+        else:
+            data = {}
+        return dumps(data)
     else:
         data = mongodb[collection].find()
-    response = []
-    for d in data:
-        del d['_id']
-        response.append(d)
+        response = []
+        for d in data:
+            d.pop('_id', None)
+            response.append(d)
     return dumps(response)
 
 
 def post(mongodb, collection, opt={}, field={'key': 'slug', 'value': 'name'}):
     base()
     data = request.json
-    data[field['key']] = slugfy(data[field['value']])
+    data[field['key']] = data[field['value']]
+    if field.get('key', '') == 'slug':
+        data[field['key']] = slugfy(data[field['value']])
     data = dict(data.items() + opt.items())
     get = mongodb[collection].find({field['key']: data[field['key']]})
     if get.count() == 0:

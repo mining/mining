@@ -2,17 +2,13 @@
 var auth = angular.module('miningApp.auth', [])
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
-      .when('/login', {
-        templateUrl: 'assets/app/views/login.html',
-        controller: 'LoginCtrl'
+      .when('/new_user', {
+        templateUrl: 'assets/app/views/new_user.html',
+        controller: 'NewUserCtrl'
       })
       .when('/admin', {
         templateUrl: 'assets/app/views/admin.html',
         controller: 'AdminCtrl'
-      })
-      .when('/error', {
-        templateUrl: 'assets/app/views/error.html',
-        controller: 'LoginCtrl'
       })
       .otherwise({
         redirectTo: '/'
@@ -44,24 +40,35 @@ var auth = angular.module('miningApp.auth', [])
 
     $httpProvider.responseInterceptors.push(logsOutUserOn401);
   }])
-  .run(['$rootScope', '$location', 'AuthenticationService', 'getCurrentUser', 'AlertService',
-    function ($rootScope, $location, AuthenticationService, getCurrentUser, AlertService) {
+  .run(['$rootScope', '$location', 'AuthenticationService', 'getCurrentUser', 'AlertService', 'newUser',
+    function ($rootScope, $location, AuthenticationService, getCurrentUser, AlertService, newUser) {
     'use strict';
     $rootScope.AuthService = AuthenticationService;
+    if(newUser)
+      $rootScope.new_user = true;
     AuthenticationService.setUser(getCurrentUser);
+    $location.url($location.path());
+
 
     $rootScope.$on('$routeChangeStart', function (ev, to, toParams, from, fromParams) {
       // if route requires auth and user is not logged in
       if(AuthenticationService.isLoggedIn()){
-        if($location.path().split('/')[1] == 'dashboard'){
-          if (!AuthenticationService.hasPermission(to.params.slug, 'dashboard')) {
-            AlertService.add({'msg':'Oops, You not have permission!', 'type': 'warning', 'hold': true});
-            $location.path('/');
-          }
-        }else if($location.path().split('/')[1] == 'admin'){
-          if(AuthenticationService.getUser().rule =='user'){
-            AlertService.add({'msg':'Oops, You not have permission!', 'type': 'warning', 'hold': true});
-            $location.path('/');
+        if($rootScope.new_user && $location.path() != '/new_user'){
+          $location.path('/new_user');
+        }else{
+          if($location.path().split('/')[1] == 'dashboard'){
+            if (!AuthenticationService.hasPermission(to.params.slug, 'dashboard')) {
+              AlertService.add({'msg':'Oops, You not have permission!', 'type': 'warning', 'hold': true});
+              $location.path('/');
+            }
+          }else if($location.path().split('/')[1] == 'admin'){
+            if(AuthenticationService.getUser().rule =='user'){
+              AlertService.add({'msg':'Oops, You not have permission!', 'type': 'warning', 'hold': true});
+              $location.path('/');
+            }else if(AuthenticationService.getUser().rule !='root' && $location.path().split('/')[2] == 'user'){
+              AlertService.add({'msg':'Oops, You not have permission!', 'type': 'warning', 'hold': true});
+              $location.path('/');
+            }
           }
         }
       }else{
@@ -70,44 +77,23 @@ var auth = angular.module('miningApp.auth', [])
       }
     });
   }])
-  .controller('LoginCtrl', ['$scope', 'AuthenticationService', '$location', 'SessionService',
-    function ($scope, AuthenticationService, $location, SessionService) {
+  .controller('NewUserCtrl', ['$scope', 'AuthenticationService', '$location', 'User', 'AlertService', '$rootScope',
+    function ($scope, AuthenticationService, $location, User, AlertService, $rootScope) {
       'use strict';
-      var obj_user = {
-        "username": "yuripiratello",
-        "rule": "root",
-        "permissions": {
-          "dashboard-bar": ["tipo-bonus-bar"],
-          "dashboard-2-graficos": ["tipo-bonus-bar"]
-        }
-      };
-      $scope.loginUser = function () {
-        // this should be replaced with a call to your API for user verification (or you could also do it in the service)
-        AuthenticationService.login(obj_user)
-          .then(function(response){
-            SessionService.currentUser = response;
+      $scope.user = AuthenticationService.getUser();
+      $scope.saveNewUser = function(){
+        var tmp_user = new User();
+        angular.extend(tmp_user,$scope.user);
+        tmp_user.permissions = [];
+        tmp_user.rule = 'user';
+        tmp_user.$save()
+          .then(function(response) {
+            AlertService.add({type:'success', msg:'Save ok', hold:true});
+            $rootScope.new_user = false;
             $location.path('/');
-          }, function(response){
-            console.log('Login error');
-          })
-          .finally(function(){
-            console.log('Login finally');
           });
       };
-
-      $scope.loginAdmin = function () {
-        // this should be replaced with a call to your API for user verification (or you could also do it in the service)
-        AuthenticationService.login(obj_user)
-          .then(function(response){
-            SessionService.currentUser = response;
-            $location.path('/');
-          }, function(response){
-            console.log('Login error');
-          })
-          .finally(function(){
-            console.log('Login finally');
-          });
-      };
+//      SessionService.currentUser = response;
     }
   ])
 ;

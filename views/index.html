@@ -42,7 +42,7 @@
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse navbar-ex1-collapse" ng-cloak>
+        <div class="collapse navbar-collapse navbar-ex1-collapse" ng-cloak ng-show="!new_user">
             <ul class="nav navbar-nav side-nav" ng-show="AuthService.isLoggedIn()">
                 <li class="dropdown" ng-class="{'open':inDashboard}">
                     <a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-dashboard"></i> Dashboards <b class="caret"></b></a>
@@ -58,7 +58,7 @@
                     <li><a ng-href="#/admin/cube"><i class="fa fa-th"></i> Cube</a></li>
                     <li><a ng-href="#/admin/element"><i class="fa fa-sitemap"></i> Element</a></li>
                     <li><a ng-href="#/admin/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                    <li><a ng-href="#/admin/user"><i class="fa fa-user"></i> Users</a></li>
+                    <li ng-show="AuthService.getUser().rule == 'root'"><a ng-href="#/admin/user"><i class="fa fa-user"></i> Users</a></li>
                   </ul>
                 </li>
             </ul>
@@ -150,8 +150,25 @@
         .done(function(response){
           var userData = jQuery.parseJSON(response);
           if(userData.username){
-            angular.module('miningApp').constant('getCurrentUser', userData);
-            angular.bootstrap(document, ['miningApp']);
+            $.ajax({
+              'url':'/api/user/'+userData.username,
+              'type':'GET'
+            }).done(function(response){
+              if(!response.username){
+                angular.module('miningApp').constant('newUser', true);
+                userData.permissions = [];
+                userData.rule = 'user';
+              }else{
+                  angular.module('miningApp').constant('newUser', false);
+                  userData = response;
+              }
+              angular.module('miningApp').constant('getCurrentUser', userData);
+              angular.bootstrap(document, ['miningApp']);
+            }).fail(function(retorno){
+              angular.module('miningApp').constant('newUser', false);
+              angular.module('miningApp').constant('getCurrentUser', userData);
+              angular.bootstrap(document, ['miningApp']);
+            });
           }else{
             window.location.href="/login";
           }

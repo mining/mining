@@ -44,10 +44,10 @@ def dashboard_get(mongodb, slug=None):
                         n_el['cube']=_cube
                     das['element'].append(n_el)
         return das
+    if slug:
+        return json.dumps(full_elements(response))
     for r in response:
         new_resp.append(full_elements(r))
-    if slug:
-        return json.dumps(new_resp[0])
     return json.dumps(new_resp)
 
 

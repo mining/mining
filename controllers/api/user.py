@@ -81,13 +81,18 @@ def logout(mongodb):
 @user_app.route('/', method='GET')
 @user_app.route('/<slug>', method='GET')
 def user_get(mongodb, slug=None):
-    _get = json.loads(get(mongodb, collection, slug))
-    data = []
-    for _g in _get:
-        _g.pop('password', None)
-        _g.pop('apikey', None)
-        data.append(_g)
-    return json.dumps(data)
+    _get = json.loads(get(mongodb, collection, slug, {'key':'username'}))
+    if slug:
+        _get.pop('password', None)
+        _get.pop('apikey', None)
+        return json.dumps(_get)
+    else:
+        data = []
+        for _g in _get:
+            _g.pop('password', None)
+            _g.pop('apikey', None)
+            data.append(_g)
+        return json.dumps(data)
 
 
 @user_app.route('/', method='POST')
