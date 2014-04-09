@@ -1,4 +1,12 @@
-<p>Please log in!</p>
-
-<p><a ng-click="loginUser()">Log in as user</a></p>
-<p><a ng-click="loginAdmin()">Log in as admin</a></p>
+<div class="row">
+    <div class="col-lg-6">
+        <form name="form_connection" accept-charset="utf-8" role="form" ng-submit="saveNewUser()">
+            <h2 class="form-signin-heading">Please confirm acccount</h2>
+            <div class="form-group">
+                <label for="user_username">Username</label>
+                <input type="text" id="user_username" readonly="readonly" ng-model="user.username" class="form-control">
+            </div>
+            <button class="btn btn-large btn-primary" type="submit">Confirm</button>
+        </form>
+    </div>
+</div>
