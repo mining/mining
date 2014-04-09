@@ -19,12 +19,12 @@ def fix_type(value):
         try:
             return value.strftime("%Y-%m-%d %H:%M:%S")
         except ValueError:
-            return datetime(1900,01,01,00,00,00).strftime()
+            return datetime(1900, 01, 01, 00, 00, 00).strftime()
     elif type(value) is date or type(value) is datetime:
         try:
             return value.strftime("%Y-%m-%d")
         except ValueError:
-            return datetime(1900,01,01).strftime()
+            return datetime(1900, 01, 01).strftime()
     elif type(value) is Decimal:
         return float(value)
     return value
@@ -106,3 +106,9 @@ def conf(section):
         except:
             _dict[option] = None
     return _dict
+
+
+def log_it(s, name=u"core"):
+    with open("/tmp/openmining-{}.log".format(name), "a") as log:
+        msg = u"{} => {}\n".format(datetime.now(), s)
+        log.write(msg.encode('utf-8'))
