@@ -11,16 +11,23 @@ from bottle.ext.mongo import MongoPlugin
 
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from bin.mining import run
-from utils import conf
+from utils import conf, log_it
 
 
 def job(slug):
+    log_it("RUN JOB: {}".format(slug), "bin-scheduler")
     run(slug)
 
 
 def rules(cube):
     scheduler_type = cube.get('scheduler_type', 'minutes')
     scheduler_interval = cube.get('scheduler_interval', 60)
+
+    log_it("START REGISTER", "bin-scheduler")
+    log_it("cube: {}".format(cube.get('slug')), "bin-scheduler")
+    log_it("type: {}".format(scheduler_type), "bin-scheduler")
+    log_it("interval: {}".format(scheduler_type), "bin-scheduler")
+    log_it("END REGISTER", "bin-scheduler")
 
     if scheduler_type == 'minutes':
         t = schedule.every(int(scheduler_interval)).minutes
