@@ -11,7 +11,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.sql import text
 
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-from utils import fix_render, conf
+from utils import fix_render, conf, log_it
 
 from bottle.ext.mongo import MongoPlugin
 
@@ -29,7 +29,7 @@ def run(cube_slug=None):
 
     MyBucket = MyClient.bucket(conf("riak")["bucket"])
 
-    print "## START"
+    log_it("START", "bin-mining")
     for cube in mongo['cube'].find():
         try:
             slug = cube['slug']
@@ -47,47 +47,53 @@ def run(cube_slug=None):
             MyBucket.new(u'{}-connect'.format(slug), data='').store()
             MyBucket.new(u'{}-sql'.format(slug), data='').store()
 
-            print "# CONNECT IN RELATION DATA BASE: {}".format(slug)
+            log_it("CONNECT IN RELATION DATA BASE: {}".format(slug),
+                   "bin-mining")
             e = create_engine(connection)
             connection = e.connect()
 
             resoverall = connection.execute(text(sql))
 
-            print "# LOAD DATA ON DATAWAREHOUSE: {}".format(slug)
+            log_it("LOAD DATA ON DATAWAREHOUSE: {}".format(slug),
+                   "bin-mining")
             df = DataFrame(resoverall.fetchall())
             if df.empty:
-                print '[warnning]Empty cube: {}!!'.format(cube)
+                log_it('[warnning]Empty cube: {}!!'.format(cube),
+                       "bin-mining")
                 return
             df.columns = resoverall.keys()
             df.head()
 
             pdict = map(fix_render, df.to_dict(outtype='records'))
 
-            print "# SAVE DATA (JSON) ON RIAK: {}".format(slug)
+            log_it("# SAVE DATA (JSON) ON RIAK: {}".format(slug),
+                   "bin-mining")
             MyBucket.new(slug, data=pdict).store()
 
-            print "# SAVE COLUMNS ON RIAK: {}".format(slug)
+            log_it("# SAVE COLUMNS ON RIAK: {}".format(slug),
+                   "bin-mining")
             MyBucket.new(u'{}-columns'.format(slug),
                          data=json.dumps([c for c in df.columns])).store()
 
-            print "# SAVE CONNECT ON RIAK: {}".format(slug)
+            log_it("# SAVE CONNECT ON RIAK: {}".format(slug),
+                   "bin-mining")
             MyBucket.new(u'{}-connect'.format(slug), data=c).store()
 
-            print "# SAVE SQL ON RIAK: {}".format(slug)
+            log_it("# SAVE SQL ON RIAK: {}".format(slug),
+                   "bin-mining")
             MyBucket.new(u'{}-sql'.format(slug), data=sql).store()
 
             cube['status'] = True
             cube['lastupdate'] = datetime.now()
             mongo['cube'].update({'slug': cube['slug']}, cube)
 
-            print "# CLEAN MEMORY: {}\n".format(slug)
+            log_it("CLEAN MEMORY: {}\n".format(slug), "bin-mining")
             del pdict, df
             gc.collect()
         except Exception, e:
-            print e
-            # pass
+            log_it(e, "bin-mining")
 
-    print "## END"
+    log_it("END", "bin-mining")
     return True
 
 
