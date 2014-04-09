@@ -66,20 +66,20 @@ def run(cube_slug=None):
 
             pdict = map(fix_render, df.to_dict(outtype='records'))
 
-            log_it("# SAVE DATA (JSON) ON RIAK: {}".format(slug),
+            log_it("SAVE DATA (JSON) ON RIAK: {}".format(slug),
                    "bin-mining")
             MyBucket.new(slug, data=pdict).store()
 
-            log_it("# SAVE COLUMNS ON RIAK: {}".format(slug),
+            log_it("SAVE COLUMNS ON RIAK: {}".format(slug),
                    "bin-mining")
             MyBucket.new(u'{}-columns'.format(slug),
                          data=json.dumps([c for c in df.columns])).store()
 
-            log_it("# SAVE CONNECT ON RIAK: {}".format(slug),
+            log_it("SAVE CONNECT ON RIAK: {}".format(slug),
                    "bin-mining")
             MyBucket.new(u'{}-connect'.format(slug), data=c).store()
 
-            log_it("# SAVE SQL ON RIAK: {}".format(slug),
+            log_it("SAVE SQL ON RIAK: {}".format(slug),
                    "bin-mining")
             MyBucket.new(u'{}-sql'.format(slug), data=sql).store()
 
