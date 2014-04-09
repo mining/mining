@@ -5,10 +5,12 @@ dashboard
   }])
 .controller('DashboardDetailCtrl', 
   ['$scope', '$routeParams', 'AlertService', 'current_dashboard', 'Element', '$anchorScroll', '$timeout', '$http',
-    'AuthenticationService', '$rootScope',
+    'AuthenticationService', '$rootScope', 'Filter',
   function($scope, $routeParams, AlertService, current_dashboard, Element, $anchorScroll, $timeout, $http,
-    AuthenticationService, $rootScope){
+    AuthenticationService, $rootScope, Filter){
     $rootScope.inDashboard = true;
+
+    $scope.filter_name = undefined;
 
     $scope.gotoBottom = function (hash){
       $location.hash(hash);
@@ -66,7 +68,7 @@ dashboard
     // });
 
     $scope.addFilter = function(el){
-      var chave = 'filter__'+el.filter_field+"__"+el.filter_operator.key+'__'+el.filter_type.key;
+      var chave = 'filter__'+el.filter_field+"__"+el.filter_operator+'__'+el.filter_type;
       if (el.filter_format)
         chave = chave + '__'+el.filter_format;
       var ind = $scope.selected_dashboard.element.indexOf(el);
@@ -87,6 +89,17 @@ dashboard
         loadLine(el);
       }
     };
+    $scope.saveFilters = function(el){
+      var tmp_filters = angular.copy(el.filters);
+      tmp_filters['element'] = el.slug;
+      tmp_filters['name'] = el.filter_name;
+      var newFilter = new Filter();
+      angular.extend(newFilter, tmp_filters);
+      newFilter.$save()
+        .then(function(response){
+          el.saved_filters.push(response);
+        });
+    };
 
     $scope.export = function(el, type, link){
       var url = link+'.'+type+'?';
@@ -94,6 +107,16 @@ dashboard
         url += key + "=" + el.filters[key] + "&";
       }
       window.open(url);
+    };
+
+    $scope.selectFilter = function(el){
+      var tmp_filters = angular.copy(el.saved_filters[el.selected_filter]);
+      delete(tmp_filters['element']);
+      delete(tmp_filters['slug']);
+      delete(tmp_filters['name']);
+      el.filters = tmp_filters;
+      el.filter_name = el.saved_filters[el.selected_filter].name;
+      $scope.applyFilters(el);
     };
 
     $scope.selected_dashboard = current_dashboard.data;
@@ -105,6 +128,7 @@ dashboard
           filterIsCollapsed: true,
           current_page : 1,
           total_pages : 0,
+          filter_name: '',
           filter_operator : '',
           filter_field : '',
           filter_type : '',

@@ -43,9 +43,14 @@ def dashboard_get(mongodb, slug=None):
                         del _cube['_id']
                         _cube['lastupdate'] = str(_cube['lastupdate'] or '').replace(' ', 'T')
                         n_el['cube']=_cube
-                    _filters = mongodb[collection_filter].find({'slement':n_el['slug']})
+                    _filters = mongodb[collection_filter].find({'element':n_el['slug']})
                     if _filters:
-                        n_el['filters'] = [ x.pop('_id', None) for x in _filters ]
+                        _fil = []
+                        for x in _filters:
+                            x.pop('_id', None)
+                            _fil.append(x)
+                        print _fil
+                        n_el['saved_filters'] = _fil
                     das['element'].append(n_el)
         return das
     if slug:
