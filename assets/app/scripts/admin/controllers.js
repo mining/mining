@@ -70,7 +70,7 @@ admin
         $scope.show_h = false;
         $scope.show_m = false;
       }
-    }
+    };
     $scope.selectCube = function(c){
       $scope.cube = c;
       if($scope.cube.scheduler_type == 'day'){
@@ -173,7 +173,7 @@ admin
       $scope.element = new Element();
     };
     $scope.loadFields = function(){
-      if($scope.element.type != 'grid'){
+      if($scope.element.cube && $scope.element.type != 'grid'){
         $http.get('/api/element/cube/'+$scope.element.cube)
         .success(function(retorno){
           $scope.fields = retorno.columns;

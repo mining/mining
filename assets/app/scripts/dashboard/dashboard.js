@@ -1,5 +1,5 @@
 'use strict';
-var dashboard = angular.module('miningApp.dashboard', [])
+var dashboard = angular.module('miningApp.dashboard', ['ui.select2'])
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
       .when('/dashboard/:slug', {

@@ -16,12 +16,15 @@
             </div>
             <div class="form-group">
                 <label for="cube_connection">Connection *</label>
-                <select id="cube_connection" ng-options="c.slug as c.name for c in connections" ng-model="cube.connection" class="form-control" required></select>
+                <select id="cube_connection" ui-select2 ng-model="cube.connection" class="form-control" required>
+                    <option ng-repeat="c in connections" value="[[ c.slug ]]">[[ c.name ]]</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="cube_schedule_type">Scheduler</label>
-                <select id="cube_schedule_type" ng-change="changeSchedulerType()" ng-options="t.key as t.val for t in scheduler_types" ng-model="cube.scheduler_type" class="form-control">
-                  <option value="" selected="selected">No</option>
+                <select class="form-control" ui-select2 id="cube_schedule_type" ng-change="changeSchedulerType()" ng-model="cube.scheduler_type">
+                    <option value="" selected="selected">No</option>
+                    <option ng-repeat="t in scheduler_types" value="[[ t.key ]]">[[ t.val ]]</option>
                 </select>
                 <div ng-show="show_h">
                   <label>Hour</label><input class="form-control" id="hour" ng-model="hour" type="number" min="0" max="23" />

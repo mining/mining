@@ -16,23 +16,33 @@
             </div>
             <div class="form-group">
                 <label for="element_type">Type</label>
-                <select id="element_type" ng-options="t.slug as t.name for t in types" ng-model="element.type" class="form-control"></select>
+                <select id="element_type" ui-select2 ng-model="element.type" ng-change="loadFields()" class="form-control" required>
+                    <option ng-repeat="t in types" value="[[ t.slug ]]">[[ t.name ]]</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="element_cube">Cube</label>
-                <select id="element_cube" ng-model="element.cube"  ng-options="c.slug as c.name for c in cubes" class="form-control" ng-change="loadFields()"></select>
+                <select id="element_cube" ui-select2 ng-model="element.cube" ng-change="loadFields()" class="form-control" required>
+                    <option ng-repeat="c in cubes" value="[[ c.slug ]]">[[ c.name ]]</option>
+                </select>
             </div>
-            <div class="form-group" ng-show="element.type!='grid'">
-                <label for="element_field">Field (x)</label>
-                <select id="element_field" ng-model="element.field_x"  ng-options="c as c for c in fields" class="form-control"></select>
+            <div class="form-group" ng-show="element.type!='grid' && element.type">
+                <label for="element_field_x">Field (x)</label>
+                <select id="element_field_x" ui-select2 ng-model="element.field_x" class="form-control">
+                    <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
+                </select>
             </div>
-            <div class="form-group" ng-show="element.type!='grid'">
-                <label for="element_field">Field (y)</label>
-                <select id="element_field" ng-model="element.field_y"  ng-options="c as c for c in fields" class="form-control"></select>
+            <div class="form-group" ng-show="element.type!='grid' && element.type">
+                <label for="element_field_y">Field (y)</label>
+                <select id="element_field_y" ui-select2 ng-model="element.field_y" class="form-control">
+                    <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
+                </select>
             </div>
-            <div class="form-group" ng-show="element.type=='chart_line'">
-                <label for="element_field">Series (line)</label>
-                <select id="element_field" ng-model="element.field_serie"  ng-options="c as c for c in fields" class="form-control"></select>
+            <div class="form-group" ng-show="element.type=='chart_line' && element.type">
+                <label for="element_field_series">Series (line)</label>
+                <select id="element_field_series" ui-select2 ng-model="element.field_serie" class="form-control">
+                    <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
             <button type="button" class="btn btn-success" ng-click="newForm()">New</button>

@@ -9,6 +9,7 @@ from .base import get, post, put, delete
 
 from element import collection as collection_element
 from cube import collection as collection_cube
+from filter import collection as collection_filter
 
 collection = 'dashboard'
 
@@ -42,6 +43,9 @@ def dashboard_get(mongodb, slug=None):
                         del _cube['_id']
                         _cube['lastupdate'] = str(_cube['lastupdate'] or '').replace(' ', 'T')
                         n_el['cube']=_cube
+                    _filters = mongodb[collection_filter].find({'slement':n_el['slug']})
+                    if _filters:
+                        n_el['filters'] = [ x.pop('_id', None) for x in _filters ]
                     das['element'].append(n_el)
         return das
     if slug:
