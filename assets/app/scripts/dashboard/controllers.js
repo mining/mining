@@ -31,6 +31,8 @@ dashboard
           el.columns = data.data;
         }else if (data.type == 'max_page') {
           el.total_pages = Math.ceil(data.data/50);
+        }else if (data.type == 'last_update') {
+          el.cube.lastupdate = moment(data.data).format('YYYY-MM-DDTHH:mm:ss');
         }else if (data.type == 'data') {
           el.process.push(data.data);
         }else if (data.type == 'close') {
@@ -185,6 +187,8 @@ dashboard
           el.columns = data.data;
         }else if (data.type == 'max_page') {
           el.total_pages = Math.ceil(data.data/50);
+        }else if (data.type == 'last_update') {
+          el.cube.lastupdate = moment(data.data).format('YYYY-MM-DDTHH:mm:ss');
         }else if (data.type == 'data') {
           el.process.push(data.data);
         }else if (data.type == 'close') {
@@ -223,6 +227,8 @@ dashboard
           el.columns = data.data;
         }else if (data.type == 'max_page') {
           el.total_pages = Math.ceil(data.data/50);
+        }else if (data.type == 'last_update') {
+          el.cube.lastupdate = moment(data.data).format('YYYY-MM-DDTHH:mm:ss');
         }else if (data.type == 'data') {
           count=count+1;
           if(el.labels.indexOf(data.data[el.field_serie]) < 0)

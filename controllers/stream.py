@@ -41,6 +41,8 @@ def data(ws, mongodb, slug):
     fields = columns
     if request.GET.get('fields', None):
         fields = request.GET.get('fields').split(',')
+    cube_last_update = mongodb['cube'].find_one({'slug':element.get('cube')})
+    ws.send(json.dumps({'type': 'last_update', 'data': str(cube_last_update.get('lastupdate', ''))}))
 
     ws.send(json.dumps({'type': 'columns', 'data': fields}))
 
