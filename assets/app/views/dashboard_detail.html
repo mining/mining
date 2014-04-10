@@ -14,7 +14,7 @@
       <div class="panel-heading">
         <h3 class="panel-title">
           <a ng-click="e.isCollapsed=!e.isCollapsed">
-            <i class="fa fa-bar-chart-o"></i> [[ e.name ]] (Last Update: [[ e.cube.lastupdate|date:'yyyy-MM-dd hh:mm:ss' ]])
+            <i class="fa fa-bar-chart-o"></i> [[ e.name ]] (Last Update: [[ e.cube.lastupdate|date:'yyyy-MM-dd hh:mm:ss' ]] | Last Refresh: [[ e.last_refresh|date:'yyyy-MM-dd hh:mm:ss' ]])
           </a>
         </h3>
       </div>
@@ -171,19 +171,33 @@
           <div class="panel-collapse" collapse="e.filterIsCollapsed">
             <div class="panel-body">
               <div class="row">
+                  <div class="col-lg-12">
+                      <select class="form-control" ui-select2="{allowClear:true}" ng-model="e.selected_filter" ng-change="selectFilter(e)" data-placeholder="Select one saved filter">
+                          <option value=""></option>
+                          <option ng-repeat="f in e.saved_filters" value="[[ $index ]]">[[ f.name ]]</option>
+                      </select>
+                  </div>
+              </div>
+              <div class="row">
                 <div class="col-lg-6">
                   <form role="form" name="form-filter">
                     <div class="form-group">
                       <label>Field</label>
-                      <select class="form-control" ng-model="e.filter_field" ng-options="c for c in e.columns" required=""></select>
+                      <select ui-select2 class="form-control" ng-model="e.filter_field" required>
+                          <option ng-repeat="c in e.columns" value="[[ c ]]">[[ c ]]</option>
+                      </select>
                     </div>
                     <div class="form-group">
                       <label>Operator</label>
-                      <select class="form-control" ng-model="e.filter_operator" ng-options="op.value for op in operators" required=""></select>
+                      <select ui-select2 class="form-control" ng-model="e.filter_operator" required>
+                          <option ng-repeat="op in operators" value="[[ op.key ]]" >[[ op.value ]]</option>
+                      </select>
                     </div>
                     <div class="form-group">
                       <label>Type</label>
-                      <select class="form-control" ng-model="e.filter_type" ng-options="ty.value for ty in types" required=""></select>
+                      <select ui-select2 class="form-control" ng-model="e.filter_type" required>
+                          <option ng-repeat="ty in types" value="[[ ty.key ]]">[[ ty.value ]]</option>
+                      </select>
                     </div>
                     <div class="form-group">
                       <label>Format</label>
@@ -205,6 +219,17 @@
                     <!-- ngRepeat: (key,val) in filters -->
                   </ul>
                   <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="applyFilters(e)">Apply Filters</button>
+                    <div class="panel">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <i class="fa fa-save"></i> Save Filter
+                        </h3>
+                      </div>
+                      <div class="panel-body">
+                        <input class="form-control" type="text" ng-model="e.filter_name" placeholder="Filter Name" />
+                        <button type="button" class="btn btn-success btn-lg btn-block" ng-disabled="!e.filter_name || e.filters.length<0" ng-click="saveFilters(e)">Save Filters</button>
+                      </div>
+                    </div>
                 </div>
               </div>
             </div>
@@ -241,19 +266,33 @@
           <div class="panel-collapse" collapse="e.filterIsCollapsed">
             <div class="panel-body">
               <div class="row">
+                  <div class="col-lg-12">
+                      <select class="form-control" ui-select2="{allowClear:true}" ng-model="e.selected_filter" ng-change="selectFilter(e)" data-placeholder="Select one saved filter">
+                          <option value=""></option>
+                          <option ng-repeat="f in e.saved_filters" value="[[ $index ]]">[[ f.name ]]</option>
+                      </select>
+                  </div>
+              </div>
+              <div class="row">
                 <div class="col-lg-6">
                   <form role="form" name="form-filter">
                     <div class="form-group">
                       <label>Field</label>
-                      <select class="form-control" ng-model="e.filter_field" ng-options="c for c in e.columns" required=""></select>
+                      <select ui-select2 class="form-control" ng-model="e.filter_field" required>
+                          <option ng-repeat="c in e.columns" value="[[ c ]]">[[ c ]]</option>
+                      </select>
                     </div>
                     <div class="form-group">
                       <label>Operator</label>
-                      <select class="form-control" ng-model="e.filter_operator" ng-options="op.value for op in operators" required=""></select>
+                      <select ui-select2 class="form-control" ng-model="e.filter_operator" required>
+                          <option ng-repeat="op in operators" value="[[ op.key ]]" >[[ op.value ]]</option>
+                      </select>
                     </div>
                     <div class="form-group">
                       <label>Type</label>
-                      <select class="form-control" ng-model="e.filter_type" ng-options="ty.value for ty in types" required=""></select>
+                      <select ui-select2 class="form-control" ng-model="e.filter_type" required>
+                          <option ng-repeat="ty in types" value="[[ ty.key ]]">[[ ty.value ]]</option>
+                      </select>
                     </div>
                     <div class="form-group">
                       <label>Format</label>
@@ -272,8 +311,20 @@
                     <li ng-repeat="(key,val) in e.filters">
                       <button ng-click="removeFilter(e, key)"><i class="glyphicon glyphicon-remove"></i></button> [[ key ]] : [[ val ]]
                     </li>
+                    <!-- ngRepeat: (key,val) in filters -->
                   </ul>
                   <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="applyFilters(e)">Apply Filters</button>
+                    <div class="panel">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <i class="fa fa-save"></i> Save Filter
+                        </h3>
+                      </div>
+                      <div class="panel-body">
+                        <input class="form-control" type="text" ng-model="e.filter_name" placeholder="Filter Name" />
+                        <button type="button" class="btn btn-success btn-lg btn-block" ng-disabled="!e.filter_name || e.filters.length<0" ng-click="saveFilters(e)">Save Filters</button>
+                      </div>
+                    </div>
                 </div>
               </div>
             </div>

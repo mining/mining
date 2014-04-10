@@ -94,5 +94,21 @@ var mining = {};
 mining['utils'] = {
   padLeft: function (nr, n, str) {
     return Array(n - String(nr).length + 1).join(str || '0') + nr;
+  },
+  getNestedProp: function (obj, propString, fallback) {
+    if (!propString) return obj;
+    var prop, props = propString.split('.');
+
+    for (var i = 0, iLen = props.length - 1; i <= iLen; i++) {
+      prop = props[i];
+
+      if (typeof obj == 'object' && obj !== null && prop in obj) {
+        obj = obj[prop];
+      }
+      else
+        return fallback;
+    }
+
+    return obj;
   }
 };

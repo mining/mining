@@ -5,9 +5,9 @@ dashboard
   }])
 .controller('DashboardDetailCtrl', 
   ['$scope', '$routeParams', 'AlertService', 'current_dashboard', 'Element', '$anchorScroll', '$timeout', '$http',
-    'AuthenticationService', '$rootScope', 'Filter',
+    'AuthenticationService', '$rootScope', 'Filter', '$interval',
   function($scope, $routeParams, AlertService, current_dashboard, Element, $anchorScroll, $timeout, $http,
-    AuthenticationService, $rootScope, Filter){
+    AuthenticationService, $rootScope, Filter, $interval){
     $rootScope.inDashboard = true;
 
     $scope.filter_name = undefined;
@@ -110,12 +110,16 @@ dashboard
     };
 
     $scope.selectFilter = function(el){
-      var tmp_filters = angular.copy(el.saved_filters[el.selected_filter]);
-      delete(tmp_filters['element']);
-      delete(tmp_filters['slug']);
-      delete(tmp_filters['name']);
-      el.filters = tmp_filters;
-      el.filter_name = el.saved_filters[el.selected_filter].name;
+      el.filters = {};
+      el.filter_name = '';
+      if(el.selected_filter !=""){
+        var tmp_filters = angular.copy(el.saved_filters[el.selected_filter]);
+        delete(tmp_filters['element']);
+        delete(tmp_filters['slug']);
+        delete(tmp_filters['name']);
+        el.filters = tmp_filters;
+        el.filter_name = el.saved_filters[el.selected_filter].name;
+      }
       $scope.applyFilters(el);
     };
 
@@ -136,12 +140,22 @@ dashboard
           filter_value : '',
           filters : {},
           columns : [],
-          process : []
+          process : [],
+          last_refresh : undefined
         });
         // Element.loadData({'slug': val.slug, 'page': val.current_page, 'filters': val.filters});
-        if($scope.selected_dashboard.element[ind].type == 'grid')
+        if($scope.selected_dashboard.element[ind].type == 'grid'){
+          val.last_refresh = moment().format('YYYY-mm-DDTHH:MM:ss');
           loadGrid(val);
-        else if($scope.selected_dashboard.element[ind].type == 'chart_bar'){
+          if($scope.selected_dashboard.element[ind].cube.scheduler_status){
+            if($scope.selected_dashboard.element[ind].cube.scheduler_type=='minutes'){
+              $interval(function(){
+                val.last_refresh = moment().format('YYYY-mm-DDTHH:MM:ss');
+                loadGrid(val);
+              },parseInt($scope.selected_dashboard.element[ind].cube.scheduler_interval)*60000);
+            }
+          }
+        }else if($scope.selected_dashboard.element[ind].type == 'chart_bar'){
           $scope.selected_dashboard.element[ind].xkey = [$scope.selected_dashboard.element[ind].field_x];
           $scope.selected_dashboard.element[ind].ykeys = [$scope.selected_dashboard.element[ind].field_y];
           $scope.selected_dashboard.element[ind].labels = [$scope.selected_dashboard.element[ind].field_y];

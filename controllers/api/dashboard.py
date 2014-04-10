@@ -38,7 +38,14 @@ def dashboard_get(mongodb, slug=None):
                 if n_el:
                     del n_el['_id']
                     _cube = mongodb[collection_cube].find_one({'slug':n_el['cube']},
-                                                              {'name':True,'slug':True,'lastupdate':True})
+                                                              {
+                                                                  'name':True,
+                                                                  'slug':True,
+                                                                  'lastupdate':True,
+                                                                  'scheduler_status':True,
+                                                                  'scheduler_interval':True,
+                                                                  'scheduler_type':True
+                                                              })
                     if _cube:
                         del _cube['_id']
                         _cube['lastupdate'] = str(_cube['lastupdate'] or '').replace(' ', 'T')
