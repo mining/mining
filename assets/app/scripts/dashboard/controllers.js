@@ -145,12 +145,12 @@ dashboard
         });
         // Element.loadData({'slug': val.slug, 'page': val.current_page, 'filters': val.filters});
         if($scope.selected_dashboard.element[ind].type == 'grid'){
-          val.last_refresh = moment().format('YYYY-mm-DDTHH:MM:ss');
+          val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
           loadGrid(val);
           if($scope.selected_dashboard.element[ind].cube.scheduler_status){
             if($scope.selected_dashboard.element[ind].cube.scheduler_type=='minutes'){
               $interval(function(){
-                val.last_refresh = moment().format('YYYY-mm-DDTHH:MM:ss');
+                val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
                 loadGrid(val);
               },parseInt($scope.selected_dashboard.element[ind].cube.scheduler_interval)*60000);
             }
