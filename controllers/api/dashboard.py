@@ -48,7 +48,7 @@ def dashboard_get(mongodb, slug=None):
                                                               })
                     if _cube:
                         del _cube['_id']
-                        _cube['lastupdate'] = str(_cube['lastupdate'] or '').replace(' ', 'T')
+                        _cube['lastupdate'] = str(_cube.get('lastupdate','')).replace(' ', 'T')
                         n_el['cube']=_cube
                     _filters = mongodb[collection_filter].find({'element':n_el['slug']})
                     if _filters:
