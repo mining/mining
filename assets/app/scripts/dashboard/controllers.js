@@ -24,6 +24,8 @@ dashboard
         API_URL += key + "=" + el.filters[key] + "&";
       }
       API_URL += 'page=' + el.current_page + "&";
+      if(el.order_by)
+        API_URL += 'order_by=' + el.order_by + "&ascending_by="+ el.order_by_ascending;
       var sock = new WebSocket(API_URL);
       sock.onmessage = function (e) {
         var data = JSON.parse(e.data.replace(/NaN/g,'null'));
@@ -110,6 +112,23 @@ dashboard
       }
       window.open(url);
     };
+
+    $scope.applyOrder = function(el, field, asc){
+      el.current_page = 1;
+      el.total_pages = undefined;
+      el.pages = [];
+      el.order_by = field;
+      el.order_by_ascending = 0;
+      if(asc == 0)
+        el.order_by_ascending = 1;
+      if(el.type == 'grid'){
+        loadGrid(el);
+      }else if(el.type == 'chart_bar'){
+        loadBar(el);
+      }else if(el.type == 'chart_line'){
+        loadLine(el);
+      }
+    }
 
     $scope.selectFilter = function(el){
       el.filters = {};

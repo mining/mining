@@ -71,6 +71,12 @@ def data(ws, mongodb, slug):
     if len(groupby) >= 1:
         df = df.groupby(groupby)
 
+    order_bys = []
+    if request.GET.get('order_by', None) and element['type'] == 'grid':
+        ordering_by = request.GET.get('order_by')
+        ascending_by = True if request.GET.get('ascending_by','0') == '1' else False
+        df = df.sort(ordering_by, ascending=ascending_by)
+
     ws.send(json.dumps({'type': 'max_page', 'data': len(df)}))
 
     # CLEAN MEMORY

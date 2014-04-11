@@ -38,7 +38,11 @@
               <tbody>
                 <tr>
                   <th ng-repeat="c in e.columns">
-                    <a>[[ c ]]</a>
+                    <a ng-click="applyOrder(e, c, e.order_by_ascending)">[[ c ]]
+                      <i class="fa"
+                         ng-class="{'fa-arrow-up': e.order_by==c && e.order_by_ascending == '1',
+                         'fa-arrow-down': e.order_by==c && e.order_by_ascending == '0'}"></i>
+                    </a>
                   </th>
                 </tr>
                 <tr ng-repeat="p in e.process">
