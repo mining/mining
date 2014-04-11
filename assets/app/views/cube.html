@@ -16,7 +16,7 @@
             </div>
             <div class="form-group">
                 <label for="cube_connection">Connection *</label>
-                <select id="cube_connection" ui-select2 ng-model="cube.connection" class="form-control" required>
+                <select id="cube_connection" ng-model="cube.connection" class="form-control" required>
                     <option ng-repeat="c in connections" value="[[ c.slug ]]">[[ c.name ]]</option>
                 </select>
             </div>
