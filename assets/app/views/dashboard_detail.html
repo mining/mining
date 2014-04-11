@@ -49,13 +49,13 @@
             <div>
               <ul class="pagination">
                 <li ng-class="{'disabled':e.current_page==1}">
-                  <a ng-click="selectPage('[[ e.slug ]]',1)">First</a>
+                  <a ng-click="selectPage(e,1)">First</a>
                 </li>
                 <li ng-repeat="(key,p) in getPages(e)" ng-class="{'active':p==e.current_page}">
-                  <a ng-click="selectPage('[[ e.slug ]]', p)">[[ p ]]</a>
+                  <a ng-click="selectPage(e, p)">[[ p ]]</a>
                 </li>
                 <li ng-class="{'disabled':e.current_page==e.total_pages}">
-                  <a ng-click="selectPage('[[ e.slug ]]', e.total_pages)">Last</a>
+                  <a ng-click="selectPage(e, e.total_pages)">Last</a>
                 </li>
               </ul>
             </div>
