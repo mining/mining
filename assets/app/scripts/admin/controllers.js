@@ -156,6 +156,7 @@ admin
     $scope.fields = [];
     $scope.selectElement = function(e){
       $scope.element = e;
+      $scope.loadFields();
     };
     $scope.deleteElement = function(element){
       Element.delete(element);
@@ -173,7 +174,7 @@ admin
       $scope.element = new Element();
     };
     $scope.loadFields = function(){
-      if($scope.element.cube && $scope.element.type != 'grid'){
+      if($scope.element.cube){
         $http.get('/api/element/cube/'+$scope.element.cube)
         .success(function(retorno){
           $scope.fields = retorno.columns;

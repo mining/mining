@@ -26,6 +26,19 @@
                     <option ng-repeat="c in cubes" value="[[ c.slug ]]">[[ c.name ]]</option>
                 </select>
             </div>
+            <div class="form-group" ng-show="element.type=='grid' && element.type">
+                <label for="element_order_by">Order By</label>
+                <select id="element_order_by" ui-select2 ng-model="element.orderby" class="form-control">
+                    <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
+                </select>
+            </div>
+            <div class="form-group" ng-show="element.type=='grid' && element.type">
+                <label for="element_order_ascending">Order Type</label>
+                <select id="element_order_ascending" ui-select2 ng-model="element.orderby__order" class="form-control">
+                    <option value="1">Ascending</option>
+                    <option value="0">Descending</option>
+                </select>
+            </div>
             <div class="form-group" ng-show="element.type!='grid' && element.type">
                 <label for="element_field_x">Field (x)</label>
                 <select id="element_field_x" ui-select2 ng-model="element.field_x" class="form-control">
