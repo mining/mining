@@ -24,8 +24,8 @@ dashboard
         API_URL += key + "=" + el.filters[key] + "&";
       }
       API_URL += 'page=' + el.current_page + "&";
-      if(el.order_by)
-        API_URL += 'order_by=' + el.order_by + "&ascending_by="+ el.order_by_ascending;
+      if(el.orderby)
+        API_URL += 'orderby=' + el.orderby + "&orderby__order="+ el.orderby__order;
       var sock = new WebSocket(API_URL);
       sock.onmessage = function (e) {
         var data = JSON.parse(e.data.replace(/NaN/g,'null'));
@@ -61,15 +61,6 @@ dashboard
         loadGrid(el);
       }
     };
-
-    // $scope.$watch('selected_dashboard.element.filter_format', function(newVal, oldVal, scope){
-    //   if(getNestedProp(newVal, 'key', '') == 'date'){
-    //     debugger;
-    //     $scope.filter_format = ":Y-:m-:d";
-    //   }else{
-    //     $scope.filter_format = "";
-    //   }
-    // });
 
     $scope.addFilter = function(el){
       var chave = 'filter__'+el.filter_field+"__"+el.filter_operator+'__'+el.filter_type;
@@ -117,10 +108,10 @@ dashboard
       el.current_page = 1;
       el.total_pages = undefined;
       el.pages = [];
-      el.order_by = field;
-      el.order_by_ascending = 0;
+      el.orderby = field;
+      el.orderby__order = 0;
       if(asc == 0)
-        el.order_by_ascending = 1;
+        el.orderby__order = 1;
       if(el.type == 'grid'){
         loadGrid(el);
       }else if(el.type == 'chart_bar'){
@@ -128,7 +119,7 @@ dashboard
       }else if(el.type == 'chart_line'){
         loadLine(el);
       }
-    }
+    };
 
     $scope.selectFilter = function(el){
       el.filters = {};
@@ -170,7 +161,7 @@ dashboard
           loadGrid(val);
           if($scope.selected_dashboard.element[ind].cube.scheduler_status){
             if($scope.selected_dashboard.element[ind].cube.scheduler_type=='minutes'){
-              $interval(function(){
+              val.intervals = $interval(function(){
                 val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
                 loadGrid(val);
               },parseInt($scope.selected_dashboard.element[ind].cube.scheduler_interval)*60000);
@@ -187,6 +178,13 @@ dashboard
           loadLine(val);
         }
       }
+    });
+
+    $scope.$on('$destroy', function(){
+      $($scope.selected_dashboard.element).each(function(ind, val){
+        if(val.intervals)
+          $interval.cancel(val.intervals);
+      });
     });
 
     function loadBar(el){
