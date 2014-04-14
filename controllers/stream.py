@@ -41,8 +41,10 @@ def data(ws, mongodb, slug):
     fields = columns
     if request.GET.get('fields', None):
         fields = request.GET.get('fields').split(',')
-    cube_last_update = mongodb['cube'].find_one({'slug':element.get('cube')})
-    ws.send(json.dumps({'type': 'last_update', 'data': str(cube_last_update.get('lastupdate', ''))}))
+
+    cube_last_update = mongodb['cube'].find_one({'slug': element.get('cube')})
+    ws.send(json.dumps({'type': 'last_update',
+                        'data': str(cube_last_update.get('lastupdate', ''))}))
 
     ws.send(json.dumps({'type': 'columns', 'data': fields}))
 
@@ -71,11 +73,12 @@ def data(ws, mongodb, slug):
     if len(groupby) >= 1:
         df = df.groupby(groupby)
 
-    order_bys = []
-    if request.GET.get('order_by', None) and element['type'] == 'grid':
-        ordering_by = request.GET.get('order_by')
-        ascending_by = True if request.GET.get('ascending_by','0') == '1' else False
-        df = df.sort(ordering_by, ascending=ascending_by)
+    if request.GET.get('orderby', None):
+        orderby = request.GET.get('orderby', [])
+        orderby__order = True
+        if request.GET.get('orderby__order', 0) != 1:
+            orderby__order = False
+        df = df.sort(orderby, ascending=orderby__order)
 
     ws.send(json.dumps({'type': 'max_page', 'data': len(df)}))
 
