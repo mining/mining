@@ -73,10 +73,11 @@ def data(ws, mongodb, slug):
     if len(groupby) >= 1:
         df = df.groupby(groupby)
 
-    if request.GET.get('orderby', None):
+
+    if request.GET.get('orderby', element.get('orderby', None)):
         orderby = request.GET.get('orderby', [])
         orderby__order = True
-        if request.GET.get('orderby__order', 0) != 1:
+        if request.GET.get('orderby__order', element.get('orderby__order', 0)) != 1:
             orderby__order = False
         df = df.sort(orderby, ascending=orderby__order)
 
