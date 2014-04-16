@@ -34,7 +34,7 @@ def dashboard_get(mongodb, slug=None):
             elements = das['element']
             das['element'] = []
             for el in elements:
-                n_el = mongodb[collection_element].find_one({'slug': el})
+                n_el = mongodb[collection_element].find_one({'slug': el['id'] if type(el) == dict else el})
                 if n_el:
                     del n_el['_id']
                     _cube = mongodb[collection_cube].find_one({'slug':n_el['cube']},
