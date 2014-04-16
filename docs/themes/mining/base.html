@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{ page_title }}</title>
+    {% if page_description %}<meta name="description" content="{{ page_description }}">{% endif %}
+    {% if site_author %}<meta name="author" content="{{ site_author }}">{% endif %}
+    {% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}">{% endif %}
+    {% if favicon %}<link rel="shortcut icon" href="{{ favicon }}">
+    {% else %}<link rel="shortcut icon" href="{{ base_url }}/img/favicon.ico">{% endif %}
+
+    <!-- Bootstrap Core CSS -->
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Fonts -->
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+    <!-- Custom Theme CSS -->
+    <link href="{{ base_url }}/css/grayscale.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-custom">
+
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-main-collapse">
+                <ul class="nav navbar-nav">
+                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    {% for toc_item in toc %}
+                    <li class="page-scroll {% if toc_item.active %}active{% endif %}"><a href="{{ toc_item.url }}">{{ toc_item.title }}</a></li>
+                      {% for toc_item in toc_item.children %}
+                      <li class="page-scroll"><a href="{{ toc_item.url }}">{{ toc_item.title }}</a></li>
+                      {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <section class="intro">
+        <div class="intro-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h1 class="brand-heading">Open Mining</h1>
+                        <p class="intro-text">Business Intelligence (BI) Application Server</p>
+                        <div class="page-scroll">
+                            <a href="#why-open-mining" class="btn btn-circle">
+                                <i class="fa fa-angle-double-down animated"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container content-section">
+    {{ content }}
+    </section>
+
+    <!-- Core JavaScript Files -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+    <!-- Google Maps API Key - You will need to use your own API key to use the map feature -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{{ base_url }}/js/grayscale.js"></script>
+
+</body>
+
+</html>
