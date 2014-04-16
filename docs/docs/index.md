@@ -1,34 +1,15 @@
-
-Open Mining - Business Intelligence (BI) Application Server
-==========================================================
-
-.. image:: https://raw.github.com/avelino/mining/master/assets/image/openmining.io.png
-   :name: logo
-
-.. sidebar:: Links
-
- - `Bug tracker <http://github.com/avelino/mining/issues>`_
- - IRC: (`#openmining <http://webchat.freenode.net?channels=openmining>`_) on Freenode
- - `Downloads <http://pypi.python.org/pypi/mining/>`_
- - `Source code <https://github.com/avelino/mining>`_
-
-
-Why Open Mining?
-----------------
+# Why Open Mining?
 
 **Open Mining** is software for creating OLAP (online analytical processing) cubes (multi-dimensional) using Numpy, 
 Scipy and Pandas for data management and flexibility in processing dynamical filters. Open-source provider of 
 reporting, analysis, dashboard, data mining and workflow capabilities.
 
 
-Cube, Dimensions, Facts and Measures
-------------------------------------
+## Cube, Dimensions, Facts and Measures
 
 The application models the data as a cube with multiple dimensions:
 
-.. figure:: static/cubes-slice_and_dice-cell.png
-    :align: center
-    :width: 400px
+![Cube](img/cubes-slice_and_dice-cell.png =400x185)
 
 The most detailed unit of the data is a *fact*. Fact can be a contract,
 invoice, spending, task, etc. Each fact might have a *measure* â€“ an attribute
@@ -47,8 +28,7 @@ Dimension can have multiple *hierarchies*, for example the date dimension
 might have year, month and day levels in a hierarchy.
 
 
-Reporting features
-------------------
+## Features
 
 Which reporting solution is the best? Which tool to choose? 
 These are the question that all companies' managers need to answer in the beginning of firm's existence. 
@@ -111,8 +91,7 @@ each customer's needs. Nonetheless, knowing Open Mining's gratuity, we might sup
 in small and medium-sized companies at most.
 
 
-More about OLAP cube
---------------------
+## OLAP cube
 
 A cube can be considered a generalization of a three-dimensional spreadsheet. For example, a company might wish to 
 summarize financial data by product, by time-period, and by city to compare actual and budget expenses. Product, 
