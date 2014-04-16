@@ -16,10 +16,9 @@
             </div>
             <div class="form-group">
                 <label for="dashboard_elements">Elements</label>
-                <select multiple ui-select2="{'multiple':true}" ng-multiple="true" id="dashboard_elements" ng-model="dashboard.element" class="form-control" size="10">
-                    <option ng-repeat="e in elements" value="[[e.slug]]">[[e.name]]</option>
-                </select>
-                <p class="help-block">Hold ctrl (windows/linux) or command (mac)</p>
+                <input type="hidden" multiple ui-select2-sortable sortable simple-query="queryElements" id="dashboard_elements"
+                        ng-model="dashboard.element" class="form-control">
+                <p class="help-block">Drag and drop to order elements</p>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
             <button type="button" class="btn btn-success" ng-click="newForm()">New</button>
@@ -28,28 +27,28 @@
     <div class="col-lg-6">
         <table class="table table-bordered table-responsive table-hover">
             <thead>
-                <th>
-                </th>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Elements
-                </th>
+            <th>
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Elements
+            </th>
             </thead>
             <tbody>
-                <tr ng-repeat="d in dashboards">
-                    <td>
-                        <a ng-click="selectDashboard(d)"><i class="fa fa-pencil"></i></a>
-                        <a ng-click="deleteDashboard(d)"><i class="fa fa-trash-o"></i></a>
-                    </td>
-                    <td>
-                        [[d.name]]
-                    </td>
-                    <td>
-                        [[d.elements]]
-                    </td>
-                </tr>
+            <tr ng-repeat="d in dashboards">
+                <td>
+                    <a ng-click="selectDashboard(d)"><i class="fa fa-pencil"></i></a>
+                    <a ng-click="deleteDashboard(d)"><i class="fa fa-trash-o"></i></a>
+                </td>
+                <td>
+                    [[d.name]]
+                </td>
+                <td>
+                    [[d.elements]]
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>

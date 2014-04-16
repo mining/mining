@@ -16,7 +16,7 @@
             </div>
             <div class="form-group">
                 <label for="element_type">Type</label>
-                <select id="element_type" ui-select2 ng-model="element.type" ng-change="loadFields()" class="form-control" required>
+                 <select id="element_type" ui-select2 ng-model="element.type" ng-change="loadFields()" class="form-control" required>
                     <option ng-repeat="t in types" value="[[ t.slug ]]">[[ t.name ]]</option>
                 </select>
             </div>

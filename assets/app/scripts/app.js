@@ -11,7 +11,9 @@ var miningApp = angular.module('miningApp', [
     'miningApp.report',
     'miningApp.admin',
     'ui.bootstrap',
-    'ui.codemirror'
+    'ui.codemirror',
+    'ui.select2',
+    'ui.select2.sortable'
   ])
   .factory('AlertService', ['$rootScope', '$timeout',
     function ($rootScope, $timeout) {
@@ -22,13 +24,13 @@ var miningApp = angular.module('miningApp', [
 
       alertService.add = function (al) {
         $rootScope.alerts.push(al);
-        if(al['hold']){
+        if (al['hold']) {
           var messageStack = $rootScope.alerts;
-          $timeout(function() {
-              var msgIndex = $.inArray(al, messageStack);
+          $timeout(function () {
+            var msgIndex = $.inArray(al, messageStack);
 
-              if (msgIndex !== -1)
-                  messageStack.splice(msgIndex, 1);
+            if (msgIndex !== -1)
+              messageStack.splice(msgIndex, 1);
           }, 5000);
         }
       };
@@ -44,7 +46,7 @@ var miningApp = angular.module('miningApp', [
       };
 
       alertService.clearTemporarios = function () {
-        for (var a = $rootScope.alerts.length; a <= $rootScope.alerts.length && a>=0; a--) {
+        for (var a = $rootScope.alerts.length; a <= $rootScope.alerts.length && a >= 0; a--) {
           if ($rootScope.alerts[a] !== undefined) {
             if (!$rootScope.alerts[a].hold) {
               $rootScope.alerts.splice(a, 1);
@@ -68,19 +70,19 @@ var miningApp = angular.module('miningApp', [
     }])
   .config(['$routeProvider', '$interpolateProvider',
     function ($routeProvider, $interpolateProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'assets/app/views/home.html',
-        controller: 'HomeCtrl'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
-      $interpolateProvider.startSymbol('[['); 
+      $routeProvider
+        .when('/', {
+          templateUrl: 'assets/app/views/home.html',
+          controller: 'HomeCtrl'
+        })
+        .otherwise({
+          redirectTo: '/'
+        });
+      $interpolateProvider.startSymbol('[[');
       $interpolateProvider.endSymbol(']]');
-  }])
+    }])
   .run(['$rootScope', 'AlertService', '$locale',
-    function($rootScope, AlertService, $locale){
+    function ($rootScope, AlertService, $locale) {
       $rootScope.closeAlert = AlertService.closeAlert;
       $locale.id = 'pt-br';
 
@@ -89,7 +91,7 @@ var miningApp = angular.module('miningApp', [
         $rootScope.inDashboard = false;
       });
     }])
-  .controller('HomeCtrl', function(){});
+  .controller('HomeCtrl', function () {});
 var mining = {};
 mining['utils'] = {
   padLeft: function (nr, n, str) {
