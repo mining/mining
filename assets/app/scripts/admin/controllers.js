@@ -110,6 +110,7 @@ admin
           $scope.cube.scheduler_status = false;
         }
         if ($scope.cube.slug) {
+          $scope.cube.status = false;
           Cube.update({'slug': $scope.cube.slug}, $scope.cube);
         } else {
           $scope.cube.$save().then(function (response) {
