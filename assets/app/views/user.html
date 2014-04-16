@@ -20,7 +20,9 @@
             </div>
             <div class="form-group" ng-show="!change_pass">
                 <label for="user_rule">Rule</label>
-                <select id="user_rule" ng-options="r as r for r in rules" ng-disabled="change_pass" class="form-control" ng-model="user.rule" required></select>
+                <select id="user_rule" ui-select2 ng-disabled="change_pass" class="form-control" ng-model="user.rule" required>
+                    <option ng-repeat="r in rules" value="[[ r ]]">[[ r ]]</option>
+                </select>
             </div>
             <div class="form-group" ng-show="change_pass">
                 <label for="user_password_current">Current Password</label>
