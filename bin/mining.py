@@ -45,11 +45,6 @@ def run(cube_slug=None):
             connection = mongo['connection'].find_one({
                 'slug': cube['connection']})['connection']
 
-            MyBucket.new(slug, data='').store()
-            MyBucket.new(u'{}-columns'.format(slug), data='').store()
-            MyBucket.new(u'{}-connect'.format(slug), data='').store()
-            MyBucket.new(u'{}-sql'.format(slug), data='').store()
-
             log_it("CONNECT IN RELATION DATA BASE: {}".format(slug),
                    "bin-mining")
             e = create_engine(connection, pool_timeout=180, pool_size=50,
@@ -69,6 +64,11 @@ def run(cube_slug=None):
             df.head()
 
             pdict = map(fix_render, df.to_dict(outtype='records'))
+
+            MyBucket.new(slug, data='').store()
+            MyBucket.new(u'{}-columns'.format(slug), data='').store()
+            MyBucket.new(u'{}-connect'.format(slug), data='').store()
+            MyBucket.new(u'{}-sql'.format(slug), data='').store()
 
             log_it("SAVE DATA (JSON) ON RIAK: {}".format(slug),
                    "bin-mining")
