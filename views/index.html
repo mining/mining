@@ -251,7 +251,7 @@
                     <ul class="nav" id="side-menu">
                         <li class="sidebar-search">
                             <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
+                                <input type="text" class="form-control" ng-model="dashboardFilter.$" placeholder="Search...">
                                 <span class="input-group-btn">
                                 <button class="btn btn-default" type="button">
                                     <i class="fa fa-search"></i>
@@ -263,7 +263,7 @@
                         <li ng-class="{'open':inDashboard}">
                             <a><i class="fa fa-dashboard fa-fw"></i> Dashboard<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li ng-repeat="d in dashboards|checkDashboardPermission" ng-class="{'active':d.slug==selected_dashboard.slug}">
+                                <li ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter" ng-class="{'active':d.slug==selected_dashboard.slug}">
                                     <a ng-href="#/dashboard/[[d.slug]]">[[d.name]]</a>
                                 </li>
                             </ul>
