@@ -16,28 +16,40 @@
             </div>
             <div class="form-group">
                 <label for="element_type">Type</label>
-                 <select id="element_type" ui-select2 ng-model="element.type" ng-change="loadFields()" class="form-control" required>
+                <select id="element_type" ui-select2 ng-model="element.type" ng-change="loadFields()"
+                        class="form-control" required>
                     <option ng-repeat="t in types" value="[[ t.slug ]]">[[ t.name ]]</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="element_cube">Cube</label>
-                <select id="element_cube" ui-select2 ng-model="element.cube" ng-change="loadFields()" class="form-control" required>
+                <select id="element_cube" ui-select2 ng-model="element.cube" ng-change="loadFields()"
+                        class="form-control" required>
                     <option ng-repeat="c in cubes" value="[[ c.slug ]]">[[ c.name ]]</option>
                 </select>
             </div>
-            <div class="form-group" ng-show="element.type=='grid' && element.type">
-                <label for="element_order_by">Order By</label>
-                <select id="element_order_by" ui-select2 ng-model="element.orderby" class="form-control">
-                    <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
-                </select>
-            </div>
-            <div class="form-group" ng-show="element.type=='grid' && element.type">
-                <label for="element_order_ascending">Order Type</label>
-                <select id="element_order_ascending" ui-select2 ng-model="element.orderby__order" class="form-control">
-                    <option value="1">Ascending</option>
-                    <option value="0">Descending</option>
-                </select>
+            <button ng-show="element.type=='grid'" ng-click="addOrder()" class="btn btn-success" type="button"><i class="fa fa-plus"></i> Order</button>
+            <div class="form-group row" ng-repeat="element_order in element.orderby track by $index"
+                 ng-show="element.type=='grid' && element.type">
+                <div class="col-lg-1">
+                    <lable class="badge badge-success">[[ $index+1 ]]</lable>
+                    <a ng-click="removeOrder($index)"><i class="fa fa-minus-circle"></i></a>
+                </div>
+                <div class="col-lg-6">
+                    <label>Order By</label>
+                    <select ui-select2 ng-model="element.orderby[$index]"
+                            class="form-control">
+                        <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
+                    </select>
+                </div>
+                <div class="col-lg-5">
+                    <label>Order</label>
+                    <select ui-select2 ng-model="element.orderby__order[$index]"
+                            class="form-control">
+                        <option value="1">Ascending</option>
+                        <option value="0">Descending</option>
+                    </select>
+                </div>
             </div>
             <div class="form-group" ng-show="element.type!='grid' && element.type">
                 <label for="element_field_x">Field (x)</label>
@@ -64,34 +76,34 @@
     <div class="col-lg-6">
         <table class="table table-bordered table-responsive table-hover">
             <thead>
-                <th>
-                </th>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Type
-                </th>
-                <th>
-                    Cube
-                </th>
+            <th>
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                Cube
+            </th>
             </thead>
             <tbody>
-                <tr ng-repeat="e in elements">
-                    <td>
-                        <a ng-click="selectElement(e)"><i class="fa fa-pencil"></i></a>
-                        <a ng-click="deleteElement(e)"><i class="fa fa-trash-o"></i></a>
-                    </td>
-                    <td>
-                        [[e.name]]
-                    </td>
-                    <td>
-                        [[e.type]]
-                    </td>
-                    <td>
-                        [[e.cube]]
-                    </td>
-                </tr>
+            <tr ng-repeat="e in elements">
+                <td>
+                    <a ng-click="selectElement(e)"><i class="fa fa-pencil"></i></a>
+                    <a ng-click="deleteElement(e)"><i class="fa fa-trash-o"></i></a>
+                </td>
+                <td>
+                    [[e.name]]
+                </td>
+                <td>
+                    [[e.type]]
+                </td>
+                <td>
+                    [[e.cube]]
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>

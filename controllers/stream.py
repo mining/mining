@@ -75,10 +75,19 @@ def data(ws, mongodb, slug):
 
 
     if request.GET.get('orderby', element.get('orderby', None)):
-        orderby = request.GET.get('orderby', [])
-        orderby__order = True
-        if request.GET.get('orderby__order', element.get('orderby__order', str(0))) != str(1):
-            orderby__order = False
+        orderby = request.GET.get('orderby', element.get('orderby', ''))
+        if type(orderby) == str:
+            orderby = orderby.split(',')
+        orderby__order = request.GET.get('orderby__order', element.get('orderby__order', ''))
+        if type(orderby__order) == str:
+            orderby__order = orderby__order.split(',')
+        ind = 0
+        for orde in orderby__order:
+            if orde == '0':
+                orderby__order[ind] = False
+            else:
+                orderby__order[ind] = True
+            ind+=1
         df = df.sort(orderby, ascending=orderby__order)
 
     ws.send(json.dumps({'type': 'max_page', 'data': len(df)}))

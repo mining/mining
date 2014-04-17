@@ -177,6 +177,20 @@ admin
         }
         $scope.element = new Element();
       };
+      $scope.addOrder = function(){
+        if(!$scope.element.orderby){
+          $scope.element.orderby = [];
+          $scope.element.orderby__order = [];
+        }
+        if($scope.element.orderby.length < $scope.fields.length){
+          $scope.element.orderby.push('');
+          $scope.element.orderby__order.push('');
+        }
+      };
+      $scope.removeOrder = function(ind){
+        $scope.element.orderby.splice(ind, 1);
+        $scope.element.orderby__order.splice(ind, 1);
+      };
       $scope.loadFields = function () {
         if ($scope.element.cube) {
           $http.get('/api/element/cube/' + $scope.element.cube)

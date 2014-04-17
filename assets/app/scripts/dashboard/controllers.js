@@ -108,10 +108,13 @@ dashboard
       el.current_page = 1;
       el.total_pages = undefined;
       el.pages = [];
-      el.orderby = field;
-      el.orderby__order = 0;
-      if(asc == 0)
-        el.orderby__order = 1;
+      if(!el.orderby)
+        el.orderby = [];
+      if(el.orderby.indexOf(field) < '0')
+        el.orderby.push(field);
+      el.orderby__order[el.orderby.indexOf(field)] = '0';
+      if(asc == '0')
+        el.orderby__order[el.orderby.indexOf(field)] = '1';
       if(el.type == 'grid'){
         loadGrid(el);
       }else if(el.type == 'chart_bar'){
