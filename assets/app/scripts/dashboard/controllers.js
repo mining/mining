@@ -3,7 +3,7 @@ dashboard
 .controller('HomeCtrl',
   ['$scope', function($scope) {
   }])
-.controller('DashboardDetailCtrl', 
+.controller('DashboardDetailCtrl',
   ['$scope', '$routeParams', 'AlertService', 'current_dashboard', 'Element', '$anchorScroll', '$timeout', '$http',
     'AuthenticationService', '$rootScope', 'Filter', '$interval',
   function($scope, $routeParams, AlertService, current_dashboard, Element, $anchorScroll, $timeout, $http,
@@ -153,7 +153,28 @@ dashboard
     };
 
     $scope.selected_dashboard = current_dashboard.data;
-    
+
+    function refreshDashboard(){
+      $($scope.selected_dashboard.element).each(function(ind, val){
+        if(val.type == 'grid'){
+          val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
+          loadGrid(val);
+          if(val.cube.scheduler_status && !$scope.selected_dashboard.scheduler_ignore_refresh){
+            if(val.cube.scheduler_type=='minutes'){
+              val.intervals = $interval(function(){
+                val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
+                loadGrid(val);
+              },parseInt(val.cube.scheduler_interval)*60000);
+            }
+          }
+        }else if(val.type == 'chart_bar'){
+          loadBar(val);
+        }else if(val.type == 'chart_line'){
+          loadLine(val);
+        }
+      });
+    }
+
     $($scope.selected_dashboard.element).each(function(ind, val){
       if(AuthenticationService.hasPermission(val.slug, 'element', $scope.selected_dashboard.slug)){
         angular.extend($scope.selected_dashboard.element[ind], {
@@ -173,29 +194,31 @@ dashboard
           last_refresh : undefined
         });
         // Element.loadData({'slug': val.slug, 'page': val.current_page, 'filters': val.filters});
-        if($scope.selected_dashboard.element[ind].type == 'grid'){
+        if(val.type == 'grid'){
           val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
-          loadGrid(val);
-          if($scope.selected_dashboard.element[ind].cube.scheduler_status){
-            if($scope.selected_dashboard.element[ind].cube.scheduler_type=='minutes'){
-              val.intervals = $interval(function(){
-                val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
-                loadGrid(val);
-              },parseInt($scope.selected_dashboard.element[ind].cube.scheduler_interval)*60000);
-            }
-          }
         }else if($scope.selected_dashboard.element[ind].type == 'chart_bar'){
           $scope.selected_dashboard.element[ind].xkey = [$scope.selected_dashboard.element[ind].field_x];
           $scope.selected_dashboard.element[ind].ykeys = [$scope.selected_dashboard.element[ind].field_y];
           $scope.selected_dashboard.element[ind].labels = [$scope.selected_dashboard.element[ind].field_y];
-          loadBar(val);
         }else if($scope.selected_dashboard.element[ind].type == 'chart_line'){
           $scope.selected_dashboard.element[ind].xkey = [$scope.selected_dashboard.element[ind].field_x];
           $scope.selected_dashboard.element[ind].labels = [$scope.selected_dashboard.element[ind].field_y];
-          loadLine(val);
         }
       }
     });
+
+    if ($scope.selected_dashboard.scheduler_type.indexOf('minutes') > -1 ||
+      $scope.selected_dashboard.scheduler_type.indexOf('hour') > -1 ||
+      $scope.selected_dashboard.scheduler_type.indexOf('day') > -1){
+      if ($scope.selected_dashboard.scheduler_type == 'minutes') {
+        val.intervals = $interval(function(){
+          $scope.selected_dashboard.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
+          refreshDashboard();
+        },parseInt($scope.selected_dashboard.scheduler_interval)*60000);
+      }
+    }else{
+      refreshDashboard();
+    }
 
     $scope.$on('$destroy', function(){
       $($scope.selected_dashboard.element).each(function(ind, val){
@@ -285,7 +308,6 @@ dashboard
           }
         }else if (data.type == 'close') {
           sock.close();
-          console.log(count);
           $timeout(function(){
             $scope.$apply(function(){
               Morris.Line({
