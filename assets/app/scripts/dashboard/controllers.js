@@ -103,7 +103,21 @@ dashboard
       }
       window.open(url);
     };
-
+    $scope.removeOrder = function(el, field){
+      el.current_page = 1;
+      el.total_pages = undefined;
+      el.pages = [];
+      var ind = el.orderby.indexOf(field);
+      el.orderby__order.splice(ind, 1);
+      el.orderby.splice(ind, 1);
+      if(el.type == 'grid'){
+        loadGrid(el);
+      }else if(el.type == 'chart_bar'){
+        loadBar(el);
+      }else if(el.type == 'chart_line'){
+        loadLine(el);
+      }
+    }
     $scope.applyOrder = function(el, field, asc){
       el.current_page = 1;
       el.total_pages = undefined;
