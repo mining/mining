@@ -22,9 +22,11 @@ def job(slug):
     run(slug)
 
 
-def rules(cube):
-    scheduler_type = cube.get('scheduler_type', 'minutes')
-    scheduler_interval = cube.get('scheduler_interval', 60)
+def rules(cube, scheduler_type=None, scheduler_interval=None):
+    if scheduler_type:
+        scheduler_type = cube.get('scheduler_type', 'minutes')
+    if scheduler_interval:
+        scheduler_interval = cube.get('scheduler_interval', 60)
 
     log_it("START REGISTER", "bin-scheduler")
     log_it("cube: {}".format(cube.get('slug')), "bin-scheduler")
@@ -56,11 +58,29 @@ for cube in mongo['cube'].find({'scheduler_status': True}):
     rules(cube)
     register.append(cube['slug'])
 
+for dashboard in mongo['dashboard'].find({'scheduler_status': True}):
+    elements = [e['id'] for e in dashboard['element']]
+    for e in elements:
+        element = mongo['element'].find_one({'slug': e})
+        cube = mongo['cube'].find_one({'slug': element['cube']})
+        rules(cube, dashboard['scheduler_type'],
+              dashboard['scheduler_interval'])
+        register.append(cube['slug'])
 
 while True:
     for cube in mongo['cube'].find({'scheduler_status': True}):
         if cube['slug'] not in register:
             rules(cube)
+
+    for dashboard in mongo['dashboard'].find({'scheduler_status': True}):
+        elements = [e['id'] for e in dashboard['element']]
+        for e in elements:
+            element = mongo['element'].find_one({'slug': e})
+            cube = mongo['cube'].find_one({'slug': element['cube']})
+            if cube['slug'] not in register:
+                rules(cube, dashboard['scheduler_type'],
+                      dashboard['scheduler_interval'])
+                register.append(cube['slug'])
 
     schedule.run_pending()
     time.sleep(1)
