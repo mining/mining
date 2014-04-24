@@ -1,5 +1,11 @@
 'use strict';
 var dashboard = angular.module('miningApp.dashboard', [])
+  .filter('replaceUnderToSpace', function() {
+    return function(input) {
+      input = input || '';
+      return input.replace(/_/g, ' ');
+    };
+  })
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
       .when('/dashboard/:slug', {

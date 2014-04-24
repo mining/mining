@@ -38,7 +38,7 @@
               <tbody>
                 <tr>
                   <th ng-repeat="c in e.columns">
-                    <a ng-click="applyOrder(e, c, e.orderby__order[e.orderby.indexOf(c)])">[[ c ]]
+                    <a ng-click="applyOrder(e, c, e.orderby__order[e.orderby.indexOf(c)])">[[ c|replaceUnderToSpace ]]
                       <i class="fa"
                          ng-class="{'fa-arrow-up': e.orderby.indexOf(c)>=0 && e.orderby__order[e.orderby.indexOf(c)] == '1',
                          'fa-arrow-down': e.orderby.indexOf(c)>=0 && e.orderby__order[e.orderby.indexOf(c)] == '0'}"></i>
