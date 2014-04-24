@@ -210,6 +210,8 @@ dashboard
 
         if ($scope.selected_dashboard.scheduler_type) {
           if ($scope.selected_dashboard.scheduler_type == 'minutes') {
+            $scope.selected_dashboard.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
+            refreshDashboard();
             $scope.selected_dashboard.intervals = $interval(function () {
               $scope.selected_dashboard.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
               refreshDashboard();
