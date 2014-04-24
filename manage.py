@@ -27,13 +27,19 @@ from settings import TEMPLATE_PATH, STATIC_PATH
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-parser = argparse.ArgumentParser(description=u'OpenMining Application Server')
-parser.add_argument('--port', help=u'Set application server port!',
-                    type=int, default=conf('openmining')['port'])
-parser.add_argument('--ip', help=u'Set application server IP!',
-                    type=str, default=conf('openmining')['ip'])
-parser.add_argument('--debug', '-v', help=u'Set application server debug!',
-                    action='count')
+
+parser = argparse.ArgumentParser(description=u'Open Mining!')
+subparser = parser.add_subparsers()
+
+arg_runserver = subparser.add_parser('runserver', help=u'Run application')
+arg_runserver.add_argument('--port', help=u'Set application server port!',
+                           type=int, default=conf('openmining')['port'])
+arg_runserver.add_argument('--ip', help=u'Set application server IP!',
+                           type=str, default=conf('openmining')['ip'])
+arg_runserver.add_argument('--debug', '-v',
+                           help=u'Set application server debug!',
+                           action='count')
+
 args = parser.parse_args()
 
 
