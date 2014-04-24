@@ -97,7 +97,6 @@ admin
       };
       $scope.save = function () {
         $scope.cube.scheduler_status = false;
-        $scope.connection = $scope.connection.id;
         if ($scope.cube.scheduler_type) {
           $scope.cube.scheduler_status = true;
           if ($scope.cube.scheduler_type == 'day') {
