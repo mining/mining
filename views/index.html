@@ -19,6 +19,7 @@
     <link href="{{ get_url('assets', path='bower/morris.js/morris.css') }}" rel="stylesheet">
     <link href="{{ get_url('assets', path='bower/codemirror/lib/codemirror.css') }}" rel="stylesheet">
     <link href="{{ get_url('assets', path='bower/select2/select2.css') }}" rel="stylesheet">
+    <link href="{{ get_url('assets', path='css/style.css') }}" rel="stylesheet">
     <!-- Page Specific CSS -->
   </head>
   <body class="ng-cloak" ng-cloak>
@@ -37,7 +38,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#/">Open Mining</a>
+                <button type="button" class="sidebar-toggle">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="#/"><strong>Open</strong>Mining</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -269,7 +273,7 @@
                             </ul>
                         </li>
                         <li ng-class="{'open':inSettings}" ng-show="AuthService.getUser().rule != 'user'">
-                            <a><i class="fa fa-dashboard fa-fw"></i> Settings<span class="fa arrow"></span></a>
+                            <a><i class="fa fa-cog fa-fw"></i> Settings<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li><a ng-href="#/admin/connection"><i class="fa fa-globe"></i> Connection</a></li>
                                 <li><a ng-href="#/admin/cube"><i class="fa fa-th"></i> Cube</a></li>
@@ -396,6 +400,11 @@
         .fail(function(retorno){
           window.location.href="/login";
         })
+
+        // jquery tapa-buraco
+        $('.sidebar-toggle').click(function(){
+            $('.navbar-static-side,#page-wrapper').toggleClass('open');
+        });
       });
     </script>
 </body>
