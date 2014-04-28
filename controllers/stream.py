@@ -34,6 +34,7 @@ def data(ws, mongodb, slug):
     MyBucket = MyClient.bucket(conf("riak")["bucket"])
 
     element = mongodb['element'].find_one({'slug': slug})
+    element['page_limit'] = 50
 
     columns = json.loads(MyBucket.get(
         '{}-columns'.format(element.get('cube'))).data or [])
@@ -54,10 +55,10 @@ def data(ws, mongodb, slug):
     if element['type'] == 'grid':
         page = int(request.GET.get('page', 1))
         page_start = 0
-        page_end = 50
+        page_end = element['page_limit']
         if page >= 2:
-            page_end = 50 * page
-            page_start = page_end - 50
+            page_end = element['page_limit'] * page
+            page_start = page_end - element['page_limit']
     else:
         page_start = None
         page_end = None
