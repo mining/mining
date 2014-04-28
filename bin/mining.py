@@ -9,6 +9,7 @@ from datetime import datetime
 from pandas import DataFrame
 from sqlalchemy import create_engine
 from sqlalchemy.sql import text
+from sqlalchemy.orm import sessionmaker
 
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from utils import fix_render, conf, log_it
@@ -48,10 +49,11 @@ def run(cube_slug=None):
             log_it("CONNECT IN RELATION DATA BASE: {}".format(slug),
                    "bin-mining")
             e = create_engine(connection, pool_timeout=580, pool_size=100,
-                              max_overflow=100, echo=True, echo_pool=True)
-            connection = e.connect()
+                              max_overflow=100)
+            Session = sessionmaker(bind=e)
+            session = Session()
 
-            resoverall = connection.execute(text(sql))
+            resoverall = session.execute(text(sql))
 
             log_it("LOAD DATA ON DATAWAREHOUSE: {}".format(slug),
                    "bin-mining")
