@@ -15,6 +15,6 @@ python-dateutil
 nose
 redis
 rq
--e git+https://github.com/python-excel/xlwt.git#egg=xlwt
+xlwt
 gevent
 schedule
