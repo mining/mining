@@ -47,8 +47,8 @@ def run(cube_slug=None):
 
             log_it("CONNECT IN RELATION DATA BASE: {}".format(slug),
                    "bin-mining")
-            e = create_engine(connection, pool_timeout=180, pool_size=50,
-                              max_overflow=0)
+            e = create_engine(connection, pool_timeout=580, pool_size=100,
+                              max_overflow=100, echo=True, echo_pool=True)
             connection = e.connect()
 
             resoverall = connection.execute(text(sql))
