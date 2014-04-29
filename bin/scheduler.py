@@ -4,8 +4,8 @@ from gevent import monkey
 monkey.patch_all()
 
 from os import sys, path
-import time
 import schedule
+from gevent import sleep
 
 from bottle.ext.mongo import MongoPlugin
 
@@ -83,4 +83,4 @@ while True:
                 register.append(cube['slug'])
 
     schedule.run_pending()
-    time.sleep(1)
+    sleep(1)
