@@ -18,6 +18,7 @@ dashboard
 
         function loadGrid(el) {
           el.process = [];
+          el.loading = true;
           var API_URL = "ws://" + location.host + "/stream/data/" + el.slug + "?";
           for (var key in el.filters) {
             API_URL += key + "=" + el.filters[key] + "&";
@@ -38,6 +39,7 @@ dashboard
               el.process.push(data.data);
             } else if (data.type == 'close') {
               sock.close();
+              el.loading = false;
               $timeout(function () {
                 $scope.$apply();
               });
@@ -192,6 +194,7 @@ dashboard
               filters: {},
               columns: [],
               process: [],
+              loading: true,
               last_refresh: undefined
             });
             // Element.loadData({'slug': val.slug, 'page': val.current_page, 'filters': val.filters});
@@ -232,6 +235,7 @@ dashboard
 
         function loadBar(el) {
           el.process = [];
+          el.loading = true;
           var element = 'bar-chart-' + el.slug;
           if (angular.element('#' + element))
             angular.element('#' + element).html('');
@@ -253,6 +257,7 @@ dashboard
               el.process.push(data.data);
             } else if (data.type == 'close') {
               sock.close();
+              el.loading = false;
               $timeout(function () {
                 $scope.$apply(function () {
                   Morris.Bar({
@@ -272,6 +277,7 @@ dashboard
           el.process = [];
           el.labels = [];
           el.ykeys = [];
+          el.loading = true;
           var count = 0;
           var element = 'chart-line-' + el.slug;
           if (angular.element('#' + element))
@@ -312,6 +318,7 @@ dashboard
               }
             } else if (data.type == 'close') {
               sock.close();
+              el.loading = false;
               $timeout(function () {
                 $scope.$apply(function () {
                   Morris.Line({

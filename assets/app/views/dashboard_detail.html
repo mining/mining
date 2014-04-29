@@ -158,7 +158,8 @@
             </ul>
           </div>
           <div class="table-responsive table-scroll" id="element-[[ e.slug ]]">
-            <table class="process table table-bordered table-hover table-striped">
+            <div ng-show="e.loading"><h2>Loading...</h2></div>
+            <table class="process table table-bordered table-hover table-striped" ng-show="!e.loading">
               <thead>
                 <tr>
                   <th ng-repeat="c in e.columns">
@@ -426,6 +427,7 @@
         </div>
         <div class="panel-body">
           <!-- <barchart xkey="el.xkey" ykeys="el.ykeys" labels="el.labels" data="e.process" index="[[ $index ]]"></barchart> -->
+          <div ng-show="e.loading"><h2>Loading...</h2></div>
           <div id="bar-chart-[[e.slug]]">
           </div>
         </div>
@@ -638,6 +640,7 @@
           </div>
         </div>
         <div class="panel-body">
+          <div ng-show="e.loading"><h2>Loading...</h2></div>
           <div id="chart-line-[[e.slug]]">
           </div>
         </div>

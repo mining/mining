@@ -34,6 +34,7 @@ def data(ws, mongodb, slug):
     MyBucket = MyClient.bucket(conf("riak")["bucket"])
 
     element = mongodb['element'].find_one({'slug': slug})
+    element['page_limit'] = 50
 
     columns = json.loads(MyBucket.get(
         '{}-columns'.format(element.get('cube'))).data or [])
@@ -54,10 +55,10 @@ def data(ws, mongodb, slug):
     if element['type'] == 'grid':
         page = int(request.GET.get('page', 1))
         page_start = 0
-        page_end = 50
+        page_end = element['page_limit']
         if page >= 2:
-            page_end = 50 * page
-            page_start = page_end - 50
+            page_end = element['page_limit'] * page
+            page_start = page_end - element['page_limit']
     else:
         page_start = None
         page_end = None
@@ -73,12 +74,12 @@ def data(ws, mongodb, slug):
     if len(groupby) >= 1:
         df = df.groupby(groupby)
 
-
     if request.GET.get('orderby', element.get('orderby', None)):
         orderby = request.GET.get('orderby', element.get('orderby', ''))
         if type(orderby) == str:
             orderby = orderby.split(',')
-        orderby__order = request.GET.get('orderby__order', element.get('orderby__order', ''))
+        orderby__order = request.GET.get('orderby__order',
+                                         element.get('orderby__order', ''))
         if type(orderby__order) == str:
             orderby__order = orderby__order.split(',')
         ind = 0
@@ -87,7 +88,7 @@ def data(ws, mongodb, slug):
                 orderby__order[ind] = False
             else:
                 orderby__order[ind] = True
-            ind+=1
+            ind += 1
         df = df.sort(orderby, ascending=orderby__order)
 
     ws.send(json.dumps({'type': 'max_page', 'data': len(df)}))
