@@ -33,6 +33,7 @@ def run(cube_slug=None):
     log_it("START", "bin-mining")
     for cube in mongo['cube'].find():
         try:
+            cube['start_process'] = datetime.now()
             slug = cube['slug']
 
             if cube_slug and cube_slug != slug:
