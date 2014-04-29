@@ -2,6 +2,10 @@ body{
 	padding-top: 50px;
 	padding-bottom: 0;
 }
+.required{
+	color: #f00;
+	font-weight: bold;
+}
 /* Menu principal */
 .navbar-header{
 	margin-left: 30px;
@@ -173,13 +177,20 @@ body{
 	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
+.select2-container-multi .select2-choices{
+	border-radius: 4px;
+	border-color: #ccc;
+	background: #fff;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
 .select2-drop-active{
 	border-color: #66AFE9;
 	outline: 0;
 	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 8px rgba(102, 175, 233, 0.6);
 	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 8px rgba(102, 175, 233, 0.6);
 }
-.select2-container-active .select2-choice, .select2-container-active .select2-choices{
+.select2-container-active .select2-choice, .select2-container-active .select2-choices, .select2-container-multi.select2-container-active .select2-choices{
 	border-color: #66AFE9;
 	outline: 0;
 	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 8px rgba(102, 175, 233, 0.6);
@@ -229,6 +240,62 @@ body{
 }
 .table-scroll > .table-bordered > tbody > tr:last-child > td{
 	border-bottom: 0;
+}
+
+.table-tbody-striped tbody:nth-child(even){
+	background: #f9f9f9;
+}
+
+/** Settings **/
+.CodeMirror-wrap{
+	border: solid 1px #ccc;
+	border-radius: 4px;
+}
+.edit-delete a{
+	padding: 3px 6px;
+}
+.connection-status .fa-thumbs-up{
+	color: #00AC00;
+}
+.connection-status .fa-thumbs-down{
+	color: #c00;
+}
+
+.permissions .panel-body:hover{
+	background: #fafafa;
+}
+.permissions .panel-heading .fa-sort-desc{
+	margin-top: 4px;
+}
+.permissions-elements-list{
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+.permissions-elements-list li{
+	margin-bottom: 5px;
+}
+.permissions-elements-list label{
+	font-weight: normal;
+	display: block;
+	padding: 3px;
+}
+.permissions-elements-list label:hover{
+	background: #f5f5f5;
+}
+.checkbox-holder{
+	display: inline-block;
+	width: 25px;
+}
+.panel-title .checkbox-holder{
+	padding-left: 3px;
+}
+.checkbox-holder input[type='checkbox']{
+	margin: 0;
+}
+tr.code{
+	font-family: monospace;
+	display: none;
 }
 /* RESPONSIVO */
 @media (min-width: 768px){

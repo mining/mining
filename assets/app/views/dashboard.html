@@ -45,8 +45,8 @@
             <button type="button" class="btn btn-success" ng-click="newForm()">New</button>
         </form>
     </div>
-    <div class="col-lg-6">
-        <table class="table table-bordered table-responsive table-hover">
+    <div class="col-lg-6 table-responsive">
+        <table class="table table-bordered table-striped table-hover">
             <thead>
             <th>
             </th>
@@ -59,9 +59,9 @@
             </thead>
             <tbody>
             <tr ng-repeat="d in dashboards">
-                <td>
-                    <a ng-click="selectDashboard(d)"><i class="fa fa-pencil"></i></a>
-                    <a ng-click="deleteDashboard(d)"><i class="fa fa-trash-o"></i></a>
+                <td class="edit-delete">
+                    <a ng-click="selectDashboard(d)" title="Edit Dashboard"><i class="fa fa-pencil"></i></a>
+                    <a ng-click="deleteDashboard(d)" title="Delete Dashboard"><i class="fa fa-trash-o"></i></a>
                 </td>
                 <td>
                     [[d.name]]
