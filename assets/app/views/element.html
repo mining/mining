@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h1><i class="fa fa-globe"></i> Element</h1>
+        <h1><i class="fa fa-sitemap"></i> Element</h1>
         <ol class="breadcrumb">
             <li><a href="#/"><i class="icon-dashboard"></i> Admin</a></li>
             <li class="active">Element</li>
@@ -73,8 +73,8 @@
             <button type="button" class="btn btn-success" ng-click="newForm()">New</button>
         </form>
     </div>
-    <div class="col-lg-6">
-        <table class="table table-bordered table-responsive table-hover">
+    <div class="col-lg-6 table-responsive">
+        <table class="table table-bordered table-striped table-hover">
             <thead>
             <th>
             </th>
@@ -90,9 +90,9 @@
             </thead>
             <tbody>
             <tr ng-repeat="e in elements">
-                <td>
-                    <a ng-click="selectElement(e)"><i class="fa fa-pencil"></i></a>
-                    <a ng-click="deleteElement(e)"><i class="fa fa-trash-o"></i></a>
+                <td class="edit-delete">
+                    <a ng-click="selectElement(e)" title="Edit Element"><i class="fa fa-pencil"></i></a>
+                    <a ng-click="deleteElement(e)" title="Delete Element"><i class="fa fa-trash-o"></i></a>
                 </td>
                 <td>
                     [[e.name]]
