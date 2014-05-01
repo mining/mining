@@ -63,6 +63,9 @@
                 Connection
             </th>
             <th>
+                Scheduler
+            </th>
+            <th>
                 Status
             </th>
             </thead>
@@ -79,11 +82,14 @@
                 <td>
                     [[c.connection]]
                 </td>
+                <td>
+                    [[ c.scheduler_interval ]] [[ c.scheduler_type ]]
+                </td>
                 <td class="connection-status">
                     <i class="fa" ng-class="{'fa-thumbs-up':c.status, 'fa-thumbs-down': !c.status}"></i>
                 </td>
             </tr>
-            <tr ng-show="c.scheduler_status">
+            <!--<tr ng-show="c.scheduler_status">
                 <td colspan="2">
                     Scheduler
                 </td>
@@ -93,7 +99,7 @@
                 <td>
                     [[ c.scheduler_interval ]]
                 </td>
-            </tr>
+            </tr>-->
             <tr class="code">
                 <td colspan="4">
                     [[ c.sql ]]
