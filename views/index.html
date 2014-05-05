@@ -46,7 +46,7 @@
             <!-- /.navbar-header -->
 
             <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
+                <!--<li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
@@ -94,8 +94,7 @@
                             </a>
                         </li>
                     </ul>
-                    <!-- /.dropdown-messages -->
-                </li>
+                </li>-->
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -176,7 +175,7 @@
                     <!-- /.dropdown-tasks -->
                 </li>
                 <!-- /.dropdown -->
-                <li class="dropdown">
+                <!--<li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
@@ -233,8 +232,7 @@
                             </a>
                         </li>
                     </ul>
-                    <!-- /.dropdown-alerts -->
-                </li>
+                </li>-->
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" ng-show="AuthService.isLoggedIn()">
@@ -252,18 +250,21 @@
 
             <div class="navbar-default navbar-static-side ng-cloak" role="navigation" ng-cloak ng-show="!new_user">
                 <div class="sidebar-collapse">
+                    <div class="sidebar-search">
+                        <div class="input-group custom-search-form">
+                            <input type="text" class="form-control" ng-model="dashboardFilter.$" placeholder="Search...">
+                            <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                        </div>
+                        <!-- /input-group -->
+                    </div>
+                </div>
+                <!-- /.sidebar-collapse -->
+                <div class="sidebar-collapse side-menu-scroll">
                     <ul class="nav" id="side-menu">
-                        <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" ng-model="dashboardFilter.$" placeholder="Search...">
-                                <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                            </div>
-                            <!-- /input-group -->
-                        </li>
                         <li ng-class="{'open':inDashboard}">
                             <a><i class="fa fa-dashboard fa-fw"></i> Dashboard<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -283,9 +284,8 @@
                             </ul>
                         </li>
                     </ul>
-                    <!-- /#side-menu -->
                 </div>
-                <!-- /.sidebar-collapse -->
+                <!-- /#side-menu -->
             </div>
             <!-- /.navbar-static-side -->
         </nav>

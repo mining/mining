@@ -1,4 +1,35 @@
-<div class="jumbotron">
+<!--<div class="jumbotron">
     <h1>Hello [[ AuthService.getUser().username ]]!</h1>
     <p>Welcome to Open Mining.</p>
+</div>-->
+<div class="row">
+	<div class="col-lg-12">
+		<h1 class="welcome">
+			Hello<br>
+			<strong><i class="fa fa-user"></i>  [[ AuthService.getUser().username ]]!</strong><br>
+			<small>Welcome to Open Mining</small>
+		</h1>
+		<ul class="home-settings">
+            <li><a ng-href="#/admin/connection" title="Connection"><i class="fa fa-globe"></i></a></li>
+            <li><a ng-href="#/admin/cube" title="Cube"><i class="fa fa-th"></i></a></li>
+            <li><a ng-href="#/admin/element" title="Element"><i class="fa fa-sitemap"></i></a></li>
+            <li><a ng-href="#/admin/dashboard" title="Dashboard"><i class="fa fa-dashboard"></i></a></li>
+            <li ng-show="AuthService.getUser().rule == 'root'" title="User"><a ng-href="#/admin/user"><i class="fa fa-user"></i></a></li>
+        </ul>
+	</div>
+</div>
+<div class="home">
+	<div class="row">
+		<div class="col-md-12">
+			<h3 class="home-dashboards-title">Dashboards</h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3 col-lg-2" ng-repeat="d in dashboards|checkDashboardPermission">
+		    <a class="home-dashboard" title="[[d.name]]" ng-href="#/dashboard/[[d.slug]]">
+		    	<i class="fa fa-dashboard"></i>
+		    	<span>[[d.name]]</span>
+		    </a>
+		</div>
+	</div>
 </div>
