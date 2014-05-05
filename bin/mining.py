@@ -5,12 +5,12 @@ import json
 import riak
 import gc
 from datetime import datetime
+from threading import Thread
 
 from pandas import DataFrame
 from sqlalchemy import create_engine
 from sqlalchemy.sql import text
 from sqlalchemy.orm import sessionmaker
-import gevent
 
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from utils import fix_render, conf, log_it
@@ -26,15 +26,12 @@ def run(cube_slug=None):
 
     log_it("START", "bin-mining")
 
-    threads = []
     for cube in mongo['cube'].find():
         slug = cube['slug']
         if cube_slug and cube_slug != slug:
             continue
 
-        threads.append(gevent.spawn(process, cube, mongo))
-
-    gevent.joinall(threads)
+        Thread(target=process, args=(cube, mongo)).start()
 
     log_it("END", "bin-mining")
     return True
@@ -68,7 +65,6 @@ def process(cube, mongo):
         session = Session()
 
         resoverall = session.execute(text(sql))
-        gevent.sleep(0)
 
         log_it("LOAD DATA ON DATAWAREHOUSE: {}".format(slug),
                "bin-mining")
@@ -81,7 +77,6 @@ def process(cube, mongo):
         df.head()
 
         pdict = map(fix_render, df.to_dict(outtype='records'))
-        gevent.sleep(0)
 
         MyBucket.new(slug, data='').store()
         MyBucket.new(u'{}-columns'.format(slug), data='').store()
