@@ -251,6 +251,9 @@ body{
 	border: solid 1px #ccc;
 	border-radius: 4px;
 }
+.edit-delete{
+	white-space: nowrap;
+}
 .edit-delete a{
 	padding: 3px 6px;
 }
