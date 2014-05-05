@@ -31,21 +31,26 @@ def run(cube_slug=None):
         if cube_slug and cube_slug != slug:
             continue
 
-        Thread(target=process, args=(cube, mongo)).start()
+        if cube['run']:
+            Thread(target=process, args=(cube, mongo)).start()
 
     log_it("END", "bin-mining")
     return True
 
 
-def process(cube, mongo):
+def process(_cube, mongo):
     MyClient = riak.RiakClient(
         protocol=conf("riak")["protocol"],
         http_port=conf("riak")["http_port"],
         host=conf("riak")["host"])
 
     MyBucket = MyClient.bucket(conf("riak")["bucket"])
+    cube = _cube
 
     try:
+        cube['run'] = 'run'
+        mongo['cube'].update({'slug': cube['slug']}, cube)
+
         cube['start_process'] = datetime.now()
         slug = cube['slug']
 
@@ -102,6 +107,7 @@ def process(cube, mongo):
 
         cube['status'] = True
         cube['lastupdate'] = datetime.now()
+        cube['run'] = True
         mongo['cube'].update({'slug': cube['slug']}, cube)
 
         log_it("CLEAN MEMORY: {}\n".format(slug), "bin-mining")
@@ -109,6 +115,8 @@ def process(cube, mongo):
         gc.collect()
     except Exception, e:
         log_it(e, "bin-mining")
+        _cube['run'] = 'run'
+        mongo['cube'].update({'slug': _cube['slug']}, _cube)
 
 
 if __name__ == "__main__":
