@@ -49,8 +49,8 @@ admin
       $scope.cube = new Cube();
       $scope.scheduler_types = [
         {key: 'minutes', val: 'minutes'},
-        {key: 'hour', val: 'hour'},
-        {key: 'day', val: 'day'}
+//        {key: 'hour', val: 'hour'},
+//        {key: 'day', val: 'day'}
       ];
       $scope.show_h = false;
       $scope.show_m = false;
@@ -214,8 +214,8 @@ admin
       $scope.dashboard = new Dashboard();
       $scope.scheduler_types = [
         {key: 'minutes', val: 'minutes'},
-        {key: 'hour', val: 'hour'},
-        {key: 'day', val: 'day'}
+//        {key: 'hour', val: 'hour'},
+//        {key: 'day', val: 'day'}
       ];
       $scope.show_h = false;
       $scope.show_m = false;
