@@ -14,10 +14,11 @@ except:
     print 'Set valid auth engine'
     exit(0)
 
-callback = u"{}://{}:{}".format(
+callback = u"{}://{}".format(
     conf('openmining')['protocol'],
-    conf('openmining')['domain'],
-    conf('openmining')['port'])
+    conf('openmining')['domain'])
+if conf('openmining')['domain_port'] != '80':
+    callback = "{}:{}".format(callback, conf('openmining')['domain_port'])
 
 if auth_import == 'Google':
     engine = auth_engine(

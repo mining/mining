@@ -1,11 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from gevent import monkey
-monkey.patch_all()
-
 from os import sys, path
 import schedule
-from gevent import sleep
+from time import sleep
 
 from bottle.ext.mongo import MongoPlugin
 
