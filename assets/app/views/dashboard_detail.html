@@ -207,6 +207,7 @@
                          ng-class="{'fa-arrow-up': e.orderby.indexOf(c)>=0 && e.orderby__order[e.orderby.indexOf(c)] == '1',
                          'fa-arrow-down': e.orderby.indexOf(c)>=0 && e.orderby__order[e.orderby.indexOf(c)] == '0'}"></i>
                     </a>
+                    <a ng-show="e.orderby.indexOf(c)>=0" ng-click="removeOrder(e, c)">x</a>
                   </th>
                 </tr>
               </thead>
