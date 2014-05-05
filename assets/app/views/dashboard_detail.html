@@ -20,7 +20,7 @@
       <div collapse="e.isCollapsed" class="panel-collapse">
         <div class="barra-filtros-export col-lg-12">
           <div class="barra-filtros-topo">
-            <a class="btn btn-warning" ng-click="e.filterIsCollapsed=!e.filterIsCollapsed"><i class="fa fa-filter"></i> Filter/Order</a>
+            <a class="btn btn-warning" ng-click="e.filterIsCollapsed=!e.filterIsCollapsed"><i class="fa fa-filter"></i> Filter</a>
             <div class="btn-group">
               <a class="btn btn-default" id="export-xls-[[ e.slug ]]" ng-click="export(e, 'xls','/export/data/'+[[ e.slug ]])"><i class="fa fa-table"></i> Excel</a>
               <a class="btn btn-default" id="export-csv-[[ e.slug ]]" ng-click="export(e, 'csv','/export/data/'+[[ e.slug ]])"><i class="fa fa-file-text-o"></i> CSV</a>
@@ -113,45 +113,6 @@
                     </fieldset>
                   </form><!-- /.row -->
                 </div>
-                  <div class="col-lg-6 col-md-pull-6  col-md-6">
-                    <form role="form" name="form-filter">
-                      <fieldset class="filtros-painel-box">
-                        <legend class="col-lg-12"><i class="fa fa-filter"></i> Filter</legend>
-                        <div class="row">
-                          <div class="form-group col-lg-4">
-                            <label>Field</label>
-                            <select ui-select2 class="form-control" ng-model="e.filter_field" required>
-                                <option ng-repeat="c in e.columns" value="[[ c ]]">[[ c ]]</option>
-                            </select>
-                          </div>
-                          <div class="form-group col-lg-4">
-                            <label>Operator</label>
-                            <select ui-select2 class="form-control" ng-model="e.filter_operator" required>
-                                <option ng-repeat="op in operators" value="[[ op.key ]]" >[[ op.value ]]</option>
-                            </select>
-                          </div>
-                          <div class="form-group col-lg-4">
-                            <label>Type</label>
-                            <select ui-select2 class="form-control" ng-model="e.filter_type" required>
-                                <option ng-repeat="ty in types" value="[[ ty.key ]]">[[ ty.value ]]</option>
-                            </select>
-                          </div>
-                          <div class="form-group col-lg-12">
-                            <label>Format</label>
-                            <input class="form-control" ng-model="e.filter_format" required="">
-                          </div>
-                          <div class="form-group col-lg-12">
-                            <label>Value</label>
-                            <input class="form-control" ng-model="e.filter_value" required="">
-                            <p class="help-block">For range filter use: <i>xx:yy.</i></p>
-                          </div>
-                          <div class="col-lg-12 filtros-action">
-                            <button type="button" class="btn btn-info" ng-click="addFilter(e)"><i class="fa fa-plus"></i> Add Filter</button>
-                          </div>
-                        </div>
-                      </fieldset>
-                    </form><!-- /.row -->
-                  </div>
                   <!--<div class="col-lg-4 col-md-pull-4 col-md-4">-->
                     <!--<form role="form" name="form-filter">-->
                       <!--<fieldset class="filtros-painel-box">-->
@@ -175,9 +136,9 @@
                         <!--</div>-->
                       <!--</fieldset>-->
                     <!--</form>&lt;!&ndash; /.row &ndash;&gt;-->
-                  <!--</div>-->
-                  </form><!-- /.row -->
-                </div>
+                  <!--</div>
+                  </form>
+                </div>-->
               </div>
             </div>
           </div>
@@ -233,7 +194,7 @@
         </div>
         <div class="col-md-12 barra-filtros-export barra-filtros-export-bottom">
           <div class="barra-filtros-topo">
-            <a class="btn btn-warning" ng-click="e.filterIsCollapsed=!e.filterIsCollapsed"><i class="fa fa-filter"></i> Filter/Order</a>
+            <a class="btn btn-warning" ng-click="e.filterIsCollapsed=!e.filterIsCollapsed"><i class="fa fa-filter"></i> Filter</a>
             <div class="btn-group">
               <a class="btn btn-default" id="export-xls-[[ e.slug ]]" ng-click="export(e, 'xls','/export/data/'+[[ e.slug ]])"><i class="fa fa-table"></i> Excel</a>
               <a class="btn btn-default" id="export-csv-[[ e.slug ]]" ng-click="export(e, 'csv','/export/data/'+[[ e.slug ]])"><i class="fa fa-file-text-o"></i> CSV</a>
@@ -356,6 +317,7 @@
         </div>
       </div>
     </div>
+  </div>
   <div ng-if="e.type=='chart_bar'" class="col-lg-12 panel-group">
     <div class="panel panel-primary">
       <div class="panel-heading click-minimize" ng-click="e.isCollapsed=!e.isCollapsed" ng-class="{'panel-minimized':e.isCollapsed}">
