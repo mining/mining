@@ -34,22 +34,24 @@ def run(cube_slug=None):
                    "bin-mining")
             continue
 
-        Thread(target=process, args=(cube, mongo)).start()
+        worker = Thread(target=process, args=(cube, mongo))
+        worker.name = slug
+        worker.start()
 
     return True
 
 
 def process(_cube, mongo):
-    log_it("START: {}".format(_cube['slug']), "bin-mining")
-    MyClient = riak.RiakClient(
-        protocol=conf("riak")["protocol"],
-        http_port=conf("riak")["http_port"],
-        host=conf("riak")["host"])
-
-    MyBucket = MyClient.bucket(conf("riak")["bucket"])
-    cube = _cube
-
     try:
+        log_it("START: {}".format(_cube['slug']), "bin-mining")
+        MyClient = riak.RiakClient(
+            protocol=conf("riak")["protocol"],
+            http_port=conf("riak")["http_port"],
+            host=conf("riak")["host"])
+
+        MyBucket = MyClient.bucket(conf("riak")["bucket"])
+        cube = _cube
+
         cube['run'] = 'run'
         mongo['cube'].update({'slug': cube['slug']}, cube)
 
