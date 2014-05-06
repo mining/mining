@@ -24,21 +24,23 @@ def run(cube_slug=None):
         db=conf("mongodb")["db"],
         json_mongo=True).get_mongo()
 
-    log_it("START", "bin-mining")
-
     for cube in mongo['cube'].find():
         slug = cube['slug']
         if cube_slug and cube_slug != slug:
             continue
 
-        if cube.get('run') != 'run':
-            Thread(target=process, args=(cube, mongo)).start()
+        if cube.get('run') == 'run':
+            log_it("PROCESS {} IN RUN, NOT YET FINISHED".format(slug),
+                   "bin-mining")
+            continue
 
-    log_it("END", "bin-mining")
+        Thread(target=process, args=(cube, mongo)).start()
+
     return True
 
 
 def process(_cube, mongo):
+    log_it("START", "bin-mining")
     MyClient = riak.RiakClient(
         protocol=conf("riak")["protocol"],
         http_port=conf("riak")["http_port"],
@@ -117,6 +119,8 @@ def process(_cube, mongo):
         log_it(e, "bin-mining")
         _cube['run'] = False
         mongo['cube'].update({'slug': _cube['slug']}, _cube)
+
+    log_it("END", "bin-mining")
 
 
 if __name__ == "__main__":
