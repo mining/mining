@@ -31,7 +31,7 @@ def run(cube_slug=None):
         if cube_slug and cube_slug != slug:
             continue
 
-        if cube['run']:
+        if cube.get('run') != 'run':
             Thread(target=process, args=(cube, mongo)).start()
 
     log_it("END", "bin-mining")
@@ -115,7 +115,7 @@ def process(_cube, mongo):
         gc.collect()
     except Exception, e:
         log_it(e, "bin-mining")
-        _cube['run'] = 'run'
+        _cube['run'] = False
         mongo['cube'].update({'slug': _cube['slug']}, _cube)
 
 
