@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from gevent import monkey
+monkey.patch_all()
+
 from os import sys, path
 import json
 import riak
