@@ -15,8 +15,9 @@ log_it("START", "bin-scheduler")
 
 
 def job(slug):
-    log_it("RUN JOB: {}".format(slug), "bin-scheduler")
+    log_it("START JOB: {}".format(slug), "bin-scheduler")
     run(slug)
+    log_it("END JOB: {}".format(slug), "bin-scheduler")
 
 
 def rules(cube, scheduler_type=None, scheduler_interval=None):
