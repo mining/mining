@@ -40,7 +40,7 @@ def run(cube_slug=None):
 
 
 def process(_cube, mongo):
-    log_it("START", "bin-mining")
+    log_it("START: {}".format(_cube['slug']), "bin-mining")
     MyClient = riak.RiakClient(
         protocol=conf("riak")["protocol"],
         http_port=conf("riak")["http_port"],
@@ -120,7 +120,7 @@ def process(_cube, mongo):
         _cube['run'] = False
         mongo['cube'].update({'slug': _cube['slug']}, _cube)
 
-    log_it("END", "bin-mining")
+    log_it("END: {}".format(_cube['slug']), "bin-mining")
 
 
 if __name__ == "__main__":
