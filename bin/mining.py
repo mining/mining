@@ -33,16 +33,22 @@ def run(cube_slug=None):
         if cube_slug and cube_slug != slug:
             continue
 
-        worker = Thread(target=process, args=(cube, mongo))
+        worker = Thread(target=process, args=(cube,))
         worker.name = slug
         worker.start()
 
     return True
 
 
-def process(_cube, mongo):
+def process(_cube):
     try:
         log_it("START: {}".format(_cube['slug']), "bin-mining")
+
+        mongo = MongoPlugin(
+            uri=conf("mongodb")["uri"],
+            db=conf("mongodb")["db"],
+            json_mongo=True).get_mongo()
+
         MyClient = riak.RiakClient(
             protocol=conf("riak")["protocol"],
             http_port=conf("riak")["http_port"],
