@@ -1,5 +1,26 @@
 'use strict';
 admin
+  .controller('TasksControllers', ['$scope', 'Cube', '$rootScope', 'AlertService', '$interval',
+    function ($scope, Cube, $rootScope, AlertService, $interval) {
+      $scope.tasks = [];
+      $scope.loading = true;
+      $scope.tasks = Cube.checkTasks();
+      $scope.loading = false;
+
+      $interval(function () {
+        $scope.loading = true;
+        $scope.tasks = Cube.checkTasks();
+        console.log($scope.tasks);
+        $scope.loading = false;
+      }, 1000);
+
+      $scope.forceRefresh = function () {
+        $scope.loading = true;
+        $scope.tasks = Cube.checkTasks();
+        $scope.loading = false;
+      }
+    }
+  ])
   .controller('ConnectionCtrl', ['$scope', 'Connection', 'AlertService', '$rootScope',
     function ($scope, Connection, AlertService, $rootScope) {
       $rootScope.inSettings = true;
@@ -27,8 +48,8 @@ admin
         $scope.connection = new Connection();
       };
     }])
-  .controller('CubeCtrl', ['$scope', 'Cube', 'Connection', 'AlertService', '$timeout', '$rootScope', '$filter',
-    function ($scope, Cube, Connection, AlertService, $timeout, $rootScope, $filter) {
+  .controller('CubeCtrl', ['$scope', 'Cube', 'Connection', 'AlertService', '$timeout', '$rootScope',
+    function ($scope, Cube, Connection, AlertService, $timeout, $rootScope) {
       $rootScope.inSettings = true;
       $scope.editorOptions = {
         lineWrapping: true,
@@ -48,7 +69,7 @@ admin
       $scope.cubes = Cube.query();
       $scope.cube = new Cube();
       $scope.scheduler_types = [
-        {key: 'minutes', val: 'minutes'},
+        {key: 'minutes', val: 'minutes'}
 //        {key: 'hour', val: 'hour'},
 //        {key: 'day', val: 'day'}
       ];
@@ -142,8 +163,8 @@ admin
         $scope.min = 0;
       };
     }])
-  .controller('ElementCtrl', ['$scope', 'Cube', 'Element', 'AlertService', '$http', '$rootScope', '$filter',
-    function ($scope, Cube, Element, AlertService, $http, $rootScope, $filter) {
+  .controller('ElementCtrl', ['$scope', 'Cube', 'Element', 'AlertService', '$http', '$rootScope',
+    function ($scope, Cube, Element, AlertService, $http, $rootScope) {
       $rootScope.inSettings = true;
       $scope.types = [
         {'slug': "grid", "name": "Grid"},
@@ -159,7 +180,7 @@ admin
         $scope.element = e;
         $scope.loadFields();
       };
-      $scope.toId = function(a){
+      $scope.toId = function (a) {
         return a.label
       };
       $scope.deleteElement = function (element) {
@@ -177,17 +198,17 @@ admin
         }
         $scope.element = new Element();
       };
-      $scope.addOrder = function(){
-        if(!$scope.element.orderby){
+      $scope.addOrder = function () {
+        if (!$scope.element.orderby) {
           $scope.element.orderby = [];
           $scope.element.orderby__order = [];
         }
-        if($scope.element.orderby.length < $scope.fields.length){
+        if ($scope.element.orderby.length < $scope.fields.length) {
           $scope.element.orderby.push('');
           $scope.element.orderby__order.push('');
         }
       };
-      $scope.removeOrder = function(ind){
+      $scope.removeOrder = function (ind) {
         $scope.element.orderby.splice(ind, 1);
         $scope.element.orderby__order.splice(ind, 1);
       };
@@ -213,7 +234,7 @@ admin
       $scope.elements = Element.query();
       $scope.dashboard = new Dashboard();
       $scope.scheduler_types = [
-        {key: 'minutes', val: 'minutes'},
+        {key: 'minutes', val: 'minutes'}
 //        {key: 'hour', val: 'hour'},
 //        {key: 'day', val: 'day'}
       ];
