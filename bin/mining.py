@@ -4,6 +4,7 @@ from os import sys, path
 import json
 import riak
 import gc
+import traceback
 from datetime import datetime
 from threading import Thread
 
@@ -27,11 +28,6 @@ def run(cube_slug=None):
     for cube in mongo['cube'].find():
         slug = cube['slug']
         if cube_slug and cube_slug != slug:
-            continue
-
-        if cube.get('run') == 'run':
-            log_it("PROCESS {} IN RUN, NOT YET FINISHED".format(slug),
-                   "bin-mining")
             continue
 
         worker = Thread(target=process, args=(cube, mongo))
@@ -119,6 +115,7 @@ def process(_cube, mongo):
         gc.collect()
     except Exception, e:
         log_it(e, "bin-mining")
+        log_it(traceback.format_exc(), "bin-mining")
         _cube['run'] = False
         mongo['cube'].update({'slug': _cube['slug']}, _cube)
 
