@@ -12,7 +12,7 @@ admin
         $scope.tasks = Cube.checkTasks();
         console.log($scope.tasks);
         $scope.loading = false;
-      }, 1000);
+      }, 30000);
 
       $scope.forceRefresh = function () {
         $scope.loading = true;
