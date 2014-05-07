@@ -117,7 +117,7 @@ def process(_cube):
         cube['run'] = True
         mongo['cube'].update({'slug': cube['slug']}, cube)
 
-        log_it("CLEAN MEMORY: {}\n".format(slug), "bin-mining")
+        log_it("CLEAN MEMORY: {}".format(slug), "bin-mining")
         del pdict, df
         gc.collect()
     except Exception, e:
