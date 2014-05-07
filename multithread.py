@@ -15,13 +15,12 @@ class Worker(Thread):
         self.start()
 
     def run(self):
-        while True:
-            func, args, kargs = self.tasks.get()
-            try:
-                func(*args, **kargs)
-            except Exception, e:
-                log_it(e, 'multithread-worker')
-            self.tasks.task_done()
+        func, args, kargs = self.tasks.get()
+        try:
+            func(*args, **kargs)
+        except Exception, e:
+            log_it(e, 'multithread-worker')
+        self.tasks.task_done()
 
 
 class ThreadPool:
