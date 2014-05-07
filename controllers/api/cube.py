@@ -29,7 +29,7 @@ def cube_get(mongodb, slug=None):
 
 @cube_app.route('/runing-cubes', method='GET')
 def cube_get_runing(mongodb, slug=None):
-    cubes = list(mongodb[collection].find({'run': 'run'}, {'_id':False}))
+    cubes = list(mongodb[collection].find({'run': 'run'}, {'_id':False}).sort([('last_update', -1)]))
     return json.dumps(cubes, default=parse_dumps)
 
 
