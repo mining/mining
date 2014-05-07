@@ -101,18 +101,14 @@
                         <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-tasks">
-                        <li>
-                            <a ng-click="forceRefresh();">Refresh</a>
+                        <li ng-repeat="cube in tasks" class="tasks-item">
+                            <strong>[[ cube.name ]]</strong><br>
+                            <span class="text-muted">[[ cube.start_process ]]</span>
                         </li>
-                        <li ng-repeat="cube in tasks">
-                            <a>
-                                <div>
-                                    <p>
-                                        <strong>[[ cube.name ]]</strong>
-                                        <span class="pull-right text-muted">[[ cube.start_process ]]</span>
-                                    </p>
-                                </div>
-                            </a>
+                        <li class="tasks-item tasks-refresh">
+                            <button ng-click="forceRefresh();" class="btn btn-danger btn-block">
+                                <i class="fa fa-refresh"></i> Refresh
+                            </button>
                         </li>
                     </ul>
                     <!-- /.dropdown-tasks -->
