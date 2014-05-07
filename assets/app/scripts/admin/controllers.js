@@ -11,7 +11,6 @@ admin
       $interval(function () {
         $scope.loading = true;
         $scope.tasks = Cube.checkTasks();
-        console.log($scope.tasks);
         $scope.loading = false;
       }, 30000);
 
