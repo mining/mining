@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from gevent import monkey
-monkey.patch_all()
-
 from Queue import Queue
 from threading import Thread
 
@@ -36,8 +33,10 @@ class ThreadPool:
 
     def add_task(self, func, *args, **kargs):
         """Add a task to the queue"""
+        log_it("ADD TASK", 'multithread-pool')
         self.tasks.put((func, args, kargs))
 
     def wait_completion(self):
         """Wait for completion of all the tasks in the queue"""
+        log_it("COMPLETION", 'multithread-pool')
         self.tasks.join()
