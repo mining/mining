@@ -22,6 +22,10 @@ var admin = angular.module('miningApp.admin',[])
         templateUrl: 'assets/app/views/user.html',
         controller: 'UserCtrl'
       })
+      .when('/late-scheduler', {
+        templateUrl: 'assets/app/views/late_scheduler.html',
+        controller: 'LateSchedulerCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

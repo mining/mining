@@ -1,5 +1,22 @@
 'use strict';
 admin
+  .controller('LateSchedulerCtrl', ['$scope', 'Cube', '$rootScope', 'AlertService',
+    function ($scope, Cube, $rootScope, AlertService) {
+      $scope.cubes = [];
+      $scope.cubes = Cube.getLate();
+      $scope.loading = false;
+
+      $scope.forceRefresh = function (cb) {
+        $scope.loading = true;
+        Cube.get({'slug':cb.slug}, function(cube){
+          cube.status = false;
+          Cube.update({'slug': cube.slug}, cube);
+          $scope.cubes = Cube.getLate();
+          $scope.loading = false;
+        });
+      }
+    }
+  ])
   .controller('TasksControllers', ['$scope', 'Cube', '$rootScope', 'AlertService', '$interval',
     function ($scope, Cube, $rootScope, AlertService, $interval) {
       $scope.tasks = [];
