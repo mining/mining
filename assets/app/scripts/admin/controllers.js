@@ -1,8 +1,7 @@
 'use strict';
 admin
-  .controller('LateSchedulerCtrl', ['$scope', 'Cube', '$rootScope', 'AlertService',
-    function ($scope, Cube, $rootScope, AlertService) {
-      $scope.cubes = [];
+  .controller('LateSchedulerCtrl', ['$scope', 'Cube',
+    function ($scope, Cube) {
       $scope.cubes = Cube.getLate();
       $scope.loading = false;
 
@@ -12,6 +11,7 @@ admin
           cube.status = false;
           Cube.update({'slug': cube.slug}, cube);
           $scope.cubes = Cube.getLate();
+          $scope.$emit('UPDATE_LATE_CUBES', $scope.cubes);
           $scope.loading = false;
         });
       }

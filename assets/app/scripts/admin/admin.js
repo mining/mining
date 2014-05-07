@@ -30,8 +30,12 @@ var admin = angular.module('miningApp.admin',[])
         redirectTo: '/'
       });
   }])
-    .run(['$rootScope', 'Dashboard',
-    function($rootScope, Dashboard){
+    .run(['$rootScope', 'Dashboard', 'Cube',
+    function($rootScope, Dashboard, Cube){
+      $rootScope.late_cubes = Cube.getLate();
+      $rootScope.$on("UPDATE_LATE_CUBES", function(event, message){
+        $rootScope.late_cubes = message;
+      });
       $rootScope.dashboard = Dashboard.query();
     }])
 ;
