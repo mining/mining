@@ -68,6 +68,12 @@ var miningApp = angular.module('miningApp', [
 
       return alertService;
     }])
+  .filter('timeAgo',[
+    function(){
+      return function(input){
+        return moment(input, 'YYYY-MM-DD HH:mm:ss').fromNow();
+      };
+    }])
   .config(['$routeProvider', '$interpolateProvider',
     function ($routeProvider, $interpolateProvider) {
       $routeProvider

@@ -103,7 +103,7 @@
                     <ul class="dropdown-menu dropdown-tasks">
                         <li ng-repeat="cube in tasks" class="tasks-item">
                             <strong>[[ cube.name ]]</strong><br>
-                            <span class="text-muted">[[ cube.start_process ]]</span>
+                            <span class="text-muted">[[ cube.start_process ]]([[ cube.start_process | timeAgo ]])</span>
                         </li>
                         <li class="tasks-item tasks-refresh">
                             <button ng-click="forceRefresh();" class="btn btn-danger btn-block">
