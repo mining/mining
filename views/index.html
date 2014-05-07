@@ -96,13 +96,13 @@
                     </ul>
                 </li>-->
                 <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <li ng-controller="TasksControllers" class="dropdown" ng-class="{'open':show_tasks}">
+                    <a ng-click="show_tasks = !show_tasks;">
                         <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
-                    <ul class="dropdown-menu dropdown-tasks" ng-controller="TasksControllers">
+                    <ul class="dropdown-menu dropdown-tasks">
                         <li>
-                            <a ng-click="forceRefresh();" onclick="javascript: return false;">Refresh</a>
+                            <a ng-click="forceRefresh();">Refresh</a>
                         </li>
                         <li ng-repeat="cube in tasks">
                             <a>

@@ -6,6 +6,7 @@ admin
       $scope.loading = true;
       $scope.tasks = Cube.checkTasks();
       $scope.loading = false;
+      $scope.show_tasks = false;
 
       $interval(function () {
         $scope.loading = true;
