@@ -35,6 +35,8 @@ body{
 	padding-bottom: 110px;
 	overflow-y: auto;
 }
+
+/* Topo */
 .navbar-brand{
 	float: none;
 	display: inline-block;
@@ -52,7 +54,18 @@ body{
 .navbar-static-side.open{
 	left: 0;
 }
-
+.tasks-item{
+	padding: 3px 20px 9px;
+	margin-bottom: 9px;
+	border-bottom: solid 1px #E5E5E5;
+}
+.tasks-item:last-child{
+	border-bottom: none;
+	margin-bottom: 0;
+}
+.navbar-top-links .dropdown-menu .tasks-item a{
+	padding: 0;
+}
 /* Home */
 .home{
 	padding: 30px 0;
