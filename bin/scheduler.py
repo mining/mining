@@ -23,11 +23,11 @@ def job(slug):
     log_it("END JOB: {}".format(slug), "bin-scheduler")
 
 
-def rules(cube, scheduler_type=None, scheduler_interval=None):
+def rules(cube, scheduler_type='minutes', scheduler_interval=59):
     if scheduler_type:
         scheduler_type = cube.get('scheduler_type', 'minutes')
     if scheduler_interval:
-        scheduler_interval = cube.get('scheduler_interval', 60)
+        scheduler_interval = cube.get('scheduler_interval', 59)
 
     log_it("START REGISTER", "bin-scheduler")
     log_it("cube: {}".format(cube.get('slug')), "bin-scheduler")
@@ -47,6 +47,8 @@ def rules(cube, scheduler_type=None, scheduler_interval=None):
         t.do(job, slug=cube.get('slug'))
     except Exception, e:
         log_it("ERROR {}: {}".format(cube.get('slug'), e))
+
+    return True
 
 
 mongo = MongoPlugin(
