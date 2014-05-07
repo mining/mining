@@ -5,7 +5,7 @@ SQLAlchemy==0.9.1
 bottle
 bottle-mongo
 bottle-websocket==0.2.5
--e git+https://github.com/avelino/mining.git#egg=bottle-auth
+bottle-auth
 bottle-beaker
 beaker
 riak
