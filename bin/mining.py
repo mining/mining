@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from gevent import monkey
-monkey.patch_all()
-
 from os import sys, path
 import json
 import riak
 import gc
 import traceback
 from datetime import datetime
-from threading import Thread
 
 from pandas import DataFrame
 from sqlalchemy import create_engine
@@ -20,6 +16,7 @@ sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from utils import fix_render, conf, log_it
 
 from bottle.ext.mongo import MongoPlugin
+from multithread import ThreadPool
 
 
 def run(cube_slug=None):
@@ -28,15 +25,16 @@ def run(cube_slug=None):
         db=conf("mongodb")["db"],
         json_mongo=True).get_mongo()
 
+    pool = ThreadPool(20)
+
     for cube in mongo['cube'].find():
         slug = cube['slug']
         if cube_slug and cube_slug != slug:
             continue
 
-        worker = Thread(target=process, args=(cube,))
-        worker.name = slug
-        worker.start()
+        pool.add_task(process, cube)
 
+    pool.wait_completion()
     return True
 
 
@@ -119,7 +117,7 @@ def process(_cube):
         cube['run'] = True
         mongo['cube'].update({'slug': cube['slug']}, cube)
 
-        log_it("CLEAN MEMORY: {}\n".format(slug), "bin-mining")
+        log_it("CLEAN MEMORY: {}".format(slug), "bin-mining")
         del pdict, df
         gc.collect()
     except Exception, e:
