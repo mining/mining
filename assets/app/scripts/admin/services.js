@@ -20,7 +20,8 @@ admin
       return $resource('/api/cube/:slug', {'slug':'@slug'}, {
         update:{method:'PUT', params: {'slug':'@slug'}},
         testquery: {method:'POST', url:"/api/cubequery.json"},
-        checkTasks: {method: 'GET', url:"/api/cube/runing-cubes", isArray: true}
+        checkTasks: {method: 'GET', url:"/api/cube/runing-cubes", isArray: true},
+        getLate: {method: 'GET', url:"/api/cube/late-cubes", isArray: true}
       });
     }
   ])
