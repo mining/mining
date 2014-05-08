@@ -103,7 +103,7 @@
                     <ul class="dropdown-menu dropdown-tasks">
                         <li ng-repeat="cube in tasks" class="tasks-item">
                             <strong>[[ cube.name ]]</strong><br>
-                            <span class="text-muted">[[ cube.start_process ]]</span>
+                            <span class="text-muted">[[ cube.start_process ]]([[ cube.start_process | timeAgo ]])</span>
                         </li>
                         <li class="tasks-item tasks-refresh">
                             <button ng-click="forceRefresh();" class="btn btn-danger btn-block">
@@ -211,6 +211,12 @@
                                     <a ng-href="#/dashboard/[[d.slug]]">[[d.name]]</a>
                                 </li>
                             </ul>
+                        </li>
+                        <li>
+                            <a ng-href="#/late-scheduler">
+                                <i class="fa fa-clock-o fa-fw"></i> Late Scheduler
+                                <span class="badge pull-right">[[ late_cubes.length ]]</span>
+                            </a>
                         </li>
                         <li ng-class="{'open':inSettings}" ng-show="AuthService.getUser().rule != 'user'">
                             <a><i class="fa fa-cog fa-fw"></i> Settings<span class="fa arrow"></span></a>
