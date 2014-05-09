@@ -10,7 +10,6 @@ bottle-beaker
 beaker
 riak
 pymongo
-python-memcached
 python-dateutil
 nose
 redis
