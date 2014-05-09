@@ -212,6 +212,14 @@
                                 </li>
                             </ul>
                         </li>
+                        <li>
+                            <a ng-href="#/late-scheduler">
+                                <i class="fa fa-clock-o fa-fw"></i> Late Scheduler
+                                <span class="badge pull-right"
+                                    ng-class="{'badge-danger': late_cubes.length != '0'}"
+                                >[[ late_cubes.length ]]</span>
+                            </a>
+                        </li>
                         <li ng-class="{'open':inSettings}" ng-show="AuthService.getUser().rule != 'user'">
                             <a><i class="fa fa-cog fa-fw"></i> Settings<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
