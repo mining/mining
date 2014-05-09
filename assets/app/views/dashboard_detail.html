@@ -163,12 +163,13 @@
               <thead>
                 <tr>
                   <th ng-repeat="c in e.columns">
-                    <a ng-click="applyOrder(e, c, e.orderby__order[e.orderby.indexOf(c)])">[[ c|replaceUnderToSpace ]]
+                    <a ng-click="applyOrder(e, c, e.orderby__order[e.orderby.indexOf(c)])">[[ c|replaceUnderToSpace ]]</a>
+                    <a ng-click="applyOrder(e, c, e.orderby__order[e.orderby.indexOf(c)])" class="order-apply">
                       <i class="fa"
-                         ng-class="{'fa-arrow-up': e.orderby.indexOf(c)>=0 && e.orderby__order[e.orderby.indexOf(c)] == '1',
-                         'fa-arrow-down': e.orderby.indexOf(c)>=0 && e.orderby__order[e.orderby.indexOf(c)] == '0'}"></i>
+                         ng-class="{'fa-sort-alpha-asc': e.orderby.indexOf(c)>=0 && e.orderby__order[e.orderby.indexOf(c)] == '1',
+                         'fa-sort-alpha-desc': e.orderby.indexOf(c)>=0 && e.orderby__order[e.orderby.indexOf(c)] == '0'}"></i>
                     </a>
-                    <a ng-show="e.orderby.indexOf(c)>=0" ng-click="removeOrder(e, c)">x</a>
+                    <a ng-show="e.orderby.indexOf(c)>=0" ng-click="removeOrder(e, c)" class="order-remove"><i class="fa fa-times-circle"></i></a>
                   </th>
                 </tr>
               </thead>
