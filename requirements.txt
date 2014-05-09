@@ -18,3 +18,4 @@ rq
 xlwt
 gevent
 schedule
+requests

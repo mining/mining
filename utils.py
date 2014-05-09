@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import json
 import re
 import unicodedata
 import ConfigParser
 from decimal import Decimal
 from datetime import date, datetime
+from bson import ObjectId
 
 from pandas import tslib, date_range
 
@@ -112,3 +114,10 @@ def log_it(s, name=u"core"):
     with open("/tmp/openmining-{}.log".format(name), "a") as log:
         msg = u"{} => {}\n".format(datetime.now(), s)
         log.write(msg.encode('utf-8'))
+
+def parse_dumps(obj):
+    if isinstance(obj, datetime):
+        return str(obj.strftime("%Y-%m-%d %H:%M:%S"))
+    if isinstance(obj, ObjectId):
+        return str(obj)
+    return json.JSONEncoder.default(obj)

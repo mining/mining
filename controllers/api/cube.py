@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import json
 from bottle import Bottle
 from bottle.ext.mongo import MongoPlugin
 
 from redis import Redis
 from rq import Queue
 
-from utils import conf
+from utils import conf, parse_dumps
 from .base import get, post, put, delete
 
 
@@ -24,6 +25,12 @@ cube_app.install(mongo)
 @cube_app.route('/<slug>', method='GET')
 def cube_get(mongodb, slug=None):
     return get(mongodb, collection, slug)
+
+
+@cube_app.route('/runing-cubes', method='GET')
+def cube_get_runing(mongodb, slug=None):
+    cubes = list(mongodb[collection].find({'run': 'run'}, {'_id':False}).sort([('last_update', -1)]))
+    return json.dumps(cubes, default=parse_dumps)
 
 
 @cube_app.route('/', method='POST')

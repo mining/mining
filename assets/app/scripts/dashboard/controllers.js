@@ -118,13 +118,29 @@ dashboard
           } else if (el.type == 'chart_line') {
             loadLine(el);
           }
-        }
+        };
+        $scope.removeOrder = function(el, field){
+          el.current_page = 1;
+          el.total_pages = undefined;
+          el.pages = [];
+          el.orderby.splice(el.orderby.indexOf(field),1);
+          el.orderby__order.splice(el.orderby.indexOf(field),1);
+          if (el.type == 'grid') {
+            loadGrid(el);
+          } else if (el.type == 'chart_bar') {
+            loadBar(el);
+          } else if (el.type == 'chart_line') {
+            loadLine(el);
+          }
+        };
         $scope.applyOrder = function (el, field, asc) {
           el.current_page = 1;
           el.total_pages = undefined;
           el.pages = [];
           if (!el.orderby)
             el.orderby = [];
+          if (!el.orderby__order)
+            el.orderby__order = [];
           if (el.orderby.indexOf(field) < '0')
             el.orderby.push(field);
           el.orderby__order[el.orderby.indexOf(field)] = '0';

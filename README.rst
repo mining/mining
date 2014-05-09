@@ -18,6 +18,7 @@ Requirements
 * MongoDB (Admin)
 * Redis (Queue)
 * Memcache
+* Bower (Install frontend libs, nodejs depends)
 
 
 Install

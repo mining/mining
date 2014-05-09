@@ -2,10 +2,9 @@
 admin
   .factory('Connection', ['$resource',
     function($resource){
-      var Connection = $resource('/api/connection/:slug', {'slug':'@slug'},{
+      return $resource('/api/connection/:slug', {'slug':'@slug'},{
         update:{method:'PUT', params: {'slug':'@slug'}}
       });
-      return Connection;
     }
   ])
   .factory('Element', ['$resource',
@@ -20,7 +19,8 @@ admin
     function($resource){
       return $resource('/api/cube/:slug', {'slug':'@slug'}, {
         update:{method:'PUT', params: {'slug':'@slug'}},
-        testquery: {method:'POST', url:"/api/cubequery.json"}
+        testquery: {method:'POST', url:"/api/cubequery.json"},
+        checkTasks: {method: 'GET', url:"/api/cube/runing-cubes", isArray: true}
       });
     }
   ])
@@ -29,7 +29,7 @@ admin
       return $resource('/api/dashboard/:slug', {}, {
         update: { method: 'PUT', params: {'slug': '@slug'}},
         getFull: { method: 'GET', params: {'full': true}},
-        getFullList: { method: 'GET', params: {'slug': '@slug', 'full': true}, isArray:true}
+        getFullList: { method: 'GET', params: {'slug': '@slug', 'full': true}, isArray: true}
       });
     }
   ])

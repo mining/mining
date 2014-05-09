@@ -9,9 +9,9 @@ tox-test: environment
 
 .PHONY: environment
 environment:
-	@pip install -r requirements_dev.txt --use-mirrors
-	@pip install -r requirements.txt --use-mirrors
-	@pip install numexpr==2.3 --use-mirrors
+	@pip install -r requirements_dev.txt
+	@pip install -r requirements.txt
+	@pip install numexpr==2.3
 	@python setup.py develop
 
 .PHONY: install
