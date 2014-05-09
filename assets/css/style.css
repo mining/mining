@@ -374,12 +374,35 @@ body{
 .order-apply,.order-remove{
 	color: #6f6f6f;
 }
+.order-apply{
+	/*margin: 0 5px;*/
+}
 .order-apply .fa,.order-remove .fa{
 	width: 16px;
+}
+.order-remove{
+	color: #D9534F;
+	display: none;
 }
 .order-apply:hover,.order-remove:hover{
 	text-decoration: none;
 	color: #333;
+}
+.order-remove:hover{
+	color: #D2322D;
+}
+.order-number{
+	font-size: 10px;
+	color: #A0A0A0;
+	font-weight: normal;
+	display: inline-block;
+	width: 16px;
+}
+.order:hover .order-number{
+	display: none;
+}
+.order:hover .order-remove{
+	display: inline;
 }
 /** Settings **/
 .CodeMirror-wrap{
