@@ -71,8 +71,7 @@ def process(_cube):
 
         log_it("CONNECT IN RELATION DATA BASE: {}".format(slug),
                "bin-mining")
-        e = create_engine(connection, pool_timeout=580, pool_size=100,
-                          max_overflow=100)
+        e = create_engine(connection, **conf('openmining')['sql_conn_params'])
         Session = sessionmaker(bind=e)
         session = Session()
 
@@ -82,7 +81,7 @@ def process(_cube):
                "bin-mining")
         df = DataFrame(resoverall.fetchall())
         if df.empty:
-            log_it('[warnning]Empty cube: {}!!'.format(cube),
+            log_it('[warning]Empty cube: {}!!'.format(cube),
                    "bin-mining")
             return
         df.columns = resoverall.keys()
