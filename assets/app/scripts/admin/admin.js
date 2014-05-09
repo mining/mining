@@ -22,7 +22,7 @@ var admin = angular.module('miningApp.admin',[])
         templateUrl: 'assets/app/views/user.html',
         controller: 'UserCtrl'
       })
-      .when('/late-scheduler', {
+      .when('/admin/late-scheduler', {
         templateUrl: 'assets/app/views/late_scheduler.html',
         controller: 'LateSchedulerCtrl'
       })
@@ -30,12 +30,15 @@ var admin = angular.module('miningApp.admin',[])
         redirectTo: '/'
       });
   }])
-    .run(['$rootScope', 'Dashboard', 'Cube',
-    function($rootScope, Dashboard, Cube){
+    .run(['$rootScope', 'Dashboard', 'Cube', '$interval',
+    function($rootScope, Dashboard, Cube, $interval){
       $rootScope.late_cubes = Cube.getLate();
       $rootScope.$on("UPDATE_LATE_CUBES", function(event, message){
         $rootScope.late_cubes = message;
       });
+      $interval(function(){
+        $rootScope.$emit("UPDATE_LATE_CUBES", Cube.getLate());
+      }, 10000);
       $rootScope.dashboard = Dashboard.query();
     }])
 ;
