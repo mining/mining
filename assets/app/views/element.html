@@ -18,6 +18,7 @@
                 <label for="element_type">Type</label>
                 <select id="element_type" ui-select2 ng-model="element.type" ng-change="loadFields()"
                         class="form-control" required>
+                    <option value=""></option>
                     <option ng-repeat="t in types" value="[[ t.slug ]]">[[ t.name ]]</option>
                 </select>
             </div>
@@ -25,6 +26,7 @@
                 <label for="element_cube">Cube</label>
                 <select id="element_cube" ui-select2 ng-model="element.cube" ng-change="loadFields()"
                         class="form-control" required>
+                    <option value=""></option>
                     <option ng-repeat="c in cubes" value="[[ c.slug ]]">[[ c.name ]]</option>
                 </select>
             </div>
@@ -33,15 +35,15 @@
                 <div class="form-group row" ng-repeat="element_order in element.orderby track by $index">
                     <div class="col-sm-5 col-md-5">
                         <label>Field</label>
-                        <select ui-select2 ng-model="element.orderby[$index]"
-                                class="form-control">
+                        <select ui-select2 ng-model="element.orderby[$index]" class="form-control">
+                            <option value=""></option>
                             <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
                         </select>
                     </div>
                     <div class="col-sm-5 col-md-5">
                         <label>Sort</label>
-                        <select ui-select2 ng-model="element.orderby__order[$index]"
-                                class="form-control">
+                        <select ui-select2 ng-model="element.orderby__order[$index]" class="form-control">
+                            <option value=""></option>
                             <option value="1">Ascending</option>
                             <option value="0">Descending</option>
                         </select>
