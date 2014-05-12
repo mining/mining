@@ -30,20 +30,22 @@ def cube_get(mongodb, slug=None):
 
 @cube_app.route('/runing-cubes', method='GET')
 def cube_get_runing(mongodb, slug=None):
-    cubes = list(mongodb[collection].find({'run': 'run'}, {'_id':False}).sort([('last_update', -1)]))
+    cubes = list(mongodb[collection].find(
+        {'run': 'run'}, {'_id': False}).sort([('last_update', -1)]))
     return json.dumps(cubes, default=parse_dumps)
 
 
 @cube_app.route('/late-cubes', method='GET')
 def cube_get_late(mongodb, slug=None):
-    _cubes = list(mongodb[collection].find({}, {'_id':False}))
+    _cubes = list(mongodb[collection].find({}, {'_id': False}))
     cubes = []
     for cb in _cubes:
         is_late = False
         if cb.get('scheduler_type', '') == 'minutes':
             lu = cb['lastupdate']
             if isinstance(lu, datetime.datetime):
-                n_lu = lu + datetime.timedelta(minutes=int(cb['scheduler_interval']))
+                n_lu = lu + datetime.timedelta(
+                    minutes=int(cb['scheduler_interval']))
                 if (datetime.datetime.now() - n_lu).total_seconds() > 0:
                     cb['late'] = n_lu
                     is_late = True
