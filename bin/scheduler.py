@@ -59,6 +59,7 @@ mongo = MongoPlugin(
 register = []
 for cube in mongo['cube'].find({'scheduler_status': True}):
     rules(cube)
+    run(cube['slug'])
     register.append(cube['slug'])
 
 for dashboard in mongo['dashboard'].find({'scheduler_status': True}):
