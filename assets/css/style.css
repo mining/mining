@@ -276,6 +276,7 @@ body{
 }
 .btn-save{
 	width: 129px;
+	overflow: hidden;
 	transition: all 0.4s;
 	-webkit-transition: all 0.4s;
 }
@@ -286,6 +287,13 @@ body{
 	padding: 0 6px;
 	margin-left: 12px;
 	margin-right: 12px;
+}
+.btn-save a{
+	color: #fff;
+}
+.btn-save a:hover{
+	color: #fff;
+	text-decoration: none;
 }
 .btn-save-active{
 	width: 254px;
