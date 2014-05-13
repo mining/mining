@@ -480,3 +480,7 @@ tr.code{
 		margin-left: 250px;
 	}
 }
+
+[id^='chart-line'] > svg, [id^='bar-chart'] > svg {
+    width: 100% !important;
+}

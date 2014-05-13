@@ -85,16 +85,51 @@ dashboard
             loadLine(el);
           }
         };
+
+        $scope.startSaveSettings = function(ele){
+          if(!ele.saveSettings)
+            ele.saveSettings = true;
+        };
+
         $scope.saveFilters = function (el) {
           var tmp_filters = angular.copy(el.filters);
           tmp_filters['element'] = el.slug;
           tmp_filters['name'] = el.filter_name;
           var newFilter = new Filter();
           angular.extend(newFilter, tmp_filters);
-          newFilter.$save()
-            .then(function (response) {
-              el.saved_filters.push(response);
-            });
+          if(el._filter.name == el.filter_name){
+            newFilter['slug'] = el._filter['slug'];
+            newFilter.$update()
+              .then(function(response){
+                debugger;
+                $(el.saved_filters).each(function(ind, filt){
+                  if(filt.slug == el._filter.slug)
+                    el.saved_filters[ind] = response;
+                });
+                el.saveSettings = false;
+                el.filter_name = '';
+                el.filter_operator = '';
+                el.filter_field = '';
+                el.filter_type = '';
+                el.filter_format = '';
+                el.filter_value = '';
+                el._filter = response;
+                el.filter_message = {'status': 'success', 'msg': 'Success!'};
+              });
+          }else{
+            newFilter.$save()
+              .then(function (response) {
+                el.saved_filters.push(response);
+                el.saveSettings = false;
+                el.filter_name = '';
+                el.filter_operator = '';
+                el.filter_field = '';
+                el.filter_type = '';
+                el.filter_format = '';
+                el.filter_value = '';
+                el.filter_message = {'status': 'success', 'msg': 'Success!'};
+              });
+          }
         };
 
         $scope.export = function (el, type, link) {
@@ -163,6 +198,7 @@ dashboard
             delete(tmp_filters['element']);
             delete(tmp_filters['slug']);
             delete(tmp_filters['name']);
+            el._filter = angular.copy(el.saved_filters[el.selected_filter]);
             el.filters = tmp_filters;
             el.filter_name = el.saved_filters[el.selected_filter].name;
           }
@@ -208,6 +244,7 @@ dashboard
               filter_format: '',
               filter_value: '',
               filters: {},
+              saveSettings: false,
               columns: [],
               process: [],
               loading: true,
@@ -249,6 +286,20 @@ dashboard
             $interval.cancel($scope.selected_dashboard.intervals);
         });
 
+        $rootScope.$on('WINDOW_RESIZE', function(x,y){
+          console.log('on WINDOW_RESIZE');
+          console.log(x, y);
+          $($scope.selected_dashboard.element).each(function (ind, val) {
+            if (val.graph){
+              val.graph.redraw();
+              console.log('REDRAW');
+            }
+//            $timeout(function(){
+//              $scope.apply();
+//            })
+          });
+        });
+
         function loadBar(el) {
           el.process = [];
           el.loading = true;
@@ -276,12 +327,14 @@ dashboard
               el.loading = false;
               $timeout(function () {
                 $scope.$apply(function () {
-                  Morris.Bar({
+                  el.graph = Morris.Bar({
                     element: element,
                     data: el.process,
                     xkey: el.xkey,
                     ykeys: el.ykeys,
-                    labels: el.labels
+                    labels: el.labels,
+                    resize: true,
+                    redraw: true
                   });
                 });
               });
@@ -337,12 +390,14 @@ dashboard
               el.loading = false;
               $timeout(function () {
                 $scope.$apply(function () {
-                  Morris.Line({
+                  el.graph = Morris.Line({
                     element: element,
                     data: el.process,
                     xkey: el.xkey,
                     ykeys: el.ykeys,
-                    labels: el.labels
+                    labels: el.labels,
+                    resize: true,
+                    redraw: true
                   });
                 });
               });

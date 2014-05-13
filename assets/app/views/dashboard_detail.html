@@ -54,10 +54,12 @@
                         </ul>
                       </div>
                       <div class="col-lg-12 filtros-action">
-                        <span class="btn btn-info btn-save">
+                        <span class="btn btn-info btn-save"
+                              ng-click="startSaveSettings(e);"
+                              ng-class="{'btn-save-active': e.saveSettings}">
                           <i class="fa fa-save"></i> Save Settings
-                          <input type="text" class="form-control" placeholder="Setting name"><strong><i class="fa fa-save"></i>
-                          <a href="#">Save</a></strong>
+                          <input type="text" ng-click="clickInputSettings($event);" ng-model="e.filter_name" class="form-control" placeholder="Setting name"><strong><i class="fa fa-save"></i>
+                          <a ng-click="saveFilters(e);" ng-disabled="!e.filter_name || e.filters.length<0">Save</a></strong>
                         </span>
                         <button type="button" class="btn btn-primary" ng-click="applyFilters(e)"><i class="fa fa-check"></i> Apply Settings</button>
                       </div>
@@ -439,7 +441,7 @@
             </div>
           </div>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" resize>
           <!-- <barchart xkey="el.xkey" ykeys="el.ykeys" labels="el.labels" data="e.process" index="[[ $index ]]"></barchart> -->
           <div ng-show="e.loading"><h2>Loading...</h2></div>
           <div id="bar-chart-[[e.slug]]">
@@ -659,7 +661,7 @@
             </div>
           </div>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" resize emWidthSource emWidthTarget>
           <div ng-show="e.loading"><h2>Loading...</h2></div>
           <div id="chart-line-[[e.slug]]">
           </div>
