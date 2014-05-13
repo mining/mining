@@ -6,7 +6,8 @@ dashboard
   .controller('DashboardDetailCtrl',
     ['$scope', '$routeParams', 'AlertService', 'current_dashboard', 'Element', '$anchorScroll', '$timeout', '$http',
       'AuthenticationService', '$rootScope', 'Filter', '$interval',
-      function ($scope, $routeParams, AlertService, current_dashboard, Element, $anchorScroll, $timeout, $http, AuthenticationService, $rootScope, Filter, $interval) {
+      function ($scope, $routeParams, AlertService, current_dashboard, Element, $anchorScroll, $timeout, $http,
+                AuthenticationService, $rootScope, Filter, $interval) {
         $rootScope.inDashboard = true;
 
         $scope.filter_name = undefined;
@@ -19,7 +20,11 @@ dashboard
         function loadGrid(el) {
           el.process = [];
           el.loading = true;
-          var API_URL = "ws://" + location.host + "/stream/data/" + el.slug + "?";
+          var prot = 'ws';
+          if(window.protocol == 'https')
+            prot = 'wss';
+          var API_URL = prot + "://" + location.host + "/stream/data/" + el.slug + "?";
+          console.log(API_URL);
           for (var key in el.filters) {
             API_URL += key + "=" + el.filters[key] + "&";
           }
@@ -287,16 +292,9 @@ dashboard
         });
 
         $rootScope.$on('WINDOW_RESIZE', function(x,y){
-          console.log('on WINDOW_RESIZE');
-          console.log(x, y);
           $($scope.selected_dashboard.element).each(function (ind, val) {
-            if (val.graph){
+            if (val.graph)
               val.graph.redraw();
-              console.log('REDRAW');
-            }
-//            $timeout(function(){
-//              $scope.apply();
-//            })
           });
         });
 
@@ -306,7 +304,10 @@ dashboard
           var element = 'bar-chart-' + el.slug;
           if (angular.element('#' + element))
             angular.element('#' + element).html('');
-          var API_URL = "ws://" + location.host + "/stream/data/" + el.slug + "?";
+          var prot = 'ws';
+          if(window.protocol == 'https')
+            prot = 'wss';
+          var API_URL = prot + "://" + location.host + "/stream/data/" + el.slug + "?";
           for (var key in el.filters) {
             API_URL += key + "=" + el.filters[key] + "&";
           }
@@ -351,7 +352,10 @@ dashboard
           var element = 'chart-line-' + el.slug;
           if (angular.element('#' + element))
             angular.element('#' + element).html('');
-          var API_URL = "ws://" + location.host + "/stream/data/" + el.slug + "?";
+          var prot = 'ws';
+          if(window.protocol == 'https')
+            prot = 'wss';
+          var API_URL = prot + "://" + location.host + "/stream/data/" + el.slug + "?";
           for (var key in el.filters) {
             API_URL += key + "=" + el.filters[key] + "&";
           }

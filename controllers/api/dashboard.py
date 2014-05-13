@@ -56,7 +56,6 @@ def dashboard_get(mongodb, slug=None):
                         for x in _filters:
                             x.pop('_id', None)
                             _fil.append(x)
-                        print _fil
                         n_el['saved_filters'] = _fil
                     das['element'].append(n_el)
         return das
