@@ -5,9 +5,9 @@ dashboard
     }])
   .controller('DashboardDetailCtrl',
     ['$scope', '$routeParams', 'AlertService', 'current_dashboard', 'Element', '$anchorScroll', '$timeout', '$http',
-      'AuthenticationService', '$rootScope', 'Filter', '$interval', 'PROTOCOL',
+      'AuthenticationService', '$rootScope', 'Filter', '$interval',
       function ($scope, $routeParams, AlertService, current_dashboard, Element, $anchorScroll, $timeout, $http,
-                AuthenticationService, $rootScope, Filter, $interval, PROTOCOL) {
+                AuthenticationService, $rootScope, Filter, $interval) {
         $rootScope.inDashboard = true;
 
         $scope.filter_name = undefined;
@@ -21,9 +21,10 @@ dashboard
           el.process = [];
           el.loading = true;
           var prot = 'ws';
-          if(PROTOCOL == 'https')
-            prot = 'wss;'
+          if(window.protocol == 'https')
+            prot = 'wss';
           var API_URL = prot + "://" + location.host + "/stream/data/" + el.slug + "?";
+          console.log(API_URL);
           for (var key in el.filters) {
             API_URL += key + "=" + el.filters[key] + "&";
           }
@@ -304,8 +305,8 @@ dashboard
           if (angular.element('#' + element))
             angular.element('#' + element).html('');
           var prot = 'ws';
-          if(PROTOCOL == 'https')
-            prot = 'wss;'
+          if(window.protocol == 'https')
+            prot = 'wss';
           var API_URL = prot + "://" + location.host + "/stream/data/" + el.slug + "?";
           for (var key in el.filters) {
             API_URL += key + "=" + el.filters[key] + "&";
@@ -352,8 +353,8 @@ dashboard
           if (angular.element('#' + element))
             angular.element('#' + element).html('');
           var prot = 'ws';
-          if(PROTOCOL == 'https')
-            prot = 'wss;'
+          if(window.protocol == 'https')
+            prot = 'wss';
           var API_URL = prot + "://" + location.host + "/stream/data/" + el.slug + "?";
           for (var key in el.filters) {
             API_URL += key + "=" + el.filters[key] + "&";
