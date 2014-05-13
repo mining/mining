@@ -87,10 +87,15 @@ var miningApp = angular.module('miningApp', [
       $interpolateProvider.startSymbol('[[');
       $interpolateProvider.endSymbol(']]');
     }])
-  .run(['$rootScope', 'AlertService', '$locale',
-    function ($rootScope, AlertService, $locale) {
+  .run(['$rootScope', 'AlertService', '$locale', '$timeout',
+    function ($rootScope, AlertService, $locale, $timeout) {
       $rootScope.closeAlert = AlertService.closeAlert;
       $locale.id = 'pt-br';
+      $rootScope.abreMenu = function(){
+        $timeout(function(){
+          $rootScope.$emit('WINDOW_RESIZE');
+        }, 1000);
+      };
 
       $rootScope.$on('$routeChangeStart', function (ev, to, toParams, from, fromParams) {
         $rootScope.inSettings = false;

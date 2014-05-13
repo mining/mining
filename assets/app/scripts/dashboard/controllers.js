@@ -6,7 +6,8 @@ dashboard
   .controller('DashboardDetailCtrl',
     ['$scope', '$routeParams', 'AlertService', 'current_dashboard', 'Element', '$anchorScroll', '$timeout', '$http',
       'AuthenticationService', '$rootScope', 'Filter', '$interval',
-      function ($scope, $routeParams, AlertService, current_dashboard, Element, $anchorScroll, $timeout, $http, AuthenticationService, $rootScope, Filter, $interval) {
+      function ($scope, $routeParams, AlertService, current_dashboard, Element, $anchorScroll, $timeout, $http,
+                AuthenticationService, $rootScope, Filter, $interval) {
         $rootScope.inDashboard = true;
 
         $scope.filter_name = undefined;
@@ -19,7 +20,11 @@ dashboard
         function loadGrid(el) {
           el.process = [];
           el.loading = true;
-          var API_URL = "ws://" + location.host + "/stream/data/" + el.slug + "?";
+          var prot = 'ws';
+          if(window.protocol == 'https')
+            prot = 'wss';
+          var API_URL = prot + "://" + location.host + "/stream/data/" + el.slug + "?";
+          console.log(API_URL);
           for (var key in el.filters) {
             API_URL += key + "=" + el.filters[key] + "&";
           }
@@ -32,6 +37,7 @@ dashboard
             if (data.type == 'columns') {
               el.columns = data.data;
             } else if (data.type == 'max_page') {
+              el.total_rows = data.data;
               el.total_pages = Math.ceil(data.data / 50);
             } else if (data.type == 'last_update') {
               el.cube.lastupdate = moment(data.data).format('YYYY-MM-DDTHH:mm:ss');
@@ -85,16 +91,51 @@ dashboard
             loadLine(el);
           }
         };
+
+        $scope.startSaveSettings = function(ele){
+          if(!ele.saveSettings)
+            ele.saveSettings = true;
+        };
+
         $scope.saveFilters = function (el) {
           var tmp_filters = angular.copy(el.filters);
           tmp_filters['element'] = el.slug;
           tmp_filters['name'] = el.filter_name;
           var newFilter = new Filter();
           angular.extend(newFilter, tmp_filters);
-          newFilter.$save()
-            .then(function (response) {
-              el.saved_filters.push(response);
-            });
+          if(el._filter.name == el.filter_name){
+            newFilter['slug'] = el._filter['slug'];
+            newFilter.$update()
+              .then(function(response){
+                debugger;
+                $(el.saved_filters).each(function(ind, filt){
+                  if(filt.slug == el._filter.slug)
+                    el.saved_filters[ind] = response;
+                });
+                el.saveSettings = false;
+                el.filter_name = '';
+                el.filter_operator = '';
+                el.filter_field = '';
+                el.filter_type = '';
+                el.filter_format = '';
+                el.filter_value = '';
+                el._filter = response;
+                el.filter_message = {'status': 'success', 'msg': 'Success!'};
+              });
+          }else{
+            newFilter.$save()
+              .then(function (response) {
+                el.saved_filters.push(response);
+                el.saveSettings = false;
+                el.filter_name = '';
+                el.filter_operator = '';
+                el.filter_field = '';
+                el.filter_type = '';
+                el.filter_format = '';
+                el.filter_value = '';
+                el.filter_message = {'status': 'success', 'msg': 'Success!'};
+              });
+          }
         };
 
         $scope.export = function (el, type, link) {
@@ -163,6 +204,7 @@ dashboard
             delete(tmp_filters['element']);
             delete(tmp_filters['slug']);
             delete(tmp_filters['name']);
+            el._filter = angular.copy(el.saved_filters[el.selected_filter]);
             el.filters = tmp_filters;
             el.filter_name = el.saved_filters[el.selected_filter].name;
           }
@@ -201,6 +243,7 @@ dashboard
               filterIsCollapsed: true,
               current_page: 1,
               total_pages: 0,
+              total_rows: 0,
               filter_name: '',
               filter_operator: '',
               filter_field: '',
@@ -208,6 +251,7 @@ dashboard
               filter_format: '',
               filter_value: '',
               filters: {},
+              saveSettings: false,
               columns: [],
               process: [],
               loading: true,
@@ -249,13 +293,23 @@ dashboard
             $interval.cancel($scope.selected_dashboard.intervals);
         });
 
+        $rootScope.$on('WINDOW_RESIZE', function(x,y){
+          $($scope.selected_dashboard.element).each(function (ind, val) {
+            if (val.graph)
+              val.graph.redraw();
+          });
+        });
+
         function loadBar(el) {
           el.process = [];
           el.loading = true;
           var element = 'bar-chart-' + el.slug;
           if (angular.element('#' + element))
             angular.element('#' + element).html('');
-          var API_URL = "ws://" + location.host + "/stream/data/" + el.slug + "?";
+          var prot = 'ws';
+          if(window.protocol == 'https')
+            prot = 'wss';
+          var API_URL = prot + "://" + location.host + "/stream/data/" + el.slug + "?";
           for (var key in el.filters) {
             API_URL += key + "=" + el.filters[key] + "&";
           }
@@ -276,12 +330,14 @@ dashboard
               el.loading = false;
               $timeout(function () {
                 $scope.$apply(function () {
-                  Morris.Bar({
+                  el.graph = Morris.Bar({
                     element: element,
                     data: el.process,
                     xkey: el.xkey,
                     ykeys: el.ykeys,
-                    labels: el.labels
+                    labels: el.labels,
+                    resize: true,
+                    redraw: true
                   });
                 });
               });
@@ -298,7 +354,10 @@ dashboard
           var element = 'chart-line-' + el.slug;
           if (angular.element('#' + element))
             angular.element('#' + element).html('');
-          var API_URL = "ws://" + location.host + "/stream/data/" + el.slug + "?";
+          var prot = 'ws';
+          if(window.protocol == 'https')
+            prot = 'wss';
+          var API_URL = prot + "://" + location.host + "/stream/data/" + el.slug + "?";
           for (var key in el.filters) {
             API_URL += key + "=" + el.filters[key] + "&";
           }
@@ -337,12 +396,14 @@ dashboard
               el.loading = false;
               $timeout(function () {
                 $scope.$apply(function () {
-                  Morris.Line({
+                  el.graph = Morris.Line({
                     element: element,
                     data: el.process,
                     xkey: el.xkey,
                     ykeys: el.ykeys,
-                    labels: el.labels
+                    labels: el.labels,
+                    resize: true,
+                    redraw: true
                   });
                 });
               });

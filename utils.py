@@ -8,7 +8,7 @@ from decimal import Decimal
 from datetime import date, datetime
 from bson import ObjectId
 
-from pandas import tslib, date_range
+from pandas import tslib, date_range, concat, DataFrame
 
 
 def fix_type(value):
@@ -108,12 +108,11 @@ def conf(section):
         except:
             _dict[option] = None
 
+    _dict['sql_conn_params'] = {}
     if 'sql_conn_params' in options:
         import ast
         _dict['sql_conn_params'] = ast.literal_eval(_dict['sql_conn_params'])
-    else:
-        _dict['sql_conn_params'] = {}
-    
+
     return _dict
 
 
@@ -122,9 +121,18 @@ def log_it(s, name=u"core"):
         msg = u"{} => {}\n".format(datetime.now(), s)
         log.write(msg.encode('utf-8'))
 
+
 def parse_dumps(obj):
     if isinstance(obj, datetime):
         return str(obj.strftime("%Y-%m-%d %H:%M:%S"))
     if isinstance(obj, ObjectId):
         return str(obj)
     return json.JSONEncoder.default(obj)
+
+
+def DataFrameSearchColumn(df, colName, regex):
+    ndf = DataFrame()
+    for idx, record in df[colName].iteritems():
+        if re.search(regex, str(record)):
+            ndf = concat([df[df[colName] == record], ndf], ignore_index=True)
+    return ndf

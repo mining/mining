@@ -38,10 +38,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <button type="button" class="sidebar-toggle">
+                <button type="button" class="sidebar-toggle" ng-click="abreMenu();">
                     <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="#/"><strong>Open</strong>Mining</a>
+                <a class="navbar-brand" ng-href="#/"><strong>Open</strong>Mining</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -243,7 +243,7 @@
                 <button type="button" class="close" ng-click="closeAlert($index)">×</button>
                 [[ alert.msg ]]
             </div>
-            <div ng-view=""></div>
+            <div ng-view></div>
         </div>
         <!-- /#page-wrapper -->
 
@@ -313,6 +313,7 @@
     <script src="{{ get_url('assets', path='app/scripts/report/services.js') }}"></script>
     <!-- endbuild -->
     <script>
+      window.protocol = '{{ protocol }}';
       $(function() {
         $.ajax({
             'url':'/api/user/session',

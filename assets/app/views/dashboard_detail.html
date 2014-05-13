@@ -8,7 +8,6 @@
   </div>
 </div>
 <div class="row ng-scope" ng-repeat="e in selected_dashboard.element|checkElementPermission:selected_dashboard.slug">
-  <!--<pre>[[ e.slug | json ]]</pre>-->
   <div ng-if="e.type=='grid'" class="col-lg-12 panel-group">
     <div class="panel panel-primary panel-grid">
       <div class="panel-heading click-minimize" ng-click="e.isCollapsed=!e.isCollapsed" ng-class="{'panel-minimized':e.isCollapsed}">
@@ -22,12 +21,15 @@
           <div class="barra-filtros-topo">
             <a class="btn btn-warning" ng-click="e.filterIsCollapsed=!e.filterIsCollapsed"><i class="fa fa-filter"></i> Filter</a>
             <div class="btn-group">
-              <a class="btn btn-default" id="export-xls-[[ e.slug ]]" ng-click="export(e, 'xls','/export/data/'+[[ e.slug ]])"><i class="fa fa-table"></i> Excel</a>
+              <a ng-show="e.total_rows < 65536" class="btn btn-default" id="export-xls-[[ e.slug ]]" ng-click="export(e, 'xls','/export/data/'+[[ e.slug ]])"><i class="fa fa-table"></i> XLS</a>
               <a class="btn btn-default" id="export-csv-[[ e.slug ]]" ng-click="export(e, 'csv','/export/data/'+[[ e.slug ]])"><i class="fa fa-file-text-o"></i> CSV</a>
             </div>
             <div class="update-refresh">
-              <span class="update" title="Last update"><i class="fa fa-clock-o"></i> [[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]</span>
-              <span class="refresh" title="Last refresh"><i class="fa fa-repeat"></i> [[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]</span>
+              <strong>Last update: </strong>[[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]<br>
+              <label ng-show="selected_dashboard.scheduler_type == 'minutes' || e.cube.scheduler_type == 'minutes'">
+                  <strong>Last refresh: </strong>[[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]
+                  (refreshes every [[ e.cube.scheduler_interval || selected_dashboard.scheduler_interval ]] [[ e.cube.scheduler_type || selected_dashboard.scheduler_type ]])
+              </label>
             </div>
           </div>
 
@@ -54,9 +56,13 @@
                         </ul>
                       </div>
                       <div class="col-lg-12 filtros-action">
-                        <button type="button" class="btn btn-info btn-save"><i class="fa fa-save"></i> Save Settings
-                          <input type="text" class="form-control" placeholder="Setting name"><strong><i class="fa fa-save"></i> Save</strong>
-                        </button>
+                        <span class="btn btn-info btn-save"
+                              ng-click="startSaveSettings(e);"
+                              ng-class="{'btn-save-active': e.saveSettings}">
+                          <i class="fa fa-save"></i> Save Settings
+                          <input type="text" ng-click="clickInputSettings($event);" ng-model="e.filter_name" class="form-control" placeholder="Setting name"><strong><i class="fa fa-save"></i>
+                          <a ng-click="saveFilters(e);" ng-disabled="!e.filter_name || e.filters.length<0">Save</a></strong>
+                        </span>
                         <button type="button" class="btn btn-primary" ng-click="applyFilters(e)"><i class="fa fa-check"></i> Apply Settings</button>
                       </div>
                       <!--<div class="panel">
@@ -201,12 +207,17 @@
           <div class="barra-filtros-topo">
             <a class="btn btn-warning" ng-click="e.filterIsCollapsed=!e.filterIsCollapsed"><i class="fa fa-filter"></i> Filter</a>
             <div class="btn-group">
-              <a class="btn btn-default" id="export-xls-[[ e.slug ]]" ng-click="export(e, 'xls','/export/data/'+[[ e.slug ]])"><i class="fa fa-table"></i> Excel</a>
+              <a ng-show="e.total_rows < 65536" class="btn btn-default" id="export-xls-[[ e.slug ]]" ng-click="export(e, 'xls','/export/data/'+[[ e.slug ]])"><i class="fa fa-table"></i> XLS</a>
               <a class="btn btn-default" id="export-csv-[[ e.slug ]]" ng-click="export(e, 'csv','/export/data/'+[[ e.slug ]])"><i class="fa fa-file-text-o"></i> CSV</a>
             </div>
             <div class="update-refresh">
-              <span class="update" title="Last update"><i class="fa fa-clock-o"></i> [[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]</span>
-              <span class="refresh" title="Last refresh"><i class="fa fa-repeat"></i> [[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]</span>
+              <strong>Last update: </strong>[[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]<br>
+              <label ng-show="selected_dashboard.scheduler_type == 'minutes' || e.cube.scheduler_type == 'minutes'">
+                  <strong>Last refresh: </strong>[[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]
+                  (refreshes every [[ e.cube.scheduler_interval || selected_dashboard.scheduler_interval ]] [[ e.cube.scheduler_type || selected_dashboard.scheduler_type ]])
+              </label>
+              <!--<span class="update" title="Last update"><i class="fa fa-clock-o"></i> [[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]</span>
+              <span class="refresh" title="Last refresh"><i class="fa fa-repeat"></i> [[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]</span>-->
             </div>
           </div>
 
@@ -233,9 +244,14 @@
                         </ul>
                       </div>
                       <div class="col-lg-12 filtros-action">
-                        <button type="button" class="btn btn-info btn-save"><i class="fa fa-save"></i> Save Settings
+                        <!--<button type="button" class="btn btn-info btn-save"><i class="fa fa-save"></i> Save Settings
                           <input type="text" class="form-control" placeholder="Setting name"><strong><i class="fa fa-save"></i> Save</strong>
-                        </button>
+                        </button>-->
+                        <span class="btn btn-info btn-save">
+                          <i class="fa fa-save"></i> Save Settings
+                          <input type="text" class="form-control" placeholder="Setting name"><strong><i class="fa fa-save"></i>
+                          <a href="#">Save</a></strong>
+                        </span>
                         <button type="button" class="btn btn-primary" ng-click="applyFilters(e)"><i class="fa fa-check"></i> Apply Settings</button>
                       </div>
                       <!--<div class="panel">
@@ -335,12 +351,15 @@
           <div class="barra-filtros-topo">
             <a class="btn btn-warning" ng-click="e.filterIsCollapsed=!e.filterIsCollapsed"><i class="fa fa-filter"></i> Filter</a>
             <div class="btn-group">
-              <a class="btn btn-default" id="export-xls-[[ e.slug ]]" ng-click="export(e, 'xls','/export/data/'+[[ e.slug ]])"><i class="fa fa-table"></i> Excel</a>
+              <a ng-show="e.total_rows < 65536" class="btn btn-default" id="export-xls-[[ e.slug ]]" ng-click="export(e, 'xls','/export/data/'+[[ e.slug ]])"><i class="fa fa-table"></i> XLS</a>
               <a class="btn btn-default" id="export-csv-[[ e.slug ]]" ng-click="export(e, 'csv','/export/data/'+[[ e.slug ]])"><i class="fa fa-file-text-o"></i> CSV</a>
             </div>
             <div class="update-refresh">
-              <span class="update" title="Last update"><i class="fa fa-clock-o"></i> [[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]</span>
-              <span class="refresh" title="Last refresh"><i class="fa fa-repeat"></i> [[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]</span>
+              <strong>Last update: </strong>[[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]<br>
+              <label ng-show="selected_dashboard.scheduler_type == 'minutes' || e.cube.scheduler_type == 'minutes'">
+                  <strong>Last refresh: </strong>[[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]
+                  (refreshes every [[ e.cube.scheduler_interval || selected_dashboard.scheduler_interval ]] [[ e.cube.scheduler_type || selected_dashboard.scheduler_type ]])
+              </label>
             </div>
           </div>
 
@@ -367,9 +386,11 @@
                         </ul>
                       </div>
                       <div class="col-lg-12 filtros-action">
-                        <button type="button" class="btn btn-info btn-save"><i class="fa fa-save"></i> Save Settings
-                          <input type="text" class="form-control" placeholder="Setting name"><strong><i class="fa fa-save"></i> Save</strong>
-                        </button>
+                        <span class="btn btn-info btn-save">
+                          <i class="fa fa-save"></i> Save Settings
+                          <input type="text" class="form-control" placeholder="Setting name"><strong><i class="fa fa-save"></i>
+                          <a href="#">Save</a></strong>
+                        </span>
                         <button type="button" class="btn btn-primary" ng-click="applyFilters(e)"><i class="fa fa-check"></i> Apply Settings</button>
                       </div>
                       <!--<div class="panel">
@@ -430,7 +451,7 @@
             </div>
           </div>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" resize>
           <!-- <barchart xkey="el.xkey" ykeys="el.ykeys" labels="el.labels" data="e.process" index="[[ $index ]]"></barchart> -->
           <div ng-show="e.loading"><h2>Loading...</h2></div>
           <div id="bar-chart-[[e.slug]]">
@@ -440,12 +461,15 @@
           <div class="barra-filtros-topo">
             <a class="btn btn-warning" ng-click="e.filterIsCollapsed=!e.filterIsCollapsed"><i class="fa fa-filter"></i> Filter</a>
             <div class="btn-group">
-              <a class="btn btn-default" id="export-xls-[[ e.slug ]]" ng-click="export(e, 'xls','/export/data/'+[[ e.slug ]])"><i class="fa fa-table"></i> Excel</a>
+              <a ng-show="e.total_rows < 65536" class="btn btn-default" id="export-xls-[[ e.slug ]]" ng-click="export(e, 'xls','/export/data/'+[[ e.slug ]])"><i class="fa fa-table"></i> XLS</a>
               <a class="btn btn-default" id="export-csv-[[ e.slug ]]" ng-click="export(e, 'csv','/export/data/'+[[ e.slug ]])"><i class="fa fa-file-text-o"></i> CSV</a>
             </div>
             <div class="update-refresh">
-              <span class="update" title="Last update"><i class="fa fa-clock-o"></i> [[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]</span>
-              <span class="refresh" title="Last refresh"><i class="fa fa-repeat"></i> [[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]</span>
+              <strong>Last update: </strong>[[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]<br>
+              <label ng-show="selected_dashboard.scheduler_type == 'minutes' || e.cube.scheduler_type == 'minutes'">
+                  <strong>Last refresh: </strong>[[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]
+                  (refreshes every [[ e.cube.scheduler_interval || selected_dashboard.scheduler_interval ]] [[ e.cube.scheduler_type || selected_dashboard.scheduler_type ]])
+              </label>
             </div>
           </div>
 
@@ -472,9 +496,11 @@
                         </ul>
                       </div>
                       <div class="col-lg-12 filtros-action">
-                        <button type="button" class="btn btn-info btn-save"><i class="fa fa-save"></i> Save Settings
-                          <input type="text" class="form-control" placeholder="Setting name"><strong><i class="fa fa-save"></i> Save</strong>
-                        </button>
+                        <span class="btn btn-info btn-save">
+                          <i class="fa fa-save"></i> Save Settings
+                          <input type="text" class="form-control" placeholder="Setting name"><strong><i class="fa fa-save"></i>
+                          <a href="#">Save</a></strong>
+                        </span>
                         <button type="button" class="btn btn-primary" ng-click="applyFilters(e)"><i class="fa fa-check"></i> Apply Settings</button>
                       </div>
                       <!--<div class="panel">
@@ -551,12 +577,15 @@
           <div class="barra-filtros-topo">
             <a class="btn btn-warning" ng-click="e.filterIsCollapsed=!e.filterIsCollapsed"><i class="fa fa-filter"></i> Filter</a>
             <div class="btn-group">
-              <a class="btn btn-default" id="export-xls-[[ e.slug ]]" ng-click="export(e, 'xls','/export/data/'+[[ e.slug ]])"><i class="fa fa-table"></i> Excel</a>
+              <a ng-show="e.total_rows < 65536" class="btn btn-default" id="export-xls-[[ e.slug ]]" ng-click="export(e, 'xls','/export/data/'+[[ e.slug ]])"><i class="fa fa-table"></i> XLS</a>
               <a class="btn btn-default" id="export-csv-[[ e.slug ]]" ng-click="export(e, 'csv','/export/data/'+[[ e.slug ]])"><i class="fa fa-file-text-o"></i> CSV</a>
             </div>
             <div class="update-refresh">
-              <span class="update" title="Last update"><i class="fa fa-clock-o"></i> [[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]</span>
-              <span class="refresh" title="Last refresh"><i class="fa fa-repeat"></i> [[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]</span>
+              <strong>Last update: </strong>[[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]<br>
+              <label ng-show="selected_dashboard.scheduler_type == 'minutes' || e.cube.scheduler_type == 'minutes'">
+                  <strong>Last refresh: </strong>[[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]
+                  (refreshes every [[ e.cube.scheduler_interval || selected_dashboard.scheduler_interval ]] [[ e.cube.scheduler_type || selected_dashboard.scheduler_type ]])
+              </label>
             </div>
           </div>
 
@@ -583,9 +612,11 @@
                         </ul>
                       </div>
                       <div class="col-lg-12 filtros-action">
-                        <button type="button" class="btn btn-info btn-save"><i class="fa fa-save"></i> Save Settings
-                          <input type="text" class="form-control" placeholder="Setting name"><strong><i class="fa fa-save"></i> Save</strong>
-                        </button>
+                        <span class="btn btn-info btn-save">
+                          <i class="fa fa-save"></i> Save Settings
+                          <input type="text" class="form-control" placeholder="Setting name"><strong><i class="fa fa-save"></i>
+                          <a href="#">Save</a></strong>
+                        </span>
                         <button type="button" class="btn btn-primary" ng-click="applyFilters(e)"><i class="fa fa-check"></i> Apply Settings</button>
                       </div>
                       <!--<div class="panel">
@@ -646,7 +677,7 @@
             </div>
           </div>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" resize emWidthSource emWidthTarget>
           <div ng-show="e.loading"><h2>Loading...</h2></div>
           <div id="chart-line-[[e.slug]]">
           </div>
@@ -655,12 +686,15 @@
           <div class="barra-filtros-topo">
             <a class="btn btn-warning" ng-click="e.filterIsCollapsed=!e.filterIsCollapsed"><i class="fa fa-filter"></i> Filter</a>
             <div class="btn-group">
-              <a class="btn btn-default" id="export-xls-[[ e.slug ]]" ng-click="export(e, 'xls','/export/data/'+[[ e.slug ]])"><i class="fa fa-table"></i> Excel</a>
+              <a ng-show="e.total_rows < 65536" class="btn btn-default" id="export-xls-[[ e.slug ]]" ng-click="export(e, 'xls','/export/data/'+[[ e.slug ]])"><i class="fa fa-table"></i> XLS</a>
               <a class="btn btn-default" id="export-csv-[[ e.slug ]]" ng-click="export(e, 'csv','/export/data/'+[[ e.slug ]])"><i class="fa fa-file-text-o"></i> CSV</a>
             </div>
             <div class="update-refresh">
-              <span class="update" title="Last update"><i class="fa fa-clock-o"></i> [[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]</span>
-              <span class="refresh" title="Last refresh"><i class="fa fa-repeat"></i> [[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]</span>
+              <strong>Last update: </strong>[[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]<br>
+              <label ng-show="selected_dashboard.scheduler_type == 'minutes' || e.cube.scheduler_type == 'minutes'">
+                  <strong>Last refresh: </strong>[[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]
+                  (refreshes every [[ e.cube.scheduler_interval || selected_dashboard.scheduler_interval ]] [[ e.cube.scheduler_type || selected_dashboard.scheduler_type ]])
+              </label>
             </div>
           </div>
 
@@ -687,9 +721,11 @@
                         </ul>
                       </div>
                       <div class="col-lg-12 filtros-action">
-                        <button type="button" class="btn btn-info btn-save"><i class="fa fa-save"></i> Save Settings
-                          <input type="text" class="form-control" placeholder="Setting name"><strong><i class="fa fa-save"></i> Save</strong>
-                        </button>
+                        <span class="btn btn-info btn-save">
+                          <i class="fa fa-save"></i> Save Settings
+                          <input type="text" class="form-control" placeholder="Setting name"><strong><i class="fa fa-save"></i>
+                          <a href="#">Save</a></strong>
+                        </span>
                         <button type="button" class="btn btn-primary" ng-click="applyFilters(e)"><i class="fa fa-check"></i> Apply Settings</button>
                       </div>
                       <!--<div class="panel">
