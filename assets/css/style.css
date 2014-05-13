@@ -76,16 +76,16 @@ body{
 .welcome{
 	text-align: center;
 	color: #777;
-	font-size: 66px;
+	font-size: 60px;
 	line-height: 50px;
 	padding: 30px 0 10px;
 }
 .welcome strong{
-	font-size: 82px;
+	font-size: 72px;
 	font-weight: bold;
 }
 .welcome small{
-	font-size: 46px;
+	font-size: 42px;
 	color: #777;
 }
 .home-settings{
@@ -145,7 +145,7 @@ body{
 	display: block;
 	white-space: nowrap;
 	overflow: hidden;
-	font-size: 24px;
+	font-size: 20px;
 }
 .home-dashboard::after{
 	content: '';
@@ -218,7 +218,8 @@ body{
 }
 .update-refresh{
 	float: right;
-	text-align: right;
+	font-size: 12px;
+	color: #777;
 }
 .update-refresh > span{
 	display: inline-block;
@@ -378,6 +379,10 @@ body{
 
 .table-tbody-striped tbody:nth-child(even){
 	background: #f9f9f9;
+}
+
+table.process > thead > tr > th{
+	vertical-align: top;
 }
 .order-apply,.order-remove{
 	color: #6f6f6f;
