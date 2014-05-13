@@ -8,6 +8,7 @@ var report = angular.module('miningApp.report', [])
       {key: 'in', value: 'In a given list'},
       {key: 'between', value: 'Range'},
       {key: 'like', value: 'Like'}
+      {key: 'regex', value: 'Regex'}
     ];
     $rootScope.types = [
       {key: 'date', value: 'Date'},

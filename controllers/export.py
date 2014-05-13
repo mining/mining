@@ -48,8 +48,8 @@ def data(mongodb, slug, ext='xls'):
             field = s[1]
             operator = s[2]
             value = request.GET.get(f)
-            if operator == 'like':
-                df = DataFrameSearchColumn(df, field, value)
+            if operator in ['like', 'regex']:
+                df = DataFrameSearchColumn(df, field, value, operator)
             else:
                 df = df.query(df_generate(df, value, f))
 
