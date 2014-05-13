@@ -108,12 +108,11 @@ def conf(section):
         except:
             _dict[option] = None
 
+    _dict['sql_conn_params'] = {}
     if 'sql_conn_params' in options:
         import ast
         _dict['sql_conn_params'] = ast.literal_eval(_dict['sql_conn_params'])
-    else:
-        _dict['sql_conn_params'] = {}
-    
+
     return _dict
 
 
@@ -121,6 +120,7 @@ def log_it(s, name=u"core"):
     with open("/tmp/openmining-{}.log".format(name), "a") as log:
         msg = u"{} => {}\n".format(datetime.now(), s)
         log.write(msg.encode('utf-8'))
+
 
 def parse_dumps(obj):
     if isinstance(obj, datetime):

@@ -50,10 +50,14 @@ def put(mongodb, collection, slug, opt={}, field={'key': 'slug'},
     data = request_json or request.json or {}
     data[field['key']] = slug
     data = dict(data.items() + opt.items())
-    if 'lastupdate' in data and isinstance(data.get('lastupdate'), basestring):
-        data['lastupdate'] = datetime.strptime(data.get('lastupdate'), '%Y-%m-%d %H:%M:%S')
-    if 'start_process' in data and isinstance(data.get('start_process'), basestring):
-        data['start_process'] = datetime.strptime(data.get('start_process'), '%Y-%m-%d %H:%M:%S')
+    if 'lastupdate' in data and isinstance(data.get('lastupdate'),
+                                           basestring):
+        data['lastupdate'] = datetime.strptime(data.get('lastupdate'),
+                                               '%Y-%m-%d %H:%M:%S')
+    if 'start_process' in data and isinstance(data.get('start_process'),
+                                              basestring):
+        data['start_process'] = datetime.strptime(data.get('start_process'),
+                                                  '%Y-%m-%d %H:%M:%S')
     get = mongodb[collection].find_one({field['key']: slug})
     if get:
         mongodb[collection].update({field['key']: slug}, {'$set': data})

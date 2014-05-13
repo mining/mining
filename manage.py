@@ -68,7 +68,8 @@ def static(path):
 @login(auth)
 @view('index.html')
 def index():
-    return {'get_url': app.wrap_app.get_url}
+    return {'get_url': app.wrap_app.get_url,
+            'protocol': conf('openmining')['protocol']}
 
 
 @app.wrap_app.route('/login')
