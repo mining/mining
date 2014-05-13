@@ -182,11 +182,19 @@ dashboard
             el.orderby = [];
           if (!el.orderby__order)
             el.orderby__order = [];
-          if (el.orderby.indexOf(field) < '0')
-            el.orderby.push(field);
-          el.orderby__order[el.orderby.indexOf(field)] = '0';
+          if (el.orderby.indexOf(field) < '0'){
+//            Advanced Order TODO: Flow to advanced order
+//            el.orderby.push(field);
+            el.orderby= [field];
+          }
+//          Advanced Order TODO: Flow to advanced order
+//          el.orderby__order[el.orderby.indexOf(field)] = '0';
+//          if (asc == '0')
+//            el.orderby__order[el.orderby.indexOf(field)] = '1';
+          el.orderby__order = ['0'];
           if (asc == '0')
-            el.orderby__order[el.orderby.indexOf(field)] = '1';
+            el.orderby__order = ['1'];
+
           if (el.type == 'grid') {
             loadGrid(el);
           } else if (el.type == 'chart_bar') {
