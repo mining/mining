@@ -108,10 +108,11 @@ def conf(section):
         except:
             _dict[option] = None
 
-    _dict['sql_conn_params'] = {}
     if 'sql_conn_params' in options:
         import ast
         _dict['sql_conn_params'] = ast.literal_eval(_dict['sql_conn_params'])
+    else:
+        _dict['sql_conn_params'] = {}
 
     return _dict
 
