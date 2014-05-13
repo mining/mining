@@ -37,6 +37,7 @@ dashboard
             if (data.type == 'columns') {
               el.columns = data.data;
             } else if (data.type == 'max_page') {
+              el.total_rows = data.data;
               el.total_pages = Math.ceil(data.data / 50);
             } else if (data.type == 'last_update') {
               el.cube.lastupdate = moment(data.data).format('YYYY-MM-DDTHH:mm:ss');
@@ -242,6 +243,7 @@ dashboard
               filterIsCollapsed: true,
               current_page: 1,
               total_pages: 0,
+              total_rows: 0,
               filter_name: '',
               filter_operator: '',
               filter_field: '',
