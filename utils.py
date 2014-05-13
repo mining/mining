@@ -131,9 +131,9 @@ def parse_dumps(obj):
     return json.JSONEncoder.default(obj)
 
 
-def DataFrameSearchColumn(df, colName, regex):
+def DataFrameSearchColumn(df, colName, value):
     ndf = DataFrame()
     for idx, record in df[colName].iteritems():
-        if re.search(regex, str(record)):
+        if value in str(record):
             ndf = concat([df[df[colName] == record], ndf], ignore_index=True)
     return ndf
