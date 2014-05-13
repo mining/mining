@@ -1,5 +1,6 @@
 'use strict';
 var dashboard = angular.module('miningApp.dashboard', [])
+  .constant('PROTOCOL', window.protocol)
   .filter('replaceUnderToSpace', function() {
     return function(input) {
       input = input || '';
