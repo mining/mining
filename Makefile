@@ -2,6 +2,7 @@
 test: pep8 clean
 	@coverage report
 	@python setup.py test
+	@gulp
 
 .PHONY: tox-test
 tox-test: environment
