@@ -13,6 +13,7 @@ environment:
 	@pip install -r requirements.txt
 	@pip install numexpr==2.3
 	@python setup.py develop
+	@npm install gulp-jshint
 
 .PHONY: install
 install:
