@@ -2,7 +2,7 @@
 test: pep8 clean
 	@coverage report
 	@python setup.py test
-	@gulp
+	@node_modules/gulp/bin/gulp.js
 
 .PHONY: tox-test
 tox-test: environment
@@ -14,7 +14,7 @@ environment:
 	@pip install -r requirements.txt
 	@pip install numexpr==2.3
 	@python setup.py develop
-	@npm install gulp-jshint
+	@npm install gulp gulp-jshint
 
 .PHONY: install
 install:
