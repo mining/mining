@@ -27,7 +27,6 @@ from settings import TEMPLATE_PATH, STATIC_PATH
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-
 parser = argparse.ArgumentParser(description=u'Open Mining!')
 subparser = parser.add_subparsers()
 
@@ -41,7 +40,6 @@ arg_runserver.add_argument('--debug', '-v',
                            action='count')
 
 args = parser.parse_args()
-
 
 T.insert(0, TEMPLATE_PATH)
 

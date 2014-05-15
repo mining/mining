@@ -53,6 +53,7 @@ def process(_cube):
             host=conf("riak")["host"])
 
         MyBucket = MyClient.bucket(conf("riak")["bucket"])
+        MyBucket.enable_search()
         cube = _cube
 
         cube['run'] = 'run'
@@ -96,7 +97,8 @@ def process(_cube):
 
         log_it("SAVE DATA (JSON) ON RIAK: {}".format(slug),
                "bin-mining")
-        MyBucket.new(slug, data=pdict).store()
+        MyBucket.new(slug, data=pdict,
+                     content_type="application/json").store()
 
         log_it("SAVE COLUMNS ON RIAK: {}".format(slug),
                "bin-mining")

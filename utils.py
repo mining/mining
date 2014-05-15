@@ -131,9 +131,17 @@ def parse_dumps(obj):
     return json.JSONEncoder.default(obj)
 
 
-def DataFrameSearchColumn(df, colName, regex):
+def DataFrameSearchColumn(df, colName, value, operator='like'):
     ndf = DataFrame()
     for idx, record in df[colName].iteritems():
-        if re.search(regex, str(record)):
+        check = True
+        if operator == 'like' and value in str(record):
+            check = True
+
+        if operator == 'regex' and re.search(value, str(record)):
+            check = True
+
+        if check:
             ndf = concat([df[df[colName] == record], ndf], ignore_index=True)
+
     return ndf
