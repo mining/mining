@@ -17,7 +17,7 @@ except:
 callback = u"{}://{}".format(
     conf('openmining')['protocol'],
     conf('openmining')['domain'])
-if conf('openmining')['domain_port'] != '80':
+if conf('openmining')['domain_port'] not in ['80', '443']:
     callback = "{}:{}".format(callback, conf('openmining')['domain_port'])
 
 if auth_import == 'Google':
