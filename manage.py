@@ -35,8 +35,6 @@ arg_runserver.add_argument('--port', help=u'Set application server port!',
                            type=int, default=conf('openmining')['port'])
 arg_runserver.add_argument('--ip', help=u'Set application server IP!',
                            type=str, default=conf('openmining')['ip'])
-arg_runserver.add_argument('--workers', '-w', help=u'Set server worker!',
-                           type=int, default=conf('openmining')['workers'])
 arg_runserver.add_argument('--debug', '-v',
                            help=u'Set application server debug!',
                            action='count')
@@ -84,12 +82,11 @@ def main():
 
     if args.debug is None:
         server = WSGIServer((args.ip, args.port), app,
-                            handler_class=WebSocketHandler,
-                            workers=args.workers)
+                            handler_class=WebSocketHandler)
         server.serve_forever()
 
     run(app=app, host=args.ip, port=args.port, debug=args.debug,
-        reloader=True, server=GeventWebSocketServer, workers=args.workers)
+        reloader=True, server=GeventWebSocketServer)
 
 
 if __name__ == "__main__":
