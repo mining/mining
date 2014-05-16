@@ -54,6 +54,10 @@ var dashboard = angular.module('miningApp.dashboard', [])
   }])
   .run(['$rootScope', 'Dashboard', 'AlertService',
     function($rootScope, Dashboard, AlertService){
+      $rootScope.dashboardDirectories = Dashboard.getDirectories();
+      $rootScope.$on('REFRESH_DIRECTORIES', function(){
+        $rootScope.dashboardDirectories = Dashboard.getDirectories();
+      });
       $rootScope.dashboards = Dashboard.query();
       $rootScope.$on('$routeChangeStart', function (ev, to, toParams, from, fromParams) {
         AlertService.clearTemporarios();

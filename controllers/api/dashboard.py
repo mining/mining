@@ -79,3 +79,10 @@ def dashboard_put(mongodb, slug=None):
 @dashboard_app.route('/<slug>', method='DELETE')
 def dashboard_delete(mongodb, slug=None):
     return delete(mongodb, collection, slug)
+
+
+@dashboard_app.route('/directory/', method='GET')
+@dashboard_app.route('/directory', method='GET')
+def dashboard_get_directory(mongodb, slug=None):
+    directory = mongodb[collection].distinct('directory')
+    return json.dumps(directory)

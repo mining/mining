@@ -207,8 +207,23 @@
                         <li ng-class="{'open':inDashboard}">
                             <a><i class="fa fa-dashboard fa-fw"></i> Dashboard<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter" ng-class="{'active':d.slug==selected_dashboard.slug}">
-                                    <a ng-href="#/dashboard/[[d.slug]]">[[d.name]]</a>
+                                <li>
+                                    <a>Outros <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter|filter:{'directory':undefined}" ng-class="{'active':d.slug==selected_dashboard.slug}">
+                                            <a ng-href="#/dashboard/[[d.slug]]">[[d.name]]</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul class="nav nav-second-level">
+                                <li ng-repeat="directory in dashboardDirectories|checkDashboardDirectoryPermission">
+                                    <a>[[ directory ]] <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter|filter:{'directory':directory}" ng-class="{'active':d.slug==selected_dashboard.slug}">
+                                            <a ng-href="#/dashboard/[[d.slug]]">[[d.name]]</a>
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
                         </li>

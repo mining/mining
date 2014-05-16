@@ -30,7 +30,8 @@ admin
       return $resource('/api/dashboard/:slug', {}, {
         update: { method: 'PUT', params: {'slug': '@slug'}},
         getFull: { method: 'GET', params: {'full': true}},
-        getFullList: { method: 'GET', params: {'slug': '@slug', 'full': true}, isArray: true}
+        getFullList: { method: 'GET', params: {'slug': '@slug', 'full': true}, isArray: true},
+        getDirectories: { method: 'GET', isArray: true, url: '/api/dashboard/directory'}
       });
     }
   ])
