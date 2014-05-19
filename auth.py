@@ -30,6 +30,6 @@ elif auth_import == 'Twitter':
     #  Not working requered parans
     engine = auth_engine()
 else:
-    engine = auth_engine(callback_url=callback)
+    engine = auth_engine(callback_url=callback, field="username")
 
 auth = auth.AuthPlugin(engine)
