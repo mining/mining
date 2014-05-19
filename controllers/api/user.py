@@ -55,6 +55,8 @@ def login(mongodb):
 
     if not doc:
         doc = {}
+    else:
+        doc['uid'] = doc['username']
     try:
         doc.pop('_id', None)
     except:
@@ -115,4 +117,5 @@ def user_put(mongodb, slug=None):
 
 @user_app.route('/<slug>', method='DELETE')
 def user_delete(mongodb, slug=None):
-    return delete(mongodb, collection, slug, {'key': 'username', 'value': 'username'})
+    return delete(mongodb, collection, slug, {'key': 'username',
+                                              'value': 'username'})
