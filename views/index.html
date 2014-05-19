@@ -310,12 +310,12 @@
           })
         .done(function(response){
           var userData = jQuery.parseJSON(response);
-          if(userData.username){
+          if(userData.uid){
             $.ajax({
-              'url':'/api/user/'+userData.username,
+              'url':'/api/user/'+userData.uid,
               'type':'GET'
             }).done(function(response){
-              if(!response.username){
+              if(!response.uid){
                 angular.module('miningApp').constant('newUser', true);
                 userData.permissions = [];
                 userData.rule = 'user';
