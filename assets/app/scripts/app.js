@@ -68,6 +68,32 @@ var miningApp = angular.module('miningApp', [
 
       return alertService;
     }])
+  .factory('ServiceUtils', ['$q', '$http', function($q, $http) {
+
+    return {
+      'unenvelope': function(method, url, data, httpErrorMessage){
+        var deferred = $q.defer(),
+          promise = $http({
+              method: method,
+              url: url,
+              params: data
+          });
+
+        promise.then(
+          function(response) {
+            if (response.data.status == 'success')
+              deferred.resolve(response.data.data);
+            else
+              deferred.reject(response.data.errors);
+          },
+          function() {
+            deferred.reject(httpErrorMessage);
+          }
+        );
+        return deferred.promise;
+      }
+    }
+  }])
   .filter('timeAgo',[
     function(){
       return function(input){

@@ -31,10 +31,10 @@ auth
   .filter('checkDashboardDirectoryPermission',
     ['AuthenticationService',
       function(AuthenticationService){
-        return function(dashboards){
-          return dashboards.filter(
-            function(dashboard, index, array){
-              return dashboard;
+        return function(directory){
+          return directory.filter(
+            function(directory, index, array){
+              return directory;
 //              TODO: Check group permission
 //              if(AuthenticationService.hasPermission(dashboard.slug, 'dashboard'))
 //                return dashboard;

@@ -30,8 +30,14 @@ admin
       return $resource('/api/dashboard/:slug', {}, {
         update: { method: 'PUT', params: {'slug': '@slug'}},
         getFull: { method: 'GET', params: {'full': true}},
-        getFullList: { method: 'GET', params: {'slug': '@slug', 'full': true}, isArray: true},
-        getDirectories: { method: 'GET', isArray: true, url: '/api/dashboard/directory'}
+        getFullList: { method: 'GET', params: {'slug': '@slug', 'full': true}, isArray: true}
+      });
+    }
+  ])
+  .factory('DashboardGroup', ['$resource',
+    function($resource){
+      return $resource('/api/dashboard/dashboard-group/:slug', {}, {
+        update: { method: 'PUT', params: {'slug': '@slug'}}
       });
     }
   ])

@@ -46,56 +46,6 @@
             <!-- /.navbar-header -->
 
             <ul class="nav navbar-top-links navbar-right">
-                <!--<li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-messages">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>Read All Messages</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </li>-->
-                <!-- /.dropdown -->
                 <li ng-controller="TasksControllers" class="dropdown" ng-class="{'open':show_tasks}">
                     <a ng-click="show_tasks = !show_tasks;">
                         <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
@@ -113,66 +63,6 @@
                     </ul>
                     <!-- /.dropdown-tasks -->
                 </li>
-                <!-- /.dropdown -->
-                <!--<li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-alerts">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-comment fa-fw"></i> New Comment
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                    <span class="pull-right text-muted small">12 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-tasks fa-fw"></i> New Task
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Alerts</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </li>-->
-                <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" ng-show="AuthService.isLoggedIn()">
                         <i class="fa fa-user fa-fw"></i> [[ AuthService.getUser().username ]]  <i class="fa fa-caret-down"></i>
@@ -205,22 +95,20 @@
                 <div class="sidebar-collapse side-menu-scroll">
                     <ul class="nav" id="side-menu">
                         <li ng-class="{'open':inDashboard}">
-                            <a><i class="fa fa-dashboard fa-fw"></i> Dashboard<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a>Outros <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter|filter:{'directory':undefined}" ng-class="{'active':d.slug==selected_dashboard.slug}">
+                            <a ng-click="setOpenMenu('dashboard');"><i class="fa fa-dashboard fa-fw"></i> Dashboard<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse" ng-class="{'in' : menuOpen == 'dashboard'}">
+                                <li ng-repeat="group in dashboardGroups|orderBy:name">
+                                    <a ng-click="setOpenMenu('dashboard', group.slug);">[[ group.name ]] <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level collapse" ng-class="{'in' : subMenuOpen == group.slug}">
+                                        <li ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter|dashboardGroupFilter:group|orderBy:name">
                                             <a ng-href="#/dashboard/[[d.slug]]">[[d.name]]</a>
                                         </li>
                                     </ul>
                                 </li>
-                            </ul>
-                            <ul class="nav nav-second-level">
-                                <li ng-repeat="directory in dashboardDirectories|checkDashboardDirectoryPermission">
-                                    <a>[[ directory ]] <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter|filter:{'directory':directory}" ng-class="{'active':d.slug==selected_dashboard.slug}">
+                                <li>
+                                    <a class="ng-binding" ng-click="setOpenMenu('dashboard', 'outros');">Outros <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level collapse" ng-class="{'in' : subMenuOpen == 'outros'}">
+                                        <li ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter|filter:groupUndefined|orderBy:name">
                                             <a ng-href="#/dashboard/[[d.slug]]">[[d.name]]</a>
                                         </li>
                                     </ul>
@@ -235,14 +123,22 @@
                                 >[[ late_cubes.length ]]</span>
                             </a>
                         </li>
-                        <li ng-class="{'open':inSettings}" ng-show="AuthService.getUser().rule != 'user'">
-                            <a><i class="fa fa-cog fa-fw"></i> Settings<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
+                        <li ng-class="{'open':inSettings}" ng-if="AuthService.getUser().rule != 'user'">
+                            <a ng-click="setOpenMenu('settings')"><i class="fa fa-cog fa-fw"></i> Settings<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse" ng-class="{'in': menuOpen == 'settings'}">
                                 <li><a ng-href="#/admin/connection"><i class="fa fa-globe"></i> Connection</a></li>
                                 <li><a ng-href="#/admin/cube"><i class="fa fa-th"></i> Cube</a></li>
                                 <li><a ng-href="#/admin/element"><i class="fa fa-sitemap"></i> Element</a></li>
                                 <li><a ng-href="#/admin/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                                <li ng-show="AuthService.getUser().rule == 'root'"><a ng-href="#/admin/user"><i class="fa fa-user"></i> Users</a></li>
+                                <li ng-if="AuthService.getUser().rule == 'root'">
+                                    <a ng-href="#/admin/user"><i class="fa fa-user"></i> Users</a>
+                                </li>
+                                <li ng-if="AuthService.getUser().rule == 'root'">
+                                    <a ng-href="#/admin/permissions-group"><i class="fa fa-user"></i> Permissions Group</a>
+                                </li>
+                                <li ng-if="AuthService.getUser().rule == 'root'">
+                                    <a ng-href="#/admin/dashboard-group"><i class="fa fa-users"></i> Dashboard Group</a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -285,7 +181,6 @@
     <!-- bower:js -->
     <script src="{{ get_url('assets', path='bower/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ get_url('assets', path='bower/jquery-ui/ui/jquery-ui.js') }}"></script>
-    <script src="{{ get_url('assets', path='javascript/jquery.metisMenu.js') }}"></script>
     <script src="{{ get_url('assets', path='javascript/sb-admin.js') }}"></script>
     <script src="{{ get_url('assets', path='bower/codemirror/lib/codemirror.js') }}"></script>
     <script src="{{ get_url('assets', path='bower/codemirror/mode/sql/sql.js') }}"></script>
@@ -315,6 +210,7 @@
     <script src="{{ get_url('assets', path='app/scripts/auth/directives.js') }}"></script>
     <script src="{{ get_url('assets', path='app/scripts/auth/services.js') }}"></script>
     <script src="{{ get_url('assets', path='app/scripts/auth/filters.js') }}"></script>
+    <script src="{{ get_url('assets', path='app/scripts/auth/controllers.js') }}"></script>
     <script src="{{ get_url('assets', path='app/scripts/admin/admin.js') }}"></script>
     <script src="{{ get_url('assets', path='app/scripts/admin/controllers.js') }}"></script>
     <script src="{{ get_url('assets', path='app/scripts/admin/services.js') }}"></script>
@@ -362,7 +258,7 @@
         })
         .fail(function(retorno){
           window.location.href="/login";
-        })
+        });
 
         // jquery tapa-buraco
         $('.sidebar-toggle').click(function(){

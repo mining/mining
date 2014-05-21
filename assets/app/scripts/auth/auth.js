@@ -10,6 +10,10 @@ var auth = angular.module('miningApp.auth', [])
         templateUrl: 'assets/app/views/admin.html',
         controller: 'AdminCtrl'
       })
+      .when('/admin/permissions-group', {
+        templateUrl: 'assets/app/views/permissions_group.html',
+        controller: 'PermissionsGroupCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
@@ -65,7 +69,7 @@ var auth = angular.module('miningApp.auth', [])
             if(AuthenticationService.getUser().rule =='user'){
               AlertService.add({'msg':'Oops, You not have permission!', 'type': 'warning', 'hold': true});
               $location.path('/');
-            }else if(AuthenticationService.getUser().rule !='root' && $location.path().split('/')[2] == 'user'){
+            }else if(AuthenticationService.getUser().rule =='root' && $location.path().split('/')[2] == 'user'){
               AlertService.add({'msg':'Oops, You not have permission!', 'type': 'warning', 'hold': true});
               $location.path('/');
             }
@@ -73,7 +77,7 @@ var auth = angular.module('miningApp.auth', [])
         }
       }else{
         ev.preventDefault();
-        window.location.href='/login';
+        window.location.href='/';
       }
     });
   }])
