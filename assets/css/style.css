@@ -213,10 +213,16 @@ body{
 	overflow-y: auto;
 	overflow-x: hidden;
 }
-
+[id^='chart-line'] > svg, [id^='bar-chart'] > svg {
+    width: 100% !important;
+}
 /** Filtros e ordenação **/
 .barra-filtros-topo{
 	clear: both;
+}
+.barra-filtros-topo .well{
+	width: 100%;
+	margin-bottom: 0px;
 }
 .barra-filtros-export{
 	margin-top: 20px;
@@ -258,6 +264,7 @@ body{
 	padding: 10px;
 	background: #f5f5f5;
 	clear: both;
+	margin-top: 10px;
 }
 .filtros-painel-box{
 	padding: 20px;
@@ -282,10 +289,10 @@ body{
 .barra-filtros-topo .filtros-load{
 	padding-bottom: 0;
 	border-bottom: 0;
-	margin-left: 40px;
+	margin: 4px 0;
 }
 .filtros-options{
-	margin-left: 40px;
+	margin:4px 0 4px 20px;
 }
 .barra-filtros-topo .filtros-load .select2-container{
 	width: 200px;
@@ -611,6 +618,7 @@ tr.code{
 	border-radius: 0 0 6px 6px;
 	width: 100%;
 }
+
 /* RESPONSIVO */
 @media (max-width: 991px){
 	.forms-overlay{
@@ -629,8 +637,18 @@ tr.code{
 	#page-wrapper.with-menu{
 		margin-left: 250px;
 	}
+	.widget-container{
+		margin-left: -20px;
+		float: left;
+	}
+	.form-inline .filtro-widget{
+		margin: 4px 0 4px 20px;
+	}
+	.filtro-widget input[type='text'].form-control,.filtro-widget select.form-control{
+		width: 177px;
+	}
+	.filtro-widget input[type='text'].field-date{
+		width: 110px;
+	}
 }
 
-[id^='chart-line'] > svg, [id^='bar-chart'] > svg {
-    width: 100% !important;
-}
