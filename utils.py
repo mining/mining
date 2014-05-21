@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import json
 import re
+import os
 import unicodedata
 import ConfigParser
 from decimal import Decimal
@@ -9,6 +10,7 @@ from datetime import date, datetime
 from bson import ObjectId
 
 from pandas import tslib, date_range, concat, DataFrame
+from settings import PROJECT_PATH
 
 
 def fix_type(value):
@@ -99,7 +101,7 @@ def df_generate(df, value, str_field):
 
 def conf(section):
     config = ConfigParser.ConfigParser()
-    config.read("mining.ini")
+    config.read(os.path.join(PROJECT_PATH, 'mining.ini'))
     _dict = {}
     options = config.options(section)
     for option in options:
