@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from gevent import monkey
+monkey.patch_all()
+
 import json
 import gc
 import riak
@@ -23,7 +26,6 @@ stream_app.install(mongo)
 
 @stream_app.route('/data/<slug>', apply=[websocket])
 def data(ws, mongodb, slug):
-
     if not ws:
         abort(400, 'Expected WebSocket request.')
 

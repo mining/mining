@@ -55,6 +55,9 @@ def login(mongodb):
 
     if not doc:
         doc = {}
+    else:
+        doc['uid'] = doc['username']
+
     try:
         doc.pop('_id', None)
     except:
@@ -63,6 +66,7 @@ def login(mongodb):
         doc.pop('password', None)
     except:
         pass
+
     session.update(doc)
     session.save()
     if request.content_type != "application/json":
@@ -75,13 +79,14 @@ def logout(mongodb):
 
     session = request.environ.get('beaker.session')
     session.delete()
-    return redirect('/login')
+    return redirect('/')
 
 
 @user_app.route('/', method='GET')
 @user_app.route('/<slug>', method='GET')
 def user_get(mongodb, slug=None):
     _get = json.loads(get(mongodb, collection, slug, {'key': 'username'}))
+    _get['uid'] = _get['username']
     if slug:
         _get.pop('password', None)
         _get.pop('apikey', None)
@@ -114,4 +119,5 @@ def user_put(mongodb, slug=None):
 
 @user_app.route('/<slug>', method='DELETE')
 def user_delete(mongodb, slug=None):
-    return delete(mongodb, collection, slug, {'key': 'username', 'value': 'username'})
+    return delete(mongodb, collection, slug, {'key': 'username',
+                                              'value': 'username'})
