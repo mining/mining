@@ -127,7 +127,7 @@
                             <a ng-click="setOpenMenu('settings')"><i class="fa fa-cog fa-fw"></i> Settings<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse" ng-class="{'in': menuOpen == 'settings'}">
                                 <li><a ng-href="#/admin/connection"><i class="fa fa-globe"></i> Connection</a></li>
-                                <li><a ng-href="#/admin/cube"><i class="fa fa-th"></i> Cube</a></li>
+                                <li><a ng-href="#/admin/cube"><i class="fa fa-cube"></i> Cube</a></li>
                                 <li><a ng-href="#/admin/element"><i class="fa fa-sitemap"></i> Element</a></li>
                                 <li><a ng-href="#/admin/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
                                 <li ng-if="AuthService.getUser().rule != 'user'">
@@ -251,7 +251,7 @@
 
         // jquery tapa-buraco
         $('.sidebar-toggle').click(function(){
-            $('.navbar-static-side,#page-wrapper').toggleClass('open');
+            $('.navbar-static-side,#page-wrapper').toggleClass('with-menu');
         });
       });
     </script>
