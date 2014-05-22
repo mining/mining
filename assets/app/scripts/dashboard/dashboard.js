@@ -1,9 +1,22 @@
 'use strict';
 var dashboard = angular.module('miningApp.dashboard', [])
+  .constant('PROTOCOL', window.protocol)
   .filter('replaceUnderToSpace', function() {
     return function(input) {
       input = input || '';
       return input.replace(/_/g, ' ');
+    };
+  })
+  .filter('dashboardGroupFilter', function() {
+    return function(dashboards, group) {
+      var new_dashboards = [];
+      $(dashboards).each(function(key, dashboard){
+        $(mining.utils.getNestedProp(group, 'dashboards', [])).each(function(key, dash){
+          if(mining.utils.getNestedProp(dashboard, 'slug', undefined) == dash.id)
+            new_dashboards.push(dashboard);
+        })
+      });
+      return new_dashboards;
     };
   })
   .directive('resize', function ($window, $rootScope) {
@@ -51,8 +64,27 @@ var dashboard = angular.module('miningApp.dashboard', [])
         redirectTo: '/'
       });
   }])
-  .run(['$rootScope', 'Dashboard', 'AlertService',
-    function($rootScope, Dashboard, AlertService){
+  .run(['$rootScope', 'Dashboard', 'AlertService', 'DashboardGroup',
+    function($rootScope, Dashboard, AlertService, DashboardGroup){
+      $rootScope.dashboardGroups = DashboardGroup.query();
+      $rootScope.setOpenMenu = function(menu, subMenu){
+        if(menu == $rootScope.menuOpen && !subMenu)
+          menu = '';
+        $rootScope.menuOpen = menu;
+        if (!subMenu || subMenu == $rootScope.subMenuOpen)
+          subMenu = '';
+        $rootScope.subMenuOpen = subMenu;
+      };
+      $rootScope.groupUndefined = function(dashboard) {
+        var ret = true;
+        $($rootScope.dashboardGroups).each(function(key_group, group){
+          $(group.dashboards).each(function(key_dash, dash){
+            if(dash.id == dashboard.slug)
+              ret = false;
+          });
+        });
+        return ret;
+      };
       $rootScope.dashboards = Dashboard.query();
       $rootScope.$on('$routeChangeStart', function (ev, to, toParams, from, fromParams) {
         AlertService.clearTemporarios();

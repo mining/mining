@@ -14,25 +14,25 @@
                 <label for="user_username">Username</label>
                 <input type="text" id="user_username" ng-disabled="editing||change_pass" ng-model="user.username" class="form-control">
             </div>
-            <div class="form-group" ng-show="!change_pass">
+            <div class="form-group" ng-show="!change_pass" ng-if="AuthService.getUser().rule == 'root'">
                 <label for="user_password">Password</label>
                 <input type="password" ng-disabled="editing" id="user_password" ng-model="user.password" class="form-control">
             </div>
-            <div class="form-group" ng-show="!change_pass">
+            <div class="form-group" ng-show="!change_pass" ng-if="AuthService.getUser().rule == 'root'">
                 <label for="user_rule">Rule</label>
                 <select id="user_rule" ui-select2 ng-disabled="change_pass" class="form-control" ng-model="user.rule" required>
                     <option ng-repeat="r in rules" value="[[ r ]]">[[ r ]]</option>
                 </select>
             </div>
-            <div class="form-group" ng-show="change_pass">
+            <div class="form-group" ng-show="change_pass" ng-if="AuthService.getUser().rule == 'root'">
                 <label for="user_password_current">Current Password</label>
                 <input type="password" id="user_password_current" ng-model="user.password" class="form-control">
             </div>
-            <div class="form-group" ng-show="change_pass">
+            <div class="form-group" ng-show="change_pass" ng-if="AuthService.getUser().rule == 'root'">
                 <label for="user_password_new">New Password</label>
                 <input type="password" id="user_password_new" ng-model="user.password_new" class="form-control">
             </div>
-            <div class="form-group" ng-show="change_pass">
+            <div class="form-group" ng-show="change_pass" ng-if="AuthService.getUser().rule == 'root'">
                 <label for="user_password_new2">Confirm New Password</label>
                 <input type="password" id="user_password_new2" ng-model="user.password_new_2" class="form-control">
             </div>
@@ -78,8 +78,8 @@
                 <tr ng-repeat="us in users">
                     <td class="edit-delete">
                         <a ng-click="selectUser(us)" title="Edit User"><i class="fa fa-pencil"></i></a>
-                        <a ng-click="changePass(us)" title="Change Password"><i class="fa fa-asterisk"></i></a>
-                        <a ng-click="deleteUser(us)" title="Delete User"><i class="fa fa-trash-o"></i></a>
+                        <a ng-click="changePass(us)" title="Change Password" ng-if="AuthService.getUser().rule == 'root'"><i class="fa fa-asterisk"></i></a>
+                        <a ng-click="deleteUser(us)" title="Delete User" ng-if="AuthService.getUser().rule == 'root'"><i class="fa fa-trash-o"></i></a>
                     </td>
                     <td>
                         [[us.username]]

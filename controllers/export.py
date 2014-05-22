@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from gevent import monkey
+monkey.patch_all()
+
 import json
 import gc
 import riak
@@ -10,7 +13,7 @@ from bottle.ext.mongo import MongoPlugin
 from pandas import DataFrame
 
 from settings import PROJECT_PATH
-from utils import df_generate, conf
+from utils import df_generate, conf, DataFrameSearchColumn
 
 
 export_app = Bottle()
@@ -44,7 +47,14 @@ def data(mongodb, slug, ext='xls'):
     df = DataFrame(MyBucket.get(element.get('cube')).data, columns=fields)
     if len(filters) >= 1:
         for f in filters:
-            df = df.query(df_generate(df, request.GET.get(f), f))
+            s = f.split('__')
+            field = s[1]
+            operator = s[2]
+            value = request.GET.get(f)
+            if operator in ['like', 'regex']:
+                df = DataFrameSearchColumn(df, field, value, operator)
+            else:
+                df = df.query(df_generate(df, value, f))
 
     groupby = []
     if request.GET.get('groupby', None):

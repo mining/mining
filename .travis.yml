@@ -4,7 +4,6 @@ python:
 services:
   - riak
   - redis-server
-  - memcached
 cache:
   - pip
   - apt

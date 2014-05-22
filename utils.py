@@ -2,13 +2,15 @@
 # -*- coding: utf-8 -*-
 import json
 import re
+import os
 import unicodedata
 import ConfigParser
 from decimal import Decimal
 from datetime import date, datetime
 from bson import ObjectId
 
-from pandas import tslib, date_range
+from pandas import tslib, date_range, concat, DataFrame
+from settings import PROJECT_PATH
 
 
 def fix_type(value):
@@ -99,7 +101,7 @@ def df_generate(df, value, str_field):
 
 def conf(section):
     config = ConfigParser.ConfigParser()
-    config.read("mining.ini")
+    config.read(os.path.join(PROJECT_PATH, 'mining.ini'))
     _dict = {}
     options = config.options(section)
     for option in options:
@@ -108,10 +110,11 @@ def conf(section):
         except:
             _dict[option] = None
 
-    _dict['sql_conn_params'] = {}
     if 'sql_conn_params' in options:
         import ast
         _dict['sql_conn_params'] = ast.literal_eval(_dict['sql_conn_params'])
+    else:
+        _dict['sql_conn_params'] = {}
 
     return _dict
 
@@ -128,3 +131,19 @@ def parse_dumps(obj):
     if isinstance(obj, ObjectId):
         return str(obj)
     return json.JSONEncoder.default(obj)
+
+
+def DataFrameSearchColumn(df, colName, value, operator='like'):
+    ndf = DataFrame()
+    for idx, record in df[colName].iteritems():
+        check = True
+        if operator == 'like' and value in str(record):
+            check = True
+
+        if operator == 'regex' and re.search(value, str(record)):
+            check = True
+
+        if check:
+            ndf = concat([df[df[colName] == record], ndf], ignore_index=True)
+
+    return ndf

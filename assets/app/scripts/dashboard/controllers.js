@@ -6,7 +6,8 @@ dashboard
   .controller('DashboardDetailCtrl',
     ['$scope', '$routeParams', 'AlertService', 'current_dashboard', 'Element', '$anchorScroll', '$timeout', '$http',
       'AuthenticationService', '$rootScope', 'Filter', '$interval',
-      function ($scope, $routeParams, AlertService, current_dashboard, Element, $anchorScroll, $timeout, $http, AuthenticationService, $rootScope, Filter, $interval) {
+      function ($scope, $routeParams, AlertService, current_dashboard, Element, $anchorScroll, $timeout, $http,
+                AuthenticationService, $rootScope, Filter, $interval) {
         $rootScope.inDashboard = true;
 
         $scope.filter_name = undefined;
@@ -19,7 +20,11 @@ dashboard
         function loadGrid(el) {
           el.process = [];
           el.loading = true;
-          var API_URL = "ws://" + location.host + "/stream/data/" + el.slug + "?";
+          var prot = 'ws';
+          if(window.protocol == 'https')
+            prot = 'wss';
+          var API_URL = prot + "://" + location.host + "/stream/data/" + el.slug + "?";
+          console.log(API_URL);
           for (var key in el.filters) {
             API_URL += key + "=" + el.filters[key] + "&";
           }
@@ -32,6 +37,7 @@ dashboard
             if (data.type == 'columns') {
               el.columns = data.data;
             } else if (data.type == 'max_page') {
+              el.total_rows = data.data;
               el.total_pages = Math.ceil(data.data / 50);
             } else if (data.type == 'last_update') {
               el.cube.lastupdate = moment(data.data).format('YYYY-MM-DDTHH:mm:ss');
@@ -176,11 +182,19 @@ dashboard
             el.orderby = [];
           if (!el.orderby__order)
             el.orderby__order = [];
-          if (el.orderby.indexOf(field) < '0')
-            el.orderby.push(field);
-          el.orderby__order[el.orderby.indexOf(field)] = '0';
+          if (el.orderby.indexOf(field) < '0'){
+//            Advanced Order TODO: Flow to advanced order
+//            el.orderby.push(field);
+            el.orderby= [field];
+          }
+//          Advanced Order TODO: Flow to advanced order
+//          el.orderby__order[el.orderby.indexOf(field)] = '0';
+//          if (asc == '0')
+//            el.orderby__order[el.orderby.indexOf(field)] = '1';
+          el.orderby__order = ['0'];
           if (asc == '0')
-            el.orderby__order[el.orderby.indexOf(field)] = '1';
+            el.orderby__order = ['1'];
+
           if (el.type == 'grid') {
             loadGrid(el);
           } else if (el.type == 'chart_bar') {
@@ -209,23 +223,25 @@ dashboard
 
         function refreshDashboard() {
           $($scope.selected_dashboard.element).each(function (ind, val) {
-            if (val.type == 'grid') {
-              val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
-              loadGrid(val);
-              if (val.cube.scheduler_status && !$scope.selected_dashboard.scheduler_ignore_refresh) {
-                if (!val.intervals) {
-                  if (val.cube.scheduler_type == 'minutes') {
-                    val.intervals = $interval(function () {
-                      val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
-                      loadGrid(val);
-                    }, parseInt(val.cube.scheduler_interval) * 60000);
+            if (AuthenticationService.hasPermission(val.slug, 'element', $scope.selected_dashboard.slug)) {
+              if (val.type == 'grid') {
+                val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
+                loadGrid(val);
+                if (val.cube.scheduler_status && !$scope.selected_dashboard.scheduler_ignore_refresh) {
+                  if (!val.intervals) {
+                    if (val.cube.scheduler_type == 'minutes') {
+                      val.intervals = $interval(function () {
+                        val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
+                        loadGrid(val);
+                      }, parseInt(val.cube.scheduler_interval) * 60000);
+                    }
                   }
                 }
+              } else if (val.type == 'chart_bar') {
+                loadBar(val);
+              } else if (val.type == 'chart_line') {
+                loadLine(val);
               }
-            } else if (val.type == 'chart_bar') {
-              loadBar(val);
-            } else if (val.type == 'chart_line') {
-              loadLine(val);
             }
           });
         }
@@ -237,6 +253,7 @@ dashboard
               filterIsCollapsed: true,
               current_page: 1,
               total_pages: 0,
+              total_rows: 0,
               filter_name: '',
               filter_operator: '',
               filter_field: '',
@@ -287,16 +304,9 @@ dashboard
         });
 
         $rootScope.$on('WINDOW_RESIZE', function(x,y){
-          console.log('on WINDOW_RESIZE');
-          console.log(x, y);
           $($scope.selected_dashboard.element).each(function (ind, val) {
-            if (val.graph){
+            if (val.graph)
               val.graph.redraw();
-              console.log('REDRAW');
-            }
-//            $timeout(function(){
-//              $scope.apply();
-//            })
           });
         });
 
@@ -306,7 +316,10 @@ dashboard
           var element = 'bar-chart-' + el.slug;
           if (angular.element('#' + element))
             angular.element('#' + element).html('');
-          var API_URL = "ws://" + location.host + "/stream/data/" + el.slug + "?";
+          var prot = 'ws';
+          if(window.protocol == 'https')
+            prot = 'wss';
+          var API_URL = prot + "://" + location.host + "/stream/data/" + el.slug + "?";
           for (var key in el.filters) {
             API_URL += key + "=" + el.filters[key] + "&";
           }
@@ -351,7 +364,10 @@ dashboard
           var element = 'chart-line-' + el.slug;
           if (angular.element('#' + element))
             angular.element('#' + element).html('');
-          var API_URL = "ws://" + location.host + "/stream/data/" + el.slug + "?";
+          var prot = 'ws';
+          if(window.protocol == 'https')
+            prot = 'wss';
+          var API_URL = prot + "://" + location.host + "/stream/data/" + el.slug + "?";
           for (var key in el.filters) {
             API_URL += key + "=" + el.filters[key] + "&";
           }
