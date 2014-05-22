@@ -46,7 +46,7 @@
         </form>
     </div>
     <div class="col-md-6 table-responsive">
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered table-striped table-hover hidden">
             <thead>
             <th>
             </th>
@@ -72,5 +72,98 @@
             </tr>
             </tbody>
         </table>
+        <div class="bg-overlay"></div>
+        <div class="forms-overlay">
+            <ul class="forms-overlay-breadcrumb">
+                <li class="active">
+                    <span class="form-category">Element</span>
+                    <span class="form-name">Nome do elemento</span>
+                </li>
+                <li>
+                    <span class="form-category">Cube</span>
+                    <span class="form-name">Nome do cubo</span>
+                </li>
+                <li>
+                    <span class="form-category">Connection</span>
+                    <span class="form-name">Nome da conexão</span>
+                </li>
+            </ul>
+            <h1><i class="fa fa-sitemap"></i> Nome do Elemento</h1>
+            <form name="form_connection" accept-charset="utf-8" role="form" ng-submit="save(cube)">
+                <div class="form-group">
+                    <label for="element_name">Name</label>
+                    <input type="text" id="element_name" ng-model="element.name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="element_type">Type</label>
+                    <select id="element_type" ui-select2 ng-model="element.type" ng-change="loadFields()"
+                            class="form-control" required>
+                        <option value=""></option>
+                        <option ng-repeat="t in types" value="[[ t.slug ]]">[[ t.name ]]</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="element_cube">Cube</label>
+                    <select id="element_cube" ui-select2 ng-model="element.cube" ng-change="loadFields()"
+                            class="form-control" required>
+                        <option value=""></option>
+                        <option ng-repeat="c in cubes" value="[[ c.slug ]]">[[ c.name ]]</option>
+                    </select>
+                </div>
+                <label ng-show="element.type=='grid' && element.type">Order</label>
+                <div class="well" ng-show="element.type=='grid' && element.type">
+                    <div class="form-group row" ng-repeat="element_order in element.orderby track by $index">
+                        <div class="col-sm-5 col-md-5">
+                            <label>Field</label>
+                            <select ui-select2 ng-model="element.orderby[$index]" class="form-control">
+                                <option value=""></option>
+                                <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-5 col-md-5">
+                            <label>Sort</label>
+                            <select ui-select2 ng-model="element.orderby__order[$index]" class="form-control">
+                                <option value=""></option>
+                                <option value="1">Ascending</option>
+                                <option value="0">Descending</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <!--<lable class="badge badge-success">[[ $index+1 ]]</lable>-->
+                            <div class="form-group">
+                                <label class="invisible">Remove</label>
+                                <button ng-click="removeOrder($index)" class="btn btn-danger btn-block"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <button ng-show="element.type=='grid'" ng-click="addOrder()" class="btn btn-default btn-lg center-block" type="button"><i class="fa fa-plus"></i> Order</button>
+                </div>
+                
+
+                <div class="form-group" ng-show="element.type!='grid' && element.type">
+                    <label for="element_field_x">Field (x)</label>
+                    <select id="element_field_x" ui-select2 ng-model="element.field_x" class="form-control">
+                        <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
+                    </select>
+                </div>
+                <div class="form-group" ng-show="element.type!='grid' && element.type">
+                    <label for="element_field_y">Field (y)</label>
+                    <select id="element_field_y" ui-select2 ng-model="element.field_y" class="form-control">
+                        <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
+                    </select>
+                </div>
+                <div class="form-group" ng-show="element.type=='chart_line' && element.type">
+                    <label for="element_field_series">Series (line)</label>
+                    <select id="element_field_series" ui-select2 ng-model="element.field_serie" class="form-control">
+                        <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+            <div class="forms-overlay-footer">
+                <button class="btn btn-danger"><i class="fa fa-times"></i> Cancel</button>
+                <button class="btn btn-success"><i class="fa fa-check"></i> Done</button>
+            </div>
+        </div>
     </div>
 </div><!-- /.row -->
