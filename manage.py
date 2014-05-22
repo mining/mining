@@ -44,7 +44,9 @@ args = parser.parse_args()
 T.insert(0, TEMPLATE_PATH)
 
 session_opts = {
-    'session.type': 'memory',
+    'session.type': 'file',
+    'session.data_dir': '/tmp/openmining.data',
+    'session.lock_dir': '/tmp/openmining.lock',
     'session.cookie_expires': 50000,
     'session.auto': True
 }
