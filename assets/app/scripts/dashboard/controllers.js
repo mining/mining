@@ -223,23 +223,25 @@ dashboard
 
         function refreshDashboard() {
           $($scope.selected_dashboard.element).each(function (ind, val) {
-            if (val.type == 'grid') {
-              val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
-              loadGrid(val);
-              if (val.cube.scheduler_status && !$scope.selected_dashboard.scheduler_ignore_refresh) {
-                if (!val.intervals) {
-                  if (val.cube.scheduler_type == 'minutes') {
-                    val.intervals = $interval(function () {
-                      val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
-                      loadGrid(val);
-                    }, parseInt(val.cube.scheduler_interval) * 60000);
+            if (AuthenticationService.hasPermission(val.slug, 'element', $scope.selected_dashboard.slug)) {
+              if (val.type == 'grid') {
+                val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
+                loadGrid(val);
+                if (val.cube.scheduler_status && !$scope.selected_dashboard.scheduler_ignore_refresh) {
+                  if (!val.intervals) {
+                    if (val.cube.scheduler_type == 'minutes') {
+                      val.intervals = $interval(function () {
+                        val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
+                        loadGrid(val);
+                      }, parseInt(val.cube.scheduler_interval) * 60000);
+                    }
                   }
                 }
+              } else if (val.type == 'chart_bar') {
+                loadBar(val);
+              } else if (val.type == 'chart_line') {
+                loadLine(val);
               }
-            } else if (val.type == 'chart_bar') {
-              loadBar(val);
-            } else if (val.type == 'chart_line') {
-              loadLine(val);
             }
           });
         }

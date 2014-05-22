@@ -400,6 +400,7 @@ admin
       $rootScope.inSettings = true;
       $scope.users = User.query();
       $scope.permissions = Dashboard.getFullList();
+      $scope.my_permited_dashboards = Dashboard.getFullList();
       $scope.user = new User();
       $scope.editing = false;
       $scope.change_pass = false;
@@ -448,16 +449,38 @@ admin
         dashboard.permitted = true;
       };
       $scope.save = function () {
-        $scope.user.permissions = {};
+        var current_perm = $scope.user.permissions;
+        var new_perm = {};
         $($scope.permissions).each(function (key, dash) {
           if (dash.permitted) {
-            $scope.user.permissions[dash.slug] = [];
+            new_perm[dash.slug] = [];
             $(dash.element).each(function (key, elem) {
               if (elem.permitted)
-                $scope.user.permissions[dash.slug].push(elem.slug);
+                new_perm[dash.slug].push(elem.slug);
             });
           }
         });
+        if(AuthenticationService.getUser().rule == 'admin'){
+          // PERMISSIONS MERGE
+          mining.utils.deepExtend(current_perm, new_perm);
+          $($scope.my_permited_dashboards).each(function(key, dashboard){
+            if(!(dashboard.slug in Object.keys(new_perm))){
+              if(current_perm[dashboard.slug]){
+                if(current_perm[dashboard.slug].length == dashboard.element.length)
+                  delete current_perm[dashboard.slug];
+              }
+            }
+            $(dashboard.element).each(function(key, element){
+              if(!(element.slug in mining.utils.getNestedProp(new_perm, dashboard.slug, []))){
+                if(mining.utils.getNestedProp(current_perm, dashboard.slug, []).indexOf(element.slug) > -1)
+                  delete current_perm[dashboard.slug][current_perm[dashboard.slug].indexOf(element.slug)];
+              }
+            });
+          });
+          $scope.user.permissions = current_perm;
+        }else{
+          $scope.user.permissions = new_perm;
+        }
         if ($scope.editing) {
           User.update({'username': $scope.user.username}, $scope.user);
           if ($scope.user.username == AuthenticationService.getUser().username) {

@@ -28,16 +28,19 @@ auth
       }
     ]
   )
-  .filter('checkDashboardDirectoryPermission',
+  .filter('checkGroupsPermissions',
     ['AuthenticationService',
       function(AuthenticationService){
-        return function(directory){
-          return directory.filter(
-            function(directory, index, array){
-              return directory;
-//              TODO: Check group permission
-//              if(AuthenticationService.hasPermission(dashboard.slug, 'dashboard'))
-//                return dashboard;
+        return function(group){
+          return group.filter(
+            function(group, index, array){
+              var have = false;
+              $(group.dashboards).each(function(key, dashboard){
+                if(AuthenticationService.hasPermission(dashboard.id, 'dashboard'))
+                  have = true;
+              });
+              if(have)
+                return group;
             }
           );
         }

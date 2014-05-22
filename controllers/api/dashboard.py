@@ -10,6 +10,7 @@ from .base import get, post, put, delete, base
 from element import collection as collection_element
 from cube import collection as collection_cube
 from filter import collection as collection_filter
+from group import collection as collection_permissions_group
 
 collection = 'dashboard'
 collection_group = '{}_groups'.format(collection)
@@ -30,16 +31,21 @@ def dashboard_get(mongodb, slug=None):
         return da
     response = json.loads(da)
     new_resp = []
+    session = dict(request.environ.get('beaker.session'))
 
-    def full_elements(das):
+    def full_elements(das, permited_elements=None):
         if 'element' in das:
             elements = das['element']
             das['element'] = []
+            if session.get('rule', '') == 'admin' and permited_elements:
+                elements = permited_elements
             for el in elements:
-                n_el = mongodb[collection_element].find_one({'slug': el['id'] if type(el) == dict else el})
-                if n_el:
-                    del n_el['_id']
-                    _cube = mongodb[collection_cube].find_one({'slug': n_el['cube']},
+                new_el = mongodb[collection_element].find_one({
+                    'slug': el['id'] if type(el) == dict else el
+                })
+                if new_el:
+                    del new_el['_id']
+                    _cube = mongodb[collection_cube].find_one({'slug': new_el['cube']},
                                                               {
                                                                   'name': True,
                                                                   'slug': True,
@@ -51,21 +57,34 @@ def dashboard_get(mongodb, slug=None):
                     if _cube:
                         del _cube['_id']
                         _cube['lastupdate'] = str(_cube.get('lastupdate', '')).replace(' ', 'T')
-                        n_el['cube'] = _cube
-                    _filters = mongodb[collection_filter].find({'element': n_el['slug']})
+                        new_el['cube'] = _cube
+                    _filters = mongodb[collection_filter].find({'element': new_el['slug']})
                     if _filters:
                         _fil = []
                         for x in _filters:
                             x.pop('_id', None)
                             _fil.append(x)
-                        n_el['saved_filters'] = _fil
-                    das['element'].append(n_el)
+                        new_el['saved_filters'] = _fil
+                    das['element'].append(new_el)
         return das
 
     if slug:
         return json.dumps(full_elements(response))
     for r in response:
-        new_resp.append(full_elements(r))
+        if session.get('rule', '') == 'admin':
+            admin_groups = mongodb[collection_permissions_group].find({
+                'admins.label': session.get('username', '')}
+            )
+            for ag in admin_groups:
+                if r.get('slug', '') in ag.get('permissions', {}).keys():
+                    new_resp.append(
+                        full_elements(
+                            r,
+                            ag.get('permissions', {}).get(r.get('slug', ''), [])
+                        )
+                    )
+        else:
+            new_resp.append(full_elements(r))
     return json.dumps(new_resp)
 
 

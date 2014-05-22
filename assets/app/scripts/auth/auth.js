@@ -69,9 +69,6 @@ var auth = angular.module('miningApp.auth', [])
             if(AuthenticationService.getUser().rule =='user'){
               AlertService.add({'msg':'Oops, You not have permission!', 'type': 'warning', 'hold': true});
               $location.path('/');
-            }else if(AuthenticationService.getUser().rule =='root' && $location.path().split('/')[2] == 'user'){
-              AlertService.add({'msg':'Oops, You not have permission!', 'type': 'warning', 'hold': true});
-              $location.path('/');
             }
           }
         }

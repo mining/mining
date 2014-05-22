@@ -149,5 +149,18 @@ mining['utils'] = {
     }
 
     return obj;
-  }
+  },
+  deepExtend: function(destination, source) {
+    for (var property in source) {
+      if (source[property] && source[property].constructor &&
+       source[property].constructor === Object) {
+        destination[property] = destination[property] || {};
+        mining.utils.deepExtend(destination[property], source[property]);
+      } else {
+        destination[property] = source[property];
+      }
+    }
+    return destination;
+  },
+  isNumber: function(obj) { return !isNaN(parseFloat(obj)) }
 };
