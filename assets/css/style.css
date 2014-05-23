@@ -197,6 +197,9 @@ body{
     width: 100% !important;
 }
 /** Filtros e ordenação **/
+.datepicker.dropdown-menu{
+	padding: 0;
+}
 .barra-filtros-topo{
 	clear: both;
 }
