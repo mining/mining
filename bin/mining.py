@@ -38,6 +38,99 @@ def run(cube_slug=None):
     return True
 
 
+class CubeProcess(object):
+    def __init__(self, _cube, mongo):
+
+        log_it("START: {}".format(_cube['slug']), "bin-mining")
+
+        self.mongo = mongo
+
+        MyClient = riak.RiakClient(
+            protocol=conf("riak")["protocol"],
+            http_port=conf("riak")["http_port"],
+            host=conf("riak")["host"])
+
+        self.MyBucket = MyClient.bucket(conf("riak")["bucket"])
+        self.MyBucket.enable_search()
+        self.cube = _cube
+
+    def load(self):
+        self.cube['run'] = 'run'
+        self.mongo['cube'].update({'slug': self.cube['slug']}, self.cube)
+
+        self.cube['start_process'] = datetime.now()
+        self.slug = self.cube['slug']
+
+        _sql = self.cube['sql']
+        if _sql[-1] == ';':
+            _sql = _sql[:-1]
+        self.sql = u"""SELECT * FROM ({}) AS CUBE;""".format(_sql)
+
+        connection = self.mongo['connection'].find_one({
+            'slug': self.cube['connection']})['connection']
+
+        log_it("CONNECT IN RELATION DATA BASE: {}".format(self.slug),
+               "bin-mining")
+        e = create_engine(connection, **conf('openmining')['sql_conn_params'])
+        Session = sessionmaker(bind=e)
+        session = Session()
+
+        resoverall = session.execute(text(self.sql))
+        self.data = DataFrame(resoverall.fetchall())
+
+    def frame(self):
+        log_it("LOAD DATA ON DATAWAREHOUSE: {}".format(self.slug),
+               "bin-mining")
+        self.df = DataFrame(self.data)
+        if self.df.empty:
+            log_it('[warning]Empty cube: {}!!'.format(self.cube),
+                   "bin-mining")
+            return
+        self.df.columns = self.data.keys()
+        self.df.head()
+
+        self.pdict = map(fix_render, self.df.to_dict(outtype='records'))
+
+    def clean(self):
+        log_it("CLEAN DATA (JSON) ON RIAK: {}".format(self.slug),
+               "bin-mining")
+
+        self.MyBucket.new(self.slug, data='').store()
+        self.MyBucket.new(u'{}-columns'.format(self.slug), data='').store()
+        self.MyBucket.new(u'{}-connect'.format(self.slug), data='').store()
+        self.MyBucket.new(u'{}-sql'.format(self.slug), data='').store()
+
+    def save(self):
+        self.clean()
+
+        log_it("SAVE DATA (JSON) ON RIAK: {}".format(self.slug),
+               "bin-mining")
+        self.MyBucket.new(self.slug, data=self.pdict,
+                          content_type="application/json").store()
+
+        log_it("SAVE COLUMNS ON RIAK: {}".format(self.slug),
+               "bin-mining")
+        self.MyBucket.new(
+                u'{}-columns'.format(self.slug),
+                data=json.dumps([c for c in self.df.columns])).store()
+
+        log_it("SAVE CONNECT ON RIAK: {}".format(self.slug),
+               "bin-mining")
+        self.MyBucket.new(u'{}-connect'.format(self.slug), data=c).store()
+
+        log_it("SAVE SQL ON RIAK: {}".format(self.slug),
+               "bin-mining")
+        self.MyBucket.new(u'{}-sql'.format(self.slug), data=self.sql).store()
+
+        self.cube['status'] = True
+        self.cube['lastupdate'] = datetime.now()
+        self.cube['run'] = True
+        self.mongo['cube'].update({'slug': self.cube['slug']}, self.cube)
+
+        log_it("CLEAN MEMORY: {}".format(self.slug), "bin-mining")
+        gc.collect()
+
+
 def process(_cube):
     try:
         log_it("START: {}".format(_cube['slug']), "bin-mining")
@@ -47,80 +140,11 @@ def process(_cube):
             db=conf("mongodb")["db"],
             json_mongo=True).get_mongo()
 
-        MyClient = riak.RiakClient(
-            protocol=conf("riak")["protocol"],
-            http_port=conf("riak")["http_port"],
-            host=conf("riak")["host"])
+        c = CubeProcess(_cube, mongo)
+        c.load()
+        c.frame()
+        c.save()
 
-        MyBucket = MyClient.bucket(conf("riak")["bucket"])
-        MyBucket.enable_search()
-        cube = _cube
-
-        cube['run'] = 'run'
-        mongo['cube'].update({'slug': cube['slug']}, cube)
-
-        cube['start_process'] = datetime.now()
-        slug = cube['slug']
-
-        _sql = cube['sql']
-        if _sql[-1] == ';':
-            _sql = _sql[:-1]
-        sql = u"""SELECT * FROM ({}) AS CUBE;""".format(_sql)
-
-        connection = mongo['connection'].find_one({
-            'slug': cube['connection']})['connection']
-
-        log_it("CONNECT IN RELATION DATA BASE: {}".format(slug),
-               "bin-mining")
-        e = create_engine(connection, **conf('openmining')['sql_conn_params'])
-        Session = sessionmaker(bind=e)
-        session = Session()
-
-        resoverall = session.execute(text(sql))
-
-        log_it("LOAD DATA ON DATAWAREHOUSE: {}".format(slug),
-               "bin-mining")
-        df = DataFrame(resoverall.fetchall())
-        if df.empty:
-            log_it('[warning]Empty cube: {}!!'.format(cube),
-                   "bin-mining")
-            return
-        df.columns = resoverall.keys()
-        df.head()
-
-        pdict = map(fix_render, df.to_dict(outtype='records'))
-
-        MyBucket.new(slug, data='').store()
-        MyBucket.new(u'{}-columns'.format(slug), data='').store()
-        MyBucket.new(u'{}-connect'.format(slug), data='').store()
-        MyBucket.new(u'{}-sql'.format(slug), data='').store()
-
-        log_it("SAVE DATA (JSON) ON RIAK: {}".format(slug),
-               "bin-mining")
-        MyBucket.new(slug, data=pdict,
-                     content_type="application/json").store()
-
-        log_it("SAVE COLUMNS ON RIAK: {}".format(slug),
-               "bin-mining")
-        MyBucket.new(u'{}-columns'.format(slug),
-                     data=json.dumps([c for c in df.columns])).store()
-
-        log_it("SAVE CONNECT ON RIAK: {}".format(slug),
-               "bin-mining")
-        MyBucket.new(u'{}-connect'.format(slug), data=c).store()
-
-        log_it("SAVE SQL ON RIAK: {}".format(slug),
-               "bin-mining")
-        MyBucket.new(u'{}-sql'.format(slug), data=sql).store()
-
-        cube['status'] = True
-        cube['lastupdate'] = datetime.now()
-        cube['run'] = True
-        mongo['cube'].update({'slug': cube['slug']}, cube)
-
-        log_it("CLEAN MEMORY: {}".format(slug), "bin-mining")
-        del pdict, df
-        gc.collect()
     except Exception, e:
         log_it(e, "bin-mining")
         log_it(traceback.format_exc(), "bin-mining")
