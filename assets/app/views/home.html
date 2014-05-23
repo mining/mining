@@ -15,21 +15,36 @@
             <li><a ng-href="#/admin/element" title="Element"><i class="fa fa-sitemap"></i></a></li>
             <li><a ng-href="#/admin/dashboard" title="Dashboard"><i class="fa fa-dashboard"></i></a></li>
             <li ng-show="AuthService.getUser().rule == 'root'" title="User"><a ng-href="#/admin/user"><i class="fa fa-user"></i></a></li>
+            <li ng-if="AuthService.getUser().rule == 'root'" title="Permission Group"><a ng-href="#/admin/permissions-group"><i class="fa fa-users"></i></a></li>
+            <li ng-if="AuthService.getUser().rule == 'root'" title="Dashboard Group"><a ng-href="#/admin/dashboard-group"><i class="fa fa-folder"></i></a></li>
         </ul>
 	</div>
 </div>
 <div class="home">
-	<div class="row">
+	<div class="row" ng-repeat="group in dashboardGroups|checkGroupsPermissions|orderBy:name">
 		<div class="col-md-12">
-			<h3 class="home-dashboards-title">Dashboards</h3>
+			<h3 class="home-dashboards-title"><i class="fa fa-folder"></i> [[ group.name ]]</h3>
+			<a ng-href="#/dashboard/[[d.slug]]" class="home-dashboard" ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter|dashboardGroupFilter:group|orderBy:name">
+				<i class="fa fa-dashboard"></i>
+		    	<span>[[d.name]]</span>
+		    </a>
 		</div>
 	</div>
 	<div class="row">
+		<div class="col-md-12">
+			<h3 class="home-dashboards-title"><i class="fa fa-folder"></i> Others</h3>
+			<a ng-href="#/dashboard/[[d.slug]]" class="home-dashboard" ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter|filter:groupUndefined|orderBy:name">
+				<i class="fa fa-dashboard"></i>
+		    	<span>[[d.name]]</span>
+		    </a>
+		</div>
+	</div>
+	<!--<div class="row">
 		<div class="col-md-3 col-lg-2" ng-repeat="d in dashboards|checkDashboardPermission">
 		    <a class="home-dashboard" title="[[d.name]]" ng-href="#/dashboard/[[d.slug]]">
 		    	<i class="fa fa-dashboard"></i>
 		    	<span>[[d.name]]</span>
 		    </a>
 		</div>
-	</div>
+	</div>-->
 </div>

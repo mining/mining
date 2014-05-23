@@ -106,7 +106,7 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a class="ng-binding" ng-click="setOpenMenu('dashboard', 'outros');">Outros <span class="fa arrow"></span></a>
+                                    <a class="ng-binding" ng-click="setOpenMenu('dashboard', 'outros');">Others <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level collapse" ng-class="{'in' : subMenuOpen == 'outros'}">
                                         <li ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter|filter:groupUndefined|orderBy:name">
                                             <a ng-href="#/dashboard/[[d.slug]]">[[d.name]]</a>
@@ -134,10 +134,10 @@
                                     <a ng-href="#/admin/user"><i class="fa fa-user"></i> Users</a>
                                 </li>
                                 <li ng-if="AuthService.getUser().rule == 'root'">
-                                    <a ng-href="#/admin/permissions-group"><i class="fa fa-user"></i> Permissions Group</a>
+                                    <a ng-href="#/admin/permissions-group"><i class="fa fa-users"></i> Permission Group</a>
                                 </li>
                                 <li ng-if="AuthService.getUser().rule == 'root'">
-                                    <a ng-href="#/admin/dashboard-group"><i class="fa fa-users"></i> Dashboard Group</a>
+                                    <a ng-href="#/admin/dashboard-group"><i class="fa fa-folder"></i> Dashboard Group</a>
                                 </li>
                             </ul>
                         </li>
