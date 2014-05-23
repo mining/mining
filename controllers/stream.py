@@ -36,7 +36,11 @@ def data(ws, mongodb, slug):
     MyBucket = MyClient.bucket(conf("riak")["bucket"])
 
     element = mongodb['element'].find_one({'slug': slug})
+
     element['page_limit'] = 50
+    if request.GET.get('limit', True) == False:
+        element['page_limit'] = 9999999999
+
 
     columns = json.loads(MyBucket.get(
         '{}-columns'.format(element.get('cube'))).data or [])
@@ -81,9 +85,10 @@ def data(ws, mongodb, slug):
     if request.GET.get('groupby', None):
         groupby = request.GET.get('groupby', ).split(',')
     if len(groupby) >= 1:
-        df = df.groupby(groupby)
+        df = DataFrame(df.groupby(groupby).grouper.get_group_levels())
 
-    if request.GET.get('orderby', element.get('orderby', None)):
+    if request.GET.get('orderby', element.get('orderby', None)) and \
+                    element.get('orderby', None) in groupby:
         orderby = request.GET.get('orderby', element.get('orderby', ''))
         if type(orderby) == str:
             orderby = orderby.split(',')

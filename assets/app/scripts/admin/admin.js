@@ -18,6 +18,10 @@ var admin = angular.module('miningApp.admin',[])
         templateUrl: 'assets/app/views/dashboard.html',
         controller: 'DashboardCtrl'
       })
+      .when('/admin/dashboard-group', {
+        templateUrl: 'assets/app/views/dashboard_group.html',
+        controller: 'DashboardGroupCtrl'
+      })
       .when('/admin/user', {
         templateUrl: 'assets/app/views/user.html',
         controller: 'UserCtrl'

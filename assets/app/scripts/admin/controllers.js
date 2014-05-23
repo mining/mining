@@ -200,6 +200,12 @@ admin
         {'slug': "chart_bar", "name": "Chart bar"},
         {'slug': "chart_pie", "name": "Chart pie"}
       ];
+      $scope.widget_types = [
+        {'value': "date", "label": "Date Picker"},
+        {'value': "datetime", "label": "Date Time (less) Picker"},
+        {'value': "text", "label": "Text Input"},
+        {'value': "distinct", "label": "Distincts"}
+      ];
       $scope.cubes = Cube.query();
       $scope.elements = Element.query();
       $scope.element = new Element();
@@ -240,6 +246,17 @@ admin
         $scope.element.orderby.splice(ind, 1);
         $scope.element.orderby__order.splice(ind, 1);
       };
+      $scope.addWidget = function () {
+        if (!$scope.element.widgets) {
+          $scope.element.widgets = [];
+        }
+        if ($scope.element.widgets.length < $scope.fields.length) {
+          $scope.element.widgets.push({'type':'', 'field':'', 'label':''});
+        }
+      };
+      $scope.removeWidget = function (ind) {
+        $scope.element.widgets.splice(ind, 1);
+      };
       $scope.loadFields = function () {
         if ($scope.element.cube) {
           $http.get('/api/element/cube/' + $scope.element.cube)
@@ -254,7 +271,46 @@ admin
       $scope.newForm = function () {
         $scope.element = new Element();
       };
-    }])
+    }]
+  )
+  .controller('DashboardGroupCtrl', ['$scope', 'DashboardGroup', 'AlertService', '$rootScope', '$filter',
+    function ($scope, DashboardGroup, AlertService, $rootScope, $filter) {
+      $rootScope.inSettings = true;
+      $rootScope.dashboardGroups = DashboardGroup.query();
+      $scope.dashboardGroup = new DashboardGroup();
+      $scope.selectDashboardGroup = function (dg) {
+        $scope.dashboardGroup = dg;
+      };
+      $scope.deleteDashboardGroup = function (dg) {
+        DashboardGroup.delete(dg);
+        $rootScope.dashboardGroups.splice($rootScope.dashboardGroups.indexOf(dd), 1);
+      };
+      $scope.queryDashboards = function (term, result) {
+        var ls = [];
+        $($rootScope.dashboard).each(function (key, val) {
+          ls.push({
+            id: val.slug,
+            label: val.name
+          });
+        });
+        result($filter('filter')(ls, term));
+      };
+      $scope.save = function (dg) {
+        if ($scope.dashboardGroup.slug) {
+          DashboardGroup.update({'slug': $scope.dashboardGroup.slug}, $scope.dashboardGroup);
+        } else {
+          $scope.dashboardGroup.$save().then(function (response) {
+            AlertService.add('success', 'Save ok');
+            $rootScope.dashboardGroups.push(response);
+          });
+        }
+        $scope.dashboard = new DashboardGroup();
+      };
+      $scope.newForm = function () {
+        $scope.dashboard = new DashboardGroup();
+      };
+    }]
+  )
   .controller('DashboardCtrl', ['$scope', 'Dashboard', 'Element', 'AlertService', '$rootScope', '$filter',
     function ($scope, Dashboard, Element, AlertService, $rootScope, $filter) {
       $rootScope.inSettings = true;
@@ -361,6 +417,7 @@ admin
       $rootScope.inSettings = true;
       $scope.users = User.query();
       $scope.permissions = Dashboard.getFullList();
+      $scope.my_permited_dashboards = Dashboard.getFullList();
       $scope.user = new User();
       $scope.editing = false;
       $scope.change_pass = false;
@@ -409,16 +466,38 @@ admin
         dashboard.permitted = true;
       };
       $scope.save = function () {
-        $scope.user.permissions = {};
+        var current_perm = $scope.user.permissions;
+        var new_perm = {};
         $($scope.permissions).each(function (key, dash) {
           if (dash.permitted) {
-            $scope.user.permissions[dash.slug] = [];
+            new_perm[dash.slug] = [];
             $(dash.element).each(function (key, elem) {
               if (elem.permitted)
-                $scope.user.permissions[dash.slug].push(elem.slug);
+                new_perm[dash.slug].push(elem.slug);
             });
           }
         });
+        if(AuthenticationService.getUser().rule == 'admin'){
+          // PERMISSIONS MERGE
+          mining.utils.deepExtend(current_perm, new_perm);
+          $($scope.my_permited_dashboards).each(function(key, dashboard){
+            if(!(dashboard.slug in Object.keys(new_perm))){
+              if(current_perm[dashboard.slug]){
+                if(current_perm[dashboard.slug].length == dashboard.element.length)
+                  delete current_perm[dashboard.slug];
+              }
+            }
+            $(dashboard.element).each(function(key, element){
+              if(!(element.slug in mining.utils.getNestedProp(new_perm, dashboard.slug, []))){
+                if(mining.utils.getNestedProp(current_perm, dashboard.slug, []).indexOf(element.slug) > -1)
+                  delete current_perm[dashboard.slug][current_perm[dashboard.slug].indexOf(element.slug)];
+              }
+            });
+          });
+          $scope.user.permissions = current_perm;
+        }else{
+          $scope.user.permissions = new_perm;
+        }
         if ($scope.editing) {
           User.update({'username': $scope.user.username}, $scope.user);
           if ($scope.user.username == AuthenticationService.getUser().username) {
@@ -438,5 +517,6 @@ admin
         $scope.change_pass = false;
         clearPermissions();
       };
-    }])
+    }
+  ])
 ;
