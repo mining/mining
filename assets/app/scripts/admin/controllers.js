@@ -249,7 +249,6 @@ admin
       $scope.addWidget = function () {
         if (!$scope.element.widgets) {
           $scope.element.widgets = [];
-          $scope.element.widgets.push({'type':'', 'field':'', 'label':''});
         }
         if ($scope.element.widgets.length < $scope.fields.length) {
           $scope.element.widgets.push({'type':'', 'field':'', 'label':''});

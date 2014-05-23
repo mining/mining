@@ -21,7 +21,7 @@
           <div class="barra-filtros-topo">
             <form class="form-inline">
               <div class="well well-sm pull-left">
-                <div class="widget-container">
+                <div class="widget-container" ng-if="e.widgets.length > 0">
                   <div ng-repeat="widget in e.widgets" class="form-group filtro-widget">
                     <label class="control-label">
                       [[ widget.label ]]
@@ -58,10 +58,18 @@
                       <input ng-model="widget.value" type="text" class="form-control" />
                     </div>
                     <div class="form-group" ng-if="widget.type == 'distinct'">
-                      <select ng-model="widget.value" class="form-control">
-                        <option>Option 1</option>
-                        <option>Option 2</option>
-                        <option>Option 3</option>
+                      <select ng-model="widget.value"
+                              ui-select2="{allowClear:true}"
+                              data-placeholder="[[ widget.label ]]"
+                              class="form-control select2-offscreen"
+                              ng-disabled="widget.disabled"
+                          >
+                          <option value=""></option>
+                          <option
+                                  ng-repeat="value in widget.distinct_values"
+                                  value="[[ value ]]">
+                              [[ value ]]
+                          </option>
                       </select>
                     </div>
                   </div>
@@ -71,6 +79,9 @@
                     <div class="form-group">
                       <button class="btn btn-primary" type="button" ng-click="applyFastFilters(e)">
                           <i class="fa fa-check"></i> Apply
+                      </button>
+                      <button class="btn btn-default" type="button" ng-click="clearFastFilters(e)">
+                          <i class="fa fa-trash-o"></i> Clear
                       </button>
                     </div>
                   </div>
