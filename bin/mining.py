@@ -81,6 +81,11 @@ class CubeProcess(object):
         resoverall = session.execute(text(self.sql))
         self.data = DataFrame(resoverall.fetchall())
 
+    def data(self, data=None):
+        if not data:
+            self.data = data
+        return self.data
+
     def frame(self):
         log_it("LOAD DATA ON DATAWAREHOUSE: {}".format(self.slug),
                "bin-mining")
@@ -149,8 +154,14 @@ def process(_cube):
             c.frame()
             c.save()
         elif cube.get('type') == 'cube_join':
-            for cube_slug in cube.get('relationship'):
-                mongo['cube'].find_one({"slug": cube_slug})
+            join = {}
+            dframe = DataFrame({})
+            for i, cube_slug in enumerate(cube.get('relationship')):
+                dframe = DataFrame.merge(dframe,
+                        DataFrame(MyBucket.get(_cube).data), on="")
+            c.date = dframe
+            c.frame()
+            c.save()
 
     except Exception, e:
         log_it(e, "bin-mining")
