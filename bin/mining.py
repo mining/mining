@@ -43,7 +43,10 @@ class CubeProcess(object):
 
         log_it("START: {}".format(_cube['slug']), "bin-mining")
 
-        self.mongo = mongo
+        self.mongo = MongoPlugin(
+            uri=conf("mongodb")["uri"],
+            db=conf("mongodb")["db"],
+            json_mongo=True).get_mongo()
 
         MyClient = riak.RiakClient(
             protocol=conf("riak")["protocol"],
@@ -140,10 +143,14 @@ def process(_cube):
             db=conf("mongodb")["db"],
             json_mongo=True).get_mongo()
 
-        c = CubeProcess(_cube, mongo)
-        c.load()
-        c.frame()
-        c.save()
+        c = CubeProcess(_cube)
+        if cube.get('type') == 'relational':
+            c.load()
+            c.frame()
+            c.save()
+        elif cube.get('type') == 'cube_join':
+            for cube_slug in cube.get('relationship'):
+                mongo['cube'].find_one({"slug": cube_slug})
 
     except Exception, e:
         log_it(e, "bin-mining")
