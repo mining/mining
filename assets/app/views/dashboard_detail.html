@@ -260,7 +260,7 @@
               <thead>
                 <tr>
                   <th ng-repeat="c in e.columns">
-                    <div class="pull-right order">
+                    <div class="pull-right order" ng-show="e.orderby__order[e.orderby.indexOf(c)]">
                       <a ng-click="applyOrder(e, c, e.orderby__order[e.orderby.indexOf(c)])" class="order-apply">
                         <i class="fa"
                            ng-class="{'fa-sort-alpha-asc': e.orderby.indexOf(c)>=0 && e.orderby__order[e.orderby.indexOf(c)] == '1',
