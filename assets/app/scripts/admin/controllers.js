@@ -200,6 +200,12 @@ admin
         {'slug': "chart_bar", "name": "Chart bar"},
         {'slug': "chart_pie", "name": "Chart pie"}
       ];
+      $scope.widget_types = [
+        {'value': "date", "label": "Date Picker"},
+        {'value': "datetime", "label": "Date Time (less) Picker"},
+        {'value': "text", "label": "Text Input"},
+        {'value': "distinct", "label": "Distincts"}
+      ];
       $scope.cubes = Cube.query();
       $scope.elements = Element.query();
       $scope.element = new Element();
@@ -239,6 +245,18 @@ admin
       $scope.removeOrder = function (ind) {
         $scope.element.orderby.splice(ind, 1);
         $scope.element.orderby__order.splice(ind, 1);
+      };
+      $scope.addWidget = function () {
+        if (!$scope.element.widgets) {
+          $scope.element.widgets = [];
+          $scope.element.widgets.push({'type':'', 'field':'', 'label':''});
+        }
+        if ($scope.element.widgets.length < $scope.fields.length) {
+          $scope.element.widgets.push({'type':'', 'field':'', 'label':''});
+        }
+      };
+      $scope.removeWidget = function (ind) {
+        $scope.element.widgets.splice(ind, 1);
       };
       $scope.loadFields = function () {
         if ($scope.element.cube) {

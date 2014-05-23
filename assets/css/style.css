@@ -652,3 +652,31 @@ tr.code{
 	}
 }
 
+.datepicker.dropdown-menu {
+  width: 250px;
+  height: 250px;
+}
+.datepicker.dropdown-menu button {
+  outline: none;
+  border: 0px;
+}
+.datepicker.dropdown-menu tbody {
+  height: 180px;
+}
+.datepicker.dropdown-menu tbody button {
+  padding: 6px;
+}
+.datepicker.dropdown-menu.datepicker-mode-1 tbody button, .datepicker.dropdown-menu.datepicker-mode-2 tbody button {
+  height: 65px;
+}
+
+.timepicker.dropdown-menu {
+  padding: 0 4px;
+}
+.timepicker.dropdown-menu button {
+  outline: none;
+  border: 0px;
+}
+.timepicker.dropdown-menu tbody button {
+  padding: 6px;
+}

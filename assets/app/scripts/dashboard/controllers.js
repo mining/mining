@@ -6,8 +6,7 @@ dashboard
   .controller('DashboardDetailCtrl',
     ['$scope', '$routeParams', 'AlertService', 'current_dashboard', 'Element', '$anchorScroll', '$timeout', '$http',
       'AuthenticationService', '$rootScope', 'Filter', '$interval',
-      function ($scope, $routeParams, AlertService, current_dashboard, Element, $anchorScroll, $timeout, $http,
-                AuthenticationService, $rootScope, Filter, $interval) {
+      function ($scope, $routeParams, AlertService, current_dashboard, Element, $anchorScroll, $timeout, $http, AuthenticationService, $rootScope, Filter, $interval) {
         $rootScope.inDashboard = true;
 
         $scope.filter_name = undefined;
@@ -21,7 +20,7 @@ dashboard
           el.process = [];
           el.loading = true;
           var prot = 'ws';
-          if(window.protocol == 'https')
+          if (window.protocol == 'https')
             prot = 'wss';
           var API_URL = prot + "://" + location.host + "/stream/data/" + el.slug + "?";
           console.log(API_URL);
@@ -92,8 +91,8 @@ dashboard
           }
         };
 
-        $scope.startSaveSettings = function(ele){
-          if(!ele.saveSettings)
+        $scope.startSaveSettings = function (ele) {
+          if (!ele.saveSettings)
             ele.saveSettings = true;
         };
 
@@ -103,13 +102,13 @@ dashboard
           tmp_filters['name'] = el.filter_name;
           var newFilter = new Filter();
           angular.extend(newFilter, tmp_filters);
-          if(el._filter.name == el.filter_name){
+          if (el._filter.name == el.filter_name) {
             newFilter['slug'] = el._filter['slug'];
             newFilter.$update()
-              .then(function(response){
+              .then(function (response) {
                 debugger;
-                $(el.saved_filters).each(function(ind, filt){
-                  if(filt.slug == el._filter.slug)
+                $(el.saved_filters).each(function (ind, filt) {
+                  if (filt.slug == el._filter.slug)
                     el.saved_filters[ind] = response;
                 });
                 el.saveSettings = false;
@@ -122,7 +121,7 @@ dashboard
                 el._filter = response;
                 el.filter_message = {'status': 'success', 'msg': 'Success!'};
               });
-          }else{
+          } else {
             newFilter.$save()
               .then(function (response) {
                 el.saved_filters.push(response);
@@ -160,12 +159,12 @@ dashboard
             loadLine(el);
           }
         };
-        $scope.removeOrder = function(el, field){
+        $scope.removeOrder = function (el, field) {
           el.current_page = 1;
           el.total_pages = undefined;
           el.pages = [];
-          el.orderby.splice(el.orderby.indexOf(field),1);
-          el.orderby__order.splice(el.orderby.indexOf(field),1);
+          el.orderby.splice(el.orderby.indexOf(field), 1);
+          el.orderby__order.splice(el.orderby.indexOf(field), 1);
           if (el.type == 'grid') {
             loadGrid(el);
           } else if (el.type == 'chart_bar') {
@@ -182,10 +181,10 @@ dashboard
             el.orderby = [];
           if (!el.orderby__order)
             el.orderby__order = [];
-          if (el.orderby.indexOf(field) < '0'){
+          if (el.orderby.indexOf(field) < '0') {
 //            Advanced Order TODO: Flow to advanced order
 //            el.orderby.push(field);
-            el.orderby= [field];
+            el.orderby = [field];
           }
 //          Advanced Order TODO: Flow to advanced order
 //          el.orderby__order[el.orderby.indexOf(field)] = '0';
@@ -216,6 +215,19 @@ dashboard
             el.filters = tmp_filters;
             el.filter_name = el.saved_filters[el.selected_filter].name;
           }
+          $scope.applyFilters(el);
+        };
+        $scope.applyFastFilters = function (el) {
+          $(el.widgets).each(function (key, widget) {
+            if (widget.value && widget.value != '') {
+              if (widget.type == 'date') {
+                var chave = "filter__" + widget.field + "__between__datetime__:Y-:m-:d",
+                  ind = $scope.selected_dashboard.element.indexOf(el);
+                $scope.selected_dashboard.element[ind].filters[chave] =
+                  moment(widget.value.from).format("YYYY-MM-DD") + ':' + moment(widget.value.until).format("YYYY-MM-DD");
+              }
+            }
+          });
           $scope.applyFilters(el);
         };
 
@@ -299,11 +311,11 @@ dashboard
             if (val.intervals)
               $interval.cancel(val.intervals);
           });
-          if($scope.selected_dashboard.intervals)
+          if ($scope.selected_dashboard.intervals)
             $interval.cancel($scope.selected_dashboard.intervals);
         });
 
-        $rootScope.$on('WINDOW_RESIZE', function(x,y){
+        $rootScope.$on('WINDOW_RESIZE', function (x, y) {
           $($scope.selected_dashboard.element).each(function (ind, val) {
             if (val.graph)
               val.graph.redraw();
@@ -317,7 +329,7 @@ dashboard
           if (angular.element('#' + element))
             angular.element('#' + element).html('');
           var prot = 'ws';
-          if(window.protocol == 'https')
+          if (window.protocol == 'https')
             prot = 'wss';
           var API_URL = prot + "://" + location.host + "/stream/data/" + el.slug + "?";
           for (var key in el.filters) {
@@ -365,7 +377,7 @@ dashboard
           if (angular.element('#' + element))
             angular.element('#' + element).html('');
           var prot = 'ws';
-          if(window.protocol == 'https')
+          if (window.protocol == 'https')
             prot = 'wss';
           var API_URL = prot + "://" + location.host + "/stream/data/" + el.slug + "?";
           for (var key in el.filters) {

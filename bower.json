@@ -42,6 +42,7 @@
     "angular-ui-select2": "~0.0.5",
     "moment": "~2.5.1",
     "jquery-ui": "~1.10.4",
-    "angular-ui-select2-sortable": "~0.0.2"
+    "angular-ui-select2-sortable": "~0.0.2",
+    "angular-strap": "~2.0.0"
   }
 }

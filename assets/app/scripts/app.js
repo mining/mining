@@ -13,7 +13,8 @@ var miningApp = angular.module('miningApp', [
     'ui.bootstrap',
     'ui.codemirror',
     'ui.select2',
-    'ui.select2.sortable'
+    'ui.select2.sortable',
+    'mgcrea.ngStrap'
   ])
   .factory('AlertService', ['$rootScope', '$timeout',
     function ($rootScope, $timeout) {

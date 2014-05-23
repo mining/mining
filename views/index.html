@@ -183,6 +183,8 @@
     <script src="{{ get_url('assets', path='bower/angular-cookies/angular-cookies.js') }}"></script>
     <script src="{{ get_url('assets', path='bower/angular-sanitize/angular-sanitize.js') }}"></script>
     <script src="{{ get_url('assets', path='bower/angular-route/angular-route.js') }}"></script>
+    <script src="{{ get_url('assets', path='bower/angular-strap/dist/angular-strap.min.js') }}"></script>
+    <script src="{{ get_url('assets', path='bower/angular-strap/dist/angular-strap.tpl.min.js') }}"></script>
     <script src="{{ get_url('assets', path='bower/angular-ui-select2/src/select2.js') }}"></script>
     <script src="{{ get_url('assets', path='bower/angular-ui-select2-sortable/src/select2sortable.js') }}"></script>
     <script src="{{ get_url('assets', path='bower/angular-ui-codemirror/ui-codemirror.js') }}"></script>
@@ -247,7 +249,7 @@
         })
         .fail(function(retorno){
           window.location.href="/";
-        })
+        });
 
         // jquery tapa-buraco
         $('.sidebar-toggle').click(function(){
