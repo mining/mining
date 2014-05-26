@@ -1,0 +1,23 @@
+.intro{
+	background-image: linear-gradient(to bottom, rgba(0,0,0,0) 85%, #000 100%), url(../img/bg-warehouse.jpg);
+}
+.brand-heading{
+	font-family: Arial,sans-serif;
+	letter-spacing: normal;
+	font-weight: normal;
+	text-transform: none;
+}
+.navbar-header .brand-heading{
+	font-size: 24px;
+	margin-bottom: 0;
+	float: left;
+	padding: 10px 0 0 10px;
+}
+.content-section h1{
+	padding-top: 60px;
+	border-bottom: solid 1px rgba(255, 255, 255, 0.5);
+	padding-bottom: 10px
+}
+img{
+	max-width: 100%;
+}
