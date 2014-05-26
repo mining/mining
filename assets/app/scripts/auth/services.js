@@ -68,7 +68,8 @@ auth
               });
             return perm;
           }else if(type == 'element' && dashboard)
-            if(SessionService.currentUser.permissions[dashboard].indexOf(permission) >= 0)
+            if(SessionService.currentUser.permissions[dashboard] &&
+              SessionService.currentUser.permissions[dashboard].indexOf(permission) >= 0)
               perm = true;
             if(SessionService.currentUser.is_admin_group)
               $(SessionService.currentUser.is_admin_group).each(function(key, dg){
