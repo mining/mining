@@ -67,3 +67,4 @@ Sponsor
 -------
 
 * `UP! Essência <http://www.upessencia.com.br/>`_
+* `Lemes Consultoria <http://www.lemeconsultoria.com.br/>`_

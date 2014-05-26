@@ -1,0 +1,86 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1><i class="fa fa-users"></i> Group Permissions</h1>
+        <ol class="breadcrumb">
+            <li><a href="#/"><i class="icon-dashboard"></i> Admin</a></li>
+            <li class="active">Group Permissions</li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <form name="form_cube" accept-charset="utf-8" role="form" ng-submit="save(cube)">
+            <div class="form-group">
+                <label for="permissions_group_name">Name <span class="required">*</span></label>
+                <input type="text" id="permissions_group_name" ng-model="permissionsGroup.name" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="permissions_group_dashboards">Administrators <span class="required">*</span></label>
+                <input type="hidden" multiple ui-select2-sortable sortable simple-query="queryAdmins" id="permissions_group_dashboards"
+                        ng-model="permissionsGroup.admins" class="form-control">
+            </div>
+
+            <div class="form-group" ng-show="!change_pass">
+                <label>Permissions</label>
+                <div ng-repeat="dashboard in permissions" class="form-group" ng-show="!change_pass">
+                    <div class="panel panel-default permissions">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <span class="checkbox-holder"><input type="checkbox" id="dashboard_[[ dashboard.slug ]]" ng-model="dashboard.permitted" ng-click="selectDashboard(dashboard)" title="Select/deselect all" /></span>
+                                <i class="fa fa-dashboard"></i> [[ dashboard.name ]]
+                                <a ng-click="dashboard.isCollapsed=!dashboard.isCollapsed">
+                                    <i class="fa pull-right" ng-class="{'fa-sort-asc':dashboard.isCollapsed, 'fa-sort-desc':!dashboard.isCollapsed}"></i>
+                                </a>
+                            </h3>
+                        </div>
+                        <div collapse="dashboard.isCollapsed" class="panel-collapse">
+                            <div class="panel-body">
+                                <ul class="permissions-elements-list">
+                                    <li ng-repeat="element in dashboard.element">
+                                        <label><span class="checkbox-holder"><input type="checkbox" ng-click="selectElement(dashboard)" ng-model="element.permitted" /></span>[[ element.name ]]</label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--<label><input type="checkbox" ng-model="force_save" checked/> Force save</label>
+            <button type="submit" class="btn btn-primary"
+                    ng-disabled="(form_cube.$invalid && !cube.sql) || (!force_save && !dashboard_group_valid)">Save
+            </button>-->
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-success" ng-click="newForm()">New</button>
+        </form>
+    </div>
+    <div class="col-lg-6 table-responsive">
+        <table class="table table-bordered table-tbody-striped">
+            <thead>
+            <th>
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Admins
+            </th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="dd in permissionsGroups">
+                    <td class="edit-delete">
+                        <a ng-click="selectPermissionsGroup(dd)" title="Edit Permissions Group"><i class="fa fa-pencil"></i></a>
+                        <a ng-click="deletePermissionsGroup(dd)" title="Delete Permissions Group"><i class="fa fa-trash-o"></i></a>
+                    </td>
+                    <td>
+                        [[dd.name]]
+                    </td>
+                    <td>
+                        <span class="label label-default" ng-repeat=" adm in dd.admins">[[ adm.label ]]</span> 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div><!-- /.row -->
