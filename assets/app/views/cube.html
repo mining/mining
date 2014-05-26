@@ -55,6 +55,13 @@
     <div class="col-lg-6 table-responsive">
         <table class="table table-bordered table-tbody-striped">
             <thead>
+                <tr>
+                    <th colspan="5">
+                        Search: <input type="text" class="form-control" ng-model="search.$" placeholder="Type to search" />
+                    </th>
+                </tr>
+            </thead>
+            <thead>
             <th>
             </th>
             <th>
@@ -70,7 +77,7 @@
                 Status
             </th>
             </thead>
-            <tbody ng-repeat="c in cubes">
+            <tbody ng-repeat="c in cubes|filter:search|orderBy:'name'">
             <tr>
                 <td class="edit-delete">
                     <a ng-click="selectCube(c)" title="Edit Cube"><i class="fa fa-pencil"></i></a>

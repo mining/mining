@@ -48,6 +48,13 @@
     <div class="col-md-6 table-responsive">
         <table class="table table-bordered table-striped table-hover">
             <thead>
+                <tr>
+                    <th colspan="3">
+                        Search: <input type="text" class="form-control" ng-model="search.$" placeholder="Type to search" />
+                    </th>
+                </tr>
+            </thead>
+            <thead>
             <th>
             </th>
             <th>
@@ -58,7 +65,7 @@
             </th>
             </thead>
             <tbody>
-            <tr ng-repeat="d in dashboards">
+            <tr ng-repeat="d in dashboards|filter:search">
                 <td class="edit-delete">
                     <a ng-click="selectDashboard(d)" title="Edit Dashboard"><i class="fa fa-pencil"></i></a>
                     <a ng-click="deleteDashboard(d)" title="Delete Dashboard"><i class="fa fa-trash-o"></i></a>

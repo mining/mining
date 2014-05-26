@@ -117,20 +117,29 @@
     <div class="col-lg-6 table-responsive">
         <table class="table table-bordered table-striped table-hover">
             <thead>
-            <th>
-            </th>
-            <th>
-                Name
-            </th>
-            <th>
-                Type
-            </th>
-            <th>
-                Cube
-            </th>
+                <tr>
+                    <th colspan="4">
+                        Search: <input type="text" class="form-control" ng-model="search.$" placeholder="Type to search" />
+                    </th>
+                </tr>
+            </thead>
+            <thead>
+                <tr>
+                    <th>
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Cube
+                    </th>
+                </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="e in elements">
+            <tr ng-repeat="e in elements|filter:search|orderBy:'name'">
                 <td class="edit-delete">
                     <a ng-click="selectElement(e)" title="Edit Element"><i class="fa fa-pencil"></i></a>
                     <a ng-click="deleteElement(e)" title="Delete Element"><i class="fa fa-trash-o"></i></a>

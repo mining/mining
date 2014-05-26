@@ -1,7 +1,7 @@
 'use strict';
 auth
-  .factory('AuthenticationService', ['$http', 'SessionService', '$q', '$timeout',
-    function ($http, SessionService, $q, $timeout) {
+  .factory('AuthenticationService', ['$http', 'SessionService', '$q', '$timeout', '$rootScope',
+    function ($http, SessionService, $q, $timeout, $rootScope) {
       'use strict';
 
       return {
@@ -57,11 +57,32 @@ auth
         hasPermission: function(permission, type, dashboard){
           if (SessionService.currentUser.rule == 'root' || SessionService.currentUser.rule == 'admin')
             return true;
-          if (type == 'dashboard')
-            return SessionService.currentUser.permissions.hasOwnProperty(permission);
-          else if(type == 'element' && dashboard)
-            return SessionService.currentUser.permissions[dashboard].indexOf(permission) >= 0;
-          return false;
+          var perm = false;
+          if (type == 'dashboard'){
+            if(SessionService.currentUser.permissions.hasOwnProperty(permission))
+              perm = true;
+            if(SessionService.currentUser.is_admin_group)
+              $(SessionService.currentUser.is_admin_group).each(function(key, dg){
+                if(dg.permissions.hasOwnProperty(permission))
+                  perm = true;
+              });
+            return perm;
+          }else if(type == 'element' && dashboard)
+            if(SessionService.currentUser.permissions[dashboard] &&
+              SessionService.currentUser.permissions[dashboard].indexOf(permission) >= 0)
+              perm = true;
+            if(SessionService.currentUser.is_admin_group)
+              $(SessionService.currentUser.is_admin_group).each(function(key, dg){
+                if(dg.permissions[dashboard].indexOf(permission) >= 0)
+                  perm = true;
+              });
+          return perm;
+        },
+
+        userIsAdminGroup : function(){
+          if(SessionService.currentUser.rule == 'root')
+            return true;
+          return SessionService.currentUser.is_admin_group;
         }
       };
     }
