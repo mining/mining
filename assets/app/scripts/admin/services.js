@@ -34,6 +34,13 @@ admin
       });
     }
   ])
+  .factory('DashboardGroup', ['$resource',
+    function($resource){
+      return $resource('/api/dashboard/dashboard-group/:slug', {}, {
+        update: { method: 'PUT', params: {'slug': '@slug'}}
+      });
+    }
+  ])
   .factory('User', ['$resource',
     function($resource){
       return $resource('/api/user/:username', {}, {

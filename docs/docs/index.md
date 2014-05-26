@@ -5,7 +5,7 @@ Scipy and Pandas for data management and flexibility in processing dynamical fil
 reporting, analysis, dashboard, data mining and workflow capabilities.
 
 
-## Cube, Dimensions, Facts and Measures
+# Cube, Dimensions, Facts and Measures
 
 The application models the data as a cube with multiple dimensions:
 
@@ -28,7 +28,7 @@ Dimension can have multiple *hierarchies*, for example the date dimension
 might have year, month and day levels in a hierarchy.
 
 
-## Features
+# Features
 
 Which reporting solution is the best? Which tool to choose? 
 These are the question that all companies' managers need to answer in the beginning of firm's existence. 
@@ -91,7 +91,7 @@ each customer's needs. Nonetheless, knowing Open Mining's gratuity, we might sup
 in small and medium-sized companies at most.
 
 
-## OLAP cube
+# OLAP cube
 
 A cube can be considered a generalization of a three-dimensional spreadsheet. For example, a company might wish to 
 summarize financial data by product, by time-period, and by city to compare actual and budget expenses. Product, 

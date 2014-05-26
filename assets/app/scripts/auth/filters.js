@@ -28,4 +28,23 @@ auth
       }
     ]
   )
+  .filter('checkGroupsPermissions',
+    ['AuthenticationService',
+      function(AuthenticationService){
+        return function(group){
+          return group.filter(
+            function(group, index, array){
+              var have = false;
+              $(group.dashboards).each(function(key, dashboard){
+                if(AuthenticationService.hasPermission(dashboard.id, 'dashboard'))
+                  have = true;
+              });
+              if(have)
+                return group;
+            }
+          );
+        }
+      }
+    ]
+  )
 ;

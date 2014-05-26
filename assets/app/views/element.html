@@ -52,11 +52,43 @@
                         <!--<lable class="badge badge-success">[[ $index+1 ]]</lable>-->
                         <div class="form-group">
                             <label class="invisible">Remove</label>
-                            <button ng-click="removeOrder($index)" class="btn btn-danger btn-block"><i class="fa fa-times"></i></button>
+                            <button ng-click="removeOrder($index)" type="button" class="btn btn-danger btn-block"><i class="fa fa-times"></i></button>
                         </div>
                     </div>
                 </div>
                 <button ng-show="element.type=='grid'" ng-click="addOrder()" class="btn btn-default btn-lg center-block" type="button"><i class="fa fa-plus"></i> Order</button>
+            </div>
+
+            <label ng-show="element.type=='grid' && element.type">Widgets</label>
+            <div class="well" ng-show="element.type=='grid' && element.type">
+                <div class="form-group row" ng-repeat="element_widget in element.widgets track by $index">
+                    <div class="col-xs-12 col-md-3">
+                        <label>Field</label>
+                        <select ui-select2 ng-model="element.widgets[$index].field" class="form-control">
+                            <option value=""></option>
+                            <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-md-4">
+                        <label>Label</label>
+                        <input class="form-control" ng-model="element.widgets[$index].label" type="text" />
+                    </div>
+                    <div class="col-xs-12 col-md-3">
+                        <label>Type</label>
+                        <select ui-select2 ng-model="element.widgets[$index].type" class="form-control">
+                            <option value=""></option>
+                            <option ng-repeat="wt in widget_types" value="[[ wt.value ]]">[[ wt.label ]]</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-md-2">
+                        <!--<lable class="badge badge-success">[[ $index+1 ]]</lable>-->
+                        <div class="form-group">
+                            <label class="invisible">Remove</label>
+                            <button ng-click="removeWidget($index)" type="button" class="btn btn-danger btn-block"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <button ng-show="element.type=='grid'" ng-click="addWidget()" class="btn btn-default btn-lg center-block" type="button"><i class="fa fa-plus"></i> Widget</button>
             </div>
             
 

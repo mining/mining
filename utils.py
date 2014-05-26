@@ -9,7 +9,7 @@ from decimal import Decimal
 from datetime import date, datetime
 from bson import ObjectId
 
-from pandas import tslib, date_range, concat, DataFrame
+from pandas import tslib, date_range, bdate_range, concat, DataFrame
 from settings import PROJECT_PATH
 
 
@@ -67,6 +67,8 @@ def df_generate(df, value, str_field):
             mark = s[4].replace(":", "%")
         except:
             mark = "%Y-%m-%d"
+    elif t == "datetime":
+        mark = "%Y-%m-%d %H:%M:%S"
 
     if operator == "gte":
         return u"{} >= {}".format(field, value)
@@ -93,6 +95,10 @@ def df_generate(df, value, str_field):
         if t == "date":
             _range = [i.strftime(mark)
                       for i in date_range(between[0], between[1]).tolist()]
+        elif t == "datetime":
+            _range = [i.strftime(mark)
+                      for i in
+                      date_range(between[0], between[1], freq="S").tolist()]
         elif t == "int":
             _range = [i for i in xrange(int(between[0]), int(between[1]) + 1)]
 
@@ -112,6 +118,7 @@ def conf(section):
 
     if 'sql_conn_params' in options:
         import ast
+
         _dict['sql_conn_params'] = ast.literal_eval(_dict['sql_conn_params'])
     else:
         _dict['sql_conn_params'] = {}

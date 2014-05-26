@@ -74,4 +74,11 @@ auth
       currentUser: null
     };
   })
+  .factory('PermissionsGroup', ['$resource',
+    function($resource){
+      return $resource('/api/permissions_group/:slug', {}, {
+        update : { method: 'PUT', params: {'slug': '@slug'}}
+      });
+    }
+  ])
 ;
