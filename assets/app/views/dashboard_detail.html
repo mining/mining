@@ -310,35 +310,67 @@
             <form class="form-inline">
               <div class="well well-sm pull-left">
                 <div class="widget-container">
-                  <!-- date -->
-                  <div class="form-group filtro-widget">
-                    <label class="control-label">Field 1</label>
+                  <div ng-repeat="widget in e.widgets" class="form-group filtro-widget">
+                    <label class="control-label">
+                      [[ widget.label ]]
+                    </label>
+                    <!-- date -->
                     <div class="form-group">
-                      <input type="text" class="form-control field-date" placeholder="From">
+                      <input type="text"
+                             ng-if="widget.type == 'date' || widget.type == 'datetime'"
+                             class="form-control field-date"
+                             data-date-format="yyyy-MM-dd"
+                             ng-model="widget.value.from"
+                             data-max-date="[[widget.value.until]]"
+                             placeholder="From"
+                             data-date-type="number"
+                             data-autoclose="1"
+                             bs-datepicker
+                      />
                     </div>
                     <div class="form-group">
-                      <input type="text" class="form-control field-date" placeholder="Until">
+                      <input type="text"
+                             ng-if="widget.type == 'date' || widget.type == 'datetime'"
+                             class="form-control field-date"
+                             data-date-format="yyyy-MM-dd"
+                             ng-model="widget.value.until"
+                             data-min-date="[[widget.value.from]]"
+                             placeholder="Until"
+                             data-date-type="number"
+                             data-autoclose="1"
+                             bs-datepicker
+                      />
                     </div>
-                  </div>
-                  <!-- Text -->
-                  <div class="form-group filtro-widget">
-                    <label class="control-label">Field 2</label>
-                    <div class="form-group">
-                      <input type="text" class="form-control">
+                    <!-- Text -->
+                    <div class="form-group" ng-if="widget.type == 'text'">
+                      <input ng-model="widget.value" type="text" class="form-control" />
                     </div>
-                  </div>
-                  <!-- Options -->
-                  <div class="form-group filtro-widget">
-                    <label class="control-label">Field 3</label>
-                    <div class="form-group">
-                      <select class="form-control">
-                        <option>Option 1</option>
-                        <option>Option 2</option>
-                        <option>Option 3</option>
+                    <div class="form-group" ng-if="widget.type == 'distinct'">
+                      <select ng-model="widget.value"
+                              ui-select2="{allowClear:true}"
+                              data-placeholder="[[ widget.label ]]"
+                              class="form-control select2-offscreen"
+                              ng-disabled="widget.disabled"
+                          >
+                          <option value=""></option>
+                          <option
+                                  ng-repeat="value in widget.distinct_values"
+                                  value="[[ value ]]">
+                              [[ value ]]
+                          </option>
                       </select>
                     </div>
+                  </div>
+
+                  <!-- Options -->
+                  <div class="form-group filtro-widget">
                     <div class="form-group">
-                      <button class="btn btn-primary"><i class="fa fa-check"></i> Apply</button>
+                      <button class="btn btn-primary" type="button" ng-click="applyFastFilters(e)">
+                          <i class="fa fa-check"></i> Apply
+                      </button>
+                      <button class="btn btn-default" type="button" ng-click="clearFastFilters(e)">
+                          <i class="fa fa-trash-o"></i> Clear
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -507,35 +539,67 @@
             <form class="form-inline">
               <div class="well well-sm pull-left">
                 <div class="widget-container">
-                  <!-- date -->
-                  <div class="form-group filtro-widget">
-                    <label class="control-label">Field 1</label>
+                  <div ng-repeat="widget in e.widgets" class="form-group filtro-widget">
+                    <label class="control-label">
+                      [[ widget.label ]]
+                    </label>
+                    <!-- date -->
                     <div class="form-group">
-                      <input type="text" class="form-control field-date" placeholder="From">
+                      <input type="text"
+                             ng-if="widget.type == 'date' || widget.type == 'datetime'"
+                             class="form-control field-date"
+                             data-date-format="yyyy-MM-dd"
+                             ng-model="widget.value.from"
+                             data-max-date="[[widget.value.until]]"
+                             placeholder="From"
+                             data-date-type="number"
+                             data-autoclose="1"
+                             bs-datepicker
+                      />
                     </div>
                     <div class="form-group">
-                      <input type="text" class="form-control field-date" placeholder="Until">
+                      <input type="text"
+                             ng-if="widget.type == 'date' || widget.type == 'datetime'"
+                             class="form-control field-date"
+                             data-date-format="yyyy-MM-dd"
+                             ng-model="widget.value.until"
+                             data-min-date="[[widget.value.from]]"
+                             placeholder="Until"
+                             data-date-type="number"
+                             data-autoclose="1"
+                             bs-datepicker
+                      />
                     </div>
-                  </div>
-                  <!-- Text -->
-                  <div class="form-group filtro-widget">
-                    <label class="control-label">Field 2</label>
-                    <div class="form-group">
-                      <input type="text" class="form-control">
+                    <!-- Text -->
+                    <div class="form-group" ng-if="widget.type == 'text'">
+                      <input ng-model="widget.value" type="text" class="form-control" />
                     </div>
-                  </div>
-                  <!-- Options -->
-                  <div class="form-group filtro-widget">
-                    <label class="control-label">Field 3</label>
-                    <div class="form-group">
-                      <select class="form-control">
-                        <option>Option 1</option>
-                        <option>Option 2</option>
-                        <option>Option 3</option>
+                    <div class="form-group" ng-if="widget.type == 'distinct'">
+                      <select ng-model="widget.value"
+                              ui-select2="{allowClear:true}"
+                              data-placeholder="[[ widget.label ]]"
+                              class="form-control select2-offscreen"
+                              ng-disabled="widget.disabled"
+                          >
+                          <option value=""></option>
+                          <option
+                                  ng-repeat="value in widget.distinct_values"
+                                  value="[[ value ]]">
+                              [[ value ]]
+                          </option>
                       </select>
                     </div>
+                  </div>
+
+                  <!-- Options -->
+                  <div class="form-group filtro-widget">
                     <div class="form-group">
-                      <button class="btn btn-primary"><i class="fa fa-check"></i> Apply</button>
+                      <button class="btn btn-primary" type="button" ng-click="applyFastFilters(e)">
+                          <i class="fa fa-check"></i> Apply
+                      </button>
+                      <button class="btn btn-default" type="button" ng-click="clearFastFilters(e)">
+                          <i class="fa fa-trash-o"></i> Clear
+                      </button>
                     </div>
                   </div>
                 </div>
