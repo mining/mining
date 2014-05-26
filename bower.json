@@ -18,7 +18,7 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "assets/bower/",
+    "mining/assets/bower/",
     "test",
     "tests"
   ],
