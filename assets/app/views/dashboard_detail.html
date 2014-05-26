@@ -309,7 +309,7 @@
           <div class="barra-filtros-topo">
             <form class="form-inline">
               <div class="well well-sm pull-left">
-                <div class="widget-container">
+                <div class="widget-container" ng-if="e.widgets.length > 0">
                   <div ng-repeat="widget in e.widgets" class="form-group filtro-widget">
                     <label class="control-label">
                       [[ widget.label ]]
@@ -538,7 +538,7 @@
           <div class="barra-filtros-topo">
             <form class="form-inline">
               <div class="well well-sm pull-left">
-                <div class="widget-container">
+                <div class="widget-container" ng-if="e.widgets.length > 0">
                   <div ng-repeat="widget in e.widgets" class="form-group filtro-widget">
                     <label class="control-label">
                       [[ widget.label ]]
