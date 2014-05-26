@@ -139,7 +139,7 @@
                 </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="e in elements|orderBy:name|filter:search">
+            <tr ng-repeat="e in elements|filter:search|orderBy:'name'">
                 <td class="edit-delete">
                     <a ng-click="selectElement(e)" title="Edit Element"><i class="fa fa-pencil"></i></a>
                     <a ng-click="deleteElement(e)" title="Delete Element"><i class="fa fa-trash-o"></i></a>

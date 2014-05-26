@@ -48,7 +48,7 @@
             </th>
             </thead>
             <tbody>
-                <tr ng-repeat="dd in dashboardGroups|filter:search|orderBy:name">
+                <tr ng-repeat="dd in dashboardGroups|filter:search|orderBy:'name'">
                     <td class="edit-delete">
                         <a ng-click="selectDashboardGroup(dd)" title="Edit Dashboard Group"><i class="fa fa-pencil"></i></a>
                         <a ng-click="deleteDashboardGroup(dd)" title="Delete Dashboard Group"><i class="fa fa-trash-o"></i></a>

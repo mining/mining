@@ -77,7 +77,7 @@
                 Status
             </th>
             </thead>
-            <tbody ng-repeat="c in cubes|filter:search|orderBy:name">
+            <tbody ng-repeat="c in cubes|filter:search|orderBy:'name'">
             <tr>
                 <td class="edit-delete">
                     <a ng-click="selectCube(c)" title="Edit Cube"><i class="fa fa-pencil"></i></a>

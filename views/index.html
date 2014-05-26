@@ -97,10 +97,10 @@
                         <li ng-class="{'open':inDashboard}">
                             <a ng-click="setOpenMenu('dashboard');"><i class="fa fa-dashboard fa-fw"></i> Dashboard<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse" ng-class="{'in' : menuOpen == 'dashboard'}">
-                                <li ng-repeat="group in dashboardGroups|checkGroupsPermissions|orderBy:name">
+                                <li ng-repeat="group in dashboardGroups|checkGroupsPermissions|orderBy:'name'">
                                     <a ng-click="setOpenMenu('dashboard', group.slug);">[[ group.name ]] <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level collapse" ng-class="{'in' : subMenuOpen == group.slug}">
-                                        <li ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter|dashboardGroupFilter:group|orderBy:name">
+                                        <li ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter|dashboardGroupFilter:group|orderBy:'name'">
                                             <a ng-href="#/dashboard/[[d.slug]]">[[d.name]]</a>
                                         </li>
                                     </ul>
@@ -108,7 +108,7 @@
                                 <li>
                                     <a class="ng-binding" ng-click="setOpenMenu('dashboard', 'outros');">Others <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level collapse" ng-class="{'in' : subMenuOpen == 'outros'}">
-                                        <li ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter|filter:groupUndefined|orderBy:name">
+                                        <li ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter|filter:groupUndefined|orderBy:'name'">
                                             <a ng-href="#/dashboard/[[d.slug]]">[[d.name]]</a>
                                         </li>
                                     </ul>
