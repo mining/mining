@@ -13,7 +13,8 @@ except ImportError:
 from bottle import Bottle, request, redirect
 from bottle.ext.mongo import MongoPlugin
 
-from mining.utils import conf
+from mining.utils import conf, parse_dumps
+from mining.controllers.api.group import collection as permission_group
 from .base import get, post, put, delete
 
 collection = 'user'
@@ -98,14 +99,22 @@ def user_get(mongodb, slug=None):
     if slug:
         _get.pop('password', None)
         _get.pop('apikey', None)
-        return json.dumps(_get)
+        _get['is_admin_group'] = False
+        groups = mongodb[permission_group].find({
+            'admins.id':{
+                '$in': [_get.get('username', '')]
+            }
+        })
+        if groups:
+            _get['is_admin_group'] = list(groups)
+        return json.dumps(_get, default=parse_dumps)
     else:
         data = []
         for _g in _get:
             _g.pop('password', None)
             _g.pop('apikey', None)
             data.append(_g)
-        return json.dumps(data)
+        return json.dumps(data, default=parse_dumps)
 
 
 @user_app.route('/', method='POST')

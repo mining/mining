@@ -9,22 +9,22 @@
 			<strong><i class="fa fa-user"></i>  [[ AuthService.getUser().username ]]!</strong><br>
 			<small>Welcome to Open Mining</small>
 		</h1>
-		<ul class="home-settings">
-            <li><a ng-href="#/admin/connection" title="Connection"><i class="fa fa-globe"></i></a></li>
-            <li><a ng-href="#/admin/cube" title="Cube"><i class="fa fa-cube"></i></a></li>
-            <li><a ng-href="#/admin/element" title="Element"><i class="fa fa-sitemap"></i></a></li>
-            <li><a ng-href="#/admin/dashboard" title="Dashboard"><i class="fa fa-dashboard"></i></a></li>
-            <li ng-show="AuthService.getUser().rule == 'root'" title="User"><a ng-href="#/admin/user"><i class="fa fa-user"></i></a></li>
-            <li ng-if="AuthService.getUser().rule == 'root'" title="Permission Group"><a ng-href="#/admin/permissions-group"><i class="fa fa-users"></i></a></li>
-            <li ng-if="AuthService.getUser().rule == 'root'" title="Dashboard Group"><a ng-href="#/admin/dashboard-group"><i class="fa fa-folder"></i></a></li>
-        </ul>
+		<!--<ul class="home-settings">-->
+            <!--<li><a ng-href="#/admin/connection" title="Connection"><i class="fa fa-globe"></i></a></li>-->
+            <!--<li><a ng-href="#/admin/cube" title="Cube"><i class="fa fa-cube"></i></a></li>-->
+            <!--<li><a ng-href="#/admin/element" title="Element"><i class="fa fa-sitemap"></i></a></li>-->
+            <!--<li><a ng-href="#/admin/dashboard" title="Dashboard"><i class="fa fa-dashboard"></i></a></li>-->
+            <!--<li ng-show="AuthService.getUser().rule == 'root'" title="User"><a ng-href="#/admin/user"><i class="fa fa-user"></i></a></li>-->
+            <!--<li ng-if="AuthService.getUser().rule == 'root'" title="Permission Group"><a ng-href="#/admin/permissions-group"><i class="fa fa-users"></i></a></li>-->
+            <!--<li ng-if="AuthService.getUser().rule == 'root'" title="Dashboard Group"><a ng-href="#/admin/dashboard-group"><i class="fa fa-folder"></i></a></li>-->
+        <!--</ul>-->
 	</div>
 </div>
 <div class="home">
-	<div class="row" ng-repeat="group in dashboardGroups|checkGroupsPermissions|orderBy:name">
+	<div class="row" ng-repeat="group in dashboardGroups|checkGroupsPermissions|orderBy:'name'">
 		<div class="col-md-12">
 			<h3 class="home-dashboards-title"><i class="fa fa-folder"></i> [[ group.name ]]</h3>
-			<a ng-href="#/dashboard/[[d.slug]]" class="home-dashboard" ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter|dashboardGroupFilter:group|orderBy:name">
+			<a ng-href="#/dashboard/[[d.slug]]" class="home-dashboard" ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter|dashboardGroupFilter:group|orderBy:'name'">
 				<i class="fa fa-dashboard"></i>
 		    	<span>[[d.name]]</span>
 		    </a>
@@ -33,7 +33,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<h3 class="home-dashboards-title"><i class="fa fa-folder"></i> Others</h3>
-			<a ng-href="#/dashboard/[[d.slug]]" class="home-dashboard" ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter|filter:groupUndefined|orderBy:name">
+			<a ng-href="#/dashboard/[[d.slug]]" class="home-dashboard" ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter|filter:groupUndefined|orderBy:'name'">
 				<i class="fa fa-dashboard"></i>
 		    	<span>[[d.name]]</span>
 		    </a>
