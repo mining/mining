@@ -1,0 +1,31 @@
+{
+  "author": "Taranys",
+  "name": "angular-ui-select2-sortable",
+  "version": "0.0.3",
+  "keywords": [
+    "angular",
+    "angularui",
+    "select2",
+    "sortable"
+  ],
+  "main": "./src/select2sortable.js",
+  "dependencies": {
+    "angular": ">=1.2.0",
+    "select2": "~3.4",
+    "jquery": ">=1.6",
+    "jquery-ui": ">=1.9"
+  },
+  "devDependencies": {
+    "angular-mocks": ">=1.2"
+  },
+  "homepage": "https://github.com/Taranys/ui-select2-sortable",
+  "_release": "0.0.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.0.3",
+    "commit": "635b9e506db3112d654b6c621d964cf4a9c42e2a"
+  },
+  "_source": "git://github.com/Taranys/ui-select2-sortable.git",
+  "_target": "~0.0.2",
+  "_originalSource": "angular-ui-select2-sortable"
+}

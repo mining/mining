@@ -1,0 +1,133 @@
+<html ng-app="app">
+<head>
+
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" media="screen"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.4/select2.css" media="screen"/>
+
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.4/select2.min.js"></script>
+    <script src="../src/select2sortable.js"></script>
+
+    <script>
+        var app = angular.module('app', ['ui.select2.sortable']);
+        app.controller('SelectTester', function ($scope) {
+            $scope.simple = ["one", "two", "three"];
+
+            $scope.objects = [
+                { id: 1, label: "one", other: "ONE"},
+                { id: 2, label: "two", other: "TWO"},
+                { id: 3, label: "three", other: "THREE"}
+            ];
+
+            $scope.complex = [
+                { complex: "1-test", restLink: "https://www.google.fr/?q=pangolin", color: "red" },
+                { complex: "2-another", restLink: "https://www.google.fr/?q=echidna", color: "blue" },
+                { complex: "3-thing", restLink: "https://www.google.fr/?q=firefox", color: "green" }
+            ];
+
+            $scope.getSimpleData = function (term, done) {
+                done($scope.simple);
+            };
+
+            $scope.getObjData = function (term, done) {
+                done($scope.objects);
+            };
+
+            $scope.getComplexData = function (term, done) {
+                done($scope.complex);
+            };
+
+            $scope.complexId = function (item) {
+                return item.complex.split('-')[0];
+            };
+            $scope.complexText = function (item) {
+                return item.complex.split('-')[1] + " (" + item.color + ")";
+            };
+        });
+    </script>
+</head>
+<body ng-controller="SelectTester">
+<div class="container">
+    <div id="simple-test" class="panel panel-default">
+        <div class="panel-heading">
+            One element
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <div class="row">
+                    <input type="hidden" style="width: 250px" ui-select2-sortable allow-clear='true'
+                           data-placeholder="Simple"
+                           ng-model="simpleSelection" simple-query="getSimpleData">
+                    <br>
+                </div>
+                <div class="row">
+                    <span ng-bind-template="   ngModel content : {{simpleSelection}}"></span>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="row">
+                    <input type="hidden" style="width: 250px" ui-select2-sortable allow-clear='true'
+                           data-placeholder="Objects"
+                           ng-model="objSelection" simple-query="getObjData">
+                </div>
+                <div class="row">
+                    <span ng-bind-template="   ngModel content : {{objSelection}}"></span>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="row">
+                    <input type="hidden" style="width: 250px" ui-select2-sortable allow-clear='true'
+                           data-placeholder="Complex"
+                           ng-model="complexSelection" simple-query="getComplexData"
+                           to-id="complexId" to-text="complexText">
+                </div>
+                <div class="row">
+                    <a ng-href="{{complexSelection.restLink}}" ng-bind="complexSelection.complex" ng-style="{ color : complexSelection.color}"></a>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div id="multiple-test" class="panel panel-default">
+        <div class="panel-heading">
+            Multiple & sortable element
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <div class="row">
+                    <input type="hidden" ui-select2-sortable style="width: 250px" allow-clear='true'
+                           data-placeholder="Simple" multiple sortable
+                           ng-model="simpleSelectionArray" simple-query="getSimpleData">
+                </div>
+                <div class="row">
+                    <span class="row" ng-repeat="s in simpleSelectionArray" ng-bind-template="   ngModel content : {{s}}"></span>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="row">
+                    <input type="hidden" ui-select2-sortable style="width: 250px" allow-clear='true'
+                           data-placeholder="Objects" multiple sortable
+                           ng-model="objSelectionArray" simple-query="getObjData">
+                </div>
+                <div class="row">
+                    <span class="row" ng-repeat="o in objSelectionArray" ng-bind-template="   ngModel content : {{o}}"></span>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="row">
+                    <input type="hidden" ui-select2-sortable style="width: 250px" allow-clear='true'
+                           data-placeholder="Complex" multiple sortable
+                           ng-model="complexSelectionArray" simple-query="getComplexData"
+                           to-id="complexId" to-text="complexText">
+                </div>
+                <div class="row">
+                    <a class="row" ng-repeat="c in complexSelectionArray" ng-href="{{c.restLink}}" ng-bind="c.complex"
+                       ng-style="{ color : c.color}"></a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

@@ -2,7 +2,7 @@
 test: pep8 clean
 	@coverage report
 	@python setup.py test
-	@node_modules/gulp/bin/gulp.js
+	@$(which gulp.js)
 
 .PHONY: tox-test
 tox-test: environment

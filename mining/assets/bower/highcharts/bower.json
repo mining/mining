@@ -1,0 +1,7 @@
+{
+  "name": "highcharts",
+  "version": "3.0.7",
+  "main": "./highcharts.js",
+  "dependencies": {
+  }
+}
