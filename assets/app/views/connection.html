@@ -26,6 +26,13 @@
     <div class="col-lg-6 table-responsive">
         <table class="table table-bordered table-hover table-striped">
             <thead>
+                <tr>
+                    <th colspan="3">
+                        Search: <input type="text" class="form-control" ng-model="search.$" placeholder="Type to search" />
+                    </th>
+                </tr>
+            </thead>
+            <thead>
                 <th>
                 </th>
                 <th>
@@ -36,7 +43,7 @@
                 </th>
             </thead>
             <tbody>
-                <tr ng-repeat="c in connections">
+                <tr ng-repeat="c in connections|filter:search|orderBy:name">
                     <td class="edit-delete">
                         <a ng-click="selectConnection(c)" title="Edit Connection"><i class="fa fa-pencil"></i></a>
                         <a ng-click="deleteConnection(c)" title="Delete Connection"><i class="fa fa-trash-o"></i></a>
