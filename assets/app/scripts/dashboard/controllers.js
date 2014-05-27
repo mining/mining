@@ -252,23 +252,33 @@ dashboard
         function refreshDashboard() {
           $($scope.selected_dashboard.element).each(function (ind, val) {
             if (AuthenticationService.hasPermission(val.slug, 'element', $scope.selected_dashboard.slug)) {
+              val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
               if (val.type == 'grid') {
-                val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
                 loadGrid(val);
-                if (val.cube.scheduler_status && !$scope.selected_dashboard.scheduler_ignore_refresh) {
+              }else if(val.type == 'chart_bar'){
+                loadBar(val);
+              }
+              else if(val.type == 'chart_line'){
+                loadLine(val);
+              }
+              if(val.scheduler_status == true){
+                if (val.scheduler_status) {
                   if (!val.intervals) {
-                    if (val.cube.scheduler_type == 'minutes') {
+                    if (val.scheduler_type == 'minutes') {
                       val.intervals = $interval(function () {
                         val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
-                        loadGrid(val);
-                      }, parseInt(val.cube.scheduler_interval) * 60000);
+                        if (val.type == 'grid') {
+                          loadGrid(val);
+                        }else if(val.type == 'chart_bar'){
+                          loadBar(val);
+                        }
+                        else if(val.type == 'chart_line'){
+                          loadLine(val);
+                        }
+                      }, parseInt(val.scheduler_interval) * 60000);
                     }
                   }
                 }
-              } else if (val.type == 'chart_bar') {
-                loadBar(val);
-              } else if (val.type == 'chart_line') {
-                loadLine(val);
               }
             }
           });
@@ -317,26 +327,13 @@ dashboard
           }
         });
 
-        if ($scope.selected_dashboard.scheduler_type) {
-          if ($scope.selected_dashboard.scheduler_type == 'minutes') {
-            $scope.selected_dashboard.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
-            refreshDashboard();
-            $scope.selected_dashboard.intervals = $interval(function () {
-              $scope.selected_dashboard.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
-              refreshDashboard();
-            }, parseInt($scope.selected_dashboard.scheduler_interval) * 60000);
-          }
-        } else {
-          refreshDashboard();
-        }
+        refreshDashboard();
 
         $scope.$on('$destroy', function () {
           $($scope.selected_dashboard.element).each(function (ind, val) {
             if (val.intervals)
               $interval.cancel(val.intervals);
           });
-          if ($scope.selected_dashboard.intervals)
-            $interval.cancel($scope.selected_dashboard.intervals);
         });
 
         $rootScope.$on('WINDOW_RESIZE', function (x, y) {
