@@ -285,6 +285,10 @@ admin
           });
         }
         $scope.element = new Element();
+        $scope.show_h = false;
+        $scope.show_m = false;
+        $scope.hour = 0;
+        $scope.min = 0;
       };
       $scope.addOrder = function () {
         if (!$scope.element.orderby) {
@@ -324,6 +328,10 @@ admin
       };
       $scope.newForm = function () {
         $scope.element = new Element();
+        $scope.show_h = false;
+        $scope.show_m = false;
+        $scope.hour = 0;
+        $scope.min = 0;
       };
     }]
   )
@@ -407,10 +415,6 @@ admin
       };
       $scope.newForm = function () {
         $scope.dashboard = new Dashboard();
-        $scope.show_h = false;
-        $scope.show_m = false;
-        $scope.hour = 0;
-        $scope.min = 0;
       };
     }])
   .controller('UserCtrl', ['$scope', 'User', 'AlertService', 'Dashboard', 'AuthenticationService', '$rootScope',
