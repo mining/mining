@@ -47,6 +47,6 @@ setup(name='mining',
       packages=find_packages(exclude=('doc', 'docs',)),
       install_requires=REQUIREMENTS,
       dependency_links=dependency_links,
-      scripts=['mining/bin/mining.py'],
       test_suite='nose.main',
-      include_package_data=True)
+      include_package_data=True,
+      zip_safe=False)
