@@ -77,12 +77,8 @@ class CubeProcess(object):
         session = Session()
 
         resoverall = session.execute(text(self.sql))
-        self.data = DataFrame(resoverall.fetchall())
-
-    def data(self, data=None):
-        if not data:
-            self.data = data
-        return self.data
+        self.data = resoverall.fetchall()
+        self.keys = resoverall.keys()
 
     def frame(self):
         log_it("LOAD DATA ON DATAWAREHOUSE: {}".format(self.slug),
@@ -92,7 +88,7 @@ class CubeProcess(object):
             log_it('[warning]Empty cube: {}!!'.format(self.cube),
                    "bin-mining")
             return
-        self.df.columns = self.data.keys()
+        self.df.columns = self.keys
         self.df.head()
 
         self.pdict = map(fix_render, self.df.to_dict(outtype='records'))
