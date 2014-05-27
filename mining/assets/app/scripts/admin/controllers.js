@@ -76,8 +76,8 @@ admin
         $scope.connection = new Connection();
       };
     }])
-  .controller('CubeCtrl', ['$scope', 'Cube', 'Connection', 'AlertService', '$timeout', '$rootScope',
-    function ($scope, Cube, Connection, AlertService, $timeout, $rootScope) {
+  .controller('CubeCtrl', ['$scope', 'Cube', 'Connection', 'AlertService', '$timeout', '$rootScope', '$http',
+    function ($scope, Cube, Connection, AlertService, $timeout, $rootScope, $http) {
       $rootScope.inSettings = true;
       $scope.editorOptions = {
         lineWrapping: true,
@@ -101,6 +101,35 @@ admin
 //        {key: 'hour', val: 'hour'},
 //        {key: 'day', val: 'day'}
       ];
+      $scope.templates = {
+        'relational': 'assets/app/views/cube_relational.html',
+        'cube_join': 'assets/app/views/cube_join.html'
+      };
+      $scope.loadCubeFields = function(ind){
+        if ($scope.cube.relationship[ind].cube) {
+          $http.get('/api/element/cube/' + $scope.cube.relationship[ind].cube)
+            .success(function (retorno) {
+              $scope.cube.relationship[ind].fields = retorno.columns;
+            })
+            .error(function (retorno) {
+              AlertService.add('error', 'Error!');
+            });
+        }
+      };
+      $scope.addRelationship = function () {
+        if (!$scope.cube.relationship) {
+          $scope.cube.relationship= [];
+        }
+        if ($scope.cube.relationship.length < $scope.cubes.length) {
+          $scope.cube.relationship.push({
+            'cube':'',
+            'field':''
+          });
+        }
+      };
+      $scope.removeRelationship = function (ind) {
+        $scope.cube.relationship.splice(ind, 1);
+      };
       $scope.show_h = false;
       $scope.show_m = false;
       $scope.hour = 0;
@@ -139,6 +168,11 @@ admin
           $scope.show_h = false;
           $scope.show_m = false;
         }
+        if(c.type == 'cube_join'){
+          $($scope.cube.relationship).each(function(ind, rel){
+            $scope.loadCubeFields(ind);
+          });
+        }
       };
       $scope.deleteCube = function (cube) {
         Cube.delete(cube);
@@ -157,6 +191,11 @@ admin
           }
         } else {
           $scope.cube.scheduler_status = false;
+        }
+        if($scope.cube.type == 'cube_join'){
+          $($scope.cube.relationship).each(function(ind, rel){
+            delete $scope.cube.relationship[ind].fields;
+          });
         }
         if ($scope.cube.slug) {
           $scope.cube.status = false;

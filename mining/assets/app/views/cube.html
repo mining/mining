@@ -15,32 +15,14 @@
                 <input type="text" id="cube_name" ng-model="cube.name" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="cube_connection">Connection <span class="required">*</span></label>
-                <select id="cube_connection" ui-select2 ng-model="cube.connection" class="form-control" required>
-                    <option value=""></option>
-                    <option ng-repeat="c in connections" value="[[ c.slug ]]">[[ c.name ]]</option>
+                <label for="cube_type">Type</label>
+                <select class="form-control" ui-select2 id="cube_type" ng-model="cube.type">
+                    <option value="" selected="selected"></option>
+                    <option value="relational">Relational</option>
+                    <option value="cube_join">Cube Join</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label for="cube_schedule_type">Scheduler</label>
-                <select class="form-control" ui-select2 id="cube_schedule_type" ng-change="changeSchedulerType()"
-                        ng-model="cube.scheduler_type">
-                    <option value="" selected="selected">No</option>
-                    <option ng-repeat="t in scheduler_types" value="[[ t.key ]]">[[ t.val ]]</option>
-                </select>
-
-                <div ng-show="show_h">
-                    <label>Hour</label><input class="form-control" id="hour" ng-model="hour" type="number" min="0"
-                                              max="23"/>
-                </div>
-                <div ng-show="show_m">
-                    <label>Min</label><input class="form-control" id="min" ng-model="min" type="number" min="0"
-                        max="999999"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="cube_sql">Query <span class="required">*</span></label>
-                <textarea ui-codemirror="editorOptions" id="cube_sql" ng-model="cube.sql"></textarea>
+            <div ng-include="templates[cube.type]" id="cube_form">
             </div>
             <!--<label><input type="checkbox" ng-model="force_save" checked/> Force save</label>
             <button type="submit" class="btn btn-primary"
