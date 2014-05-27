@@ -54,13 +54,13 @@ class CubeProcess(object):
         self.MyBucket = MyClient.bucket(conf("riak")["bucket"])
         self.MyBucket.enable_search()
         self.cube = _cube
+        self.slug = self.cube['slug']
 
     def load(self):
         self.cube['run'] = 'run'
-        self.mongo['cube'].update({'slug': self.cube['slug']}, self.cube)
+        self.mongo['cube'].update({'slug': self.slug}, self.cube)
 
         self.cube['start_process'] = datetime.now()
-        self.slug = self.cube['slug']
 
         _sql = self.cube['sql']
         if _sql[-1] == ';':
@@ -79,6 +79,16 @@ class CubeProcess(object):
         resoverall = session.execute(text(self.sql))
         self.data = resoverall.fetchall()
         self.keys = resoverall.keys()
+
+    def environment(self, t):
+        if t not in ['relational']:
+            self.sql = t
+
+    def _data(self, data):
+        self.data = data
+
+    def _keys(self, keys):
+        self.keys = keys
 
     def frame(self):
         log_it("LOAD DATA ON DATAWAREHOUSE: {}".format(self.slug),
@@ -155,11 +165,17 @@ def process(_cube):
             c.frame()
             c.save()
         elif _cube.get('type') == 'cube_join':
-            dframe = DataFrame({})
+            dframe = {}
             for i, rel in enumerate(_cube.get('relationship')):
-                dframe = DataFrame.merge(dframe, DataFrame(
-                    MyBucket.get(rel['cube']).data), on=rel['field'])
-            c.date = dframe
+                dframe[i] = DataFrame(MyBucket.get(rel['cube']).data)
+                dframe["{}-field".format(i)] = rel['field']
+
+            data = DataFrame.merge(dframe[0], dframe[1],
+                    on=dframe["0-field"],
+                    how=_cube.get('cube_join_type', 'inner'))
+            c.environment(_cube.get('type'))
+            c._data(data)
+            c._keys(data.columns.values)
             c.frame()
             c.save()
 
