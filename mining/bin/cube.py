@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from os import sys, path
 import json
 import riak
 import gc
@@ -12,11 +11,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.sql import text
 from sqlalchemy.orm import sessionmaker
 
-sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from mining.utils import fix_render, conf, log_it
+from mining.multithread import ThreadPool
 
 from bottle.ext.mongo import MongoPlugin
-from multithread import ThreadPool
 
 
 def run(cube_slug=None):
@@ -39,7 +37,7 @@ def run(cube_slug=None):
 
 
 class CubeProcess(object):
-    def __init__(self, _cube, mongo):
+    def __init__(self, _cube):
 
         log_it("START: {}".format(_cube['slug']), "bin-mining")
 
@@ -162,9 +160,9 @@ def process(_cube):
             c.save()
         elif _cube.get('type') == 'cube_join':
             dframe = DataFrame({})
-            for i, cube_slug in enumerate(_cube.get('relationship')):
+            for i, rel in enumerate(_cube.get('relationship')):
                 dframe = DataFrame.merge(dframe, DataFrame(
-                    MyBucket.get(_cube).data), on="")
+                    MyBucket.get(rel['cube']).data), on=rel['field'])
             c.date = dframe
             c.frame()
             c.save()
