@@ -22,7 +22,7 @@ install:
 
 .PHONY: pep8
 pep8:
-	@flake8 mining bin db test --ignore=F403,F401,F812
+	@flake8 mining --ignore=F403,F401,F812,E128
 
 .PHONY: sdist
 sdist: test
