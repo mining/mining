@@ -41,8 +41,8 @@ docs/site
 # Pycharm
 .idea
 
-assets/bower
-assets/exports
-mining.ini
+mining/assets/bower
+mining/assets/exports
+mining/mining.ini
 
 data

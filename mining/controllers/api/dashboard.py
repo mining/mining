@@ -4,7 +4,7 @@ import json
 from bottle import Bottle, request
 from bottle.ext.mongo import MongoPlugin
 
-from utils import conf, parse_dumps
+from mining.utils import conf, parse_dumps
 from .base import get, post, put, delete, base
 
 from element import collection as collection_element
@@ -45,20 +45,23 @@ def dashboard_get(mongodb, slug=None):
                 })
                 if new_el:
                     del new_el['_id']
-                    _cube = mongodb[collection_cube].find_one({'slug': new_el['cube']},
-                                                              {
-                                                                  'name': True,
-                                                                  'slug': True,
-                                                                  'lastupdate': True,
-                                                                  'scheduler_status': True,
-                                                                  'scheduler_interval': True,
-                                                                  'scheduler_type': True
-                                                              })
+                    _cube = mongodb[collection_cube].find_one(
+                        {'slug': new_el['cube']},
+                        {
+                            'name': True,
+                            'slug': True,
+                            'lastupdate': True,
+                            'scheduler_status': True,
+                            'scheduler_interval': True,
+                            'scheduler_type': True
+                        })
                     if _cube:
                         del _cube['_id']
-                        _cube['lastupdate'] = str(_cube.get('lastupdate', '')).replace(' ', 'T')
+                        _cube['lastupdate'] = str(
+                            _cube.get('lastupdate', '')).replace(' ', 'T')
                         new_el['cube'] = _cube
-                    _filters = mongodb[collection_filter].find({'element': new_el['slug']})
+                    _filters = mongodb[collection_filter].find(
+                        {'element': new_el['slug']})
                     if _filters:
                         _fil = []
                         for x in _filters:
@@ -80,7 +83,8 @@ def dashboard_get(mongodb, slug=None):
                     new_resp.append(
                         full_elements(
                             r,
-                            ag.get('permissions', {}).get(r.get('slug', ''), [])
+                            ag.get('permissions', {}).get(r.get('slug', ''),
+                                [])
                         )
                     )
         else:

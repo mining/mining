@@ -12,8 +12,8 @@ from bottle.ext.mongo import MongoPlugin
 
 from pandas import DataFrame
 
-from settings import PROJECT_PATH
-from utils import df_generate, conf, DataFrameSearchColumn
+from mining.settings import PROJECT_PATH
+from mining.utils import df_generate, conf, DataFrameSearchColumn
 
 
 export_app = Bottle()

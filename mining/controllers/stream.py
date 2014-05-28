@@ -13,7 +13,7 @@ from bottle.ext.mongo import MongoPlugin
 
 from pandas import DataFrame
 
-from utils import df_generate, conf, DataFrameSearchColumn
+from mining.utils import df_generate, conf, DataFrameSearchColumn
 
 
 stream_app = Bottle()
@@ -38,12 +38,11 @@ def data(ws, mongodb, slug):
     element = mongodb['element'].find_one({'slug': slug})
 
     element['page_limit'] = 50
-    if request.GET.get('limit', True) == False:
+    if request.GET.get('limit', True) is False:
         element['page_limit'] = 9999999999
 
-
-    columns = json.loads(MyBucket.get(
-        '{}-columns'.format(element.get('cube'))).data or [])
+    coll = MyBucket.get('{}-columns'.format(element.get('cube'))).data or []
+    columns = json.loads(coll)
 
     fields = columns
     if request.GET.get('fields', None):
@@ -88,7 +87,7 @@ def data(ws, mongodb, slug):
         df = DataFrame(df.groupby(groupby).grouper.get_group_levels())
 
     if request.GET.get('orderby', element.get('orderby', None)) and \
-                    element.get('orderby', None) in groupby:
+            element.get('orderby', None) in groupby:
         orderby = request.GET.get('orderby', element.get('orderby', ''))
         if type(orderby) == str:
             orderby = orderby.split(',')

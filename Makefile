@@ -1,8 +1,8 @@
 .PHONY: test
 test: pep8 clean
 	@coverage report
-	@python setup.py test
-	@node_modules/gulp/bin/gulp.js
+	@nosetests
+	@$(which gulp.js)
 
 .PHONY: tox-test
 tox-test: environment
@@ -15,6 +15,7 @@ environment:
 	@pip install numexpr==2.3
 	@python setup.py develop
 	@npm install gulp gulp-jshint
+	@mv mining/mining.sample.ini mining/mining.ini
 
 .PHONY: install
 install:
@@ -22,7 +23,7 @@ install:
 
 .PHONY: pep8
 pep8:
-	@flake8 mining bin db test --ignore=F403,F401,F812
+	@flake8 mining --ignore=F403,F401,F812,E128
 
 .PHONY: sdist
 sdist: test

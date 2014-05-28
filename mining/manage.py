@@ -19,9 +19,9 @@ from controllers.api import api_app
 from controllers.stream import stream_app
 from controllers.export import export_app
 
-from utils import conf
-from auth import auth
-from settings import TEMPLATE_PATH, STATIC_PATH
+from mining.utils import conf
+from mining.auth import auth
+from mining.settings import TEMPLATE_PATH, STATIC_PATH
 
 
 reload(sys)
