@@ -251,6 +251,23 @@ admin
       $scope.fields = [];
       $scope.selectElement = function (e) {
         $scope.element = e;
+        if ($scope.element.scheduler_type == 'day') {
+          $scope.show_h = true;
+          $scope.show_m = true;
+          $scope.hour = parseInt($scope.element.scheduler_interval.split(':')[0]);
+          $scope.min = parseInt($scope.element.scheduler_interval.split(':')[1]);
+        } else if ($scope.element.scheduler_type == 'minutes') {
+          $scope.min = parseInt($scope.element.scheduler_interval);
+          $scope.show_h = false;
+          $scope.show_m = true;
+        } else if ($scope.element.scheduler_type == 'hour') {
+          $scope.hour = parseInt($scope.element.scheduler_interval);
+          $scope.show_h = true;
+          $scope.show_m = false;
+        } else {
+          $scope.show_h = false;
+          $scope.show_m = false;
+        }
         $scope.loadFields();
       };
       $scope.toId = function (a) {
@@ -260,7 +277,44 @@ admin
         Element.delete(element);
         $scope.elements.splice($scope.elements.indexOf(element), 1);
       };
+      $scope.scheduler_types = [
+        {key: 'minutes', val: 'minutes'}
+//        {key: 'hour', val: 'hour'},
+//        {key: 'day', val: 'day'}
+      ];
+      $scope.show_h = false;
+      $scope.show_m = false;
+      $scope.hour = 0;
+      $scope.min = 0;
+      $scope.changeSchedulerType = function () {
+        if ($scope.element.scheduler_type == 'day') {
+          $scope.show_h = true;
+          $scope.show_m = true;
+        } else if ($scope.element.scheduler_type == 'minutes') {
+          $scope.show_h = false;
+          $scope.show_m = true;
+        } else if ($scope.element.scheduler_type == 'hour') {
+          $scope.show_h = true;
+          $scope.show_m = false;
+        } else {
+          $scope.show_h = false;
+          $scope.show_m = false;
+        }
+      };
       $scope.save = function (element) {
+        $scope.element.scheduler_status = false;
+        if ($scope.element.scheduler_type) {
+          $scope.element.scheduler_status = true;
+          if ($scope.element.scheduler_type == 'day') {
+            $scope.element.scheduler_interval = mining.utils.padLeft(parseInt($scope.hour), 2) + ':' + mining.utils.padLeft(parseInt($scope.min), 2);
+          } else if ($scope.element.scheduler_type == 'minutes') {
+            $scope.element.scheduler_interval = parseInt($scope.min);
+          } else if ($scope.element.scheduler_type == 'hour') {
+            $scope.element.scheduler_interval = parseInt($scope.hour);
+          }
+        } else {
+          $scope.element.scheduler_status = false;
+        }
         if ($scope.element.slug) {
           Element.update({'slug': $scope.element.slug}, $scope.element);
         } else {
@@ -270,6 +324,10 @@ admin
           });
         }
         $scope.element = new Element();
+        $scope.show_h = false;
+        $scope.show_m = false;
+        $scope.hour = 0;
+        $scope.min = 0;
       };
       $scope.addOrder = function () {
         if (!$scope.element.orderby) {
@@ -309,6 +367,10 @@ admin
       };
       $scope.newForm = function () {
         $scope.element = new Element();
+        $scope.show_h = false;
+        $scope.show_m = false;
+        $scope.hour = 0;
+        $scope.min = 0;
       };
     }]
   )
@@ -356,49 +418,9 @@ admin
       $rootScope.dashboards = Dashboard.query();
       $scope.elements = Element.query();
       $scope.dashboard = new Dashboard();
-      $scope.scheduler_types = [
-        {key: 'minutes', val: 'minutes'}
-//        {key: 'hour', val: 'hour'},
-//        {key: 'day', val: 'day'}
-      ];
-      $scope.show_h = false;
-      $scope.show_m = false;
-      $scope.hour = 0;
-      $scope.min = 0;
-      $scope.changeSchedulerType = function () {
-        if ($scope.dashboard.scheduler_type == 'day') {
-          $scope.show_h = true;
-          $scope.show_m = true;
-        } else if ($scope.dashboard.scheduler_type == 'minutes') {
-          $scope.show_h = false;
-          $scope.show_m = true;
-        } else if ($scope.dashboard.scheduler_type == 'hour') {
-          $scope.show_h = true;
-          $scope.show_m = false;
-        } else {
-          $scope.show_h = false;
-          $scope.show_m = false;
-        }
-      };
+
       $scope.selectDashboard = function (d) {
         $scope.dashboard = d;
-        if ($scope.dashboard.scheduler_type == 'day') {
-          $scope.show_h = true;
-          $scope.show_m = true;
-          $scope.hour = parseInt($scope.dashboard.scheduler_interval.split(':')[0]);
-          $scope.min = parseInt($scope.dashboard.scheduler_interval.split(':')[1]);
-        } else if ($scope.dashboard.scheduler_type == 'minutes') {
-          $scope.min = parseInt($scope.dashboard.scheduler_interval);
-          $scope.show_h = false;
-          $scope.show_m = true;
-        } else if ($scope.dashboard.scheduler_type == 'hour') {
-          $scope.hour = parseInt($scope.dashboard.scheduler_interval);
-          $scope.show_h = true;
-          $scope.show_m = false;
-        } else {
-          $scope.show_h = false;
-          $scope.show_m = false;
-        }
       };
       $scope.deleteDashboard = function (dashboard) {
         Dashboard.delete(dashboard);
@@ -415,19 +437,6 @@ admin
         result($filter('filter')(ls, term));
       };
       $scope.save = function (dashboard) {
-        $scope.dashboard.scheduler_status = false;
-        if ($scope.dashboard.scheduler_type) {
-          $scope.dashboard.scheduler_status = true;
-          if ($scope.dashboard.scheduler_type == 'day') {
-            $scope.dashboard.scheduler_interval = mining.utils.padLeft(parseInt($scope.hour), 2) + ':' + mining.utils.padLeft(parseInt($scope.min), 2);
-          } else if ($scope.dashboard.scheduler_type == 'minutes') {
-            $scope.dashboard.scheduler_interval = parseInt($scope.min);
-          } else if ($scope.dashboard.scheduler_type == 'hour') {
-            $scope.dashboard.scheduler_interval = parseInt($scope.hour);
-          }
-        } else {
-          $scope.dashboard.scheduler_status = false;
-        }
         if ($scope.dashboard.slug) {
           $scope.dashboard.status = false;
           Dashboard.update({'slug': $scope.dashboard.slug}, $scope.dashboard);
@@ -445,10 +454,6 @@ admin
       };
       $scope.newForm = function () {
         $scope.dashboard = new Dashboard();
-        $scope.show_h = false;
-        $scope.show_m = false;
-        $scope.hour = 0;
-        $scope.min = 0;
       };
     }])
   .controller('UserCtrl', ['$scope', 'User', 'AlertService', 'Dashboard', 'AuthenticationService', '$rootScope',

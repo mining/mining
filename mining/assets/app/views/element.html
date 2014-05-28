@@ -30,6 +30,27 @@
                     <option ng-repeat="c in cubes" value="[[ c.slug ]]">[[ c.name ]]</option>
                 </select>
             </div>
+            <div class="form-group">
+                <label for="element_schedule_type">Scheduler</label>
+                <select class="form-control" ui-select2 id="element_schedule_type" ng-change="changeSchedulerType()"
+                        ng-model="element.scheduler_type">
+                    <option value="" selected="selected">No</option>
+                    <option ng-repeat="t in scheduler_types" value="[[ t.key ]]">[[ t.val ]]</option>
+                </select>
+                <div ng-show="element.scheduler_type">
+                    <label>Ignore cube refresh
+                        <input id="ignore_refresh" ng-model="element.scheduler_ignore_refresh" type="checkbox"/>
+                    </label>
+                </div>
+                <div ng-show="show_h">
+                    <label>Hour</label><input class="form-control" id="hour" ng-model="hour" type="number" min="0"
+                                              max="23"/>
+                </div>
+                <div ng-show="show_m">
+                    <label>Min</label><input class="form-control" id="min" ng-model="min" type="number" min="0"
+                                             max="999999"/>
+                </div>
+            </div>
             <label ng-show="element.type=='grid' && element.type">Order</label>
             <div class="well" ng-show="element.type=='grid' && element.type">
                 <div class="form-group row" ng-repeat="element_order in element.orderby track by $index">
