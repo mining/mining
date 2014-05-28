@@ -238,12 +238,15 @@ dashboard
         $scope.clearFastFilters = function(el){
           $(el.widgets).each(function (key, widget) {
             if (widget.type == 'date') {
-              widget.value.from = '';
-              widget.value.until = '';
+              widget.value= {
+                'from':'',
+                'until': ''
+              };
             }else if(widget.type == 'distinct' || widget.type == 'text'){
               widget.value = '';
             }
           });
+          el.filters = {};
           $scope.applyFilters(el);
         };
 
