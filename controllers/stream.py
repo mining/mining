@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from gevent import monkey
+
 monkey.patch_all()
 
 import json
@@ -40,7 +41,6 @@ def data(ws, mongodb, slug):
     element['page_limit'] = 50
     if request.GET.get('limit', True) == False:
         element['page_limit'] = 9999999999
-
 
     columns = json.loads(MyBucket.get(
         '{}-columns'.format(element.get('cube'))).data or [])
@@ -87,8 +87,9 @@ def data(ws, mongodb, slug):
     if len(groupby) >= 1:
         df = DataFrame(df.groupby(groupby).grouper.get_group_levels())
 
-    if request.GET.get('orderby', element.get('orderby', None)) and \
-                    element.get('orderby', None) in groupby:
+    if request.GET.get('orderby',
+                       element.get('orderby', None)) and request.GET.get(
+            'orderby', element.get('orderby', None)) in fields:
         orderby = request.GET.get('orderby', element.get('orderby', ''))
         if type(orderby) == str:
             orderby = orderby.split(',')
