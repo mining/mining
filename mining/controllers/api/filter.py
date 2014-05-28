@@ -37,9 +37,12 @@ def filter_put(mongodb, slug=None):
     data['slug'] = slug
     data = dict(data.items())
     if 'lastupdate' in data and isinstance(data.get('lastupdate'), basestring):
-        data['lastupdate'] = datetime.strptime(data.get('lastupdate'), '%Y-%m-%d %H:%M:%S')
-    if 'start_process' in data and isinstance(data.get('start_process'), basestring):
-        data['start_process'] = datetime.strptime(data.get('start_process'), '%Y-%m-%d %H:%M:%S')
+        data['lastupdate'] = datetime.strptime(data.get('lastupdate'),
+                                               '%Y-%m-%d %H:%M:%S')
+    if 'start_process' in data and isinstance(data.get('start_process'),
+                                              basestring):
+        data['start_process'] = datetime.strptime(data.get('start_process'),
+                                                  '%Y-%m-%d %H:%M:%S')
     get = mongodb[collection].find_one({'slug': slug})
     if get:
         mongodb[collection].update({'slug': slug}, data)
