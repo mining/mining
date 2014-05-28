@@ -7,6 +7,8 @@ import traceback
 from datetime import datetime
 
 from pandas import DataFrame
+from pandas.tools.merge import concat
+
 from sqlalchemy import create_engine
 from sqlalchemy.sql import text
 from sqlalchemy.orm import sessionmaker
@@ -165,21 +167,17 @@ def process(_cube):
             c.frame()
             c.save()
         elif _cube.get('type') == 'cube_join':
-            data = DataFrame({})
-            fields = [rel['field']
-                      for rel in _cube.get('relationship')]
-            for i, rel in enumerate(_cube.get('relationship')):
-                data = data.merge.concat(
-                    DataFrame(MyBucket.get(rel['cube']).data),
-                    keys=fields,
-                    join='inner')
+            fields = set([rel['field']
+                          for rel in _cube.get('relationship')])
+            data = concat([DataFrame(MyBucket.get(rel['cube']).data)
+                           for rel in _cube.get('relationship')],
+                          keys=fields, join='inner', ignore_index=True)
 
             c.environment(_cube.get('type'))
             c._data(data)
             c._keys(data.columns.values)
             c.frame()
             c.save()
-
     except Exception, e:
         log_it(e, "bin-mining")
         log_it(traceback.format_exc(), "bin-mining")
