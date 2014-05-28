@@ -8,6 +8,7 @@ try:
     from hashlib import sha1
 except ImportError:
     import sha
+
     sha1 = sha.sha
 
 from bottle import Bottle, request, redirect
@@ -77,7 +78,6 @@ def login(mongodb):
 
 @user_app.route('/logout')
 def logout(mongodb):
-
     session = request.environ.get('beaker.session')
     session.delete()
     return redirect('/')
@@ -101,7 +101,7 @@ def user_get(mongodb, slug=None):
         _get.pop('apikey', None)
         _get['is_admin_group'] = False
         groups = mongodb[permission_group].find({
-            'admins.id':{
+            'admins.id': {
                 '$in': [_get.get('username', '')]
             }
         })

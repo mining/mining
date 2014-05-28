@@ -167,12 +167,12 @@ def process(_cube):
         elif _cube.get('type') == 'cube_join':
             data = DataFrame({})
             fields = [rel['field']
-                    for rel in _cube.get('relationship')]
+                      for rel in _cube.get('relationship')]
             for i, rel in enumerate(_cube.get('relationship')):
                 data = data.merge.concat(
-                        DataFrame(MyBucket.get(rel['cube']).data),
-                        keys=fields,
-                        join='inner')
+                    DataFrame(MyBucket.get(rel['cube']).data),
+                    keys=fields,
+                    join='inner')
 
             c.environment(_cube.get('type'))
             c._data(data)
