@@ -249,7 +249,7 @@
             <table class="process table table-bordered table-hover table-striped" ng-show="!e.loading">
               <thead>
                 <tr>
-                  <th ng-repeat="c in e.columns">
+                  <th ng-repeat="c in e.columns|elementFields:e">
                     <div class="pull-right order" ng-show="e.orderby.indexOf(c)>=0">
                       <a ng-click="applyOrder(e, c, e.orderby__order[e.orderby.indexOf(c)])" class="order-apply">
                         <i class="fa"
@@ -259,13 +259,13 @@
                       <span class="order-number" ng-show="e.orderby.indexOf(c)>=0">([[ e.orderby.indexOf(c) + 1 ]])</span>
                       <a ng-show="e.orderby.indexOf(c)>=0" ng-click="removeOrder(e, c)" class="order-remove"><i class="fa fa-times-circle"></i></a>
                     </div>
-                    <a ng-click="applyOrder(e, c, e.orderby__order[e.orderby.indexOf(c)])">[[ c|replaceUnderToSpace ]]</a>
+                    <a ng-click="applyOrder(e, c, e.orderby__order[e.orderby.indexOf(c)])">[[ c|getLabel:e ]]</a>
                   </th>
                 </tr>
               </thead>
               <tbody>
                 <tr ng-repeat="p in e.process">
-                  <td ng-repeat="c in e.columns">[[ p[c] ]]</td>
+                  <td ng-repeat="c in e.columns|elementFields:e">[[ p[c] ]]</td>
                 </tr>
               </tbody>
             </table>
