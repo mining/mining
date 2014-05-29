@@ -215,6 +215,9 @@
             </div>
           </div>
           <div class="sort-export-update">
+            <a class="btn" title="Resume">
+              Showing [[ '50' ]] records [[ e.from ]]-[[ e.to ]] of a total of [[ e.total_rows ]]
+            </a>
             <a class="btn btn-sort-disabled" title="Enable advanced sorting"><i class="fa fa-sort-alpha-asc"></i></a>
             <div class="export-buttons dropdown">
               <a class="btn btn-default dropdown-toggle" title="Export"><i class="fa fa-download"></i>  <span class="caret"></span></a>
@@ -241,19 +244,6 @@
           </div>
         </div>
         <div class="panel-body">
-          <!--<div class="text-center">
-            <ul class="pagination">
-              <li ng-class="{'disabled':e.current_page==1}">
-                <a ng-click="selectPage(e,1)">First</a>
-              </li>
-              <li ng-repeat="(key,p) in getPages(e)" ng-class="{'active':p==e.current_page}">
-                <a ng-click="selectPage(e, p)">[[ p ]]</a>
-              </li>
-              <li ng-class="{'disabled':e.current_page==e.total_pages}">
-                <a ng-click="selectPage(e, e.total_pages)">Last</a>
-              </li>
-            </ul>
-          </div>-->
           <div class="table-responsive table-scroll" id="element-[[ e.slug ]]">
             <div ng-show="e.loading" class="loading"><img src="/assets/image/Preloader_2.gif"> Loading...</div>
             <table class="process table table-bordered table-hover table-striped" ng-show="!e.loading">
@@ -283,13 +273,13 @@
           <div class="text-center">
             <ul class="pagination">
               <li ng-class="{'disabled':e.current_page==1}">
-                <a ng-click="selectPage(e,1)">First</a>
+                <a ng-click="selectPage(e,1)">First (1)</a>
               </li>
               <li ng-repeat="(key,p) in getPages(e)" ng-class="{'active':p==e.current_page}">
                 <a ng-click="selectPage(e, p)">[[ p ]]</a>
               </li>
               <li ng-class="{'disabled':e.current_page==e.total_pages}">
-                <a ng-click="selectPage(e, e.total_pages)">Last</a>
+                <a ng-click="selectPage(e, e.total_pages)">Last ([[ e.total_pages ]])</a>
               </li>
             </ul>
           </div>
