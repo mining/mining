@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from gevent import monkey
+
 monkey.patch_all()
 
 import json
@@ -86,8 +87,10 @@ def data(ws, mongodb, slug):
     if len(groupby) >= 1:
         df = DataFrame(df.groupby(groupby).grouper.get_group_levels())
 
-    if request.GET.get('orderby', element.get('orderby', None)) and \
-            element.get('orderby', None) in groupby:
+    if request.GET.get('orderby',
+                       element.get('orderby', None)) and request.GET.get(
+            'orderby', element.get('orderby', None)) in fields:
+
         orderby = request.GET.get('orderby', element.get('orderby', ''))
         if type(orderby) == str:
             orderby = orderby.split(',')

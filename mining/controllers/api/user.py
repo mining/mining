@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 # -*- coding: utf-8 -*-
 import uuid
 import hmac
@@ -87,9 +87,15 @@ def logout(mongodb):
 @user_app.route('/<slug>', method='GET')
 def user_get(mongodb, slug=None):
     obj = json.loads(get(mongodb, collection, slug, {'key': 'username'}))
-    if type(obj) is dict:
+    if type(obj) is dict and len(obj.keys()) >= 1:
         _get = obj
         _get['uid'] = _get['username']
+    elif slug and len(obj.keys()) == 0:
+        _get = {
+            'uid': slug,
+            'username': slug,
+            'new_user': True
+        }
     else:
         _get = []
         for i in obj:

@@ -354,6 +354,28 @@ admin
       $scope.removeWidget = function (ind) {
         $scope.element.widgets.splice(ind, 1);
       };
+      $scope.addShowFields = function () {
+        if (!$scope.element.show_fields) {
+          $scope.element.show_fields = [];
+        }
+        if ($scope.element.show_fields.length < $scope.fields.length) {
+          $scope.element.show_fields.push('');
+        }
+      };
+      $scope.removeShowFields = function (ind) {
+        $scope.element.show_fields.splice(ind, 1);
+      };
+      $scope.addAlias = function () {
+        if (!$scope.element.alias) {
+          $scope.element.alias = [];
+        }
+        if ($scope.element.alias.length < $scope.fields.length) {
+          $scope.element.alias.push({'field':'', 'alias':''});
+        }
+      };
+      $scope.removeAlias = function (ind) {
+        $scope.element.alias.splice(ind, 1);
+      };
       $scope.loadFields = function () {
         if ($scope.element.cube) {
           $http.get('/api/element/cube/' + $scope.element.cube)

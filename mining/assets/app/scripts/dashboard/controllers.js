@@ -17,6 +17,7 @@ dashboard
         };
 
         function loadGrid(el) {
+          el.from = (el.current_page-1)*50+1;
           el.process = [];
           el.loading = true;
           var prot = 'ws';
@@ -44,6 +45,9 @@ dashboard
               el.process.push(data.data);
             } else if (data.type == 'close') {
               sock.close();
+              el.to = el.from + 49;
+              if (el.process.length < 50)
+                el.to = el.process.length;
               el.loading = false;
               $timeout(function () {
                 $scope.$apply();
@@ -238,12 +242,15 @@ dashboard
         $scope.clearFastFilters = function(el){
           $(el.widgets).each(function (key, widget) {
             if (widget.type == 'date') {
-              widget.value.from = '';
-              widget.value.until = '';
+              widget.value= {
+                'from':'',
+                'until': ''
+              };
             }else if(widget.type == 'distinct' || widget.type == 'text'){
               widget.value = '';
             }
           });
+          el.filters = {};
           $scope.applyFilters(el);
         };
 
@@ -356,7 +363,6 @@ dashboard
           sock_2.onmessage = function (e) {
             var data = JSON.parse(e.data.replace(/NaN/g, 'null'));
             if (data.type == 'data') {
-              console.log('entrou');
               el.widgets[widget_index].distinct_values = $.map(data.data,
                 function(value, index) {
                   return [value];

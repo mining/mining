@@ -7,6 +7,18 @@ var dashboard = angular.module('miningApp.dashboard', [])
       return input.replace(/_/g, ' ');
     };
   })
+  .filter('getLabel',[
+  function(){
+    return function(field, element){
+      var label = field;
+      $(element.alias).each(function(ind, alias){
+        if(alias.field == field) {
+          label = alias.alias;
+        }
+      });
+      return label;
+    };
+  }])
   .filter('dashboardGroupFilter', function() {
     return function(dashboards, group) {
       var new_dashboards = [];
@@ -17,6 +29,18 @@ var dashboard = angular.module('miningApp.dashboard', [])
         })
       });
       return new_dashboards;
+    };
+  })
+  .filter('elementFields', function() {
+    return function(columns, element) {
+      if(element.show_fields.length < 1)
+        return columns;
+      var new_columns = [];
+      $(columns).each(function(key, column){
+        if(element.show_fields.indexOf(column) >= 0)
+          new_columns.push(column);
+      });
+      return new_columns;
     };
   })
   .directive('resize', function ($window, $rootScope) {
