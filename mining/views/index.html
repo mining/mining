@@ -233,13 +233,15 @@
               'url':'/api/user/'+userData.uid,
               'type':'GET'
             }).done(function(response){
-              if(!response.uid){
+              if(response.new_user){
                 angular.module('miningApp').constant('newUser', true);
                 userData.permissions = [];
                 userData.rule = 'user';
+                userData.username = response.username;
+                userData.is_admin_group = response.is_admin_group;
               }else{
-                  angular.module('miningApp').constant('newUser', false);
-                  userData = response;
+                angular.module('miningApp').constant('newUser', false);
+                userData = response;
               }
               angular.module('miningApp').constant('getCurrentUser', userData);
               angular.bootstrap(document, ['miningApp']);
