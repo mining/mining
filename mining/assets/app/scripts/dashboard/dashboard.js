@@ -33,6 +33,8 @@ var dashboard = angular.module('miningApp.dashboard', [])
   })
   .filter('elementFields', function() {
     return function(columns, element) {
+      if(!element.show_fields)
+        return columns;
       if(element.show_fields.length < 1)
         return columns;
       var new_columns = [];
