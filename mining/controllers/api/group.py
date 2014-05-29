@@ -3,7 +3,7 @@
 from bottle import Bottle
 from bottle.ext.mongo import MongoPlugin
 
-from utils import conf
+from mining.utils import conf
 from .base import get, post, put, delete
 
 collection = 'permissions_group'

@@ -8,7 +8,7 @@ import datetime
 from redis import Redis
 from rq import Queue
 
-from utils import conf, parse_dumps
+from mining.utils import conf, parse_dumps
 from .base import get, post, put, delete
 
 

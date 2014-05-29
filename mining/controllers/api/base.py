@@ -3,7 +3,7 @@
 import json
 from bottle import response, request
 from datetime import datetime
-from utils import slugfy, parse_dumps
+from mining.utils import slugfy, parse_dumps
 
 
 def base():

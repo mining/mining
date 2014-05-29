@@ -8,14 +8,15 @@ try:
     from hashlib import sha1
 except ImportError:
     import sha
+
     sha1 = sha.sha
 
 from bottle import Bottle, request, redirect
 from bottle.ext.mongo import MongoPlugin
 
-from utils import conf, parse_dumps
+from mining.utils import conf, parse_dumps
+from mining.controllers.api.group import collection as permission_group
 from .base import get, post, put, delete
-from ..api.group import collection as permission_group_collection
 
 collection = 'user'
 
@@ -77,7 +78,6 @@ def login(mongodb):
 
 @user_app.route('/logout')
 def logout(mongodb):
-
     session = request.environ.get('beaker.session')
     session.delete()
     return redirect('/')
@@ -100,8 +100,8 @@ def user_get(mongodb, slug=None):
         _get.pop('password', None)
         _get.pop('apikey', None)
         _get['is_admin_group'] = False
-        groups = mongodb[permission_group_collection].find({
-            'admins.id':{
+        groups = mongodb[permission_group].find({
+            'admins.id': {
                 '$in': [_get.get('username', '')]
             }
         })
