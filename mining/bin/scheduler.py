@@ -10,8 +10,8 @@ from time import sleep
 from bottle.ext.mongo import MongoPlugin
 
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-from bin.mining import run
-from utils import conf, log_it
+from mining.bin.cube import run
+from mining.utils import conf, log_it
 
 
 log_it("START", "bin-scheduler")
