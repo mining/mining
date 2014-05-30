@@ -77,7 +77,7 @@ def data(mongodb, slug, ext='xls'):
     file_name = '{}/assets/exports/openmining-{}.{}'.format(
         PROJECT_PATH, element.get('cube'), ext)
     if ext == 'csv':
-        df.to_csv(file_name)
+        df.to_csv(file_name, sep=";")
         contenttype = 'text/csv'
     else:
         df.to_excel(file_name)
