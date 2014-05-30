@@ -23,6 +23,7 @@ msgstr ""
 msgid "Element"
 msgstr ""
 
+#: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/late_scheduler.html
 #: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
 msgid "Late Scheduler"
 msgstr ""
@@ -41,6 +42,10 @@ msgstr ""
 
 #: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
 msgid "Refresh"
+msgstr ""
+
+#: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/late_scheduler.html
+msgid "Refresh list"
 msgstr ""
 
 #: /home/yuri/Documentos/Projetos/mining/mining/views/index.html

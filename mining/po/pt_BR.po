@@ -34,6 +34,7 @@ msgstr "Dados"
 msgid "Element"
 msgstr "Elementos"
 
+#: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/late_scheduler.html
 #: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
 msgid "Late Scheduler"
 msgstr "Agendamentos Atrasados"
@@ -53,6 +54,10 @@ msgstr "Grupo de Permissões"
 #: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
 msgid "Refresh"
 msgstr "Atualizar"
+
+#: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/late_scheduler.html
+msgid "Refresh list"
+msgstr "Atualizar lista"
 
 #: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
 msgid "Settings"
