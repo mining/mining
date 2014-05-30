@@ -13,7 +13,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.sql import text
 from sqlalchemy.orm import sessionmaker
 
-from mining.utils import fix_render, conf, log_it
+from mining.utils import conf, log_it
+from mining.utils._pandas import fix_render
 from mining.multithread import ThreadPool
 
 from bottle.ext.mongo import MongoPlugin
