@@ -37,6 +37,7 @@
                              placeholder="From"
                              data-date-type="number"
                              data-autoclose="1"
+                             ng-change="selectDateFilter(widget, 'from')"
                              bs-datepicker
                       />
                     </div>
@@ -50,6 +51,7 @@
                              placeholder="Until"
                              data-date-type="number"
                              data-autoclose="1"
+                             ng-change="selectDateFilter(widget, 'until')"
                              bs-datepicker
                       />
                     </div>

@@ -207,6 +207,18 @@ dashboard
           }
         };
 
+        $scope.selectDateFilter = function(widget, field){
+          if(field == 'until'){
+            if(!widget.value.from || widget.value.from == ''){
+              widget.value.from = widget.value.until;
+            }
+          }else if(field == 'from'){
+            if(!widget.value.until || widget.value.until == ''){
+              widget.value.until = widget.value.from;
+            }
+          }
+        };
+
         $scope.selectFilter = function (el) {
           el.filters = {};
           el.filter_name = '';
@@ -245,12 +257,12 @@ dashboard
 
         $scope.clearFastFilters = function(el){
           $(el.widgets).each(function (key, widget) {
-            if (widget.type == 'date') {
+            if (widget.type == 'date' || widget.type == 'datetime') {
               widget.value= {
                 'from':'',
                 'until': ''
               };
-            }else if(widget.type == 'distinct' || widget.type == 'text'){
+            }else if(widget.type == 'distinct' || widget.type == 'text' || widget.type == 'int'){
               widget.value = '';
             }
           });
@@ -272,22 +284,20 @@ dashboard
               else if(val.type == 'chart_line'){
                 loadLine(val);
               }
-              if(val.scheduler_status == true){
-                if (val.scheduler_status) {
-                  if (!val.intervals) {
-                    if (val.scheduler_type == 'minutes') {
-                      val.intervals = $interval(function () {
-                        val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
-                        if (val.type == 'grid') {
-                          loadGrid(val);
-                        }else if(val.type == 'chart_bar'){
-                          loadBar(val);
-                        }
-                        else if(val.type == 'chart_line'){
-                          loadLine(val);
-                        }
-                      }, parseInt(val.scheduler_interval) * 60000);
-                    }
+              if(val.scheduler_status == true && (!$scope.selected_dashboard.refresh_elements || $scope.selected_dashboard.scheduler_status != true)){
+                if (!val.intervals) {
+                  if (val.scheduler_type == 'minutes') {
+                    val.intervals = $interval(function () {
+                      val.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
+                      if (val.type == 'grid') {
+                        loadGrid(val);
+                      }else if(val.type == 'chart_bar'){
+                        loadBar(val);
+                      }
+                      else if(val.type == 'chart_line'){
+                        loadLine(val);
+                      }
+                    }, parseInt(val.scheduler_interval) * 60000);
                   }
                 }
               }
@@ -338,13 +348,26 @@ dashboard
           }
         });
 
-        refreshDashboard();
+        if ($scope.selected_dashboard.scheduler_type && $scope.selected_dashboard.refresh_elements) {
+          if ($scope.selected_dashboard.scheduler_type == 'minutes') {
+            $scope.selected_dashboard.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
+            refreshDashboard();
+            $scope.selected_dashboard.intervals = $interval(function () {
+              $scope.selected_dashboard.last_refresh = moment().format('YYYY-MM-DDTHH:mm:ss');
+              refreshDashboard();
+            }, parseInt($scope.selected_dashboard.scheduler_interval) * 60000);
+          }
+        } else {
+          refreshDashboard();
+        }
 
         $scope.$on('$destroy', function () {
           $($scope.selected_dashboard.element).each(function (ind, val) {
             if (val.intervals)
               $interval.cancel(val.intervals);
           });
+          if ($scope.selected_dashboard.intervals)
+             $interval.cancel($scope.selected_dashboard.intervals);
         });
 
         $rootScope.$on('WINDOW_RESIZE', function (x, y) {
@@ -387,8 +410,8 @@ dashboard
           el.process = [];
           el.loading = true;
           var element = 'bar-chart-' + el.slug;
-          if (angular.element('#' + element))
-            angular.element('#' + element).html('');
+          angular.element('#' + element).html('');
+          console.log('limpou o elemento '+element);
           var prot = 'ws';
           if (window.protocol == 'https')
             prot = 'wss';

@@ -20,6 +20,29 @@
                         ng-model="dashboard.element" class="form-control">
                 <p class="help-block">Drag and drop to order elements</p>
             </div>
+            <div class="form-group">
+                <label for="dashboard_schedule_type">Scheduler</label>
+                <select class="form-control" ui-select2 id="dashboard_schedule_type" ng-change="changeSchedulerType()"
+                        ng-model="dashboard.scheduler_type">
+                    <option value="" selected="selected">No</option>
+                    <option ng-repeat="t in scheduler_types" value="[[ t.key ]]">[[ t.val ]]</option>
+                </select>
+                <div ng-show="show_h">
+                    <label>Hour</label><input class="form-control" id="hour" ng-model="hour" type="number" min="0"
+                                              max="23"/>
+                </div>
+                <div ng-show="show_m">
+                    <label>Min</label><input class="form-control" id="min" ng-model="min" type="number" min="0"
+                                             max="999999"/>
+                </div>
+                <div ng-show="dashboard.scheduler_type">
+                    <label>
+                        Refresh Elements
+                        <input id="refresh_elements" ng-model="dashboard.refresh_elements" type="checkbox" />
+                    </label>
+                </div>
+
+            </div>
             <button type="submit" class="btn btn-primary">Save</button>
             <button type="button" class="btn btn-success" ng-click="newForm()">New</button>
         </form>
