@@ -1,0 +1,66 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: mining 0.2.x\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Yuri Piratello <yuri.piratello@gmail.com>\n"
+"Language-Team: Yuri Piratello <list@openmining.io>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"X-Poedit-Language: Portuguese\n"
+"X-Poedit-Country: BRAZIL\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Connection"
+msgstr "Conexão"
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Cube"
+msgstr "Cubo"
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Dashboard Group"
+msgstr "Grupo de Dashboard"
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Data"
+msgstr "Dados"
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Element"
+msgstr "Elementos"
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Late Scheduler"
+msgstr "Agendamentos Atrasados"
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Logout"
+msgstr "Sair"
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Others"
+msgstr "Outros"
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Permission Group"
+msgstr "Grupo de Permissões"
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Refresh"
+msgstr "Atualizar"
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Settings"
+msgstr "Configurações"
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Users"
+msgstr "Usuários"
+
+#~ msgid "Search..."
+#~ msgstr "Pesquisar..."
