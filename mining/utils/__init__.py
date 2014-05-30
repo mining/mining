@@ -53,4 +53,3 @@ def parse_dumps(obj):
     if isinstance(obj, ObjectId):
         return str(obj)
     return json.JSONEncoder.default(obj)
-

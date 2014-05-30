@@ -6,7 +6,8 @@ from datetime import date, datetime
 from decimal import Decimal
 from pandas import tslib, DataFrame
 
-from mining.utils import slugfy, fix_type, fix_render, df_generate
+from mining.utils import slugfy
+from mining.utils._pandas import fix_type, fix_render, df_generate
 
 
 class df_slugfy_test(unittest.TestCase):
