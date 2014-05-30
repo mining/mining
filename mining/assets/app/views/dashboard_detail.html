@@ -53,8 +53,8 @@
                              bs-datepicker
                       />
                     </div>
-                    <!-- Text -->
-                    <div class="form-group" ng-if="widget.type == 'text'">
+                    <!-- Text / Int -->
+                    <div class="form-group" ng-if="widget.type == 'text' || widget.type == 'int'">
                       <input ng-model="widget.value" type="text" class="form-control" />
                     </div>
                     <div class="form-group" ng-if="widget.type == 'distinct'">
