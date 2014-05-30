@@ -68,6 +68,13 @@
     <div class="col-lg-6 table-responsive">
         <table class="table table-bordered table-striped table-hover">
             <thead>
+                <tr>
+                    <th colspan="4">
+                        Search: <input type="text" class="form-control" ng-model="search.$" placeholder="Type to search" />
+                    </th>
+                </tr>
+            </thead>
+            <thead>
                 <th>
                 </th>
                 <th>
@@ -75,7 +82,7 @@
                 </th>
             </thead>
             <tbody>
-                <tr ng-repeat="us in users">
+                <tr ng-repeat="us in users|filter:search|orderBy:'username'">
                     <td class="edit-delete">
                         <a ng-click="selectUser(us)" title="Edit User"><i class="fa fa-pencil"></i></a>
                         <a ng-click="changePass(us)" title="Change Password" ng-if="AuthService.getUser().rule == 'root'"><i class="fa fa-asterisk"></i></a>
