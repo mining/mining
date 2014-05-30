@@ -168,11 +168,20 @@ def process(_cube):
             c.frame()
             c.save()
         elif _cube.get('type') == 'cube_join':
-            fields = set([rel['field']
-                          for rel in _cube.get('relationship')])
-            data = concat([DataFrame(MyBucket.get(rel['cube']).data)
-                           for rel in _cube.get('relationship')],
-                          keys=fields, join='inner', ignore_index=True)
+            join_type = _cube.get('type')
+            if join_type == u'inner':
+                fields = set([rel['field']
+                              for rel in _cube.get('relationship')])
+                data = concat([DataFrame(MyBucket.get(rel['cube']).data)
+                               for rel in _cube.get('relationship')],
+                              keys=fields, join='inner', ignore_index=True)
+            elif join_type == u'left':
+                pass
+            elif join_type == u'append':
+                data = DataFrame({})
+                data = data.append([DataFrame(MyBucket.get(rel['cube']).data)
+                                    for rel in _cube.get('relationship')],
+                                   ignore_index=True)
 
             c.environment(_cube.get('type'))
             c._data(data)
