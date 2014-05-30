@@ -24,10 +24,6 @@
             </div>
             <div ng-include="templates[cube.type]" id="cube_form">
             </div>
-            <!--<label><input type="checkbox" ng-model="force_save" checked/> Force save</label>
-            <button type="submit" class="btn btn-primary"
-                    ng-disabled="(form_cube.$invalid && !cube.sql) || (!force_save && !cube_valid)">Save
-            </button>-->
             <button type="submit" class="btn btn-primary">Force Save
             </button>
             <input class="btn btn-info" type="button" value="Query test" ng-disabled="ajaxload" ng-click="testquery()"/>

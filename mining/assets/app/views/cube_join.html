@@ -1,3 +1,12 @@
+<div class="form-group">
+    <label for="cube_type">Join Type</label>
+    <select class="form-control" ui-select2 id="cube_type" ng-model="cube.cube_join_type">
+        <option value="" selected="selected"></option>
+        <option value="inner">Inner</option>
+        <option value="left">Left</option>
+        <option value="append">Append</option>
+    </select>
+</div>
 <label ng-show="cube.type=='cube_join' && cube.type">Relationsip</label>
 <div class="well" ng-show="cube.type=='cube_join' && cube.type">
     <div class="form-group row" ng-repeat="cube_relation in cube.relationship track by $index">
