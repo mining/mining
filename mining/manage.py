@@ -69,13 +69,15 @@ def static(path):
 @view('index.html')
 def index():
     return {'get_url': app.wrap_app.get_url,
-            'protocol': conf('openmining')['protocol']}
+            'protocol': conf('openmining')['protocol'],
+            'lang': conf('openmining')['lang']}
 
 
 @app.wrap_app.route('/login')
 @view('login.html')
 def login():
-    return {'get_url': app.wrap_app.get_url}
+    return {'get_url': app.wrap_app.get_url,
+            'lang': conf('openmining')['lang']}
 
 
 def main():
