@@ -117,10 +117,10 @@ var miningApp = angular.module('miningApp', [
     }])
   .run(['$rootScope', 'AlertService', '$locale', '$timeout', 'gettextCatalog',
     function ($rootScope, AlertService, $locale, $timeout, gettextCatalog) {
-      gettextCatalog.currentLanguage = 'pt_BR';
+      gettextCatalog.currentLanguage = window.lang;
       gettextCatalog.debug = true;
       $rootScope.closeAlert = AlertService.closeAlert;
-      $locale.id = 'pt-br';
+      $locale.id = window.lang;
       $rootScope.abreMenu = function(){
         $timeout(function(){
           $rootScope.$emit('WINDOW_RESIZE');
