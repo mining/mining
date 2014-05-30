@@ -14,7 +14,8 @@ var miningApp = angular.module('miningApp', [
     'ui.codemirror',
     'ui.select2',
     'ui.select2.sortable',
-    'mgcrea.ngStrap'
+    'mgcrea.ngStrap',
+    'gettext'
   ])
   .factory('AlertService', ['$rootScope', '$timeout',
     function ($rootScope, $timeout) {
@@ -114,8 +115,10 @@ var miningApp = angular.module('miningApp', [
       $interpolateProvider.startSymbol('[[');
       $interpolateProvider.endSymbol(']]');
     }])
-  .run(['$rootScope', 'AlertService', '$locale', '$timeout',
-    function ($rootScope, AlertService, $locale, $timeout) {
+  .run(['$rootScope', 'AlertService', '$locale', '$timeout', 'gettextCatalog',
+    function ($rootScope, AlertService, $locale, $timeout, gettextCatalog) {
+      gettextCatalog.currentLanguage = 'pt_BR';
+      gettextCatalog.debug = true;
       $rootScope.closeAlert = AlertService.closeAlert;
       $locale.id = 'pt-br';
       $rootScope.abreMenu = function(){
