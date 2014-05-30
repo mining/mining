@@ -243,6 +243,7 @@ admin
         {'value': "date", "label": "Date Picker"},
         {'value': "datetime", "label": "Date Time (less) Picker"},
         {'value': "text", "label": "Text Input"},
+        {'value': "int", "label": "Integer Input"},
         {'value': "distinct", "label": "Distincts"}
       ];
       $scope.cubes = Cube.query();
