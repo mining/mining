@@ -1,0 +1,57 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Connection"
+msgstr ""
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Cube"
+msgstr ""
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Dashboard Group"
+msgstr ""
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Data"
+msgstr ""
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Element"
+msgstr ""
+
+#: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/late_scheduler.html
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Late Scheduler"
+msgstr ""
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Logout"
+msgstr ""
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Others"
+msgstr ""
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Permission Group"
+msgstr ""
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Refresh"
+msgstr ""
+
+#: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/late_scheduler.html
+msgid "Refresh list"
+msgstr ""
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Settings"
+msgstr ""
+
+#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+msgid "Users"
+msgstr ""

@@ -57,7 +57,7 @@
                         </li>
                         <li class="tasks-item tasks-refresh">
                             <button ng-click="forceRefresh();" class="btn btn-danger btn-block">
-                                <i class="fa fa-refresh"></i> Refresh
+                                <i class="fa fa-refresh"></i> <span translate>Refresh</span>
                             </button>
                         </li>
                     </ul>
@@ -68,7 +68,7 @@
                         <i class="fa fa-user fa-fw"></i> [[ AuthService.getUser().username ]]  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a ng-click="AuthService.logout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a ng-click="AuthService.logout()"><i class="fa fa-sign-out fa-fw"></i> <span translate>Logout</span></a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -81,7 +81,7 @@
                 <div class="sidebar-collapse">
                     <div class="sidebar-search">
                         <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" ng-model="dashboardFilter.$" placeholder="Search...">
+                            <input type="text" class="form-control" ng-model="dashboardFilter.$" placeholder="[['Search...'|translate]]">
                             <span class="input-group-btn">
                             <button class="btn btn-default" type="button">
                                 <i class="fa fa-search"></i>
@@ -106,7 +106,7 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a class="ng-binding" ng-click="setOpenMenu('dashboard', 'outros');">Others <span class="fa arrow"></span></a>
+                                    <a class="ng-binding" ng-click="setOpenMenu('dashboard', 'outros');"><span translate>Others</span> <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level collapse" ng-class="{'in' : subMenuOpen == 'outros'}">
                                         <li ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter|filter:groupUndefined|orderBy:'name'">
                                             <a ng-href="#/dashboard/[[d.slug]]">[[d.name]]</a>
@@ -117,32 +117,32 @@
                         </li>
                         <li>
                             <a ng-href="#/admin/late-scheduler">
-                                <i class="fa fa-clock-o fa-fw"></i> Late Scheduler
+                                <i class="fa fa-clock-o fa-fw"></i> <span translate>Late Scheduler</span>
                                 <span class="badge pull-right"
                                     ng-class="{'badge-danger': late_cubes.length != '0'}"
                                 >[[ late_cubes.length ]]</span>
                             </a>
                         </li>
                         <li ng-class="{'open':inData}" ng-if="AuthService.getUser().rule != 'user'">
-                            <a ng-click="setOpenMenu('data')"><i class="fa fa-cog fa-fw"></i> Data<span class="fa arrow"></span></a>
+                            <a ng-click="setOpenMenu('data')"><i class="fa fa-cog fa-fw"></i> <span translate>Data</span><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse" ng-class="{'in': menuOpen == 'data'}">
-                                <li><a ng-href="#/admin/connection"><i class="fa fa-globe"></i> Connection</a></li>
-                                <li><a ng-href="#/admin/cube"><i class="fa fa-cube"></i> Cube</a></li>
-                                <li><a ng-href="#/admin/element"><i class="fa fa-sitemap"></i> Element</a></li>
+                                <li><a ng-href="#/admin/connection"><i class="fa fa-globe"></i> <span translate>Connection</span></a></li>
+                                <li><a ng-href="#/admin/cube"><i class="fa fa-cube"></i> <span translate>Cube</span></a></li>
+                                <li><a ng-href="#/admin/element"><i class="fa fa-sitemap"></i> <span translate>Element</span></a></li>
                                 <li><a ng-href="#/admin/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
                             </ul>
                         </li>
                         <li ng-class="{'open':inSettings}" ng-if="AuthService.getUser().rule != 'user' || AuthService.userIsAdminGroup()">
-                            <a ng-click="setOpenMenu('settings')"><i class="fa fa-cog fa-fw"></i> Settings<span class="fa arrow"></span></a>
+                            <a ng-click="setOpenMenu('settings')"><i class="fa fa-cog fa-fw"></i> <span translate>Settings</span><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse" ng-class="{'in': menuOpen == 'settings'}">
                                 <li ng-if="AuthService.getUser().rule != 'user' || AuthService.userIsAdminGroup()">
-                                    <a ng-href="#/admin/user"><i class="fa fa-user"></i> Users</a>
+                                    <a ng-href="#/admin/user"><i class="fa fa-user"></i> <span translate>Users</span></a>
                                 </li>
                                 <li ng-if="AuthService.getUser().rule == 'root'">
-                                    <a ng-href="#/admin/permissions-group"><i class="fa fa-users"></i> Permission Group</a>
+                                    <a ng-href="#/admin/permissions-group"><i class="fa fa-users"></i> <span translate>Permission Group</span></a>
                                 </li>
                                 <li ng-if="AuthService.getUser().rule == 'root'">
-                                    <a ng-href="#/admin/dashboard-group"><i class="fa fa-folder"></i> Dashboard Group</a>
+                                    <a ng-href="#/admin/dashboard-group"><i class="fa fa-folder"></i> <span translate>Dashboard Group</span></a>
                                 </li>
                             </ul>
                         </li>
@@ -197,6 +197,8 @@
     <script src="{{ get_url('assets', path='bower/highcharts-ng/dist/highcharts-ng.js') }}"></script>
     <script src="{{ get_url('assets', path='bower/raphael/raphael-min.js') }}"></script>
     <script src="{{ get_url('assets', path='bower/morris.js/morris.js') }}"></script>
+    <script src="{{ get_url('assets', path='bower/angular-gettext/dist/angular-gettext.js') }}"></script>
+    <script src="{{ get_url('assets', path='app/scripts/i18n/pt_BR.js') }}"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -221,6 +223,7 @@
     <!-- endbuild -->
     <script>
       window.protocol = '{{ protocol }}';
+      window.lang = '{{ lang }}';
       $(function() {
         $.ajax({
             'url':'/api/user/session',

@@ -224,13 +224,13 @@ dashboard
         $scope.applyFastFilters = function (el) {
           $(el.widgets).each(function (key, widget) {
             if (widget.value && (widget.value != ''|| widget.value != {})) {
-              if (widget.type == 'date') {
-                var chave = "filter__" + widget.field + "__between__datetime__:Y-:m-:d",
+              if (widget.type == 'datetime') {
+                var chave = "filter__" + widget.field + "__between__"+ widget.type +"__:Y-:m-:d",
                   ind = $scope.selected_dashboard.element.indexOf(el);
                 $scope.selected_dashboard.element[ind].filters[chave] =
                   moment(widget.value.from).format("YYYY-MM-DD") + ':' + moment(widget.value.until).format("YYYY-MM-DD");
               }else if(widget.type == 'distinct' || widget.type == 'text'){
-                var chave = "filter__" + widget.field + "__is__str",
+                var chave = "filter__" + widget.field + "__is",
                   ind = $scope.selected_dashboard.element.indexOf(el);
                 $scope.selected_dashboard.element[ind].filters[chave] = widget.value;
               }

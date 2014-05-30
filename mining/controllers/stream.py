@@ -14,7 +14,8 @@ from bottle.ext.mongo import MongoPlugin
 
 from pandas import DataFrame
 
-from mining.utils import df_generate, conf, DataFrameSearchColumn
+from mining.utils import conf
+from mining.utils._pandas import df_generate, DataFrameSearchColumn
 
 
 stream_app = Bottle()
