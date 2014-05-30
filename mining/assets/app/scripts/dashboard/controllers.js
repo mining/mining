@@ -230,7 +230,11 @@ dashboard
                 $scope.selected_dashboard.element[ind].filters[chave] =
                   moment(widget.value.from).format("YYYY-MM-DD") + ':' + moment(widget.value.until).format("YYYY-MM-DD");
               }else if(widget.type == 'distinct' || widget.type == 'text'){
-                var chave = "filter__" + widget.field + "__is",
+                var chave = "filter__" + widget.field + "__is__str",
+                  ind = $scope.selected_dashboard.element.indexOf(el);
+                $scope.selected_dashboard.element[ind].filters[chave] = widget.value;
+              }else if(widget.type == 'int'){
+                var chave = "filter__" + widget.field + "__is__int",
                   ind = $scope.selected_dashboard.element.indexOf(el);
                 $scope.selected_dashboard.element[ind].filters[chave] = widget.value;
               }
