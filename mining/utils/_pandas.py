@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import re
+import riak
 from decimal import Decimal
 from datetime import date, datetime
 
 from pandas import DataFrame, date_range, tslib, concat
 
+from mining.utils import conf
 
 def fix_type(value):
     if type(value) is str:
@@ -104,3 +106,47 @@ def DataFrameSearchColumn(df, colName, value, operator='like'):
             ndf = concat([df[df[colName] == record], ndf], ignore_index=True)
 
     return ndf
+
+
+class CubeJoin(object):
+    def __init__(self, cube):
+        self.cube = cube
+        self.data = DataFrame({})
+
+        MyClient = riak.RiakClient(
+            protocol=conf("riak")["protocol"],
+            http_port=conf("riak")["http_port"],
+            host=conf("riak")["host"])
+
+        self.MyBucket = MyClient.bucket(conf("riak")["bucket"])
+        self.MyBucket.enable_search()
+
+        method = getattr(self, cube.get('cube_join_type', 'none'))
+        method()
+
+    def inner(self):
+        fields = set([rel['field'] for rel in self.cube.get('relationship')])
+        self.data = concat([DataFrame(self.MyBucket.get(rel['cube']).data)
+                            for rel in self.cube.get('relationship')],
+                           keys=fields, join='inner', ignore_index=True,
+                           axis=1)
+        return self.data
+
+    def left(self):
+        fields = [rel['field'] for rel in self.cube.get('relationship')]
+        self.data = DataFrame({fields[0]: []})
+        for rel in self.cube.get('relationship'):
+            self.data = self.data.merge(DataFrame(
+                self.MyBucket.get(rel['cube']).data),
+                how='outer', on=fields[0])
+        return self.data
+
+    def append(self):
+        self.data = DataFrame({})
+        self.data.append([DataFrame(self.MyBucket.get(rel['cube']).data)
+                          for rel in self.cube.get('relationship')],
+                         ignore_index=True)
+        return self.data
+
+    def none(self):
+        return self.data
