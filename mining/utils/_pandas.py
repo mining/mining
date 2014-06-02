@@ -9,6 +9,7 @@ from pandas import DataFrame, date_range, tslib, concat
 
 from mining.utils import conf
 
+
 def fix_type(value):
     if type(value) is str:
         try:
