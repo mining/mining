@@ -55,6 +55,7 @@ class CubeProcess(object):
 
         self.MyBucket = MyClient.bucket(conf("riak")["bucket"])
         self.MyBucket.enable_search()
+        del _cube['_id']
         self.cube = _cube
         self.slug = self.cube['slug']
 
