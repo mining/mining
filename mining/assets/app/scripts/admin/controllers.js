@@ -252,6 +252,8 @@ admin
       $scope.fields = [];
       $scope.selectElement = function (e) {
         $scope.element = e;
+        if(!$scope.element.alias)
+          $scope.element.alias = {};
         if ($scope.element.scheduler_type == 'day') {
           $scope.show_h = true;
           $scope.show_m = true;
@@ -325,6 +327,7 @@ admin
           });
         }
         $scope.element = new Element();
+        $scope.element.alias = {};
         $scope.show_h = false;
         $scope.show_m = false;
         $scope.hour = 0;
@@ -355,17 +358,29 @@ admin
       $scope.removeWidget = function (ind) {
         $scope.element.widgets.splice(ind, 1);
       };
-      $scope.addShowFields = function () {
-        if (!$scope.element.show_fields) {
+
+      $scope.checkShowFields = function(field){
+        var checked = false;
+        $($scope.element.show_fields).each(function(ind, _field){
+          if(field == _field)
+            checked = true;
+        });
+        return checked;
+      };
+
+      $scope.selectShowFields = function(field){
+        if (!$scope.element.show_fields)
           $scope.element.show_fields = [];
-        }
-        if ($scope.element.show_fields.length < $scope.fields.length) {
-          $scope.element.show_fields.push('');
+        if($scope.element.show_fields.indexOf(field) >= 0) {
+          if($scope.element.show_fields.length > 1) {
+            $scope.element.show_fields.splice($scope.element.show_fields.indexOf(field), 1);
+          }else
+            AlertService.add('error', 'Select at least one field');
+        }else if ($scope.element.show_fields.length < $scope.fields.length) {
+          $scope.element.show_fields.push(field);
         }
       };
-      $scope.removeShowFields = function (ind) {
-        $scope.element.show_fields.splice(ind, 1);
-      };
+
       $scope.addAlias = function () {
         if (!$scope.element.alias) {
           $scope.element.alias = [];
@@ -382,6 +397,12 @@ admin
           $http.get('/api/element/cube/' + $scope.element.cube)
             .success(function (retorno) {
               $scope.fields = retorno.columns;
+              if(!$scope.element.slug)
+                $scope.element.show_fields = angular.copy(retorno.columns);
+              else{
+                if(!$scope.element.show_fields || $scope.element.show_fields.length == 0)
+                  $scope.element.show_fields = angular.copy(retorno.columns);
+              }
             })
             .error(function (retorno) {
               AlertService.add('error', 'Error!');
@@ -390,6 +411,7 @@ admin
       };
       $scope.newForm = function () {
         $scope.element = new Element();
+        $scope.element.alias = {};
         $scope.show_h = false;
         $scope.show_m = false;
         $scope.hour = 0;

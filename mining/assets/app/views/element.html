@@ -118,10 +118,10 @@
                 <tbody>
                     <tr ng-repeat="c in fields">
                         <td>
-                            <label><input type="checkbox"> [[ c ]]</label>
+                            <label><input ng-checked="checkShowFields(c);" ng-click="selectShowFields(c);" type="checkbox"> [[ c ]]</label>
                         </td>
                         <td>
-                            <input class="form-control" ng-model="element.alias[$index].alias" placeholder="Define an Alias" type="text" />
+                            <input class="form-control" ng-model="element.alias[c]" placeholder="Define an Alias" type="text" />
                         </td>
                     </tr>
                 </tbody>
@@ -152,8 +152,9 @@
         <table class="table table-bordered table-tbody-striped table-hover">
             <thead>
                 <tr>
-                    <th colspan="4" translate>
-                        Search: <input type="text" class="form-control" ng-model="search.$" placeholder="Type to search" />
+                    <th colspan="4">
+                        <span translate>Search: </span>
+                        <input type="text" class="form-control" ng-model="search.$" placeholder="Type to search" />
                     </th>
                 </tr>
             </thead>
