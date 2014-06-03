@@ -34,7 +34,7 @@
         <table class="table table-bordered table-tbody-striped">
             <thead>
                 <tr>
-                    <th colspan="5" translate>
+                    <th colspan="6" translate>
                         Search: <input type="text" class="form-control" ng-model="search.$" placeholder="Type to search" />
                     </th>
                 </tr>
@@ -47,6 +47,9 @@
             </th>
             <th translate>
                 Connection
+            </th>
+            <th translate>
+                Type
             </th>
             <th translate>
                 Scheduler
@@ -69,14 +72,17 @@
                     [[c.connection]]
                 </td>
                 <td>
+                    [[c.type]]
+                </td>
+                <td>
                     [[ c.scheduler_interval ]] [[ c.scheduler_type ]]
                 </td>
                 <td class="connection-status">
                     <i class="fa" ng-class="{'fa-thumbs-up':c.status, 'fa-thumbs-down': !c.status}"></i>
                 </td>
             </tr>
-            <!--<tr ng-show="c.scheduler_status">
-                <td colspan="2">
+            <tr ng-show="c.scheduler_status">
+                <td colspan="4">
                     Scheduler
                 </td>
                 <td>
@@ -85,7 +91,7 @@
                 <td>
                     [[ c.scheduler_interval ]]
                 </td>
-            </tr>-->
+            </tr>
             <tr class="code">
                 <td colspan="4">
                     [[ c.sql ]]
