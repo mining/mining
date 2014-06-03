@@ -11,47 +11,47 @@
     <div class="col-md-6">
         <form name="form_dashboard" accept-charset="utf-8" role="form" ng-submit="save(post)">
             <div class="form-group">
-                <label for="dashboard_name">Name</label>
+                <label for="dashboard_name" translate>Name</label>
                 <input type="text" id="dashboard_name" ng-model="dashboard.name" class="form-control">
             </div>
             <div class="form-group">
-                <label for="dashboard_elements">Elements</label>
+                <label for="dashboard_elements" translate>Elements</label>
                 <input type="hidden" multiple ui-select2-sortable sortable simple-query="queryElements" id="dashboard_elements"
                         ng-model="dashboard.element" class="form-control">
-                <p class="help-block">Drag and drop to order elements</p>
+                <p class="help-block" translate>Drag and drop to order elements</p>
             </div>
             <div class="form-group">
-                <label for="dashboard_schedule_type">Scheduler</label>
+                <label for="dashboard_schedule_type" translate>Scheduler</label>
                 <select class="form-control" ui-select2 id="dashboard_schedule_type" ng-change="changeSchedulerType()"
                         ng-model="dashboard.scheduler_type">
-                    <option value="" selected="selected">No</option>
+                    <option value="" selected="selected" translate>No</option>
                     <option ng-repeat="t in scheduler_types" value="[[ t.key ]]">[[ t.val ]]</option>
                 </select>
                 <div ng-show="show_h">
-                    <label>Hour</label><input class="form-control" id="hour" ng-model="hour" type="number" min="0"
+                    <label translate>Hour</label><input class="form-control" id="hour" ng-model="hour" type="number" min="0"
                                               max="23"/>
                 </div>
                 <div ng-show="show_m">
-                    <label>Min</label><input class="form-control" id="min" ng-model="min" type="number" min="0"
+                    <label translate>Min</label><input class="form-control" id="min" ng-model="min" type="number" min="0"
                                              max="999999"/>
                 </div>
                 <div ng-show="dashboard.scheduler_type">
                     <label>
-                        Refresh Elements
                         <input id="refresh_elements" ng-model="dashboard.refresh_elements" type="checkbox" />
+                        <span translate>Refresh Elements</span>                        
                     </label>
                 </div>
 
             </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-            <button type="button" class="btn btn-success" ng-click="newForm()">New</button>
+            <button type="submit" class="btn btn-primary" translate>Save</button>
+            <button type="button" class="btn btn-success" ng-click="newForm()" translate>New</button>
         </form>
     </div>
     <div class="col-md-6 table-responsive">
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    <th colspan="3">
+                    <th colspan="3" translate>
                         Search: <input type="text" class="form-control" ng-model="search.$" placeholder="Type to search" />
                     </th>
                 </tr>
@@ -59,10 +59,10 @@
             <thead>
             <th>
             </th>
-            <th>
+            <th translate>
                 Name
             </th>
-            <th>
+            <th translate>
                 Elements
             </th>
             </thead>

@@ -218,6 +218,10 @@ body{
 	float: right;
 	padding: 10px 0;
 }
+.page-number-items{
+	display: inline-block;
+	margin-right: 10px;
+}
 .btn-sort-disabled{
 	background: #838383;
 	border-color: #777;
@@ -301,6 +305,11 @@ body{
 	transition: all 0.4s;
 	-webkit-transition: all 0.4s;
 }
+.btn-save > span{
+	width: 84px;
+	text-align: left;
+	display: inline-block;
+}
 .btn-save input{
 	display: inline-block;
 	width: auto;
@@ -373,6 +382,9 @@ body{
 .select2-search input{
 	border-radius: 4px;
 	border-color: #ccc;
+}
+.check-list{
+	padding-left: 0;
 }
 /** Tabelas **/
 .table-scroll{

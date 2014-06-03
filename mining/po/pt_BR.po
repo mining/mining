@@ -9,63 +9,440 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"X-Poedit-Language: Portuguese\n"
-"X-Poedit-Country: BRAZIL\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 1.6.5\n"
 
-#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+msgid "<i class=\"fa fa-check\"></i> Apply"
+msgstr "<i class=\"fa fa-check\"></i> Aplicar"
+
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+msgid "<i class=\"fa fa-check\"></i> Apply Settings"
+msgstr "<i class=\"fa fa-check\"></i> Aplicar Configurações"
+
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+msgid "<i class=\"fa fa-filter\"></i> Filter"
+msgstr "<i class=\"fa fa-filter\"></i> Filtro"
+
+#: /home/padula/mining/mining/assets/app/views/home.html
+msgid "<i class=\"fa fa-folder\"></i> Others"
+msgstr "<i class=\"fa fa-folder\"></i> Outros"
+
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+msgid "<i class=\"fa fa-plus\"></i> Add Filter"
+msgstr "<i class=\"fa fa-plus\"></i> Adicionar Filtro"
+
+#: /home/padula/mining/mining/assets/app/views/element.html
+msgid "<i class=\"fa fa-plus\"></i> Order"
+msgstr "<i class=\"fa fa-plus\"></i> Ordem"
+
+#: /home/padula/mining/mining/assets/app/views/cube_join.html
+msgid "<i class=\"fa fa-plus\"></i> Relationship"
+msgstr "<i class=\"fa fa-plus\"></i> Relacionamento"
+
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+msgid "<i class=\"fa fa-trash-o\"></i> Clear"
+msgstr "<i class=\"fa fa-trash-o\"></i> Limpar"
+
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+msgid "<img src=\"/assets/image/Preloader_2.gif\"> Loading..."
+msgstr "<img src=\"/assets/image/Preloader_2.gif\"> Carregando..."
+
+#: /home/padula/mining/mining/assets/app/views/permissions_group.html
+msgid "Administrators"
+msgstr "Administradores"
+
+#: /home/padula/mining/mining/assets/app/views/permissions_group.html
+msgid "Admins"
+msgstr "Administradores"
+
+#: /home/padula/mining/mining/assets/app/views/element.html
+msgid "Alias"
+msgstr "Título"
+
+#: /home/padula/mining/mining/assets/app/views/cube_join.html
+msgid "Append"
+msgstr "Append"
+
+#: /home/padula/mining/mining/assets/app/views/element.html
+msgid "Ascending"
+msgstr "Crescente"
+
+#: /home/padula/mining/mining/assets/app/views/element.html
+msgid "Auto - Refresh"
+msgstr "Atualização Automática"
+
+#: /home/padula/mining/mining/assets/app/views/new_user.html
+msgid "Confirm"
+msgstr "Confirmar"
+
+#: /home/padula/mining/mining/assets/app/views/user.html
+msgid "Confirm New Password"
+msgstr "Confirme a nova senha"
+
+#: /home/padula/mining/mining/assets/app/views/connection.html
+#: /home/padula/mining/mining/assets/app/views/cube.html
+#: /home/padula/mining/mining/views/index.html
 msgid "Connection"
 msgstr "Conexão"
 
-#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+#: /home/padula/mining/mining/assets/app/views/cube_relational.html
+msgid "Connection <span class=\"required\">*</span>"
+msgstr "Conexão <span class=\"required\">*</span>"
+
+#: /home/padula/mining/mining/assets/app/views/cube.html
+#: /home/padula/mining/mining/assets/app/views/cube_join.html
+#: /home/padula/mining/mining/assets/app/views/element.html
+#: /home/padula/mining/mining/assets/app/views/late_scheduler.html
+#: /home/padula/mining/mining/views/index.html
 msgid "Cube"
 msgstr "Cubo"
 
-#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+#: /home/padula/mining/mining/assets/app/views/cube.html
+msgid "Cube Join"
+msgstr "Join de Cubo"
+
+#: /home/padula/mining/mining/assets/app/views/user.html
+msgid "Current Password"
+msgstr "Senha Atual"
+
+#: /home/padula/mining/mining/views/index.html
 msgid "Dashboard Group"
 msgstr "Grupo de Dashboard"
 
-#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+#: /home/padula/mining/mining/assets/app/views/dashboard_group.html
+msgid "Dashboard Groups"
+msgstr "Grupos de Dashboard"
+
+#: /home/padula/mining/mining/views/index.html
 msgid "Data"
 msgstr "Dados"
 
-#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+#: /home/padula/mining/mining/assets/app/views/element.html
+msgid "Descending"
+msgstr "Decrescente"
+
+#: /home/padula/mining/mining/assets/app/views/dashboard.html
+msgid "Drag and drop to order elements"
+msgstr "Arraste e solte para ordenar elementos"
+
+#: /home/padula/mining/mining/assets/app/views/element.html
+#: /home/padula/mining/mining/views/index.html
 msgid "Element"
 msgstr "Elementos"
 
-#: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/late_scheduler.html
-#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+#: /home/padula/mining/mining/assets/app/views/dashboard.html
+msgid "Elements"
+msgstr "Elementos"
+
+#: /home/padula/mining/mining/assets/app/views/cube_join.html
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+#: /home/padula/mining/mining/assets/app/views/element.html
+msgid "Field"
+msgstr "Campo"
+
+#: /home/padula/mining/mining/assets/app/views/element.html
+msgid "Field (x)"
+msgstr "Campo (x)"
+
+#: /home/padula/mining/mining/assets/app/views/element.html
+msgid "Field (y)"
+msgstr "Campo (y)"
+
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+msgid "First"
+msgstr "Primeira"
+
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+msgid "For range filter use: <i>xx:yy.</i>"
+msgstr "Para filtro com intervalo, use: <i>xx:yy.</i>"
+
+#: /home/padula/mining/mining/assets/app/views/cube.html
+msgid "Force Save"
+msgstr "Salvar"
+
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+msgid "Format"
+msgstr "Formato"
+
+#: /home/padula/mining/mining/assets/app/views/permissions_group.html
+msgid "Group Permissions"
+msgstr "Permissões de Grupo"
+
+#: /home/padula/mining/mining/assets/app/views/home.html
+msgid "Hello"
+msgstr "Olá"
+
+#: /home/padula/mining/mining/assets/app/views/admin.html
+msgid "Hi, {{ name }}"
+msgstr "Oi, {{ name }}"
+
+#: /home/padula/mining/mining/assets/app/views/cube_relational.html
+#: /home/padula/mining/mining/assets/app/views/dashboard.html
+#: /home/padula/mining/mining/assets/app/views/element.html
+msgid "Hour"
+msgstr "Hora"
+
+#: /home/padula/mining/mining/assets/app/views/cube_join.html
+msgid "Inner"
+msgstr "Inner"
+
+#: /home/padula/mining/mining/assets/app/views/cube_join.html
+msgid "Join Type"
+msgstr "Tipo de Join"
+
+#: /home/padula/mining/mining/assets/app/views/element.html
+msgid "Label"
+msgstr "Rótulo"
+
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+msgid "Last ([[ e.total_pages ]])"
+msgstr "Última"
+
+#: /home/padula/mining/mining/assets/app/views/late_scheduler.html
+msgid "Last Update"
+msgstr "Última Atualização"
+
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+msgid "Last refresh:"
+msgstr "Última atualização:"
+
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+msgid "Last update:"
+msgstr "Última Atualização"
+
+#: /home/padula/mining/mining/assets/app/views/late_scheduler.html
+msgid "Late"
+msgstr "Atrasada"
+
+#: /home/padula/mining/mining/assets/app/views/late_scheduler.html
+#: /home/padula/mining/mining/views/index.html
 msgid "Late Scheduler"
 msgstr "Agendamentos Atrasados"
 
-#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+#: /home/padula/mining/mining/assets/app/views/cube_join.html
+msgid "Left"
+msgstr "Left"
+
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+msgid "Load settings"
+msgstr "Carregar configurações"
+
+#: /home/padula/mining/mining/assets/app/views/late_scheduler.html
+msgid "Loading..."
+msgstr "Carregando..."
+
+#: /home/padula/mining/mining/views/index.html
 msgid "Logout"
 msgstr "Sair"
 
-#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+#: /home/padula/mining/mining/assets/app/views/cube_relational.html
+#: /home/padula/mining/mining/assets/app/views/dashboard.html
+#: /home/padula/mining/mining/assets/app/views/element.html
+msgid "Min"
+msgstr "Min"
+
+#: /home/padula/mining/mining/assets/app/views/connection.html
+#: /home/padula/mining/mining/assets/app/views/cube.html
+#: /home/padula/mining/mining/assets/app/views/dashboard.html
+#: /home/padula/mining/mining/assets/app/views/dashboard_group.html
+#: /home/padula/mining/mining/assets/app/views/element.html
+#: /home/padula/mining/mining/assets/app/views/permissions_group.html
+msgid "Name"
+msgstr "Nome"
+
+#: /home/padula/mining/mining/assets/app/views/connection.html
+#: /home/padula/mining/mining/assets/app/views/cube.html
+#: /home/padula/mining/mining/assets/app/views/dashboard.html
+#: /home/padula/mining/mining/assets/app/views/dashboard_group.html
+#: /home/padula/mining/mining/assets/app/views/element.html
+#: /home/padula/mining/mining/assets/app/views/permissions_group.html
+#: /home/padula/mining/mining/assets/app/views/user.html
+msgid "New"
+msgstr "Novo"
+
+#: /home/padula/mining/mining/assets/app/views/user.html
+msgid "New Password"
+msgstr "Nova Senha"
+
+#: /home/padula/mining/mining/assets/app/views/cube_relational.html
+#: /home/padula/mining/mining/assets/app/views/dashboard.html
+#: /home/padula/mining/mining/assets/app/views/element.html
+msgid "No"
+msgstr "Não"
+
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+msgid "Operator"
+msgstr "Operador"
+
+#: /home/padula/mining/mining/assets/app/views/element.html
+msgid "Order"
+msgstr "Ordem"
+
+#: /home/padula/mining/mining/views/index.html
 msgid "Others"
 msgstr "Outros"
 
-#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+#: /home/padula/mining/mining/assets/app/views/user.html
+msgid "Password"
+msgstr "Senha"
+
+#: /home/padula/mining/mining/views/index.html
 msgid "Permission Group"
 msgstr "Grupo de Permissões"
 
-#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+#: /home/padula/mining/mining/assets/app/views/permissions_group.html
+#: /home/padula/mining/mining/assets/app/views/user.html
+msgid "Permissions"
+msgstr "Permissões"
+
+#: /home/padula/mining/mining/assets/app/views/new_user.html
+msgid "Please confirm account"
+msgstr "Por favor, confirme a conta"
+
+#: /home/padula/mining/mining/views/index.html
 msgid "Refresh"
 msgstr "Atualizar"
 
-#: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/late_scheduler.html
+#: /home/padula/mining/mining/assets/app/views/dashboard.html
+msgid "Refresh Elements"
+msgstr "Atualizar Elementos"
+
+#: /home/padula/mining/mining/assets/app/views/late_scheduler.html
 msgid "Refresh list"
 msgstr "Atualizar lista"
 
-#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+msgid ""
+"Refreshes every [[ e.cube.scheduler_interval || selected_dashboard."
+"scheduler_interval ]] [[ e.cube.scheduler_type || selected_dashboard."
+"scheduler_type ]]"
+msgstr ""
+"Atualiza a cada [[ e.cube.scheduler_interval || selected_dashboard."
+"scheduler_interval ]] [[ e.cube.scheduler_type || selected_dashboard."
+"scheduler_type ]]"
+
+#: /home/padula/mining/mining/assets/app/views/cube.html
+msgid "Relational"
+msgstr "Relacional"
+
+#: /home/padula/mining/mining/assets/app/views/cube_join.html
+msgid "Relationsip"
+msgstr "Relacionamento"
+
+#: /home/padula/mining/mining/assets/app/views/cube_join.html
+#: /home/padula/mining/mining/assets/app/views/element.html
+msgid "Remove"
+msgstr "Remover"
+
+#: /home/padula/mining/mining/assets/app/views/user.html
+msgid "Rule"
+msgstr "Regra"
+
+#: /home/padula/mining/mining/assets/app/views/connection.html
+#: /home/padula/mining/mining/assets/app/views/dashboard.html
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+#: /home/padula/mining/mining/assets/app/views/dashboard_group.html
+#: /home/padula/mining/mining/assets/app/views/element.html
+#: /home/padula/mining/mining/assets/app/views/permissions_group.html
+#: /home/padula/mining/mining/assets/app/views/user.html
+msgid "Save"
+msgstr "Salvar"
+
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+msgid "Save Settings"
+msgstr "Salvar"
+
+#: /home/padula/mining/mining/assets/app/views/cube.html
+#: /home/padula/mining/mining/assets/app/views/cube_relational.html
+#: /home/padula/mining/mining/assets/app/views/dashboard.html
+#: /home/padula/mining/mining/assets/app/views/late_scheduler.html
+msgid "Scheduler"
+msgstr "Agendamento"
+
+#: /home/padula/mining/mining/assets/app/views/connection.html
+#: /home/padula/mining/mining/assets/app/views/cube.html
+#: /home/padula/mining/mining/assets/app/views/dashboard.html
+#: /home/padula/mining/mining/assets/app/views/dashboard_group.html
+#: /home/padula/mining/mining/assets/app/views/element.html
+#: /home/padula/mining/mining/assets/app/views/user.html
+msgid ""
+"Search: <input type=\"text\" class=\"form-control\" ng-model=\"search.$\" "
+"placeholder=\"Type to search\">"
+msgstr ""
+"Busca: <input type=\"text\" class=\"form-control\" ng-model=\"search.$\" "
+"placeholder=\"Digite para buscar\">"
+
+#: /home/padula/mining/mining/assets/app/views/element.html
+msgid "Series (line)"
+msgstr "Série (linha)"
+
+#: /home/padula/mining/mining/views/index.html
 msgid "Settings"
 msgstr "Configurações"
 
-#: /home/yuri/Documentos/Projetos/mining/mining/views/index.html
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+msgid "Settings list"
+msgstr "Lista de configurações"
+
+#: /home/padula/mining/mining/assets/app/views/element.html
+msgid "Show Fields"
+msgstr "Mostrar Campos"
+
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+msgid ""
+"Showing records <strong>[[ e.from ]]-[[ e.to ]]</strong> of a total of "
+"<strong>[[ e.total_rows ]]</strong>"
+msgstr ""
+"Exibindo itens <strong>[[ e.from ]]-[[ e.to ]]</strong> de um total de "
+"<strong>[[ e.total_rows ]]</strong>"
+
+#: /home/padula/mining/mining/assets/app/views/element.html
+msgid "Sort"
+msgstr "Ordenar"
+
+#: /home/padula/mining/mining/assets/app/views/cube.html
+msgid "Status"
+msgstr "Status"
+
+#: /home/padula/mining/mining/assets/app/views/cube.html
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+#: /home/padula/mining/mining/assets/app/views/element.html
+msgid "Type"
+msgstr "Tipo"
+
+#: /home/padula/mining/mining/assets/app/views/new_user.html
+#: /home/padula/mining/mining/assets/app/views/user.html
+msgid "Username"
+msgstr "Nome de Usuário"
+
+#: /home/padula/mining/mining/assets/app/views/user.html
+#: /home/padula/mining/mining/views/index.html
 msgid "Users"
 msgstr "Usuários"
+
+#: /home/padula/mining/mining/assets/app/views/dashboard_detail.html
+msgid "Value"
+msgstr "Valor"
+
+#: /home/padula/mining/mining/assets/app/views/home.html
+msgid "Welcome to Open Mining"
+msgstr "Seja bem-vindo ao Open Mining"
+
+#: /home/padula/mining/mining/assets/app/views/admin.html
+msgid "You're an ADMIN!!"
+msgstr "Você é um administrador!"
+
+#~ msgid "<i class=\"fa fa-plus\"></i> Field"
+#~ msgstr "<i class=\"fa fa-plus\"></i> Campo"
+
+#~ msgid ""
+#~ "Refresh Elements                        <input id=\"refresh_elements\" ng-"
+#~ "model=\"dashboard.refresh_elements\" type=\"checkbox\">"
+#~ msgstr ""
+#~ "Atualizar Elementos                        <input id=\"refresh_elements\" "
+#~ "ng-model=\"dashboard.refresh_elements\" type=\"checkbox\">"
 
 #~ msgid "Search..."
 #~ msgstr "Pesquisar..."
