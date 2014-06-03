@@ -178,7 +178,7 @@
         </form>
     </div>
     <div class="col-lg-6 table-responsive">
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered table-tbody-striped table-hover">
             <thead>
                 <tr>
                     <th colspan="4">
@@ -201,8 +201,8 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>
-            <tr ng-repeat="e in elements|filter:search|orderBy:'name'">
+            <tbody ng-repeat="e in elements|filter:search|orderBy:'name'">
+            <tr>
                 <td class="edit-delete">
                     <a ng-click="selectElement(e)" title="Edit Element"><i class="fa fa-pencil"></i></a>
                     <a ng-click="deleteElement(e)" title="Delete Element"><i class="fa fa-trash-o"></i></a>
@@ -214,7 +214,18 @@
                     [[e.type]]
                 </td>
                 <td>
-                    [[e.cube]]
+                    <span class="label label-default">[[e.cube]]</span>
+                </td>
+            </tr>
+            <tr ng-show="e.scheduler_type">
+                <td colspan="2">
+                    Auto-Refresh
+                </td>
+                <td>
+                    [[ e.scheduler_type ]]
+                </td>
+                <td>
+                    [[ e.scheduler_interval ]]
                 </td>
             </tr>
             </tbody>
