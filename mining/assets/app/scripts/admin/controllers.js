@@ -58,7 +58,7 @@ admin
         $scope.connection = c;
       };
       $scope.deleteConnection = function (connection) {
-        Connection.delete(connection);
+        Connection.delete({}, {'slug': connection.slug});
         $scope.connections.splice($scope.connections.indexOf(connection), 1);
       };
       $scope.save = function () {
@@ -175,7 +175,7 @@ admin
         }
       };
       $scope.deleteCube = function (cube) {
-        Cube.delete(cube);
+        Cube.delete({}, {'slug':cube.slug});
         $scope.cubes.splice($scope.cubes.indexOf(cube), 1);
       };
       $scope.save = function () {
@@ -277,7 +277,7 @@ admin
         return a.label
       };
       $scope.deleteElement = function (element) {
-        Element.delete(element);
+        Element.delete({}, {'slug':element.slug});
         $scope.elements.splice($scope.elements.indexOf(element), 1);
       };
       $scope.scheduler_types = [
@@ -428,7 +428,7 @@ admin
         $scope.dashboardGroup = dg;
       };
       $scope.deleteDashboardGroup = function (dg) {
-        DashboardGroup.delete(dg);
+        DashboardGroup.delete({},{'slug':dg.slug});
         $rootScope.dashboardGroups.splice($rootScope.dashboardGroups.indexOf(dd), 1);
       };
       $scope.queryDashboards = function (term, result) {
@@ -510,7 +510,7 @@ admin
         }
       };
       $scope.deleteDashboard = function (dashboard) {
-        Dashboard.delete(dashboard);
+        Dashboard.delete({},{'slug':dashboard.slug});
         $rootScope.dashboards.splice($rootScope.dashboards.indexOf(dashboard), 1);
       };
       $scope.queryElements = function (term, result) {
@@ -596,7 +596,7 @@ admin
         }
       };
       $scope.deleteUser = function (user) {
-        User.delete(user);
+        User.delete({}, {'username': user.username});
         $scope.users.splice($scope.users.indexOf(user), 1);
         $scope.newForm();
       };
