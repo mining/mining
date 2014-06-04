@@ -15,6 +15,8 @@ from mining.utils import conf, log_it
 
 
 log_it("START", "bin-scheduler")
+onrun = {}
+register = []
 
 
 def job(slug):
@@ -23,7 +25,8 @@ def job(slug):
     log_it("END JOB: {}".format(slug), "bin-scheduler")
 
 
-def rules(cube, scheduler_type='minutes', scheduler_interval=59):
+def rules(cube, scheduler_type='minutes', scheduler_interval=59,
+          dashboard=None):
     if scheduler_type:
         scheduler_type = cube.get('scheduler_type', 'minutes')
     if scheduler_interval:
@@ -37,14 +40,22 @@ def rules(cube, scheduler_type='minutes', scheduler_interval=59):
 
     t = {}
     if scheduler_type == 'minutes':
-        t = schedule.every(int(scheduler_interval)).minutes
+        env = schedule.every(int(scheduler_interval))
+        t = env.minutes
     elif scheduler_type == 'hour':
-        t = schedule.every().hour
+        env = schedule.every()
+        t = env.hour
     elif scheduler_type == 'day':
-        t = schedule.every().day
+        env = schedule.every()
+        t = env.day
 
     try:
         t.do(job, slug=cube.get('slug'))
+        jobn = cube.get("slug")
+        if dashboard:
+            jobn = u"{}-{}".format(cube.get("slug"), dashboard)
+        onrun[jobn] = env
+        register.append(jobn)
     except Exception, e:
         log_it("ERROR {}: {}".format(cube.get('slug'), e))
 
@@ -56,11 +67,9 @@ mongo = MongoPlugin(
     db=conf("mongodb")["db"],
     json_mongo=True).get_mongo()
 
-register = []
 for cube in mongo['cube'].find({'scheduler_status': True}):
     rules(cube)
     run(cube['slug'])
-    register.append(cube['slug'])
 
 for dashboard in mongo['dashboard'].find({'scheduler_status': True}):
     elements = [e['id'] for e in dashboard['element']]
@@ -70,7 +79,6 @@ for dashboard in mongo['dashboard'].find({'scheduler_status': True}):
         rules(cube, dashboard['scheduler_type'],
               dashboard['scheduler_interval'])
         run(cube['slug'])
-        register.append(cube['slug'])
 
 while True:
     for cube in mongo['cube'].find({'scheduler_status': True}):
@@ -84,8 +92,25 @@ while True:
             cube = mongo['cube'].find_one({'slug': element['cube']})
             if cube['slug'] not in register:
                 rules(cube, dashboard['scheduler_type'],
-                      dashboard['scheduler_interval'])
-                register.append(cube['slug'])
+                      dashboard['scheduler_interval'],
+                      dashboard['slug'])
+
+    for cube in mongo['cube'].find({'scheduler_status': False}):
+        if cube['slug'] in register:
+            schedule.cancel_job(onrun[cube['slug']])
+            del onrun[cube['slug']]
+            register.remove(cube['slug'])
+
+    for dashboard in mongo['dashboard'].find({'scheduler_status': False}):
+        elements = [e['id'] for e in dashboard['element']]
+        for e in elements:
+            element = mongo['element'].find_one({'slug': e})
+            cube = mongo['cube'].find_one({'slug': element['cube']})
+            jobn = u"{}-{}".format(cube['slug'], dashboard['slug'])
+            if jobn in register:
+                schedule.cancel_job(onrun[jobn])
+                del onrun[jobn]
+                register.remove(jobn)
 
     schedule.run_pending()
     sleep(1)
