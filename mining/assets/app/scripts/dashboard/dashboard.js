@@ -47,10 +47,8 @@ var dashboard = angular.module('miningApp.dashboard', [])
     return {
       link: function (scope, elem, attr){
         angular.element(elem).click(function(ev){
-          debugger;
           $timeout(function(){
             scope.$apply(function(){
-              debugger;
               $rootScope.$emit('WINDOW_RESIZE');
             });
           });
