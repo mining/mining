@@ -14,11 +14,11 @@
     </select>
 
     <div ng-show="show_h">
-        <label translate>Hour</label><input class="form-control" id="hour" ng-model="hour" type="number" min="0"
+        <label translate>Hour</label><input class="form-control" id="hour" ng-model="$parent.hour" type="number" min="0"
                                   max="23"/>
     </div>
     <div ng-show="show_m">
-        <label translate>Min</label><input class="form-control" id="min" ng-model="min" type="number" min="0"
+        <label translate>Min</label><input class="form-control" id="min" ng-model="$parent.min" type="number" min="0"
             max="999999"/>
     </div>
 </div>
