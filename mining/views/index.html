@@ -124,7 +124,7 @@
                             </a>
                         </li>
                         <li ng-class="{'open':inData}" ng-if="AuthService.getUser().rule != 'user'">
-                            <a ng-click="setOpenMenu('data')"><i class="fa fa-cog fa-fw"></i> <span translate>Data</span><span class="fa arrow"></span></a>
+                            <a ng-click="setOpenMenu('data')"><i class="fa fa-database fa-fw"></i> <span translate>Data</span><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse" ng-class="{'in': menuOpen == 'data'}">
                                 <li><a ng-href="#/admin/connection"><i class="fa fa-globe"></i> <span translate>Connection</span></a></li>
                                 <li><a ng-href="#/admin/cube"><i class="fa fa-cube"></i> <span translate>Cube</span></a></li>

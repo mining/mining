@@ -1,9 +1,9 @@
 <div class="row">
     <div class="col-lg-12">
-        <h1><i class="fa fa-sitemap"></i> Element</h1>
+        <h1><i class="fa fa-sitemap"></i> <span translate>Element</span></h1>
         <ol class="breadcrumb">
             <li><a href="#/"><i class="icon-dashboard"></i> Admin</a></li>
-            <li class="active">Element</li>
+            <li class="active" translate>Element</li>
         </ol>
     </div>
 </div>
@@ -11,11 +11,11 @@
     <div class="col-lg-6">
         <form name="form_connection" accept-charset="utf-8" role="form" ng-submit="save(cube)">
             <div class="form-group">
-                <label for="element_name">Name</label>
+                <label for="element_name" translate>Name</label>
                 <input type="text" id="element_name" ng-model="element.name" class="form-control">
             </div>
             <div class="form-group">
-                <label for="element_type">Type</label>
+                <label for="element_type" translate>Type</label>
                 <select id="element_type" ui-select2 ng-model="element.type" ng-change="loadFields()"
                         class="form-control" required>
                     <option value=""></option>
@@ -23,7 +23,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="element_cube">Cube</label>
+                <label for="element_cube" translate>Cube</label>
                 <select id="element_cube" ui-select2 ng-model="element.cube" ng-change="loadFields()"
                         class="form-control" required>
                     <option value=""></option>
@@ -31,66 +31,66 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="element_schedule_type">Auto - Refresh</label>
+                <label for="element_schedule_type" translate>Auto - Refresh</label>
                 <select class="form-control" ui-select2 id="element_schedule_type" ng-change="changeSchedulerType()"
                         ng-model="element.scheduler_type">
-                    <option value="" selected="selected">No</option>
+                    <option value="" selected="selected" translate>No</option>
                     <option ng-repeat="t in scheduler_types" value="[[ t.key ]]">[[ t.val ]]</option>
                 </select>
                 <div ng-show="show_h">
-                    <label>Hour</label><input class="form-control" id="hour" ng-model="hour" type="number" min="0"
+                    <label translate>Hour</label><input class="form-control" id="hour" ng-model="hour" type="number" min="0"
                                               max="23"/>
                 </div>
                 <div ng-show="show_m">
-                    <label>Min</label><input class="form-control" id="min" ng-model="min" type="number" min="0"
+                    <label translate>Min</label><input class="form-control" id="min" ng-model="min" type="number" min="0"
                                              max="999999"/>
                 </div>
             </div>
-            <label ng-show="element.type=='grid' && element.type">Order</label>
+            <label ng-show="element.type=='grid' && element.type" translate>Order</label>
             <div class="well" ng-show="element.type=='grid' && element.type">
                 <div class="form-group row" ng-repeat="element_order in element.orderby track by $index">
                     <div class="col-sm-5 col-md-5">
-                        <label>Field</label>
+                        <label translate>Field</label>
                         <select ui-select2 ng-model="element.orderby[$index]" class="form-control">
                             <option value=""></option>
                             <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
                         </select>
                     </div>
                     <div class="col-sm-5 col-md-5">
-                        <label>Sort</label>
+                        <label translate>Sort</label>
                         <select ui-select2 ng-model="element.orderby__order[$index]" class="form-control">
                             <option value=""></option>
-                            <option value="1">Ascending</option>
-                            <option value="0">Descending</option>
+                            <option value="1" translate>Ascending</option>
+                            <option value="0" translate>Descending</option>
                         </select>
                     </div>
                     <div class="col-sm-2 col-md-2">
                         <!--<lable class="badge badge-success">[[ $index+1 ]]</lable>-->
                         <div class="form-group">
-                            <label class="invisible">Remove</label>
+                            <label class="invisible" translate>Remove</label>
                             <button ng-click="removeOrder($index)" type="button" class="btn btn-danger btn-block"><i class="fa fa-times"></i></button>
                         </div>
                     </div>
                 </div>
-                <button ng-show="element.type=='grid'" ng-click="addOrder()" class="btn btn-default btn-lg center-block" type="button"><i class="fa fa-plus"></i> Order</button>
+                <button ng-show="element.type=='grid'" ng-click="addOrder()" class="btn btn-default btn-lg center-block" type="button" translate><i class="fa fa-plus"></i> Order</button>
             </div>
 
             <label ng-show="element.type=='grid' && element.type">Widgets</label>
             <div class="well" ng-show="element.type=='grid' && element.type">
                 <div class="form-group row" ng-repeat="element_widget in element.widgets track by $index">
                     <div class="col-xs-12 col-md-3">
-                        <label>Field</label>
+                        <label translate>Field</label>
                         <select ui-select2 ng-model="element.widgets[$index].field" class="form-control">
                             <option value=""></option>
                             <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
                         </select>
                     </div>
                     <div class="col-xs-12 col-md-4">
-                        <label>Label</label>
+                        <label translate>Label</label>
                         <input class="form-control" ng-model="element.widgets[$index].label" type="text" />
                     </div>
                     <div class="col-xs-12 col-md-3">
-                        <label>Type</label>
+                        <label translate>Type</label>
                         <select ui-select2 ng-model="element.widgets[$index].type" class="form-control">
                             <option value=""></option>
                             <option ng-repeat="wt in widget_types" value="[[ wt.value ]]">[[ wt.label ]]</option>
@@ -99,7 +99,7 @@
                     <div class="col-xs-12 col-md-2">
                         <!--<lable class="badge badge-success">[[ $index+1 ]]</lable>-->
                         <div class="form-group">
-                            <label class="invisible">Remove</label>
+                            <label class="invisible" translate>Remove</label>
                             <button ng-click="removeWidget($index)" type="button" class="btn btn-danger btn-block"><i class="fa fa-times"></i></button>
                         </div>
                     </div>
@@ -107,74 +107,45 @@
                 <button ng-show="element.type=='grid'" ng-click="addWidget()" class="btn btn-default btn-lg center-block" type="button"><i class="fa fa-plus"></i> Widget</button>
             </div>
 
-            <label ng-show="element.type=='grid' && element.type">Show Fields</label>
-            <div class="well" ng-show="element.type=='grid' && element.type">
-                <div class="form-group row" ng-repeat="show_field in element.show_fields track by $index">
-                    <div class="col-xs-12 col-md-3">
-                        <label>Field</label>
-                        <select ui-select2 ng-model="element.show_fields[$index]" class="form-control">
-                            <option value=""></option>
-                            <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
-                        </select>
-                    </div>
-                    <div class="col-xs-12 col-md-2">
-                        <!--<lable class="badge badge-success">[[ $index+1 ]]</lable>-->
-                        <div class="form-group">
-                            <label class="invisible">Remove</label>
-                            <button ng-click="removeShowFields($index)" type="button" class="btn btn-danger btn-block"><i class="fa fa-times"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <button ng-show="element.type=='grid'" ng-click="addShowFields()" class="btn btn-default btn-lg center-block" type="button"><i class="fa fa-plus"></i> Field</button>
-            </div>
-
-            <label ng-show="element.type=='grid' && element.type">Alias</label>
-            <div class="well" ng-show="element.type=='grid' && element.type">
-                <div class="form-group row" ng-repeat="alias in element.alias track by $index">
-                    <div class="col-xs-12 col-md-3">
-                        <label>Field</label>
-                        <select ui-select2 ng-model="element.alias[$index].field" class="form-control">
-                            <option value=""></option>
-                            <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
-                        </select>
-                    </div>
-                    <div class="col-xs-12 col-md-4">
-                        <label>Alias</label>
-                        <input class="form-control" ng-model="element.alias[$index].alias" type="text" />
-                    </div>
-
-                    <div class="col-xs-12 col-md-2">
-                        <!--<lable class="badge badge-success">[[ $index+1 ]]</lable>-->
-                        <div class="form-group">
-                            <label class="invisible">Remove</label>
-                            <button ng-click="removeAlias($index)" type="button" class="btn btn-danger btn-block"><i class="fa fa-times"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <button ng-show="element.type=='grid'" ng-click="addAlias()" class="btn btn-default btn-lg center-block" type="button"><i class="fa fa-plus"></i> Alias</button>
-            </div>
-            
-
+            <label ng-show="element.type=='grid' && element.type" translate>Show Fields</label>
+            <table class="table table-bordered table-striped" ng-show="element.type=='grid' && element.type">
+                <thead>
+                    <tr>
+                        <th translate>Field</th>
+                        <th translate>Alias</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="c in fields">
+                        <td>
+                            <label><input ng-checked="checkShowFields(c);" ng-click="selectShowFields(c);" type="checkbox"> [[ c ]]</label>
+                        </td>
+                        <td>
+                            <input class="form-control" ng-model="element.alias[c]" placeholder="Define an Alias" type="text" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             <div class="form-group" ng-show="element.type!='grid' && element.type">
-                <label for="element_field_x">Field (x)</label>
+                <label for="element_field_x" translate>Field (x)</label>
                 <select id="element_field_x" ui-select2 ng-model="element.field_x" class="form-control">
                     <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
                 </select>
             </div>
             <div class="form-group" ng-show="element.type!='grid' && element.type">
-                <label for="element_field_y">Field (y)</label>
+                <label for="element_field_y" translate>Field (y)</label>
                 <select id="element_field_y" ui-select2 ng-model="element.field_y" class="form-control">
                     <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
                 </select>
             </div>
             <div class="form-group" ng-show="element.type=='chart_line' && element.type">
-                <label for="element_field_series">Series (line)</label>
+                <label for="element_field_series" translate>Series (line)</label>
                 <select id="element_field_series" ui-select2 ng-model="element.field_serie" class="form-control">
                     <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-            <button type="button" class="btn btn-success" ng-click="newForm()">New</button>
+            <button type="submit" class="btn btn-primary" translate>Save</button>
+            <button type="button" class="btn btn-success" ng-click="newForm()" translate>New</button>
         </form>
     </div>
     <div class="col-lg-6 table-responsive">
@@ -182,7 +153,8 @@
             <thead>
                 <tr>
                     <th colspan="4">
-                        Search: <input type="text" class="form-control" ng-model="search.$" placeholder="Type to search" />
+                        <span translate>Search: </span>
+                        <input type="text" class="form-control" ng-model="search.$" placeholder="Type to search" />
                     </th>
                 </tr>
             </thead>
@@ -190,13 +162,13 @@
                 <tr>
                     <th>
                     </th>
-                    <th>
+                    <th translate>
                         Name
                     </th>
-                    <th>
+                    <th translate>
                         Type
                     </th>
-                    <th>
+                    <th translate>
                         Cube
                     </th>
                 </tr>

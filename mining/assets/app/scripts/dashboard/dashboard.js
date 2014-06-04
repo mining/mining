@@ -8,17 +8,15 @@ var dashboard = angular.module('miningApp.dashboard', [])
     };
   })
   .filter('getLabel',[
-  function(){
-    return function(field, element){
-      var label = field;
-      $(element.alias).each(function(ind, alias){
-        if(alias.field == field) {
-          label = alias.alias;
-        }
-      });
-      return label;
-    };
-  }])
+    function(){
+      return function(field, element){
+        var label = field;
+        if(element.alias)
+          if(element.alias.hasOwnProperty(field))
+            label = element.alias[field];
+        return label;
+      };
+    }])
   .filter('dashboardGroupFilter', function() {
     return function(dashboards, group) {
       var new_dashboards = [];

@@ -79,10 +79,10 @@
                   <!-- Options -->
                   <div class="form-group filtro-widget">
                     <div class="form-group">
-                      <button class="btn btn-primary" type="button" ng-click="applyFastFilters(e)">
+                      <button class="btn btn-primary" type="button" ng-click="applyFastFilters(e)" translate>
                           <i class="fa fa-check"></i> Apply
                       </button>
-                      <button class="btn btn-default" type="button" ng-click="clearFastFilters(e)">
+                      <button class="btn btn-default" type="button" ng-click="clearFastFilters(e)" translate>
                           <i class="fa fa-trash-o"></i> Clear
                       </button>
                     </div>
@@ -108,14 +108,14 @@
                   <fieldset class="filtros-painel-box filtros-painel-destaque">
                     <div class="row">
                       <div class="form-group col-lg-12 filtros-load">
-                        <label>Load settings</label>
+                        <label translate>Load settings</label>
                         <select class="form-control" ui-select2="{allowClear:true}" ng-model="e.selected_filter" ng-change="selectFilter(e)" data-placeholder="Select one saved setting">
                           <option value=""></option>
                           <option ng-repeat="f in e.saved_filters" value="[[ $index ]]">[[ f.name ]]</option>
                         </select>
                       </div>
                       <div class="col-lg-12">
-                      <label>Settings list</label>
+                      <label translate>Settings list</label>
                         <ul class="settings-list">
                           <li ng-repeat="(key,val) in e.filters">
                             <button ng-click="removeFilter(e, key)" class="botao-remove"><i class="glyphicon glyphicon-remove"></i></button> [[ key ]] : [[ val ]]
@@ -127,11 +127,11 @@
                         <span class="btn btn-info btn-save"
                               ng-click="startSaveSettings(e);"
                               ng-class="{'btn-save-active': e.saveSettings}">
-                          <i class="fa fa-save"></i> Save Settings
+                          <i class="fa fa-save"></i> <span translate>Save Settings</span>
                           <input type="text" ng-click="clickInputSettings($event);" ng-model="e.filter_name" class="form-control" placeholder="Setting name"><strong><i class="fa fa-save"></i>
-                          <a ng-click="saveFilters(e);" ng-disabled="!e.filter_name || e.filters.length<0">Save</a></strong>
+                          <a ng-click="saveFilters(e);" ng-disabled="!e.filter_name || e.filters.length<0" translate>Save</a></strong>
                         </span>
-                        <button type="button" class="btn btn-primary" ng-click="applyFilters(e)"><i class="fa fa-check"></i> Apply Settings</button>
+                        <button type="button" class="btn btn-primary" ng-click="applyFilters(e)" translate><i class="fa fa-check"></i> Apply Settings</button>
                       </div>
                       <!--<div class="panel">
                         <div class="panel-heading">
@@ -150,38 +150,38 @@
                 <div class="col-lg-6 col-md-pull-6  col-md-6">
                   <form role="form" name="form-filter">
                     <fieldset class="filtros-painel-box">
-                      <legend class="col-lg-12"><i class="fa fa-filter"></i> Filter</legend>
+                      <legend class="col-lg-12" translate><i class="fa fa-filter"></i> Filter</legend>
                       <div class="row">
                         <div class="form-group col-lg-6">
-                          <label>Field</label>
+                          <label translate>Field</label>
                           <select ui-select2 class="form-control" ng-model="e.filter_field" required>
                               <option ng-repeat="c in e.columns" value="[[ c ]]">[[ c ]]</option>
                           </select>
                         </div>
                         <div class="form-group col-lg-6">
-                          <label>Type</label>
+                          <label translate>Type</label>
                           <select ui-select2 class="form-control" ng-model="e.filter_type" required>
                               <option ng-repeat="ty in types" value="[[ ty.key ]]">[[ ty.value ]]</option>
                           </select>
                         </div>
                         <div class="form-group col-lg-6">
-                          <label>Operator</label>
+                          <label translate>Operator</label>
                           <select ui-select2 class="form-control" ng-model="e.filter_operator" required>
                               <option ng-repeat="op in operators" value="[[ op.key ]]" >[[ op.value ]]</option>
                           </select>
                         </div>
 
                         <div class="form-group col-lg-6">
-                          <label>Format</label>
+                          <label translate>Format</label>
                           <input class="form-control" ng-model="e.filter_format" required="">
                         </div>
                         <div class="form-group col-lg-12">
-                          <label>Value</label>
+                          <label translate>Value</label>
                           <input class="form-control" ng-model="e.filter_value" required="">
-                          <p class="help-block">For range filter use: <i>xx:yy.</i></p>
+                          <p class="help-block" translate>For range filter use: <i>xx:yy.</i></p>
                         </div>
                         <div class="col-lg-12 filtros-action">
-                          <button type="button" class="btn btn-info" ng-click="addFilter(e)"><i class="fa fa-plus"></i> Add Filter</button>
+                          <button type="button" class="btn btn-info" ng-click="addFilter(e)" translate><i class="fa fa-plus"></i> Add Filter</button>
                         </div>
                       </div>
                     </fieldset>
@@ -217,9 +217,9 @@
             </div>
           </div>
           <div class="sort-export-update">
-            <a class="btn" title="Resume">
-              Showing [[ '50' ]] records [[ e.from ]]-[[ e.to ]] of a total of [[ e.total_rows ]]
-            </a>
+            <span class="page-number-items" title="Resume" translate>
+              Showing records <strong>[[ e.from ]]-[[ e.to ]]</strong> of a total of <strong>[[ e.total_rows ]]</strong>
+            </span>
             <a class="btn btn-sort-disabled" title="Enable advanced sorting"><i class="fa fa-sort-alpha-asc"></i></a>
             <div class="export-buttons dropdown">
               <a class="btn btn-default dropdown-toggle" title="Export"><i class="fa fa-download"></i>  <span class="caret"></span></a>
@@ -235,11 +235,11 @@
             <div class="update-refresh dropdown">
               <a class="btn btn-default dropdown-toggle" title="Last update and last refresh"><i class="fa fa-clock-o"></i> <span class="caret"></span></a>
               <ul class="dropdown-menu dropdown-menu-right">
-                <li class="update-item"><strong>Last update: </strong><br>[[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]</li>
+                <li class="update-item"><strong translate>Last update: </strong><br>[[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]</li>
                 <li class="divider" ng-show="selected_dashboard.scheduler_type == 'minutes' || e.cube.scheduler_type == 'minutes'"></li>
                 <li class="update-item" ng-show="selected_dashboard.scheduler_type == 'minutes' || e.cube.scheduler_type == 'minutes'">
-                    <strong>Last refresh: </strong><br>[[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]<br>
-                    <span class="text-muted">Refreshes every [[ e.cube.scheduler_interval || selected_dashboard.scheduler_interval ]] [[ e.cube.scheduler_type || selected_dashboard.scheduler_type ]]</span>
+                    <strong translate>Last refresh: </strong><br>[[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]<br>
+                    <span class="text-muted" translate>Refreshes every [[ e.cube.scheduler_interval || selected_dashboard.scheduler_interval ]] [[ e.cube.scheduler_type || selected_dashboard.scheduler_type ]]</span>
                 </li>
               </ul>
             </div>
@@ -247,7 +247,7 @@
         </div>
         <div class="panel-body">
           <div class="table-responsive table-scroll" id="element-[[ e.slug ]]">
-            <div ng-show="e.loading" class="loading"><img src="/assets/image/Preloader_2.gif"> Loading...</div>
+            <div ng-show="e.loading" class="loading" translate><img src="/assets/image/Preloader_2.gif"> Loading...</div>
             <table class="process table table-bordered table-hover table-striped" ng-show="!e.loading">
               <thead>
                 <tr>
@@ -275,13 +275,13 @@
           <div class="text-center">
             <ul class="pagination">
               <li ng-class="{'disabled':e.current_page==1}">
-                <a ng-click="selectPage(e,1)">First (1)</a>
+                <a ng-click="selectPage(e,1)" translate>First</a>
               </li>
               <li ng-repeat="(key,p) in getPages(e)" ng-class="{'active':p==e.current_page}">
                 <a ng-click="selectPage(e, p)">[[ p ]]</a>
               </li>
               <li ng-class="{'disabled':e.current_page==e.total_pages}">
-                <a ng-click="selectPage(e, e.total_pages)">Last ([[ e.total_pages ]])</a>
+                <a ng-click="selectPage(e, e.total_pages)" translate>Last ([[ e.total_pages ]])</a>
               </li>
             </ul>
           </div>
@@ -357,10 +357,10 @@
                   <!-- Options -->
                   <div class="form-group filtro-widget">
                     <div class="form-group">
-                      <button class="btn btn-primary" type="button" ng-click="applyFastFilters(e)">
+                      <button class="btn btn-primary" type="button" ng-click="applyFastFilters(e)" translate>
                           <i class="fa fa-check"></i> Apply
                       </button>
-                      <button class="btn btn-default" type="button" ng-click="clearFastFilters(e)">
+                      <button class="btn btn-default" type="button" ng-click="clearFastFilters(e)" translate>
                           <i class="fa fa-trash-o"></i> Clear
                       </button>
                     </div>
@@ -386,14 +386,14 @@
                   <fieldset class="filtros-painel-box filtros-painel-destaque">
                     <div class="row">
                       <div class="form-group col-lg-12 filtros-load">
-                        <label>Load settings</label>
+                        <label translate>Load settings</label>
                         <select class="form-control" ui-select2="{allowClear:true}" ng-model="e.selected_filter" ng-change="selectFilter(e)" data-placeholder="Select one saved setting">
                           <option value=""></option>
                           <option ng-repeat="f in e.saved_filters" value="[[ $index ]]">[[ f.name ]]</option>
                         </select>
                       </div>
                       <div class="col-lg-12">
-                      <label>Settings list</label>
+                      <label translate>Settings list</label>
                         <ul class="settings-list">
                           <li ng-repeat="(key,val) in e.filters">
                             <button ng-click="removeFilter(e, key)" class="botao-remove"><i class="glyphicon glyphicon-remove"></i></button> [[ key ]] : [[ val ]]
@@ -405,11 +405,11 @@
                         <span class="btn btn-info btn-save"
                               ng-click="startSaveSettings(e);"
                               ng-class="{'btn-save-active': e.saveSettings}">
-                          <i class="fa fa-save"></i> Save Settings
+                          <i class="fa fa-save"></i> <span translate>Save Settings</span>
                           <input type="text" ng-click="clickInputSettings($event);" ng-model="e.filter_name" class="form-control" placeholder="Setting name"><strong><i class="fa fa-save"></i>
-                          <a ng-click="saveFilters(e);" ng-disabled="!e.filter_name || e.filters.length<0">Save</a></strong>
+                          <a ng-click="saveFilters(e);" ng-disabled="!e.filter_name || e.filters.length<0" translate>Save</a></strong>
                         </span>
-                        <button type="button" class="btn btn-primary" ng-click="applyFilters(e)"><i class="fa fa-check"></i> Apply Settings</button>
+                        <button type="button" class="btn btn-primary" ng-click="applyFilters(e)" translate><i class="fa fa-check"></i> Apply Settings</button>
                       </div>
                       <!--<div class="panel">
                         <div class="panel-heading">
@@ -428,38 +428,38 @@
                 <div class="col-lg-6 col-md-pull-6  col-md-6">
                   <form role="form" name="form-filter">
                     <fieldset class="filtros-painel-box">
-                      <legend class="col-lg-12"><i class="fa fa-filter"></i> Filter</legend>
+                      <legend class="col-lg-12" translate><i class="fa fa-filter"></i> Filter</legend>
                       <div class="row">
                         <div class="form-group col-lg-6">
-                          <label>Field</label>
+                          <label translate>Field</label>
                           <select ui-select2 class="form-control" ng-model="e.filter_field" required>
                               <option ng-repeat="c in e.columns" value="[[ c ]]">[[ c ]]</option>
                           </select>
                         </div>
                         <div class="form-group col-lg-6">
-                          <label>Type</label>
+                          <label translate>Type</label>
                           <select ui-select2 class="form-control" ng-model="e.filter_type" required>
                               <option ng-repeat="ty in types" value="[[ ty.key ]]">[[ ty.value ]]</option>
                           </select>
                         </div>
                         <div class="form-group col-lg-6">
-                          <label>Operator</label>
+                          <label translate>Operator</label>
                           <select ui-select2 class="form-control" ng-model="e.filter_operator" required>
                               <option ng-repeat="op in operators" value="[[ op.key ]]" >[[ op.value ]]</option>
                           </select>
                         </div>
 
                         <div class="form-group col-lg-6">
-                          <label>Format</label>
+                          <label translate>Format</label>
                           <input class="form-control" ng-model="e.filter_format" required="">
                         </div>
                         <div class="form-group col-lg-12">
-                          <label>Value</label>
+                          <label translate>Value</label>
                           <input class="form-control" ng-model="e.filter_value" required="">
-                          <p class="help-block">For range filter use: <i>xx:yy.</i></p>
+                          <p class="help-block" translate>For range filter use: <i>xx:yy.</i></p>
                         </div>
                         <div class="col-lg-12 filtros-action">
-                          <button type="button" class="btn btn-info" ng-click="addFilter(e)"><i class="fa fa-plus"></i> Add Filter</button>
+                          <button type="button" class="btn btn-info" ng-click="addFilter(e)" translate><i class="fa fa-plus"></i> Add Filter</button>
                         </div>
                       </div>
                     </fieldset>
@@ -498,11 +498,11 @@
             <div class="update-refresh dropdown">
               <a class="btn btn-default dropdown-toggle" title="Last update and last refresh"><i class="fa fa-clock-o"></i> <span class="caret"></span></a>
               <ul class="dropdown-menu dropdown-menu-right">
-                <li class="update-item"><strong>Last update: </strong><br>[[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]</li>
+                <li class="update-item"><strong translate>Last update: </strong><br>[[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]</li>
                 <li class="divider" ng-show="selected_dashboard.scheduler_type == 'minutes' || e.cube.scheduler_type == 'minutes'"></li>
                 <li class="update-item" ng-show="selected_dashboard.scheduler_type == 'minutes' || e.cube.scheduler_type == 'minutes'">
-                    <strong>Last refresh: </strong><br>[[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]<br>
-                    <span class="text-muted">Refreshes every [[ e.cube.scheduler_interval || selected_dashboard.scheduler_interval ]] [[ e.cube.scheduler_type || selected_dashboard.scheduler_type ]]</span>
+                    <strong translate>Last refresh: </strong><br>[[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]<br>
+                    <span class="text-muted" translate>Refreshes every [[ e.cube.scheduler_interval || selected_dashboard.scheduler_interval ]] [[ e.cube.scheduler_type || selected_dashboard.scheduler_type ]]</span>
                 </li>
               </ul>
             </div>
@@ -510,7 +510,7 @@
         </div>
         <div class="panel-body">
           <!-- <barchart xkey="el.xkey" ykeys="el.ykeys" labels="el.labels" data="e.process" index="[[ $index ]]"></barchart> -->
-          <div ng-show="e.loading" class="loading"><img src="/assets/image/Preloader_2.gif"> Loading...</div>
+          <div ng-show="e.loading" class="loading" translate><img src="/assets/image/Preloader_2.gif"> Loading...</div>
           <div id="bar-chart-[[e.slug]]">
           </div>
         </div>
@@ -586,10 +586,10 @@
                   <!-- Options -->
                   <div class="form-group filtro-widget">
                     <div class="form-group">
-                      <button class="btn btn-primary" type="button" ng-click="applyFastFilters(e)">
+                      <button class="btn btn-primary" type="button" ng-click="applyFastFilters(e)" translate>
                           <i class="fa fa-check"></i> Apply
                       </button>
-                      <button class="btn btn-default" type="button" ng-click="clearFastFilters(e)">
+                      <button class="btn btn-default" type="button" ng-click="clearFastFilters(e)" translate>
                           <i class="fa fa-trash-o"></i> Clear
                       </button>
                     </div>
@@ -615,14 +615,14 @@
                   <fieldset class="filtros-painel-box filtros-painel-destaque">
                     <div class="row">
                       <div class="form-group col-lg-12 filtros-load">
-                        <label>Load settings</label>
+                        <label translate>Load settings</label>
                         <select class="form-control" ui-select2="{allowClear:true}" ng-model="e.selected_filter" ng-change="selectFilter(e)" data-placeholder="Select one saved setting">
                           <option value=""></option>
                           <option ng-repeat="f in e.saved_filters" value="[[ $index ]]">[[ f.name ]]</option>
                         </select>
                       </div>
                       <div class="col-lg-12">
-                      <label>Settings list</label>
+                      <label translate>Settings list</label>
                         <ul class="settings-list">
                           <li ng-repeat="(key,val) in e.filters">
                             <button ng-click="removeFilter(e, key)" class="botao-remove"><i class="glyphicon glyphicon-remove"></i></button> [[ key ]] : [[ val ]]
@@ -634,11 +634,11 @@
                         <span class="btn btn-info btn-save"
                               ng-click="startSaveSettings(e);"
                               ng-class="{'btn-save-active': e.saveSettings}">
-                          <i class="fa fa-save"></i> Save Settings
+                          <i class="fa fa-save"></i> <span  translate>Save Settings</span>
                           <input type="text" ng-click="clickInputSettings($event);" ng-model="e.filter_name" class="form-control" placeholder="Setting name"><strong><i class="fa fa-save"></i>
-                          <a ng-click="saveFilters(e);" ng-disabled="!e.filter_name || e.filters.length<0">Save</a></strong>
+                          <a ng-click="saveFilters(e);" ng-disabled="!e.filter_name || e.filters.length<0" translate>Save</a></strong>
                         </span>
-                        <button type="button" class="btn btn-primary" ng-click="applyFilters(e)"><i class="fa fa-check"></i> Apply Settings</button>
+                        <button type="button" class="btn btn-primary" ng-click="applyFilters(e)" translate><i class="fa fa-check"></i> Apply Settings</button>
                       </div>
                       <!--<div class="panel">
                         <div class="panel-heading">
@@ -657,38 +657,38 @@
                 <div class="col-lg-6 col-md-pull-6  col-md-6">
                   <form role="form" name="form-filter">
                     <fieldset class="filtros-painel-box">
-                      <legend class="col-lg-12"><i class="fa fa-filter"></i> Filter</legend>
+                      <legend class="col-lg-12" translate><i class="fa fa-filter"></i> Filter</legend>
                       <div class="row">
                         <div class="form-group col-lg-6">
-                          <label>Field</label>
+                          <label translate>Field</label>
                           <select ui-select2 class="form-control" ng-model="e.filter_field" required>
                               <option ng-repeat="c in e.columns" value="[[ c ]]">[[ c ]]</option>
                           </select>
                         </div>
                         <div class="form-group col-lg-6">
-                          <label>Type</label>
+                          <label translate>Type</label>
                           <select ui-select2 class="form-control" ng-model="e.filter_type" required>
                               <option ng-repeat="ty in types" value="[[ ty.key ]]">[[ ty.value ]]</option>
                           </select>
                         </div>
                         <div class="form-group col-lg-6">
-                          <label>Operator</label>
+                          <label translate>Operator</label>
                           <select ui-select2 class="form-control" ng-model="e.filter_operator" required>
                               <option ng-repeat="op in operators" value="[[ op.key ]]" >[[ op.value ]]</option>
                           </select>
                         </div>
 
                         <div class="form-group col-lg-6">
-                          <label>Format</label>
+                          <label translate>Format</label>
                           <input class="form-control" ng-model="e.filter_format" required="">
                         </div>
                         <div class="form-group col-lg-12">
-                          <label>Value</label>
+                          <label translate>Value</label>
                           <input class="form-control" ng-model="e.filter_value" required="">
-                          <p class="help-block">For range filter use: <i>xx:yy.</i></p>
+                          <p class="help-block" translate>For range filter use: <i>xx:yy.</i></p>
                         </div>
                         <div class="col-lg-12 filtros-action">
-                          <button type="button" class="btn btn-info" ng-click="addFilter(e)"><i class="fa fa-plus"></i> Add Filter</button>
+                          <button type="button" class="btn btn-info" ng-click="addFilter(e)" translate><i class="fa fa-plus"></i> Add Filter</button>
                         </div>
                       </div>
                     </fieldset>
@@ -727,18 +727,18 @@
             <div class="update-refresh dropdown">
               <a class="btn btn-default dropdown-toggle" title="Last update and last refresh"><i class="fa fa-clock-o"></i> <span class="caret"></span></a>
               <ul class="dropdown-menu dropdown-menu-right">
-                <li class="update-item"><strong>Last update: </strong><br>[[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]</li>
+                <li class="update-item"><strong translate>Last update: </strong><br>[[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]</li>
                 <li class="divider" ng-show="selected_dashboard.scheduler_type == 'minutes' || e.cube.scheduler_type == 'minutes'"></li>
                 <li class="update-item" ng-show="selected_dashboard.scheduler_type == 'minutes' || e.cube.scheduler_type == 'minutes'">
-                    <strong>Last refresh: </strong><br>[[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]<br>
-                    <span class="text-muted">Refreshes every [[ e.cube.scheduler_interval || selected_dashboard.scheduler_interval ]] [[ e.cube.scheduler_type || selected_dashboard.scheduler_type ]]</span>
+                    <strong translate>Last refresh: </strong><br>[[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]<br>
+                    <span class="text-muted" translate>Refreshes every [[ e.cube.scheduler_interval || selected_dashboard.scheduler_interval ]] [[ e.cube.scheduler_type || selected_dashboard.scheduler_type ]]</span>
                 </li>
               </ul>
             </div>
           </div>
         </div>
-        <div class="panel-body" emWidthSource emWidthTarget>
-          <div ng-show="e.loading" class="loading"><img src="/assets/image/Preloader_2.gif"> Loading...</div>
+        <div class="panel-body" resize emWidthSource emWidthTarget>
+          <div ng-show="e.loading" class="loading" translate><img src="/assets/image/Preloader_2.gif"> Loading...</div>
           <div id="chart-line-[[e.slug]]">
           </div>
         </div>
