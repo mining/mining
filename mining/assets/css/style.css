@@ -460,8 +460,9 @@ table.process > thead > tr > th{
 .edit-delete a{
 	padding: 3px 6px;
 }
-tbody td .label + .label{
-	margin-left: 5px;
+.multi-labels .label{
+	display: inline-block;
+	margin-right: 5px;
 }
 .connection-status .fa-thumbs-up{
 	color: #00AC00;
