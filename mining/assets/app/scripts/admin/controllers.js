@@ -58,7 +58,7 @@ admin
         $scope.connection = c;
       };
       $scope.deleteConnection = function (connection) {
-        Connection.delete(connection);
+        Connection.delete({}, {'slug': connection.slug});
         $scope.connections.splice($scope.connections.indexOf(connection), 1);
       };
       $scope.save = function () {
@@ -175,7 +175,7 @@ admin
         }
       };
       $scope.deleteCube = function (cube) {
-        Cube.delete(cube);
+        Cube.delete({}, {'slug':cube.slug});
         $scope.cubes.splice($scope.cubes.indexOf(cube), 1);
       };
       $scope.save = function () {
@@ -252,6 +252,8 @@ admin
       $scope.fields = [];
       $scope.selectElement = function (e) {
         $scope.element = e;
+        if(!$scope.element.alias)
+          $scope.element.alias = {};
         if ($scope.element.scheduler_type == 'day') {
           $scope.show_h = true;
           $scope.show_m = true;
@@ -275,7 +277,7 @@ admin
         return a.label
       };
       $scope.deleteElement = function (element) {
-        Element.delete(element);
+        Element.delete({}, {'slug':element.slug});
         $scope.elements.splice($scope.elements.indexOf(element), 1);
       };
       $scope.scheduler_types = [
@@ -325,6 +327,7 @@ admin
           });
         }
         $scope.element = new Element();
+        $scope.element.alias = {};
         $scope.show_h = false;
         $scope.show_m = false;
         $scope.hour = 0;
@@ -355,17 +358,29 @@ admin
       $scope.removeWidget = function (ind) {
         $scope.element.widgets.splice(ind, 1);
       };
-      $scope.addShowFields = function () {
-        if (!$scope.element.show_fields) {
+
+      $scope.checkShowFields = function(field){
+        var checked = false;
+        $($scope.element.show_fields).each(function(ind, _field){
+          if(field == _field)
+            checked = true;
+        });
+        return checked;
+      };
+
+      $scope.selectShowFields = function(field){
+        if (!$scope.element.show_fields)
           $scope.element.show_fields = [];
-        }
-        if ($scope.element.show_fields.length < $scope.fields.length) {
-          $scope.element.show_fields.push('');
+        if($scope.element.show_fields.indexOf(field) >= 0) {
+          if($scope.element.show_fields.length > 1) {
+            $scope.element.show_fields.splice($scope.element.show_fields.indexOf(field), 1);
+          }else
+            AlertService.add('error', 'Select at least one field');
+        }else if ($scope.element.show_fields.length < $scope.fields.length) {
+          $scope.element.show_fields.push(field);
         }
       };
-      $scope.removeShowFields = function (ind) {
-        $scope.element.show_fields.splice(ind, 1);
-      };
+
       $scope.addAlias = function () {
         if (!$scope.element.alias) {
           $scope.element.alias = [];
@@ -382,6 +397,12 @@ admin
           $http.get('/api/element/cube/' + $scope.element.cube)
             .success(function (retorno) {
               $scope.fields = retorno.columns;
+              if(!$scope.element.slug)
+                $scope.element.show_fields = angular.copy(retorno.columns);
+              else{
+                if(!$scope.element.show_fields || $scope.element.show_fields.length == 0)
+                  $scope.element.show_fields = angular.copy(retorno.columns);
+              }
             })
             .error(function (retorno) {
               AlertService.add('error', 'Error!');
@@ -390,6 +411,7 @@ admin
       };
       $scope.newForm = function () {
         $scope.element = new Element();
+        $scope.element.alias = {};
         $scope.show_h = false;
         $scope.show_m = false;
         $scope.hour = 0;
@@ -406,7 +428,7 @@ admin
         $scope.dashboardGroup = dg;
       };
       $scope.deleteDashboardGroup = function (dg) {
-        DashboardGroup.delete(dg);
+        DashboardGroup.delete({},{'slug':dg.slug});
         $rootScope.dashboardGroups.splice($rootScope.dashboardGroups.indexOf(dd), 1);
       };
       $scope.queryDashboards = function (term, result) {
@@ -442,11 +464,53 @@ admin
       $scope.elements = Element.query();
       $scope.dashboard = new Dashboard();
 
+      $scope.scheduler_types = [
+         {key: 'minutes', val: 'minutes'}
+ //        {key: 'hour', val: 'hour'},
+ //        {key: 'day', val: 'day'}
+      ];
+      $scope.show_h = false;
+      $scope.show_m = false;
+      $scope.hour = 0;
+      $scope.min = 0;
+      $scope.changeSchedulerType = function () {
+        if ($scope.dashboard.scheduler_type == 'day') {
+          $scope.show_h = true;
+          $scope.show_m = true;
+        } else if ($scope.dashboard.scheduler_type == 'minutes') {
+          $scope.show_h = false;
+          $scope.show_m = true;
+        } else if ($scope.dashboard.scheduler_type == 'hour') {
+          $scope.show_h = true;
+          $scope.show_m = false;
+        } else {
+          $scope.show_h = false;
+          $scope.show_m = false;
+        }
+      };
+
       $scope.selectDashboard = function (d) {
         $scope.dashboard = d;
+        if ($scope.dashboard.scheduler_type == 'day') {
+          $scope.show_h = true;
+          $scope.show_m = true;
+          $scope.hour = parseInt($scope.dashboard.scheduler_interval.split(':')[0]);
+          $scope.min = parseInt($scope.dashboard.scheduler_interval.split(':')[1]);
+        } else if ($scope.dashboard.scheduler_type == 'minutes') {
+          $scope.min = parseInt($scope.dashboard.scheduler_interval);
+          $scope.show_h = false;
+          $scope.show_m = true;
+        } else if ($scope.dashboard.scheduler_type == 'hour') {
+          $scope.hour = parseInt($scope.dashboard.scheduler_interval);
+          $scope.show_h = true;
+          $scope.show_m = false;
+        } else {
+          $scope.show_h = false;
+          $scope.show_m = false;
+        }
       };
       $scope.deleteDashboard = function (dashboard) {
-        Dashboard.delete(dashboard);
+        Dashboard.delete({},{'slug':dashboard.slug});
         $rootScope.dashboards.splice($rootScope.dashboards.indexOf(dashboard), 1);
       };
       $scope.queryElements = function (term, result) {
@@ -460,6 +524,19 @@ admin
         result($filter('filter')(ls, term));
       };
       $scope.save = function (dashboard) {
+        $scope.dashboard.scheduler_status = false;
+        if ($scope.dashboard.scheduler_type) {
+          $scope.dashboard.scheduler_status = true;
+          if ($scope.dashboard.scheduler_type == 'day') {
+            $scope.dashboard.scheduler_interval = mining.utils.padLeft(parseInt($scope.hour), 2) + ':' + mining.utils.padLeft(parseInt($scope.min), 2);
+          } else if ($scope.dashboard.scheduler_type == 'minutes') {
+            $scope.dashboard.scheduler_interval = parseInt($scope.min);
+          } else if ($scope.dashboard.scheduler_type == 'hour') {
+            $scope.dashboard.scheduler_interval = parseInt($scope.hour);
+          }
+        } else {
+          $scope.dashboard.scheduler_status = false;
+        }
         if ($scope.dashboard.slug) {
           $scope.dashboard.status = false;
           Dashboard.update({'slug': $scope.dashboard.slug}, $scope.dashboard);
@@ -519,7 +596,7 @@ admin
         }
       };
       $scope.deleteUser = function (user) {
-        User.delete(user);
+        User.delete({}, {'username': user.username});
         $scope.users.splice($scope.users.indexOf(user), 1);
         $scope.newForm();
       };

@@ -1,5 +1,5 @@
 numpy==1.8.0
-pandas==0.13.1
+pandas==0.14.0
 ipython==1.1.0
 SQLAlchemy==0.9.1
 bottle
@@ -14,6 +14,7 @@ python-dateutil
 nose
 redis
 rq
+openpyxl==1.8.6
 xlwt
 gevent
 schedule

@@ -8,17 +8,15 @@ var dashboard = angular.module('miningApp.dashboard', [])
     };
   })
   .filter('getLabel',[
-  function(){
-    return function(field, element){
-      var label = field;
-      $(element.alias).each(function(ind, alias){
-        if(alias.field == field) {
-          label = alias.alias;
-        }
-      });
-      return label;
-    };
-  }])
+    function(){
+      return function(field, element){
+        var label = field;
+        if(element.alias)
+          if(element.alias.hasOwnProperty(field))
+            label = element.alias[field];
+        return label;
+      };
+    }])
   .filter('dashboardGroupFilter', function() {
     return function(dashboards, group) {
       var new_dashboards = [];
@@ -45,28 +43,19 @@ var dashboard = angular.module('miningApp.dashboard', [])
       return new_columns;
     };
   })
-  .directive('resize', function ($window, $rootScope) {
+  .directive('changeMenu', ['$window', '$rootScope', '$timeout' ,function ($window, $rootScope, $timeout) {
     return {
       link: function (scope, elem, attr){
-        scope.__width = 0;
-
-        scope.$watch('__width', function (newValue, oldValue) {
-            $rootScope.$emit('WINDOW_RESIZE');
-        });
-        scope.$watch(function(){
-          scope.__width = elem.width();
-        });
-        var win = angular.element($window);
-        win.bind("resize",function(e){
-          $rootScope.$emit('WINDOW_RESIZE');
-        });
-        elem.bind('resize', function () {
-            $rootScope.$emit('WINDOW_RESIZE');
-            scope.$apply();
+        angular.element(elem).click(function(ev){
+          $timeout(function(){
+            scope.$apply(function(){
+              $rootScope.$emit('WINDOW_RESIZE');
+            });
+          });
         });
       }
     }
-  })
+  }])
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
       .when('/dashboard/:slug', {

@@ -7,14 +7,13 @@ import traceback
 from datetime import datetime
 
 from pandas import DataFrame
-from pandas.tools.merge import concat
 
 from sqlalchemy import create_engine
 from sqlalchemy.sql import text
 from sqlalchemy.orm import sessionmaker
 
 from mining.utils import conf, log_it
-from mining.utils._pandas import fix_render
+from mining.utils._pandas import fix_render, CubeJoin
 from mining.multithread import ThreadPool
 
 from bottle.ext.mongo import MongoPlugin
@@ -56,6 +55,7 @@ class CubeProcess(object):
 
         self.MyBucket = MyClient.bucket(conf("riak")["bucket"])
         self.MyBucket.enable_search()
+        del _cube['_id']
         self.cube = _cube
         self.slug = self.cube['slug']
 
@@ -154,31 +154,19 @@ def process(_cube):
             db=conf("mongodb")["db"],
             json_mongo=True).get_mongo()
 
-        MyClient = riak.RiakClient(
-            protocol=conf("riak")["protocol"],
-            http_port=conf("riak")["http_port"],
-            host=conf("riak")["host"])
-
-        MyBucket = MyClient.bucket(conf("riak")["bucket"])
-        MyBucket.enable_search()
-
         c = CubeProcess(_cube)
         if _cube.get('type') == 'relational':
             c.load()
             c.frame()
             c.save()
         elif _cube.get('type') == 'cube_join':
-            fields = set([rel['field']
-                          for rel in _cube.get('relationship')])
-            data = concat([DataFrame(MyBucket.get(rel['cube']).data)
-                           for rel in _cube.get('relationship')],
-                          keys=fields, join='inner', ignore_index=True)
-
             c.environment(_cube.get('type'))
-            c._data(data)
-            c._keys(data.columns.values)
+            cube_join = CubeJoin(_cube)
+            c._data(cube_join.none())
+            c._keys(cube_join.none().columns.values)
             c.frame()
             c.save()
+
     except Exception, e:
         log_it(e, "bin-mining")
         log_it(traceback.format_exc(), "bin-mining")
