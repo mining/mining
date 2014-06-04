@@ -12,6 +12,7 @@ var report = angular.module('miningApp.report', [])
     ];
     $rootScope.types = [
       {key: 'date', value: 'Date'},
+      {key: 'datetime', value: 'DateTime'},
       {key: 'int', value: 'Integer'},
       {key: 'str', value: 'String'}
     ];
