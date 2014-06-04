@@ -1,9 +1,9 @@
 <div class="row">
     <div class="col-lg-12">
-        <h1><i class="fa fa-globe"></i> Connection</h1>
+        <h1><i class="fa fa-globe"></i> <span translate>Connection</span></h1>
         <ol class="breadcrumb">
             <li><a href="/"><i class="icon-dashboard"></i> Admin</a></li>
-            <li class="active">Connection</li>
+            <li class="active" translate>Connection</li>
         </ol>
     </div>
 </div>
@@ -11,23 +11,23 @@
     <div class="col-lg-6">
         <form name="form_connection" accept-charset="utf-8" role="form" ng-submit="save(post)">
             <div class="form-group">
-                <label for="connection_name">Name</label>
+                <label for="connection_name" translate>Name</label>
                 <input type="text" id="connection_name" ng-model="connection.name" class="form-control">
             </div>
             <div class="form-group">
-                <label for="connection_connection">Connection</label>
+                <label for="connection_connection" translate>Connection</label>
                 <input type="text" id="connection_connection" ng-model="connection.connection" class="form-control">
                 <p class="help-block">mysql://[user]:[password]@[host][:port]/[database]</p>
             </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-            <button type="button" class="btn btn-success" ng-click="newForm()">New</button>
+            <button type="submit" class="btn btn-primary" translate>Save</button>
+            <button type="button" class="btn btn-success" ng-click="newForm()" translate>New</button>
         </form>
     </div>
     <div class="col-lg-6 table-responsive">
         <table class="table table-bordered table-hover table-striped">
             <thead>
                 <tr>
-                    <th colspan="3">
+                    <th colspan="3" translate>
                         Search: <input type="text" class="form-control" ng-model="search.$" placeholder="Type to search" />
                     </th>
                 </tr>
@@ -35,10 +35,10 @@
             <thead>
                 <th>
                 </th>
-                <th>
+                <th translate>
                     Name
                 </th>
-                <th>
+                <th translate>
                     Connection
                 </th>
             </thead>

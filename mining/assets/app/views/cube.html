@@ -1,9 +1,9 @@
 <div class="row">
     <div class="col-lg-12">
-        <h1><i class="fa fa-cube"></i> Cube</h1>
+        <h1><i class="fa fa-cube"></i> <span translate>Cube</span></h1>
         <ol class="breadcrumb">
             <li><a href="#/"><i class="icon-dashboard"></i> Admin</a></li>
-            <li class="active">Cube</li>
+            <li class="active" translate>Cube</li>
         </ol>
     </div>
 </div>
@@ -11,30 +11,30 @@
     <div class="col-lg-6">
         <form name="form_cube" accept-charset="utf-8" role="form" ng-submit="save(cube)">
             <div class="form-group">
-                <label for="cube_name">Name <span class="required">*</span></label>
+                <label for="cube_name"><span translate>Name</span> <span class="required">*</span></label>
                 <input type="text" id="cube_name" ng-model="cube.name" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="cube_type">Type</label>
+                <label for="cube_type" translate>Type</label>
                 <select class="form-control" ui-select2 id="cube_type" ng-model="cube.type">
                     <option value="" selected="selected"></option>
-                    <option value="relational">Relational</option>
-                    <option value="cube_join">Cube Join</option>
+                    <option value="relational" translate>Relational</option>
+                    <option value="cube_join" translate>Cube Join</option>
                 </select>
             </div>
             <div ng-include="templates[cube.type]" id="cube_form">
             </div>
-            <button type="submit" class="btn btn-primary">Force Save
+            <button type="submit" class="btn btn-primary" translate>Force Save
             </button>
             <input class="btn btn-info" type="button" value="Query test" ng-disabled="ajaxload" ng-click="testquery()"/>
-            <button type="button" class="btn btn-success" ng-click="newForm()">New</button>
+            <button type="button" class="btn btn-success" ng-click="newForm()" translate>New</button>
         </form>
     </div>
     <div class="col-lg-6 table-responsive">
         <table class="table table-bordered table-tbody-striped">
             <thead>
                 <tr>
-                    <th colspan="5">
+                    <th colspan="6" translate>
                         Search: <input type="text" class="form-control" ng-model="search.$" placeholder="Type to search" />
                     </th>
                 </tr>
@@ -42,16 +42,19 @@
             <thead>
             <th>
             </th>
-            <th>
+            <th translate>
                 Name
             </th>
-            <th>
+            <th translate>
                 Connection
             </th>
-            <th>
+            <th translate>
+                Type
+            </th>
+            <th translate>
                 Scheduler
             </th>
-            <th>
+            <th translate>
                 Status
             </th>
             </thead>
@@ -69,14 +72,17 @@
                     [[c.connection]]
                 </td>
                 <td>
+                    [[c.type]]
+                </td>
+                <td>
                     [[ c.scheduler_interval ]] [[ c.scheduler_type ]]
                 </td>
                 <td class="connection-status">
                     <i class="fa" ng-class="{'fa-thumbs-up':c.status, 'fa-thumbs-down': !c.status}"></i>
                 </td>
             </tr>
-            <!--<tr ng-show="c.scheduler_status">
-                <td colspan="2">
+            <tr ng-show="c.scheduler_status">
+                <td colspan="4">
                     Scheduler
                 </td>
                 <td>
@@ -85,7 +91,7 @@
                 <td>
                     [[ c.scheduler_interval ]]
                 </td>
-            </tr>-->
+            </tr>
             <tr class="code">
                 <td colspan="4">
                     [[ c.sql ]]

@@ -24,7 +24,6 @@ dashboard
           if (window.protocol == 'https')
             prot = 'wss';
           var API_URL = prot + "://" + location.host + "/stream/data/" + el.slug + "?";
-          console.log(API_URL);
           for (var key in el.filters) {
             API_URL += key + "=" + el.filters[key] + "&";
           }
@@ -110,7 +109,6 @@ dashboard
             newFilter['slug'] = el._filter['slug'];
             newFilter.$update()
               .then(function (response) {
-                debugger;
                 $(el.saved_filters).each(function (ind, filt) {
                   if (filt.slug == el._filter.slug)
                     el.saved_filters[ind] = response;
@@ -411,7 +409,6 @@ dashboard
           el.loading = true;
           var element = 'bar-chart-' + el.slug;
           angular.element('#' + element).html('');
-          console.log('limpou o elemento '+element);
           var prot = 'ws';
           if (window.protocol == 'https')
             prot = 'wss';
