@@ -90,6 +90,10 @@ var dashboard = angular.module('miningApp.dashboard', [])
           subMenu = '';
         $rootScope.subMenuOpen = subMenu;
       };
+      $rootScope.$watch('dashboardFilter.$', function(newVal, oldVal){
+        if(newVal && newVal != "")
+          $rootScope.menuOpen = 'dashboard';
+      });
       $rootScope.groupUndefined = function(dashboard) {
         var ret = true;
         $($rootScope.dashboardGroups).each(function(key_group, group){
