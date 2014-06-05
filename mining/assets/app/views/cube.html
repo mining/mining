@@ -75,7 +75,8 @@
                     [[c.type]]
                 </td>
                 <td>
-                    [[ c.scheduler_interval ]] [[ c.scheduler_type ]]
+                    <span ng-if="c.scheduler_type">[[ c.scheduler_interval ]] [[ c.scheduler_type ]]</span>
+                    <span ng-if="!c.scheduler_type">--</span>
                 </td>
                 <td class="connection-status">
                     <i class="fa" ng-class="{'fa-thumbs-up':c.status, 'fa-thumbs-down': !c.status}"></i>

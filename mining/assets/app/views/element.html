@@ -152,7 +152,7 @@
         <table class="table table-bordered table-tbody-striped table-hover">
             <thead>
                 <tr>
-                    <th colspan="4">
+                    <th colspan="5">
                         <span translate>Search: </span>
                         <input type="text" class="form-control" ng-model="search.$" placeholder="Type to search" />
                     </th>
@@ -167,6 +167,9 @@
                     </th>
                     <th translate>
                         Type
+                    </th>
+                    <th translate>
+                        Auto - Refresh
                     </th>
                     <th translate>
                         Cube
@@ -186,18 +189,11 @@
                     [[e.type]]
                 </td>
                 <td>
+                    <span ng-if="e.scheduler_type">[[ e.scheduler_interval ]] [[ e.scheduler_type ]]</span>
+                    <span ng-if="!e.scheduler_type">--</span>
+                </td>
+                <td>
                     <span class="label label-default">[[e.cube]]</span>
-                </td>
-            </tr>
-            <tr ng-show="e.scheduler_type">
-                <td colspan="2">
-                    Auto-Refresh
-                </td>
-                <td>
-                    [[ e.scheduler_type ]]
-                </td>
-                <td>
-                    [[ e.scheduler_interval ]]
                 </td>
             </tr>
             </tbody>
