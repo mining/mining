@@ -70,12 +70,12 @@ class CubeProcess(object):
             _sql = _sql[:-1]
         self.sql = u"""SELECT * FROM ({}) AS CUBE;""".format(_sql)
 
-        connection = self.mongo['connection'].find_one({
+        self.connection = self.mongo['connection'].find_one({
             'slug': self.cube['connection']})['connection']
 
         log_it("CONNECT IN RELATION DATA BASE: {}".format(self.slug),
                "bin-mining")
-        e = create_engine(connection, **conf('openmining')['sql_conn_params'])
+        e = create_engine(self.connection, **conf('openmining')['sql_conn_params'])
         Session = sessionmaker(bind=e)
         session = Session()
 
@@ -126,11 +126,12 @@ class CubeProcess(object):
         log_it("SAVE COLUMNS ON RIAK: {}".format(self.slug),
                "bin-mining")
         self.MyBucket.new(u'{}-columns'.format(self.slug), data=json.dumps(
-            [c for c in self.df.columns])).store()
+                          self.keys)).store()
 
         log_it("SAVE CONNECT ON RIAK: {}".format(self.slug),
                "bin-mining")
-        self.MyBucket.new(u'{}-connect'.format(self.slug), data=c).store()
+        self.MyBucket.new(u'{}-connect'.format(self.slug),
+                          data=self.connection).store()
 
         log_it("SAVE SQL ON RIAK: {}".format(self.slug),
                "bin-mining")
