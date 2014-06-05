@@ -65,7 +65,7 @@ def cube_post(mongodb, slug=None):
     Queue(connection=Redis()).enqueue_call(
         func='mining.bin.cube.run',
         args=(cube['slug'],),
-        timeout=580
+        timeout=1200
     )
 
     return ret
@@ -78,7 +78,7 @@ def cube_put(mongodb, slug=None):
     Queue(connection=Redis()).enqueue_call(
         func='mining.bin.cube.run',
         args=(cube['slug'],),
-        timeout=580
+        timeout=1200
     )
 
     return ret
