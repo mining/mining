@@ -81,7 +81,7 @@
                 <div class="sidebar-collapse">
                     <div class="sidebar-search">
                         <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" ng-model="dashboardFilter.$" placeholder="[['Search...'|translate]]">
+                            <input type="text" class="form-control" ng-model="dashboardFilter.$" placeholder="Search...">
                             <span class="input-group-btn">
                             <button class="btn btn-default" type="button">
                                 <i class="fa fa-search"></i>
@@ -94,9 +94,9 @@
                 <!-- /.sidebar-collapse -->
                 <div class="sidebar-collapse side-menu-scroll">
                     <ul class="nav" id="side-menu">
-                        <li ng-class="{'open':inDashboard}">
+                        <li ng-class="{'open':inDashboard || dashboardFilter.$}">
                             <a ng-click="setOpenMenu('dashboard');"><i class="fa fa-dashboard fa-fw"></i> Dashboard<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level collapse" ng-class="{'in' : menuOpen == 'dashboard'}">
+                            <ul ng-show="!dashboardFilter.$" class="nav nav-second-level collapse" ng-class="{'in' : menuOpen == 'dashboard'}">
                                 <li ng-repeat="group in dashboardGroups|checkGroupsPermissions|orderBy:'name'">
                                     <a ng-click="setOpenMenu('dashboard', group.slug);">[[ group.name ]] <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level collapse" ng-class="{'in' : subMenuOpen == group.slug}">
@@ -112,6 +112,11 @@
                                             <a ng-href="#/dashboard/[[d.slug]]">[[d.name]]</a>
                                         </li>
                                     </ul>
+                                </li>
+                            </ul>
+                            <ul ng-show="dashboardFilter.$" class="nav nav-second-level collapse" ng-class="{'in' : menuOpen == 'dashboard'}">
+                                <li ng-repeat="d in dashboards|checkDashboardPermission|filter:dashboardFilter|orderBy:'name'">
+                                    <a ng-href="#/dashboard/[[d.slug]]">[[d.name]]</a>
                                 </li>
                             </ul>
                         </li>
