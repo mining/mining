@@ -16,6 +16,8 @@ def fix_type(value):
             return value.decode('utf-8')
         except UnicodeDecodeError:
             return value.decode('latin1')
+    elif type(value) in [int, float]:
+        return value
     elif type(value) is tslib.Timestamp:
         try:
             return value.strftime("%Y-%m-%d %H:%M:%S")
@@ -28,7 +30,7 @@ def fix_type(value):
             return datetime(1900, 01, 01).strftime()
     elif type(value) is Decimal:
         return float(value)
-    return value
+    return str(value)
 
 
 def fix_render(_l):
