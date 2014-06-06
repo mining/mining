@@ -1,7 +1,7 @@
 Open Mining
 ===========
 
-.. image:: https://raw.github.com/avelino/mining/master/assets/image/openmining.io.png
+.. image:: https://raw.github.com/avelino/mining/master/mining/assets/image/openmining.io.png
     :alt: OpenMining
 
 .. image:: https://travis-ci.org/avelino/mining.png?branch=master

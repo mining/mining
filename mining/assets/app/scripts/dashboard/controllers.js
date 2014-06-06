@@ -55,6 +55,14 @@ dashboard
           };
         }
 
+        $scope.getRefreshElementDetail = function(el){
+          if($scope.selected_dashboard.scheduler_type && $scope.selected_dashboard.refresh_elements){
+            return $scope.selected_dashboard.scheduler_interval + ' ' + $scope.selected_dashboard.scheduler_type;
+          }else if(el.cube.scheduler_type){
+            return el.cube.scheduler_interval + ' ' + el.cube.scheduler_type;
+          }
+        };
+
         $scope.getPages = function (el) {
           el.pages = [];
           for (var x = el.current_page - 3; x <= el.current_page + 3; x++) {
