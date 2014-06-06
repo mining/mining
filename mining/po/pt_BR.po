@@ -314,6 +314,10 @@ msgid "Refresh list"
 msgstr "Atualizar lista"
 
 #: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/dashboard_detail.html
+msgid "Refreshes every"
+msgstr "Atualiza a cada"
+
+#: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/dashboard_detail.html
 msgid "Refreshes every [[ e.cube.scheduler_interval || selected_dashboard.scheduler_interval ]] [[ e.cube.scheduler_type || selected_dashboard.scheduler_type ]]"
 msgstr "Atualiza a cada [[ e.cube.scheduler_interval || selected_dashboard.scheduler_interval ]] [[ e.cube.scheduler_type || selected_dashboard.scheduler_type ]]"
 
@@ -355,17 +359,13 @@ msgstr "Salvar"
 msgid "Scheduler"
 msgstr "Agendamento"
 
-#: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/element.html
-msgid "Search:"
-msgstr "Pesquisar:"
-
 #: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/connection.html
-#: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/cube.html
 #: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/dashboard.html
 #: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/dashboard_group.html
+#: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/element.html
 #: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/user.html
-msgid "Search: <input type=\"text\" class=\"form-control\" ng-model=\"search.$\" placeholder=\"Type to search\">"
-msgstr "Busca: <input type=\"text\" class=\"form-control\" ng-model=\"search.$\" placeholder=\"Digite para buscar\">"
+msgid "Search:"
+msgstr "Pesquisar:"
 
 #: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/element.html
 msgid "Series (line)"
@@ -422,6 +422,13 @@ msgstr "Seja bem-vindo ao Open Mining"
 #: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/admin.html
 msgid "You're an ADMIN!!"
 msgstr "Você é um administrador!"
+
+#~ msgid ""
+#~ "Search: <input type=\"text\" class=\"form-control\" ng-model=\"search.$\" "
+#~ "placeholder=\"Type to search\">"
+#~ msgstr ""
+#~ "Busca: <input type=\"text\" class=\"form-control\" ng-model=\"search.$\" "
+#~ "placeholder=\"Digite para buscar\">"
 
 #~ msgid "<i class=\"fa fa-plus\"></i> Field"
 #~ msgstr "<i class=\"fa fa-plus\"></i> Campo"

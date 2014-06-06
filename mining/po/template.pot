@@ -304,6 +304,10 @@ msgid "Refresh list"
 msgstr ""
 
 #: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/dashboard_detail.html
+msgid "Refreshes every"
+msgstr ""
+
+#: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/dashboard_detail.html
 msgid "Refreshes every [[ e.cube.scheduler_interval || selected_dashboard.scheduler_interval ]] [[ e.cube.scheduler_type || selected_dashboard.scheduler_type ]]"
 msgstr ""
 
@@ -345,16 +349,12 @@ msgstr ""
 msgid "Scheduler"
 msgstr ""
 
-#: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/element.html
-msgid "Search:"
-msgstr ""
-
 #: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/connection.html
-#: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/cube.html
 #: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/dashboard.html
 #: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/dashboard_group.html
+#: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/element.html
 #: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/user.html
-msgid "Search: <input type=\"text\" class=\"form-control\" ng-model=\"search.$\" placeholder=\"Type to search\">"
+msgid "Search:"
 msgstr ""
 
 #: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/element.html

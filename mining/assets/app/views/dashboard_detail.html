@@ -236,10 +236,10 @@
               <a class="btn btn-default dropdown-toggle" title="Last update and last refresh"><i class="fa fa-clock-o"></i> <span class="caret"></span></a>
               <ul class="dropdown-menu dropdown-menu-right">
                 <li class="update-item"><strong translate>Last update: </strong><br>[[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]</li>
-                <li class="divider" ng-show="selected_dashboard.scheduler_type == 'minutes' || e.cube.scheduler_type == 'minutes'"></li>
-                <li class="update-item" ng-show="selected_dashboard.scheduler_type == 'minutes' || e.cube.scheduler_type == 'minutes'">
+                <li class="divider" ng-if="selected_dashboard.scheduler_type == 'minutes' || e.cube.scheduler_type == 'minutes'"></li>
+                <li class="update-item" ng-if="selected_dashboard.scheduler_type == 'minutes' || e.cube.scheduler_type == 'minutes'">
                     <strong translate>Last refresh: </strong><br>[[ e.last_refresh|date:'yyyy-MM-dd HH:mm:ss' ]]<br>
-                    <span class="text-muted" translate>Refreshes every [[ e.cube.scheduler_interval || selected_dashboard.scheduler_interval ]] [[ e.cube.scheduler_type || selected_dashboard.scheduler_type ]]</span>
+                    <span class="text-muted"><span translate>Refreshes every</span> [[ getRefreshElementDetail(e) ]]</span>
                 </li>
               </ul>
             </div>

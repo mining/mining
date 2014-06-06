@@ -158,7 +158,7 @@ admin.controller('ElementCtrl', ['$scope', 'Cube', 'Element', 'AlertService', '$
       $scope.removeAlias = function (ind) {
         $scope.element.alias.splice(ind, 1);
       };
-      $scope.loadFields = function () {
+      $scope.loadFields = function (clean) {
         if ($scope.element.cube) {
           $http.get('/api/element/cube/' + $scope.element.cube)
             .success(function (retorno) {
@@ -171,6 +171,8 @@ admin.controller('ElementCtrl', ['$scope', 'Cube', 'Element', 'AlertService', '$
                   Object.keys($scope.element).length > 0)
                   $scope.element.show_fields = angular.copy(retorno.columns);
               }
+              if (clean)
+                $scope.element.show_fields = angular.copy(retorno.columns);
             })
             .error(function (retorno) {
               AlertService.add('error', 'Error!');
