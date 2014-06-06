@@ -58,8 +58,8 @@ dashboard
         $scope.getRefreshElementDetail = function(el){
           if($scope.selected_dashboard.scheduler_type && $scope.selected_dashboard.refresh_elements){
             return $scope.selected_dashboard.scheduler_interval + ' ' + $scope.selected_dashboard.scheduler_type;
-          }else if(el.cube.scheduler_type){
-            return el.cube.scheduler_interval + ' ' + el.cube.scheduler_type;
+          }else if(el.scheduler_type){
+            return el.scheduler_interval + ' ' + el.scheduler_type;
           }
         };
 
