@@ -13,7 +13,8 @@ var dashboard = angular.module('miningApp.dashboard', [])
         var label = field;
         if(element.alias)
           if(element.alias.hasOwnProperty(field))
-            label = element.alias[field];
+            if (element.alias[field] != '')
+              label = element.alias[field];
         return label;
       };
     }])

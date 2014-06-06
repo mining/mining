@@ -163,16 +163,31 @@ admin.controller('ElementCtrl', ['$scope', 'Cube', 'Element', 'AlertService', '$
           $http.get('/api/element/cube/' + $scope.element.cube)
             .success(function (retorno) {
               $scope.fields = retorno.columns;
-              if (!$scope.element.slug)
+              if (!$scope.element.slug) {
                 $scope.element.show_fields = angular.copy(retorno.columns);
+                $scope.element.alias = {};
+                $(retorno.columns).each(function(ind, field){
+                  $scope.element.alias[field] = undefined;
+                });
+              }
               else {
                 if (!$scope.element.show_fields ||
                   $scope.element.show_fields.length == 0 ||
-                  Object.keys($scope.element).length > 0)
+                  Object.keys($scope.element).length > 0) {
                   $scope.element.show_fields = angular.copy(retorno.columns);
+                  $scope.element.alias = {};
+                  $(retorno.columns).each(function(ind, field){
+                    $scope.element.alias[field] = undefined;
+                  });
+                }
               }
-              if (clean)
+              if (clean) {
                 $scope.element.show_fields = angular.copy(retorno.columns);
+                $scope.element.alias = {};
+                $(retorno.columns).each(function(ind, field){
+                  $scope.element.alias[field] = undefined;
+                });
+              }
             })
             .error(function (retorno) {
               AlertService.add('error', 'Error!');
