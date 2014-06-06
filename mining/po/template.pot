@@ -307,10 +307,6 @@ msgstr ""
 msgid "Refreshes every"
 msgstr ""
 
-#: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/dashboard_detail.html
-msgid "Refreshes every [[ e.cube.scheduler_interval || selected_dashboard.scheduler_interval ]] [[ e.cube.scheduler_type || selected_dashboard.scheduler_type ]]"
-msgstr ""
-
 #: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/cube.html
 msgid "Relational"
 msgstr ""
@@ -389,6 +385,10 @@ msgstr ""
 #: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/dashboard_detail.html
 #: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/element.html
 msgid "Type"
+msgstr ""
+
+#: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/dashboard_detail.html
+msgid "Update every"
 msgstr ""
 
 #: /home/yuri/Documentos/Projetos/mining/mining/assets/app/views/new_user.html
