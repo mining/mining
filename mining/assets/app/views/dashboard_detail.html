@@ -237,7 +237,7 @@
               <ul class="dropdown-menu dropdown-menu-right">
                 <li class="update-item">
                     <strong translate>Last update: </strong><br>[[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]
-                    <span class="text-muted"><span translate>Update every</span> [[ e.cube.scheduler_interval ]] [[ e.cube.scheduler_type ]]</span>
+                    <span ng-if="e.cube.scheduler_type" class="text-muted"><span translate>Update every</span> [[ e.cube.scheduler_interval ]] [[ e.cube.scheduler_type ]]</span>
                 </li>
                 <li class="divider" ng-if="(selected_dashboard.scheduler_type == 'minutes' &&selected_dashboard.refresh_elements ) || e.scheduler_type == 'minutes'"></li>
                 <li class="update-item" ng-if="(selected_dashboard.scheduler_type == 'minutes' &&selected_dashboard.refresh_elements ) || e.scheduler_type == 'minutes'">
@@ -503,7 +503,7 @@
               <ul class="dropdown-menu dropdown-menu-right">
                 <li class="update-item">
                     <strong translate>Last update: </strong><br>[[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]
-                    <span class="text-muted"><span translate>Update every</span> [[ e.cube.scheduler_interval ]] [[ e.cube.scheduler_type ]]</span>
+                    <span ng-if="e.cube.scheduler_type" class="text-muted"><span translate>Update every</span> [[ e.cube.scheduler_interval ]] [[ e.cube.scheduler_type ]]</span>
                 </li>
                 <li class="divider" ng-if="(selected_dashboard.scheduler_type == 'minutes' &&selected_dashboard.refresh_elements ) || e.scheduler_type == 'minutes'"></li>
                 <li class="update-item" ng-if="(selected_dashboard.scheduler_type == 'minutes' &&selected_dashboard.refresh_elements ) || e.scheduler_type == 'minutes'">
@@ -735,7 +735,7 @@
               <ul class="dropdown-menu dropdown-menu-right">
                 <li class="update-item">
                     <strong translate>Last update: </strong><br>[[ e.cube.lastupdate|date:'yyyy-MM-dd HH:mm:ss' ]]
-                    <span class="text-muted"><span translate>Update every</span> [[ e.cube.scheduler_interval ]] [[ e.cube.scheduler_type ]]</span>
+                    <span ng-if="e.cube.scheduler_type" class="text-muted"><span translate>Update every</span> [[ e.cube.scheduler_interval ]] [[ e.cube.scheduler_type ]]</span>
                 </li>
                 <li class="divider" ng-if="(selected_dashboard.scheduler_type == 'minutes' &&selected_dashboard.refresh_elements ) || e.scheduler_type == 'minutes'"></li>
                 <li class="update-item" ng-if="(selected_dashboard.scheduler_type == 'minutes' &&selected_dashboard.refresh_elements ) || e.scheduler_type == 'minutes'">
