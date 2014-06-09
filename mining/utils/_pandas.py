@@ -158,7 +158,7 @@ class CubeJoin(object):
 def to_pdf(df, x=300, y=300):
     from reportlab.pdfgen.convas import Canvas
 
-    c = Canvas(PATH_OUT + 'out.pdf')
-    c.drawAlignedString(x,y, str(df))
+    c = Canvas('/tmp/out.pdf')
+    c.drawAlignedString(x, y, str(df))
     c.showPage()
     c.save()
