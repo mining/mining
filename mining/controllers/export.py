@@ -52,7 +52,9 @@ def data(mongodb, slug, ext='xls'):
             field = s[1]
             operator = s[2]
             value = request.GET.get(f)
-            if operator in ['like', 'regex']:
+            if operator == 'like':
+                df = df[df[field].str.contains(value)]
+            elif operator == 'regex':
                 df = DataFrameSearchColumn(df, field, value, operator)
             else:
                 df = df.query(df_generate(df, value, f))
@@ -61,13 +63,26 @@ def data(mongodb, slug, ext='xls'):
     if request.GET.get('groupby', None):
         groupby = request.GET.get('groupby', ).split(',')
     if len(groupby) >= 1:
-        df = df.groupby(groupby)
+        df = DataFrame(df.groupby(groupby).grouper.get_group_levels())
 
-    if request.GET.get('orderby', None):
-        orderby = request.GET.get('orderby', [])
-        orderby__order = True
-        if request.GET.get('orderby__order', 0) != 1:
-            orderby__order = False
+    if request.GET.get('orderby',
+                       element.get('orderby', None)) and request.GET.get(
+            'orderby', element.get('orderby', None)) in fields:
+
+        orderby = request.GET.get('orderby', element.get('orderby', ''))
+        if type(orderby) == str:
+            orderby = orderby.split(',')
+        orderby__order = request.GET.get('orderby__order',
+                                         element.get('orderby__order', ''))
+        if type(orderby__order) == str:
+            orderby__order = orderby__order.split(',')
+        ind = 0
+        for orde in orderby__order:
+            if orde == '0':
+                orderby__order[ind] = False
+            else:
+                orderby__order[ind] = True
+            ind += 1
         df = df.sort(orderby, ascending=orderby__order)
 
     # CLEAN MEMORY
