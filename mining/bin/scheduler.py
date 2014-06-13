@@ -106,11 +106,14 @@ while True:
         for e in elements:
             element = mongo['element'].find_one({'slug': e})
             cube = mongo['cube'].find_one({'slug': element['cube']})
-            jobn = u"{}-{}".format(cube['slug'], dashboard['slug'])
-            if jobn in register:
-                schedule.cancel_job(onrun[jobn])
-                del onrun[jobn]
-                register.remove(jobn)
+            try:
+                jobn = u"{}-{}".format(cube['slug'], dashboard['slug'])
+                if jobn in register:
+                    schedule.cancel_job(onrun[jobn])
+                    del onrun[jobn]
+                    register.remove(jobn)
+            except:
+                pass
 
     schedule.run_pending()
     sleep(1)
