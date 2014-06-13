@@ -11,6 +11,16 @@ Open Mining
 Business Intelligence (BI) Application Server written in Python 
 
 
+Contribute
+----------
+
+Join us on IRC at **#openmining** on freenode (`web access <http://webchat.freenode.net/?channels=openmining>`_).
+
+.. code-block:: bash
+
+	pip install -r requirements_dev.txt
+
+
 Requirements
 ------------
 
@@ -40,14 +50,6 @@ Run
     python manage.py
     python bin/scheduler.py
     rqworker
-
-
-Contribute
-----------
-
-.. code-block:: bash
-
-	pip install -r requirements_dev.txt
 
 
 Screenshot

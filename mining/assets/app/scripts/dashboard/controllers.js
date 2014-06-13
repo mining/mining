@@ -241,8 +241,9 @@ dashboard
         };
         $scope.applyFastFilters = function (el) {
           $(el.widgets).each(function (key, widget) {
-            if (widget.value && (widget.value != ''|| widget.value != {})) {
-              if (widget.type == 'datetime') {
+            if (widget.value && (widget.value != '' && mining.utils.getNestedProp(widget, 'value.from', '') != '' &&
+              mining.utils.getNestedProp(widget, 'value.until', '') != '')) {
+              if (widget.type == 'datetime' || widget.type == 'date') {
                 var chave = "filter__" + widget.field + "__between__"+ widget.type +"__:Y-:m-:d",
                   ind = $scope.selected_dashboard.element.indexOf(el);
                 $scope.selected_dashboard.element[ind].filters[chave] =

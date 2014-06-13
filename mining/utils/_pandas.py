@@ -95,19 +95,11 @@ def df_generate(df, value, str_field):
         return u"{} in {}".format(field, _range)
 
 
-def DataFrameSearchColumn(df, colName, value, operator='like'):
+def DataFrameSearchColumn(df, field, value, operator):
     ndf = DataFrame()
-    for idx, record in df[colName].iteritems():
-        check = True
-        if operator == 'like' and value in str(record):
-            check = True
-
+    for idx, record in df[field].iteritems():
         if operator == 'regex' and re.search(value, str(record)):
-            check = True
-
-        if check:
-            ndf = concat([df[df[colName] == record], ndf], ignore_index=True)
-
+            ndf = concat([df[df[field] == record], ndf], ignore_index=True)
     return ndf
 
 
@@ -153,3 +145,12 @@ class CubeJoin(object):
 
     def none(self):
         return self.data
+
+
+def to_pdf(df, x=300, y=300):
+    from reportlab.pdfgen.convas import Canvas
+
+    c = Canvas('/tmp/out.pdf')
+    c.drawAlignedString(x, y, str(df))
+    c.showPage()
+    c.save()
