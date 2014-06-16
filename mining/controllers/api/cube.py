@@ -42,7 +42,7 @@ def cube_get_late(mongodb, slug=None):
     for cb in _cubes:
         is_late = False
         if cb.get('scheduler_type', '') == 'minutes':
-            lu = cb['lastupdate']
+            lu = cb.get('lastupdate')
             if isinstance(lu, datetime.datetime):
                 n_lu = lu + datetime.timedelta(
                     minutes=int(cb['scheduler_interval']))
