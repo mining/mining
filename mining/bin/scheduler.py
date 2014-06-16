@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from gevent import monkey
-monkey.patch_all()
-
 from os import sys, path
 import schedule
 from time import sleep
@@ -48,15 +45,23 @@ def rules(cube, scheduler_type='minutes', scheduler_interval=59,
     elif scheduler_type == 'day':
         env = schedule.every()
         t = env.day
+    else:
+        return False
 
+    jobn = cube.get("slug")
     try:
         t.do(job, slug=cube.get('slug'))
-        jobn = cube.get("slug")
         if dashboard:
             jobn = u"{}-{}".format(cube.get("slug"), dashboard)
         onrun[jobn] = env
         register.append(jobn)
+        if cube.get('run') != 'run':
+            run(cube.get('slug'))
     except Exception, e:
+        if jobn in register:
+            register.remove(jobn)
+        if onrun.get(jobn):
+            del onrun[jobn]
         log_it("ERROR {}: {}".format(cube.get('slug'), e))
 
     return True
@@ -69,7 +74,6 @@ mongo = MongoPlugin(
 
 for cube in mongo['cube'].find({'scheduler_status': True}):
     rules(cube)
-    run(cube['slug'])
 
 for dashboard in mongo['dashboard'].find({'scheduler_status': True}):
     elements = [e['id'] for e in dashboard['element']]
@@ -78,7 +82,6 @@ for dashboard in mongo['dashboard'].find({'scheduler_status': True}):
         cube = mongo['cube'].find_one({'slug': element['cube']})
         rules(cube, dashboard['scheduler_type'],
               dashboard['scheduler_interval'])
-        run(cube['slug'])
 
 while True:
     for cube in mongo['cube'].find({'scheduler_status': True}):
@@ -104,9 +107,9 @@ while True:
     for dashboard in mongo['dashboard'].find({'scheduler_status': False}):
         elements = [e['id'] for e in dashboard['element']]
         for e in elements:
-            element = mongo['element'].find_one({'slug': e})
-            cube = mongo['cube'].find_one({'slug': element['cube']})
             try:
+                element = mongo['element'].find_one({'slug': e})
+                cube = mongo['cube'].find_one({'slug': element['cube']})
                 jobn = u"{}-{}".format(cube['slug'], dashboard['slug'])
                 if jobn in register:
                     schedule.cancel_job(onrun[jobn])
