@@ -47,6 +47,6 @@ def element_cube(mongodb, slug=None):
         http_port=conf("riak")["http_port"],
         host=conf("riak")["host"])
     MyBucket = MyClient.bucket(conf("riak")["bucket"])
-    data = MyBucket.get(u'{}-columns'.format(slug)).data or '{}'
-    columns = json.loads(data)
+    data = MyBucket.get(slug).data or {}
+    columns = data.get("columns") or []
     return {'columns': columns}

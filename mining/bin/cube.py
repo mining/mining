@@ -101,8 +101,6 @@ class CubeProcess(object):
         self.pdict = map(fix_render, self.df.to_dict(outtype='records'))
 
     def save(self):
-        log_it("SAVE DATA (JSON) ON RIAK: {}".format(self.slug),
-               "bin-mining")
         MyClient = riak.RiakClient(
             protocol=conf("riak")["protocol"],
             http_port=conf("riak")["http_port"],
@@ -111,14 +109,12 @@ class CubeProcess(object):
         MyBucket = MyClient.bucket(conf("riak")["bucket"])
         MyBucket.enable_search()
 
-        bucket_content = MyBucket.new(self.slug, data=self.pdict,
+        log_it("SAVE DATA (JSON) ON RIAK: {}".format(self.slug),
+               "bin-mining")
+        data = {'data': self.pdict, 'columns': self.keys}
+        bucket_content = MyBucket.new(self.slug, data=data,
                                       content_type="application/json")
         bucket_content.store()
-
-        log_it("SAVE COLUMNS ON RIAK: {}".format(self.slug),
-               "bin-mining")
-        MyBucket.new(u'{}-columns'.format(self.slug), data=json.dumps(
-                     self.keys)).store()
 
         del MyClient
         del MyBucket
