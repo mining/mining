@@ -50,17 +50,6 @@ def data(mongodb, slug, ext='xls'):
     filters = [i[0] for i in request.GET.iteritems()
                if len(i[0].split('filter__')) > 1]
 
-    if element['type'] == 'grid':
-        page = int(request.GET.get('page', 1))
-        page_start = 0
-        page_end = element['page_limit']
-        if page >= 2:
-            page_end = element['page_limit'] * page
-            page_start = page_end - element['page_limit']
-    else:
-        page_start = None
-        page_end = None
-
     df = DataFrame(data.get('data') or {}, columns=fields)
     if len(filters) >= 1:
         for f in filters:
