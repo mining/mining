@@ -121,7 +121,8 @@ class CubeJoin(object):
 
     def inner(self):
         fields = set([rel['field'] for rel in self.cube.get('relationship')])
-        self.data = concat([DataFrame(self.MyBucket.get(rel['cube']).data)
+        self.data = concat([DataFrame(
+                            self.MyBucket.get(rel['cube']).data.get("data"))
                             for rel in self.cube.get('relationship')],
                            keys=fields, join='inner', ignore_index=True,
                            axis=1)
@@ -131,14 +132,15 @@ class CubeJoin(object):
         fields = [rel['field'] for rel in self.cube.get('relationship')]
         self.data = DataFrame({fields[0]: []})
         for rel in self.cube.get('relationship'):
-            self.data = self.data.merge(DataFrame(
-                self.MyBucket.get(rel['cube']).data),
+            data = self.MyBucket.get(rel['cube']).data or {}
+            self.data = self.data.merge(DataFrame(data.get('data')),
                 how='outer', on=fields[0])
         return self.data
 
     def append(self):
         self.data = DataFrame({})
-        self.data.append([DataFrame(self.MyBucket.get(rel['cube']).data)
+        self.data.append([DataFrame(
+                          self.MyBucket.get(rel['cube']).data.get('data'))
                           for rel in self.cube.get('relationship')],
                          ignore_index=True)
         return self.data

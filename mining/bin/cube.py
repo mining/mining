@@ -48,13 +48,6 @@ class CubeProcess(object):
             db=conf("mongodb")["db"],
             json_mongo=True).get_mongo()
 
-        MyClient = riak.RiakClient(
-            protocol=conf("riak")["protocol"],
-            http_port=conf("riak")["http_port"],
-            host=conf("riak")["host"])
-
-        self.MyBucket = MyClient.bucket(conf("riak")["bucket"])
-        self.MyBucket.enable_search()
         del _cube['_id']
         self.cube = _cube
         self.slug = self.cube['slug']
@@ -108,15 +101,24 @@ class CubeProcess(object):
         self.pdict = map(fix_render, self.df.to_dict(outtype='records'))
 
     def save(self):
+        MyClient = riak.RiakClient(
+            protocol=conf("riak")["protocol"],
+            http_port=conf("riak")["http_port"],
+            host=conf("riak")["host"])
+
+        MyBucket = MyClient.bucket(conf("riak")["bucket"])
+        MyBucket.enable_search()
+
         log_it("SAVE DATA (JSON) ON RIAK: {}".format(self.slug),
                "bin-mining")
-        self.MyBucket.new(self.slug, data=self.pdict,
-                          content_type="application/json").store()
+        data = {'data': self.pdict, 'columns': self.keys}
+        bucket_content = MyBucket.new(self.slug, data=data,
+                                      content_type="application/json")
+        bucket_content.store()
 
-        log_it("SAVE COLUMNS ON RIAK: {}".format(self.slug),
-               "bin-mining")
-        self.MyBucket.new(u'{}-columns'.format(self.slug), data=json.dumps(
-                          self.keys)).store()
+        del MyClient
+        del MyBucket
+        del bucket_content
 
         self.cube['status'] = True
         self.cube['lastupdate'] = datetime.now()

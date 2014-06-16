@@ -43,8 +43,8 @@ def data(ws, mongodb, slug):
     if request.GET.get('limit', True) is False:
         element['page_limit'] = 9999999999
 
-    coll = MyBucket.get('{}-columns'.format(element.get('cube'))).data or []
-    columns = json.loads(coll)
+    data = MyBucket.get(element.get('cube')).data or {}
+    columns = data.get('columns') or []
 
     fields = columns
     if request.GET.get('fields', None):
@@ -70,7 +70,7 @@ def data(ws, mongodb, slug):
         page_start = None
         page_end = None
 
-    df = DataFrame(MyBucket.get(element.get('cube')).data, columns=fields)
+    df = DataFrame(data.get('data') or {}, columns=fields)
     if len(filters) >= 1:
         for f in filters:
             s = f.split('__')

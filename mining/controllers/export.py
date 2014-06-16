@@ -27,6 +27,7 @@ export_app.install(mongo)
 
 @export_app.route('/data/<slug>.<ext>')
 def data(mongodb, slug, ext='xls'):
+
     MyClient = riak.RiakClient(protocol=conf("riak")["protocol"],
                                http_port=conf("riak")["http_port"],
                                host=conf("riak")["host"])
@@ -35,8 +36,12 @@ def data(mongodb, slug, ext='xls'):
 
     element = mongodb['element'].find_one({'slug': slug})
 
-    columns = json.loads(MyBucket.get(
-        '{}-columns'.format(element.get('cube'))).data or [])
+    element['page_limit'] = 50
+    if request.GET.get('limit', True) is False:
+        element['page_limit'] = 9999999999
+
+    data = MyBucket.get(element.get('cube')).data or {}
+    columns = data.get('columns') or []
 
     fields = columns
     if request.GET.get('fields', None):
@@ -45,7 +50,18 @@ def data(mongodb, slug, ext='xls'):
     filters = [i[0] for i in request.GET.iteritems()
                if len(i[0].split('filter__')) > 1]
 
-    df = DataFrame(MyBucket.get(element.get('cube')).data, columns=fields)
+    if element['type'] == 'grid':
+        page = int(request.GET.get('page', 1))
+        page_start = 0
+        page_end = element['page_limit']
+        if page >= 2:
+            page_end = element['page_limit'] * page
+            page_start = page_end - element['page_limit']
+    else:
+        page_start = None
+        page_end = None
+
+    df = DataFrame(data.get('data') or {}, columns=fields)
     if len(filters) >= 1:
         for f in filters:
             s = f.split('__')
