@@ -107,18 +107,7 @@ class CubeProcess(object):
 
         self.pdict = map(fix_render, self.df.to_dict(outtype='records'))
 
-    def clean(self):
-        log_it("CLEAN DATA (JSON) ON RIAK: {}".format(self.slug),
-               "bin-mining")
-
-        self.MyBucket.new(self.slug, data='').store()
-        self.MyBucket.new(u'{}-columns'.format(self.slug), data='').store()
-        self.MyBucket.new(u'{}-connect'.format(self.slug), data='').store()
-        self.MyBucket.new(u'{}-sql'.format(self.slug), data='').store()
-
     def save(self):
-        self.clean()
-
         log_it("SAVE DATA (JSON) ON RIAK: {}".format(self.slug),
                "bin-mining")
         self.MyBucket.new(self.slug, data=self.pdict,
@@ -128,15 +117,6 @@ class CubeProcess(object):
                "bin-mining")
         self.MyBucket.new(u'{}-columns'.format(self.slug), data=json.dumps(
                           self.keys)).store()
-
-        log_it("SAVE CONNECT ON RIAK: {}".format(self.slug),
-               "bin-mining")
-        self.MyBucket.new(u'{}-connect'.format(self.slug),
-                          data=self.connection).store()
-
-        log_it("SAVE SQL ON RIAK: {}".format(self.slug),
-               "bin-mining")
-        self.MyBucket.new(u'{}-sql'.format(self.slug), data=self.sql).store()
 
         self.cube['status'] = True
         self.cube['lastupdate'] = datetime.now()
