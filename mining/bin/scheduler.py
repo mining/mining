@@ -58,7 +58,6 @@ def rules(cube, scheduler_type='minutes', scheduler_interval=59,
         if cube.get('run') != 'run':
             run(cube.get('slug'))
     except Exception, e:
-        import pdb; pdb.set_trace()
         if jobn in register:
             register.remove(jobn)
         if onrun.get(jobn):
