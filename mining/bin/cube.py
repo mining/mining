@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
-import riak
 import gc
 import traceback
 from datetime import datetime
@@ -15,6 +14,7 @@ from sqlalchemy.orm import sessionmaker
 from mining.utils import conf, log_it
 from mining.utils._pandas import fix_render, CubeJoin
 from mining.multithread import ThreadPool
+from mining.db.datawarehouse import DataWarehouse
 
 from bottle.ext.mongo import MongoPlugin
 
@@ -101,24 +101,11 @@ class CubeProcess(object):
         self.pdict = map(fix_render, self.df.to_dict(outtype='records'))
 
     def save(self):
-        MyClient = riak.RiakClient(
-            protocol=conf("riak")["protocol"],
-            http_port=conf("riak")["http_port"],
-            host=conf("riak")["host"])
-
-        MyBucket = MyClient.bucket(conf("riak")["bucket"])
-        MyBucket.enable_search()
-
-        log_it("SAVE DATA (JSON) ON RIAK: {}".format(self.slug),
+        log_it("SAVE DATA (JSON) ON DATA WAREHOUSE: {}".format(self.slug),
                "bin-mining")
         data = {'data': self.pdict, 'columns': self.keys}
-        bucket_content = MyBucket.new(self.slug, data=data,
-                                      content_type="application/json")
-        bucket_content.store()
-
-        del MyClient
-        del MyBucket
-        del bucket_content
+        DW = DataWarehouse()
+        DW.save(self.slug, data)
 
         self.cube['status'] = True
         self.cube['lastupdate'] = datetime.now()

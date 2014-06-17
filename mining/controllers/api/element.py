@@ -4,9 +4,9 @@ from bottle import Bottle
 from bottle.ext.mongo import MongoPlugin
 
 from mining.utils import conf
+from mining.db.datawarehouse import DataWarehouse
 from .base import get, post, put, delete
 
-import riak
 import json
 
 collection = 'element'
@@ -42,11 +42,7 @@ def element_delete(mongodb, slug=None):
 
 @element_app.route('/cube/<slug>', method='GET')
 def element_cube(mongodb, slug=None):
-    MyClient = riak.RiakClient(
-        protocol=conf("riak")["protocol"],
-        http_port=conf("riak")["http_port"],
-        host=conf("riak")["host"])
-    MyBucket = MyClient.bucket(conf("riak")["bucket"])
-    data = MyBucket.get(slug).data or {}
+    DW = DataWarehouse()
+    data = DW.get(slug)
     columns = data.get("columns") or []
     return {'columns': columns}

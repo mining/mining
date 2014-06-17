@@ -2,17 +2,15 @@
 # -*- coding: utf-8 -*-
 from bottle.ext import auth
 
-from utils import conf
+from mining.utils import conf, __from__
 
 
-try:
-    auth_import = conf('auth')['engine'].split('.')[-1]
-    auth_from = u".".join(conf('auth')['engine'].split('.')[:-1])
-    auth_engine = getattr(__import__(auth_from, fromlist=[auth_import]),
-                          auth_import)
-except:
+auth_engine = __from__(conf('auth')['engine'])
+if auth_engine == object:
     print 'Set valid auth engine'
     exit(0)
+
+auth_import = conf('auth')['engine'].split('.')[-1]
 
 callback = u"{}://{}".format(
     conf('openmining')['protocol'],

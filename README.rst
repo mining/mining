@@ -24,10 +24,8 @@ Join us on IRC at **#openmining** on freenode (`web access <http://webchat.freen
 Requirements
 ------------
 
-* Riak (Data Warehouse)
 * MongoDB (Admin)
-* Redis (Queue)
-* Memcache
+* Redis (Queue and DataWarehouse)
 * Bower (Install frontend libs, nodejs depends)
 
 
