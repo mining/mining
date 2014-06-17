@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 from riak import RiakClient
 
-from mining.utils import conf
-
 
 class Riak(object):
     def conn(self):
