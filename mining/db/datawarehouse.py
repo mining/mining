@@ -1,14 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from mining.utils import conf
+from mining.utils import conf, __from__
 
 
-try:
-    _import = conf('datawarehouse')['engine'].split('.')[-1]
-    _from = u".".join(conf('datawarehouse')['engine'].split('.')[:-1])
-    DW = getattr(__import__(_from, fromlist=[_import]), _import)
-except:
-    DW = object
+DW = __from__(conf('datawarehouse')['engine'])
 
 
 class DataWarehouse(DW):
