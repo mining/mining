@@ -5,7 +5,6 @@ monkey.patch_all()
 
 import json
 import gc
-import riak
 
 from bottle import Bottle, request, response
 from bottle.ext.mongo import MongoPlugin
@@ -15,6 +14,7 @@ from pandas import DataFrame
 from mining.settings import PROJECT_PATH
 from mining.utils import conf
 from mining.utils._pandas import df_generate, DataFrameSearchColumn
+from mining.db.datawarehouse import DataWarehouse
 
 
 export_app = Bottle()
@@ -27,12 +27,7 @@ export_app.install(mongo)
 
 @export_app.route('/data/<slug>.<ext>')
 def data(mongodb, slug, ext='xls'):
-
-    MyClient = riak.RiakClient(protocol=conf("riak")["protocol"],
-                               http_port=conf("riak")["http_port"],
-                               host=conf("riak")["host"])
-
-    MyBucket = MyClient.bucket(conf("riak")["bucket"])
+    DW = DataWarehouse()
 
     element = mongodb['element'].find_one({'slug': slug})
 
@@ -40,7 +35,7 @@ def data(mongodb, slug, ext='xls'):
     if request.GET.get('limit', True) is False:
         element['page_limit'] = 9999999999
 
-    data = MyBucket.get(element.get('cube')).data or {}
+    data = DW.get(element.get('cube'))
     columns = data.get('columns') or []
 
     fields = columns
