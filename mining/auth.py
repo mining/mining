@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from bottle.ext import auth
 
-from utils import conf
+from mining.utils import conf
 
 
 try:
