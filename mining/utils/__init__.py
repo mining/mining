@@ -53,3 +53,12 @@ def parse_dumps(obj):
     if isinstance(obj, ObjectId):
         return str(obj)
     return json.JSONEncoder.default(obj)
+
+
+def __from__(path):
+    try:
+        _import = path.split('.')[-1]
+        _from = u".".join(path.split('.')[:-1])
+        return getattr(__import__(_from, fromlist=[_import]), _import)
+    except:
+        return object
