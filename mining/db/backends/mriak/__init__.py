@@ -25,4 +25,3 @@ class Riak(object):
     def get(self, house, callback={}):
         """Get bucket"""
         return self.conn().get(house).data or callback
-
