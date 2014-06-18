@@ -88,7 +88,9 @@ class CubeProcess(object):
         self.data = data
 
     def _keys(self, keys):
-        self.keys = keys
+        if type(keys) == list:
+            self.keys = keys
+        self.keys = list(keys)
 
     def frame(self):
         log_it("LOAD DATA ON DATAWAREHOUSE: {}".format(self.slug),
