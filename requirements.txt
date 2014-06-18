@@ -8,7 +8,6 @@ bottle-websocket==0.2.5
 bottle-auth
 bottle-beaker
 beaker
-riak
 pymongo
 python-dateutil
 nose
