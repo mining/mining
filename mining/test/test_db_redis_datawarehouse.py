@@ -27,6 +27,7 @@ class save_via_drive_test(unittest.TestCase):
         r = StrictRedis()
         self.assertEquals(r.get('test_2'), "Open Mining")
 
+
 class get_via_drive_test(unittest.TestCase):
     def test_get_application_json(self):
         r = StrictRedis()
@@ -40,7 +41,6 @@ class get_via_drive_test(unittest.TestCase):
         r.set('test_get_2', "Open Mining")
         DW = DataWarehouse()
         self.assertEquals(
-                DW.get("test_get_2", content_type='application/text'),
-                "Open Mining")
-
+            DW.get("test_get_2", content_type='application/text'),
+            "Open Mining")
 
