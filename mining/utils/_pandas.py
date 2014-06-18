@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import re
-import riak
 from decimal import Decimal
 from datetime import date, datetime
 
