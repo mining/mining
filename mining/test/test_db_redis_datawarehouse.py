@@ -43,4 +43,3 @@ class get_via_drive_test(unittest.TestCase):
         self.assertEquals(
             DW.get("test_get_2", content_type='application/text'),
             "Open Mining")
-
