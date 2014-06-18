@@ -12,7 +12,6 @@ from mining.utils._pandas import fix_type, fix_render, df_generate
 
 class df_slugfy_test(unittest.TestCase):
     def test_generate_simples(self):
-        print 'aaaaa'
         self.assertEquals(u"testamdo-slugfy", slugfy(u"Testamdo slugfy"))
 
     def test_used_accents(self):
