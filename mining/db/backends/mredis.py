@@ -14,8 +14,12 @@ class Redis(object):
 
     def save(self, house, data, content_type="application/json"):
         """Save meta dada on Riak"""
-        return self.conn().set(house, json.dumps(data))
+        if content_type == "application/json":
+            return self.conn().set(house, json.dumps(data))
+        return self.conn().set(house, data)
 
-    def get(self, house, callback={}):
+    def get(self, house, content_type="application/json", callback={}):
         """Get bucket"""
-        return json.loads(self.conn().get(house)) or callback
+        if content_type == "application/json":
+            return json.loads(self.conn().get(house)) or callback
+        return self.conn().get(house) or callback
