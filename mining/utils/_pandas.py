@@ -8,6 +8,7 @@ from datetime import date, datetime
 from pandas import DataFrame, date_range, tslib, concat
 
 from mining.utils import conf
+from mining.db.datawarehouse import DataWarehouse
 
 
 def fix_type(value):
@@ -107,40 +108,36 @@ class CubeJoin(object):
     def __init__(self, cube):
         self.cube = cube
         self.data = DataFrame({})
-
-        MyClient = riak.RiakClient(
-            protocol=conf("riak")["protocol"],
-            http_port=conf("riak")["http_port"],
-            host=conf("riak")["host"])
-
-        self.MyBucket = MyClient.bucket(conf("riak")["bucket"])
-        self.MyBucket.enable_search()
-
         method = getattr(self, cube.get('cube_join_type', 'none'))
         method()
 
     def inner(self):
-        fields = set([rel['field'] for rel in self.cube.get('relationship')])
-        self.data = concat([DataFrame(
-                            self.MyBucket.get(rel['cube']).data.get("data"))
-                            for rel in self.cube.get('relationship')],
-                           keys=fields, join='inner', ignore_index=True,
-                           axis=1)
+        fields = [rel['field'] for rel in self.cube.get('relationship')]
+        DW = DataWarehouse()
+        for i, rel in enumerate(self.cube.get('relationship')):
+            data = DW.get(rel['cube']).get('data')
+            df = DataFrame(data)
+            if i == 0:
+                self.data = df
+            else:
+                self.data = self.data.merge(df, how='inner', on=fields[0])
         return self.data
 
     def left(self):
         fields = [rel['field'] for rel in self.cube.get('relationship')]
         self.data = DataFrame({fields[0]: []})
+        DW = DataWarehouse()
         for rel in self.cube.get('relationship'):
-            data = self.MyBucket.get(rel['cube']).data or {}
+            data = DW.get(rel['cube'])
             self.data = self.data.merge(DataFrame(data.get('data')),
                 how='outer', on=fields[0])
         return self.data
 
     def append(self):
         self.data = DataFrame({})
+        DW = DataWarehouse()
         self.data.append([DataFrame(
-                          self.MyBucket.get(rel['cube']).data.get('data'))
+                          DW.get(rel['cube']).get('data'))
                           for rel in self.cube.get('relationship')],
                          ignore_index=True)
         return self.data
