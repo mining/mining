@@ -20,9 +20,9 @@ def slugfy(text):
     return slug
 
 
-def conf(section):
+def conf(section, ini="mining.ini"):
     config = ConfigParser.ConfigParser()
-    config.read(os.path.join(PROJECT_PATH, 'mining.ini'))
+    config.read(os.path.join(PROJECT_PATH, ini))
     _dict = {}
     options = config.options(section)
     for option in options:
