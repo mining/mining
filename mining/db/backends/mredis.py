@@ -6,14 +6,14 @@ from redis import StrictRedis
 
 class Redis(object):
     def conn(self):
-        """Open connection on Riak DataBase"""
+        """Open connection on Redis DataBase"""
         conn = StrictRedis(host=self.conf.get('host'),
                            port=self.conf.get('port'),
                            db=int(self.conf.get('db')))
         return conn
 
     def save(self, house, data, content_type="application/json"):
-        """Save meta dada on Riak"""
+        """Save meta dada on Redis"""
         if content_type == "application/json":
             return self.conn().set(house, json.dumps(data))
         return self.conn().set(house, data)
