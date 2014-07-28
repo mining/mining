@@ -270,7 +270,7 @@
               </thead>
               <tbody>
                 <tr ng-repeat="p in e.process">
-                  <td ng-repeat="c in e.columns|elementFields:e">[[ p[c] ]]</td>
+                  <td ng-class="{'right':isNumber(p[c])}" ng-repeat="c in e.columns|elementFields:e">[[ p[c]|formatDataTable:c ]]</td>
                 </tr>
               </tbody>
             </table>
