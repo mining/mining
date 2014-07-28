@@ -15,6 +15,10 @@ dashboard
           $location.hash(hash);
           $anchorScroll();
         };
+        
+        $scope.isNumber = function(n){
+             return !isNaN(n);
+        };
 
         function loadGrid(el) {
           el.from = (el.current_page-1)*50+1;
