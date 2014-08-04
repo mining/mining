@@ -386,6 +386,14 @@ body{
 .check-list{
 	padding-left: 0;
 }
+
+/*** widgets ***/
+.widget-row{
+	border-bottom: solid 1px #e3e3e3;
+}
+.widget-field{
+	margin-bottom: 15px;
+}
 /** Tabelas **/
 .table-scroll{
 	overflow-x: auto;
@@ -622,6 +630,9 @@ tr.code{
 @media (max-width: 991px){
 	.forms-overlay{
 		margin: 0;
+	}
+	.widget-field{
+		margin-bottom: 0;
 	}
 }
 @media (min-width: 768px){
