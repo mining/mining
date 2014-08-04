@@ -77,19 +77,19 @@
 
             <label ng-show="element.type=='grid' && element.type">Widgets</label>
             <div class="well" ng-show="element.type=='grid' && element.type">
-                <div class="form-group row" ng-repeat="element_widget in element.widgets track by $index">
-                    <div class="col-xs-12 col-md-3">
+                <div class="form-group row widget-row" ng-repeat="element_widget in element.widgets track by $index">
+                    <div class="col-xs-12 col-md-12 widget-field">
                         <label translate>Field</label>
                         <select ui-select2 ng-model="element.widgets[$index].field" class="form-control">
                             <option value=""></option>
                             <option ng-repeat="c in fields" value="[[ c ]]">[[ c ]]</option>
                         </select>
                     </div>
-                    <div class="col-xs-12 col-md-4">
+                    <div class="col-xs-12 col-md-5">
                         <label translate>Label</label>
                         <input class="form-control" ng-model="element.widgets[$index].label" type="text" />
                     </div>
-                    <div class="col-xs-12 col-md-3">
+                    <div class="col-xs-12 col-md-5">
                         <label translate>Type</label>
                         <select ui-select2 ng-model="element.widgets[$index].type" class="form-control">
                             <option value=""></option>
