@@ -9,7 +9,7 @@ admin.controller('DashboardGroupCtrl', ['$scope', 'DashboardGroup', 'AlertServic
       };
       $scope.deleteDashboardGroup = function (dg) {
         DashboardGroup.delete({}, {'slug': dg.slug});
-        $rootScope.dashboardGroups.splice($rootScope.dashboardGroups.indexOf(dd), 1);
+        $rootScope.dashboardGroups.splice($rootScope.dashboardGroups.indexOf(dg), 1);
       };
       $scope.queryDashboards = function (term, result) {
         var ls = [];

@@ -166,7 +166,12 @@ mining['utils'] = {
     }
     return destination;
   },
-  isNumber: function(obj) { return !isNaN(parseFloat(obj)) }
+  isNumber: function(obj) { return !isNaN(parseFloat(obj)) },
+  formatNumber : function(number, n, x, s, c) {
+    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
+        num = number.toFixed(Math.max(0, ~~n));
+    return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
+  }
 };
 
   // Source: datepicker.tpl.js

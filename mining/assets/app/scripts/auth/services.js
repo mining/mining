@@ -73,7 +73,7 @@ auth
               perm = true;
             if(SessionService.currentUser.is_admin_group)
               $(SessionService.currentUser.is_admin_group).each(function(key, dg){
-                if(dg.permissions[dashboard].indexOf(permission) >= 0)
+                if(dg.permissions.hasOwnProperty(dashboard) && dg.permissions[dashboard].indexOf(permission) >= 0)
                   perm = true;
               });
           return perm;

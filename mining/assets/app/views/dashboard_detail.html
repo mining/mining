@@ -61,7 +61,7 @@
                     </div>
                     <div class="form-group" ng-if="widget.type == 'distinct'">
                       <select ng-model="widget.value"
-                              ui-select2="{allowClear:true}"
+                              ui-select2="{allowClear:true, width:200}"
                               data-placeholder="[[ widget.label ]]"
                               class="form-control select2-offscreen"
                               ng-disabled="widget.disabled"
@@ -270,7 +270,7 @@
               </thead>
               <tbody>
                 <tr ng-repeat="p in e.process">
-                  <td ng-repeat="c in e.columns|elementFields:e">[[ p[c] ]]</td>
+                  <td ng-class="{'right':isNumber(p[c])}" ng-repeat="c in e.columns|elementFields:e">[[ p[c]|formatDataTable:c ]]</td>
                 </tr>
               </tbody>
             </table>
@@ -342,7 +342,7 @@
                     </div>
                     <div class="form-group" ng-if="widget.type == 'distinct'">
                       <select ng-model="widget.value"
-                              ui-select2="{allowClear:true}"
+                              ui-select2="{allowClear:true,width:200}"
                               data-placeholder="[[ widget.label ]]"
                               class="form-control select2-offscreen"
                               ng-disabled="widget.disabled"
@@ -574,7 +574,7 @@
                     </div>
                     <div class="form-group" ng-if="widget.type == 'distinct'">
                       <select ng-model="widget.value"
-                              ui-select2="{allowClear:true}"
+                              ui-select2="{allowClear:true,width:200}"
                               data-placeholder="[[ widget.label ]]"
                               class="form-control select2-offscreen"
                               ng-disabled="widget.disabled"

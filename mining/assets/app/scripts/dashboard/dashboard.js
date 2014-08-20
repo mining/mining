@@ -18,6 +18,20 @@ var dashboard = angular.module('miningApp.dashboard', [])
         return label;
       };
     }])
+  .filter('formatDataTable',[
+    function(){
+      return function(value){
+        if (!isNaN(value)) {
+          if(typeof value == 'string')
+            value = parseFloat(value);
+          if(value.toString().split('.').length > 1)
+            return mining.utils.formatNumber(value, 2, 3, '.', ',');
+          else
+            return mining.utils.formatNumber(value, 0, 3, '.', ',');
+        }
+        return value;
+      };
+    }])
   .filter('dashboardGroupFilter', function() {
     return function(dashboards, group) {
       var new_dashboards = [];
