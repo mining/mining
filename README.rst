@@ -45,7 +45,7 @@ Run
 
 .. code-block:: bash
 
-    python manage.py
+    python manage.py runserver
     python bin/scheduler.py
     rqworker
 
