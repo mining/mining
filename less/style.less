@@ -1,0 +1,80 @@
+// There is a path to Startup framework
+@startup-basePath: "../../../";
+
+@import '@{startup-basePath}flat-ui/less/variables.less';
+@import '@{startup-basePath}flat-ui/less/mixins.less';
+
+@import '@{startup-basePath}common-files/less/mixins.less';
+@import '@{startup-basePath}common-files/less/common.less';
+@import '@{startup-basePath}common-files/less/navbar.less';
+@import '@{startup-basePath}common-files/less/helper.less';
+
+/* header */
+@import '@{startup-basePath}ui-kit/ui-kit-header/less/header-11.less';
+
+/* price */
+@import '@{startup-basePath}ui-kit/ui-kit-price/less/price-common.less';
+@import '@{startup-basePath}ui-kit/ui-kit-price/less/price-1.less';
+
+/* content */
+@import '@{startup-basePath}ui-kit/ui-kit-content/less/content-13.less';
+
+/* footer */
+@import '@{startup-basePath}ui-kit/ui-kit-footer/less/footer-2.less';
+
+.header-11-sub .background {
+    background-image: url("../img/Brazil_002.png");
+    .opacity(80);
+    @media (max-width: 767px) {
+        background: #f6f6f2;
+    }
+}
+.header-11-sub {
+    h3 {
+        color:@text-color-heading;
+    }
+    p {
+        color:#7f8c8d;
+    }
+    .additional-links {
+        color:#7f8c8d;
+        a {
+            color:#697172;
+        }
+    }
+}
+.logos {
+    background: #f1f1f1;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    @media (max-width: 767px) {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    > .container {
+        display: table;
+        > div {
+            display: table-cell;
+            text-align: center;
+        }
+    }
+    @media (max-width: 480px) {
+        display: none;
+    }
+}
+.price-1 {
+    padding-top: 80px;
+    padding-bottom: 80px;
+    h3 {
+        margin: 0 0 8px;
+        font-size: 35px;
+        text-align: center;
+        letter-spacing: -1px;
+    }
+    .lead {
+        font-size: 25px;
+        font-family: @font-family-demo;
+        text-align: center;
+        margin-bottom: 55px;
+    }
+}
