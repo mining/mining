@@ -16,7 +16,7 @@ Contribute
 
 Join us on IRC at **#openmining** on freenode (`web access <http://webchat.freenode.net/?channels=openmining>`_).
 
-.. code-block:: bash
+.. code:: bash
 
 	pip install -r requirements_dev.txt
 
@@ -32,18 +32,79 @@ Requirements
 Install
 -------
 
-.. code-block:: bash
+**Make a new project directory to host the mining repository**
 
-    pip install -r requirements.txt
-    pip install numexpr==2.3
-    cp mining.sample.ini mining.ini
-    bower install
+.. code:: bash
+
+    $ mkdir openmining
+
+**Change into new directory**
+
+.. code:: bash
+
+    $ cd openmining
+
+**Create a new virtual environment**
+
+.. code:: bash
+
+    $ virtualenv env
+
+**Clone the repository into the current directory**
+
+.. code:: bash
+
+    $ git clone git@github.com:avelino/mining.git
+
+**Change directory into new repo**
+
+.. code:: bash
+
+    $ cd mining
+
+**Run pip on project requirements**
+
+.. code:: bash
+
+    $ pip install -r requirements.txt
+
+**Should end successfully with**
+
+*Successfully installed numpy pandas ipython SQLAlchemy bottle bottle-mongo bottle-websocket bottle-auth bottle-beaker beaker pymongo python-dateutil nose redis rq openpyxl xlwt gevent schedule requests pytz gevent-websocket webob six greenlet*
+
+**Install numexpr**
+
+.. code:: bash
+
+    $ pip install numexpr==2.3
+
+**Copy the sample ini file to mining.ini**
+
+.. code:: bash
+
+    $ cp mining/mining.sample.ini ../env/local/lib/python2.7/site-packages/mining-0.2.0-py2.7.egg/mining/mining.ini
+
+**Install JS**
+
+.. code:: bash
+
+    $ bower install
+
+**FAQ**
+
+**If mongodb or redis-server problems**
+
+Install mongodb and redis-server, make sure running
+
+**If "python manage.py runserver" returns "ConfigParser.NoSectionError: No section: 'mongodb'"**
+
+copy mining.sample.ini to openmining/env/local/lib/python2.7/site-packages/mining-0.2.0-py2.7.egg/mining/mining.ini
 
 
 Run
 ---
 
-.. code-block:: bash
+.. code:: bash
 
     python manage.py runserver
     python bin/scheduler.py
