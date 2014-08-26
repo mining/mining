@@ -35,31 +35,37 @@ Install
 **Make a new project directory to host the mining repository**
 
 .. code:: bash
+
     $ mkdir openmining
 
 **Change into new directory**
 
 .. code:: bash
+
     $ cd openmining
 
 **Create a new virtual environment**
 
 .. code:: bash
+
     $ virtualenv env
 
 **Clone the repository into the current directory**
 
 .. code:: bash
+
     $ git clone <repo>
 
 **Change directory into new repo**
 
 .. code:: bash
+
     $ cd mining
 
 **Run pip on project requirements**
 
 .. code:: bash
+
     $ pip install -r requirements.txt
 
 **Should end successfully with**
@@ -69,16 +75,19 @@ Install
 **Install numexpr**
 
 .. code:: bash
+
     $ pip install numexpr==2.3
 
 **Copy the sample ini file to mining.ini**
 
 .. code:: bash
+
     $ cp mining/mining.sample.ini ../env/local/lib/python2.7/site-packages/mining-0.2.0-py2.7.egg/mining/mining.ini
 
 **Install JS**
 
 .. code:: bash
+
     $ bower install
 
 **FAQ**
