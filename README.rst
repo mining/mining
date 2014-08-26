@@ -34,71 +34,62 @@ Install
 
 .. code-block:: bash
 
-    * Make a new project directory to host the mining repository
+**Make a new project directory to host the mining repository**
 
 .. code-block:: bash
     $ mkdir openmining
 
-* Change into new directory
+**Change into new directory**
 
 .. code-block:: bash
     $ cd openmining
 
-* Create a new virtual environment
+**Create a new virtual environment**
 
 .. code-block:: bash
     $ virtualenv env
 
-* Clone the repository into the current directory 
+**Clone the repository into the current directory**
 
 .. code-block:: bash
     $ git clone <repo>
 
-* Change directory into new repo
+**Change directory into new repo**
 
 .. code-block:: bash
     $ cd mining
 
-* Run pip on project requirements
+**Run pip on project requirements**
 
 .. code-block:: bash
     $ pip install -r requirements.txt
 
-* Should end successfully with 
+**Should end successfully with**
 
-> Successfully installed numpy pandas ipython SQLAlchemy bottle bottle-mongo bottle-websocket bottle-auth bottle-beaker beaker pymongo python-dateutil nose redis rq openpyxl xlwt gevent schedule requests pytz gevent-websocket webob six greenlet
+*Successfully installed numpy pandas ipython SQLAlchemy bottle bottle-mongo bottle-websocket bottle-auth bottle-beaker beaker pymongo python-dateutil nose redis rq openpyxl xlwt gevent schedule requests pytz gevent-websocket webob six greenlet*
 
-* Install numexpr
+**Install numexpr**
 
 .. code-block:: bash
     $ pip install numexpr==2.3
 
-Copy the sample ini file to mining.ini
+**Copy the sample ini file to mining.ini**
 
 .. code-block:: bash
     $ cp mining/mining.sample.ini ../env/local/lib/python2.7/site-packages/mining-0.2.0-py2.7.egg/mining/mining.ini
 
-Install JS
+**Install JS**
 
 .. code-block:: bash
     $ bower install
 
-** FIX THIS ** pip bottle_auth install broken: need to clone git repo, then install packages manually
+**FAQ**
 
-.. code-block:: bash
-    $ cd ../env/lib/python2.7/site-packages
-    $ git clone https://github.com/avelino/bottle-auth.git
-    $ cp -r bottle-auth/bottle_auth ./
-    $ cd ../../../mining
-
-
-** FAQ
-
-* If mongodb or redis-server problems
+**If mongodb or redis-server problems**
 
 Install mongodb and redis-server, make sure running
 
-* If <<python manage.py runserver>> returns "ConfigParser.NoSectionError: No section: 'mongodb'"
+**If <<python manage.py runserver>> returns "ConfigParser.NoSectionError: No section: 'mongodb'"**
 
 copy mining.sample.ini to openmining/env/local/lib/python2.7/site-packages/mining-0.2.0-py2.7.egg/mining/mining.ini
 
