@@ -96,7 +96,7 @@ Install
 
 Install mongodb and redis-server, make sure running
 
-**If *python manage.py runserver* returns *"ConfigParser.NoSectionError: No section: 'mongodb'"* **
+**If "python manage.py runserver" returns "ConfigParser.NoSectionError: No section: 'mongodb'"**
 
 copy mining.sample.ini to openmining/env/local/lib/python2.7/site-packages/mining-0.2.0-py2.7.egg/mining/mining.ini
 
