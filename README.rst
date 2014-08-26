@@ -32,8 +32,6 @@ Requirements
 Install
 -------
 
-.. code:: bash
-
 **Make a new project directory to host the mining repository**
 
 .. code:: bash
