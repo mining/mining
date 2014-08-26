@@ -54,7 +54,7 @@ Install
 
 .. code:: bash
 
-    $ git clone <repo>
+    $ git clone git@github.com:avelino/mining.git
 
 **Change directory into new repo**
 
