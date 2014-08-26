@@ -16,7 +16,7 @@ Contribute
 
 Join us on IRC at **#openmining** on freenode (`web access <http://webchat.freenode.net/?channels=openmining>`_).
 
-.. code-block:: bash
+.. code:: bash
 
 	pip install -r requirements_dev.txt
 
@@ -32,36 +32,36 @@ Requirements
 Install
 -------
 
-.. code-block:: bash
+.. code:: bash
 
 **Make a new project directory to host the mining repository**
 
-.. code-block:: bash
+.. code:: bash
     $ mkdir openmining
 
 **Change into new directory**
 
-.. code-block:: bash
+.. code:: bash
     $ cd openmining
 
 **Create a new virtual environment**
 
-.. code-block:: bash
+.. code:: bash
     $ virtualenv env
 
 **Clone the repository into the current directory**
 
-.. code-block:: bash
+.. code:: bash
     $ git clone <repo>
 
 **Change directory into new repo**
 
-.. code-block:: bash
+.. code:: bash
     $ cd mining
 
 **Run pip on project requirements**
 
-.. code-block:: bash
+.. code:: bash
     $ pip install -r requirements.txt
 
 **Should end successfully with**
@@ -70,17 +70,17 @@ Install
 
 **Install numexpr**
 
-.. code-block:: bash
+.. code:: bash
     $ pip install numexpr==2.3
 
 **Copy the sample ini file to mining.ini**
 
-.. code-block:: bash
+.. code:: bash
     $ cp mining/mining.sample.ini ../env/local/lib/python2.7/site-packages/mining-0.2.0-py2.7.egg/mining/mining.ini
 
 **Install JS**
 
-.. code-block:: bash
+.. code:: bash
     $ bower install
 
 **FAQ**
@@ -97,7 +97,7 @@ copy mining.sample.ini to openmining/env/local/lib/python2.7/site-packages/minin
 Run
 ---
 
-.. code-block:: bash
+.. code:: bash
 
     python manage.py runserver
     python bin/scheduler.py
