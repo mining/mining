@@ -71,8 +71,11 @@ class CubeProcess(object):
 
         log_it("CONNECT IN RELATION DATA BASE: {}".format(self.slug),
                "bin-mining")
-        e = create_engine(self.connection,
-                          **conf('openmining')['sql_conn_params'])
+        if 'sqlite' in self.connection:
+            e = create_engine(self.connection)
+        else:
+            e = create_engine(self.connection,
+                              **conf('openmining')['sql_conn_params'])
         Session = sessionmaker(bind=e)
         session = Session()
 

@@ -30,7 +30,7 @@ def fix_type(value):
             return datetime(1900, 01, 01).strftime()
     elif type(value) is Decimal:
         return float(value)
-    return str(value)
+    return unicode(value)
 
 
 def fix_render(_l):
