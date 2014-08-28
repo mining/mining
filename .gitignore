@@ -46,3 +46,6 @@ mining/assets/exports
 mining/mining.ini
 
 data
+
+# Sqlite
+*.db
