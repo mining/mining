@@ -49,3 +49,4 @@ data
 
 # Sqlite
 *.db
+*.db-journal
