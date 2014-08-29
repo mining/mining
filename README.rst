@@ -114,7 +114,7 @@ Running Demo
 ---
 
 .. code:: bash
-    python demo/build_demo_admin.py
+    python bin/demo/build_admin.py
 
 
 Screenshot

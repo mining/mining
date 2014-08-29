@@ -9,7 +9,7 @@ import sqlite3
 demo_path = os.path.abspath(os.path.dirname(__file__))
 conn = sqlite3.connect('{}'.format(os.path.join(demo_path, 'demo.db')))
 cur = conn.cursor()
-f = open('{}'.format(os.path.join(demo_path, 'demo_base.sql')), 'r')
+f = open('{}'.format(os.path.join(demo_path, 'base.sql')), 'r')
 sql_str = f.read()
 print 'INSERT SQLITE DATA'
 cur.executescript(sql_str)
@@ -170,6 +170,7 @@ data = {
         "name": "Demo"
     }
 }
+import pdb; pdb.set_trace()
 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 print 'CREATE USER admin'
 r = requests.post(url_api.get('user'), data=json.dumps(data.get('user')),
