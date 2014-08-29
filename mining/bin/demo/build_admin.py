@@ -67,7 +67,9 @@ data = {
             "name": "Sales by month",
             "slug": "sales-by-month",
             "connection": "demo",
-            "sql": "SELECT  strftime('%Y-%m', sale_at) as month, SUM(value) as total\nFROM    sale\nGROUP BY strftime('%Y-%m', sale_at)",
+            "sql": "SELECT  strftime('%Y-%m', sale_at) as month, SUM(value) \
+                    as total\nFROM    sale\n\
+                    GROUP BY strftime('%Y-%m', sale_at)",
             "scheduler_status": False,
             "type": "relational",
             "slug": "sales-by-month"
