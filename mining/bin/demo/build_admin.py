@@ -198,3 +198,4 @@ print 'CREATE dashboard'
 r = requests.post(url_api.get('dashboard'),
                   data=json.dumps(data.get('dashboard')),
                   headers=headers)
+
