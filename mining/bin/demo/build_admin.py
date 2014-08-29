@@ -170,7 +170,7 @@ data = {
         "name": "Demo"
     }
 }
-import pdb; pdb.set_trace()
+
 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 print 'CREATE USER admin'
 r = requests.post(url_api.get('user'), data=json.dumps(data.get('user')),
