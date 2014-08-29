@@ -5,7 +5,6 @@ var miningApp = angular.module('miningApp', [
     'ngResource',
     'ngSanitize',
     'ngRoute',
-    'highcharts-ng',
     'miningApp.auth',
     'miningApp.dashboard',
     'miningApp.report',

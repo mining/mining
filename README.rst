@@ -110,6 +110,12 @@ Run
     python bin/scheduler.py
     rqworker
 
+Running Demo
+---
+
+.. code:: bash
+    python bin/demo/build_admin.py
+
 
 Screenshot
 ----------
