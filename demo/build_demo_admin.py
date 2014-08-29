@@ -6,11 +6,15 @@ import os
 from mining.bin.cube import run
 import sqlite3
 
-conn = sqlite3.connect('demo.db')
-f = open('demo_base.sql', 'r')
+demo_path = os.path.abspath(os.path.dirname(__file__))
+conn = sqlite3.connect('{}'.format(os.path.join(demo_path, 'demo.db')))
+cur = conn.cursor()
+f = open('{}'.format(os.path.join(demo_path, 'demo_base.sql')), 'r')
 sql_str = f.read()
-conn.executescript(sql_str)
-db_path = os.path.abspath('demo.db')
+print 'INSERT SQLITE DATA'
+cur.executescript(sql_str)
+conn.commit()
+cur.close()
 
 url_api = {
     'user': "http://127.0.0.1:8888/api/user",
@@ -22,14 +26,16 @@ url_api = {
 data = {
     'user': {'username': 'admin', 'password': 'admin', 'rule': 'root'},
     'connection': {
-        "connection": db_path,
+        "connection": 'sqlite:///{}'.format(
+            os.path.join(demo_path, 'demo.db')),
         "name": "DEMO"
     },
-    'cubes': [
+    'cube': [
         {
             "status": False,
             "run": False,
             "name": "Sales",
+            "slug": "sales",
             "connection": "demo",
             "sql": "select * from SALE;",
             "scheduler_status": False,
@@ -39,6 +45,7 @@ data = {
             "status": False,
             "run": False,
             "name": "People",
+            "slug": "people",
             "connection": "demo",
             "sql": "select * from people;",
             "scheduler_status": False,
@@ -48,6 +55,7 @@ data = {
             "status": False,
             "run": False,
             "name": "Product Sales",
+            "slug": "product-sales",
             "connection": "demo",
             "sql": "select * from SALE_PRODUCT;",
             "scheduler_status": False,
@@ -57,14 +65,15 @@ data = {
             "status": False,
             "run": False,
             "name": "Sales by month",
+            "slug": "sales-by-month",
             "connection": "demo",
-            "sql": "SELECT  strftime('%%Y-%%m', sale_at) as month, SUM(value) as total\nFROM    sale\nGROUP BY strftime('%%Y-%%m', sale_at)",
+            "sql": "SELECT  strftime('%Y-%m', sale_at) as month, SUM(value) as total\nFROM    sale\nGROUP BY strftime('%Y-%m', sale_at)",
             "scheduler_status": False,
             "type": "relational",
             "slug": "sales-by-month"
         }
     ],
-    'elements': [
+    'element': [
         {
             "alias": {
 
@@ -89,7 +98,6 @@ data = {
                 "country",
                 "created_at"
             ],
-            "slug": "people-grid",
             "type": "grid",
             "widgets": [
                 {
@@ -113,7 +121,6 @@ data = {
                 "month",
                 "total"
             ],
-            "slug": "sales-bar",
             "type": "chart_bar"
         },
         {
@@ -140,7 +147,6 @@ data = {
                 "0"
             ],
             "type": "grid",
-            "slug": "sales-grid",
             "field_serie": None
         }
     ],
@@ -164,21 +170,28 @@ data = {
         "name": "Demo"
     }
 }
-
 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+print 'CREATE USER admin'
 r = requests.post(url_api.get('user'), data=json.dumps(data.get('user')),
                   headers=headers)
+print 'CREATE connection'
 r = requests.post(url_api.get('connection'),
                   data=json.dumps(data.get('connection')),
                   headers=headers)
+print 'CREATE cube'
 for cb in data.get('cube'):
     r = requests.post(url_api.get('cube'), data=json.dumps(cb),
                       headers=headers)
+    print 'RUNNING cube {}'.format(cb.get('slug'))
     run(cb.get('slug'))
 
+print 'CREATE element'
 for el in data.get('element'):
+    print '--> {}'.format(el.get('name'))
     r = requests.post(url_api.get('element'), data=json.dumps(el),
                       headers=headers)
+
+print 'CREATE dashboard'
 r = requests.post(url_api.get('dashboard'),
                   data=json.dumps(data.get('dashboard')),
                   headers=headers)
