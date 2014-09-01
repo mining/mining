@@ -100,7 +100,7 @@ dashboard
           if (el.type == 'grid') {
             loadGrid(el);
           } else if (el.type == 'chart_bar') {
-            loadBar(el);
+            el.directive_status = 'need_refresh';
           } else if (el.type == 'chart_line') {
             loadLine(el);
           }
@@ -168,7 +168,7 @@ dashboard
           if (el.type == 'grid') {
             loadGrid(el);
           } else if (el.type == 'chart_bar') {
-            loadBar(el);
+            el.directive_status = 'need_refresh';
           } else if (el.type == 'chart_line') {
             loadLine(el);
           }
@@ -182,7 +182,7 @@ dashboard
           if (el.type == 'grid') {
             loadGrid(el);
           } else if (el.type == 'chart_bar') {
-            loadBar(el);
+            el.directive_status = 'need_refresh';
           } else if (el.type == 'chart_line') {
             loadLine(el);
           }
@@ -211,7 +211,7 @@ dashboard
           if (el.type == 'grid') {
             loadGrid(el);
           } else if (el.type == 'chart_bar') {
-            loadBar(el);
+            el.directive_status = 'need_refresh';
           } else if (el.type == 'chart_line') {
             loadLine(el);
           }
@@ -294,7 +294,7 @@ dashboard
               if (val.type == 'grid') {
                 loadGrid(val);
               }else if(val.type == 'chart_bar'){
-                loadBar(val);
+                val.directive_status = 'need_refresh';
               }
               else if(val.type == 'chart_line'){
                 loadLine(val);
@@ -307,7 +307,7 @@ dashboard
                       if (val.type == 'grid') {
                         loadGrid(val);
                       }else if(val.type == 'chart_bar'){
-                        loadBar(val);
+                        val.directive_status = 'need_refresh';
                       }
                       else if(val.type == 'chart_line'){
                         loadLine(val);
@@ -415,50 +415,6 @@ dashboard
               $timeout(function () {
                 $scope.$apply(function () {
                   el.widgets[widget_index].disabled = false;
-                });
-              });
-            }
-          };
-        }
-
-        function loadBar(el) {
-          el.process = [];
-          el.loading = true;
-          var element = 'bar-chart-' + el.slug;
-          angular.element('#' + element).html('');
-          var prot = 'ws';
-          if (window.protocol == 'https')
-            prot = 'wss';
-          var API_URL = prot + "://" + location.host + "/stream/data/" + el.slug + "?";
-          for (var key in el.filters) {
-            API_URL += key + "=" + el.filters[key] + "&";
-          }
-          API_URL += 'page=' + el.current_page + "&";
-          var sock = new WebSocket(API_URL);
-          sock.onmessage = function (e) {
-            var data = JSON.parse(e.data.replace(/NaN/g, 'null'));
-            if (data.type == 'columns') {
-              el.columns = data.data;
-            } else if (data.type == 'max_page') {
-              el.total_pages = Math.ceil(data.data / 50);
-            } else if (data.type == 'last_update') {
-              el.cube.lastupdate = moment(data.data).format('YYYY-MM-DDTHH:mm:ss');
-            } else if (data.type == 'data') {
-              el.process.push(data.data);
-            } else if (data.type == 'close') {
-              sock.close();
-              el.loading = false;
-              $timeout(function () {
-                $scope.$apply(function () {
-                  el.graph = Morris.Bar({
-                    element: element,
-                    data: el.process,
-                    xkey: el.xkey,
-                    ykeys: el.ykeys,
-                    labels: el.labels,
-                    resize: true,
-                    redraw: true
-                  });
                 });
               });
             }

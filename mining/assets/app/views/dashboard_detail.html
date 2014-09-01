@@ -516,9 +516,7 @@
         </div>
         <div class="panel-body">
           <!-- <barchart xkey="el.xkey" ykeys="el.ykeys" labels="el.labels" data="e.process" index="[[ $index ]]"></barchart> -->
-          <div ng-show="e.loading" class="loading" translate><img src="/assets/image/Preloader_2.gif"> Loading...</div>
-          <div id="bar-chart-[[e.slug]]">
-          </div>
+          <chart-bar element="e"></chart-bar>
         </div>
       </div>
 
