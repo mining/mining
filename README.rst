@@ -1,3 +1,6 @@
+.. image:: https://badge.waffle.io/avelino/mining.png?label=ready&title=Ready 
+ :target: https://waffle.io/avelino/mining
+ :alt: 'Stories in Ready'
 Open Mining
 ===========
 
