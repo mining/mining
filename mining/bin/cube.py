@@ -99,6 +99,7 @@ class CubeProcess(object):
                "bin-mining")
         self.df = DataFrame(self.data)
         if self.df.empty:
+            self.pdict = {}
             log_it('[warning]Empty cube: {}!!'.format(self.cube),
                    "bin-mining")
             return
