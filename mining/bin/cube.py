@@ -3,7 +3,6 @@
 from gevent import monkey
 monkey.patch_all()
 
-import json
 import gc
 import traceback
 from datetime import datetime
