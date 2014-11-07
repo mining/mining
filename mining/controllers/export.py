@@ -61,7 +61,7 @@ def data(mongodb, slug, ext='xls'):
 
     groupby = []
     if request.GET.get('groupby', None):
-        groupby = request.GET.get('groupby', ).split(',')
+        groupby = request.GET.get('groupby', "").split(',')
     if len(groupby) >= 1:
         df = DataFrame(df.groupby(groupby).grouper.get_group_levels())
 
