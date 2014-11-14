@@ -32,7 +32,17 @@ Requirements
 * Bower (Install frontend libs, NodeJS depends)
 
 
-Install
+Install dependencies
+-------
+
+.. code:: bash
+    $ sudo apt-get install mongodb-10gen redis-server nodejs nodejs-dev npm
+    $ npm install bower
+
+If you use Mac OSX you can install all dependencies using Homebrew.
+
+
+Install Open Mining
 -------
 
 **Make a new project directory to host the mining repository**
@@ -93,7 +103,7 @@ Install
 
 **If mongodb or redis-server problems**
 
-Install mongodb and redis-server, make sure running
+Install mongodb and redis-server, make sure it running
 
 **If "python manage.py runserver" returns "ConfigParser.NoSectionError: No section: 'mongodb'"**
 
