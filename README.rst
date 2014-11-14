@@ -19,10 +19,6 @@ Contribute
 
 Join us on IRC at **#openmining** on freenode (`web access <http://webchat.freenode.net/?channels=openmining>`_).
 
-.. code:: bash
-
-	pip install -r requirements_dev.txt
-
 
 Requirements
 ------------
@@ -36,8 +32,10 @@ Install dependencies
 -------
 
 .. code:: bash
+    
     $ sudo apt-get install mongodb-10gen redis-server nodejs nodejs-dev npm
     $ npm install bower
+
 
 If you use Mac OSX you can install all dependencies using Homebrew.
 
