@@ -29,7 +29,7 @@ Requirements
 
 * MongoDB (Admin)
 * Redis (Queue and DataWarehouse)
-* Bower (Install frontend libs, nodejs depends)
+* Bower (Install frontend libs, NodeJS depends)
 
 
 Install
@@ -71,10 +71,6 @@ Install
 
     $ pip install -r requirements.txt
 
-**Should end successfully with**
-
-*Successfully installed numpy pandas ipython SQLAlchemy bottle bottle-mongo bottle-websocket bottle-auth bottle-beaker beaker pymongo python-dateutil nose redis rq openpyxl xlwt gevent schedule requests pytz gevent-websocket webob six greenlet*
-
 **Install numexpr**
 
 .. code:: bash
@@ -85,9 +81,9 @@ Install
 
 .. code:: bash
 
-    $ cp mining/mining.sample.ini ../env/local/lib/python2.7/site-packages/mining-0.2.0-py2.7.egg/mining/mining.ini
+    $ cp mining/mining.sample.ini mining/mining.ini
 
-**Install JS**
+**Install javascript assets using Bower**
 
 .. code:: bash
 
@@ -101,7 +97,7 @@ Install mongodb and redis-server, make sure running
 
 **If "python manage.py runserver" returns "ConfigParser.NoSectionError: No section: 'mongodb'"**
 
-copy mining.sample.ini to openmining/env/local/lib/python2.7/site-packages/mining-0.2.0-py2.7.egg/mining/mining.ini
+copy mining/mining.sample.ini to mining/mining.ini
 
 
 Run
