@@ -104,6 +104,8 @@ Running Demo
     python mining/bin/demo/build_admin.py
 
 
+And now you can login with: username 'admin' and password 'admin'.
+
 Screenshot
 ----------
 
