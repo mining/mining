@@ -37,43 +37,21 @@ Install dependencies
     $ npm install bower
 
 
-If you use Mac OSX you can install all dependencies using Homebrew.
+If you use Mac OSX you can install all dependencies using `HomeBrew <http://brew.sh/>`_.
 
 
 Install Open Mining
 -------
 
-**Make a new project directory to host the mining repository**
-
-.. code:: bash
-
-    $ mkdir openmining
-
-**Change into new directory**
-
-.. code:: bash
-
-    $ cd openmining
-
-**Create a new virtual environment**
-
-.. code:: bash
-
-    $ virtualenv env
-
-**Clone the repository into the current directory**
+**Clone the repository and install it**
 
 .. code:: bash
 
     $ git clone git@github.com:avelino/mining.git
-
-**Change directory into new repo**
-
-.. code:: bash
-
     $ cd mining
+    $ python setup.py install
 
-**Run pip on project requirements**
+**Run pip install on project requirements**
 
 .. code:: bash
 
@@ -113,8 +91,8 @@ Run
 
 .. code:: bash
 
-    python manage.py runserver
-    python bin/scheduler.py
+    python mining/manage.py runserver
+    python mining/bin/scheduler.py
     rqworker
 
 
@@ -123,8 +101,10 @@ Running Demo
 
 .. code:: bash
 
-    python bin/demo/build_admin.py
+    python mining/bin/demo/build_admin.py
 
+
+And now you can login with: username 'admin' and password 'admin'.
 
 Screenshot
 ----------
@@ -148,6 +128,7 @@ Screenshot
 
 .. image:: https://raw.github.com/avelino/mining/master/docs/docs/img/widgets-openmining_new.png
     :alt: Dashboard Widgets OpenMining
+
 
 **Late Scheduler and running Cubes OpenMining**
 
