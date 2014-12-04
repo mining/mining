@@ -16,3 +16,4 @@ xlwt
 gevent
 schedule
 requests
+click==3.3
