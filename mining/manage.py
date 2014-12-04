@@ -4,7 +4,7 @@ from gevent import monkey
 monkey.patch_all()
 
 import sys
-import argparse
+import click
 
 from bottle import static_file, Bottle, run, view
 from bottle import TEMPLATE_PATH as T
@@ -27,19 +27,6 @@ from mining.settings import TEMPLATE_PATH, STATIC_PATH
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-parser = argparse.ArgumentParser(description=u'Open Mining!')
-subparser = parser.add_subparsers()
-
-arg_runserver = subparser.add_parser('runserver', help=u'Run application')
-arg_runserver.add_argument('--port', help=u'Set application server port!',
-                           type=int, default=conf('openmining')['port'])
-arg_runserver.add_argument('--ip', help=u'Set application server IP!',
-                           type=str, default=conf('openmining')['ip'])
-arg_runserver.add_argument('--debug', '-v',
-                           help=u'Set application server debug!',
-                           action='count')
-
-args = parser.parse_args()
 
 T.insert(0, TEMPLATE_PATH)
 
@@ -80,18 +67,28 @@ def login():
             'lang': conf('openmining')['lang']}
 
 
-def main():
-    print u'OpenMining start server at: {}:{}'.format(args.ip,
-                                                      args.port)
+@click.group()
+def cmds():
+    pass
 
-    if args.debug is None:
-        server = WSGIServer((args.ip, args.port), app,
-                            handler_class=WebSocketHandler)
+
+@cmds.command()
+@click.option('--port', type=int, help=u'Set application server port!')
+@click.option('--ip', type=str, help=u'Set application server ip!')
+@click.option('--debug', default=False,
+              help=u'Set application server debug!')
+def runserver(port, ip, debug):
+
+    if debug is None:
+        server = WSGIServer((ip, port), app, handler_class=WebSocketHandler)
         server.serve_forever()
 
-    run(app=app, host=args.ip, port=args.port, debug=args.debug,
+    click.echo(u'OpenMining start server at: {}:{}'.format(ip, port))
+    run(app=app, host=ip, port=port, debug=debug,
         reloader=True, server=GeventWebSocketServer)
 
 
 if __name__ == "__main__":
-    main()
+    default_map = {"runserver": conf('openmining')}
+    default_map["runserver"]["debug"] = False
+    cmds(default_map=default_map)
