@@ -23,7 +23,7 @@ install:
 
 .PHONY: pep8
 pep8:
-	@flake8 mining --ignore=F403,F401,F812,E128
+	@flake8 mining --ignore=F403,F401,F812,E128 --exclude=mining/assets
 
 .PHONY: sdist
 sdist: test
