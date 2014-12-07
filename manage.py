@@ -15,10 +15,9 @@ from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
 from beaker.middleware import SessionMiddleware
 
-from controllers.api import api_app
-from controllers.stream import stream_app
-from controllers.export import export_app
-
+from mining.controllers.api import api_app
+from mining.controllers.stream import stream_app
+from mining.controllers.export import export_app
 from mining.utils import conf
 from mining.auth import auth
 from mining.settings import TEMPLATE_PATH, STATIC_PATH
