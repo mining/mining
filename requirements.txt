@@ -1,5 +1,5 @@
 numpy==1.9.1
-pandas==0.15.1
+pandas==0.15.2
 SQLAlchemy==0.9.1
 bottle==0.12.7
 bottle-mongo==0.2.4
