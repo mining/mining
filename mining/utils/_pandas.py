@@ -88,7 +88,7 @@ def df_generate(df, value, str_field):
         elif t == "datetime":
             _range = [i.strftime(mark)
                       for i in
-                      date_range(between[0], between[1], freq="S").tolist()]
+                      date_range(between[0], between[1], freq="H").tolist()]
         elif t == "int":
             _range = [i for i in xrange(int(between[0]), int(between[1]) + 1)]
 
