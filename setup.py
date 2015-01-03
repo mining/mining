@@ -15,6 +15,7 @@ classifiers = [
     "Environment :: Web Environment",
     'Framework :: Bottle',
     "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Operating System :: MacOS :: MacOS X",
