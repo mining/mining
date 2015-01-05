@@ -1,0 +1,3 @@
+[submodule "mining/frontend"]
+	path = mining/frontend
+	url = https://github.com/mining/frontend.git
