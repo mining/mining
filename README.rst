@@ -49,6 +49,7 @@ Install Open Mining
 
     $ git clone git@github.com:avelino/mining.git
     $ cd mining
+    $ git submodule update
     $ python setup.py install
 
 **Run pip install on project requirements**
@@ -73,6 +74,7 @@ Install Open Mining
 
 .. code:: bash
 
+    $ mining/frontend
     $ bower install
 
 **FAQ**
@@ -91,7 +93,7 @@ Run
 
 .. code:: bash
 
-    python mining/manage.py runserver
+    python manage.py runserver
     python mining/bin/scheduler.py
     rqworker
 
