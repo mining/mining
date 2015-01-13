@@ -98,8 +98,7 @@ class CubeProcess(object):
 
     def frame(self, data_type=None):
         log_it("LOAD DATA ON DATAWAREHOUSE via {}: {}".format(
-            data_type or 'dict', self.slug),
-               "bin-mining")
+            data_type or 'dict', self.slug), "bin-mining")
         if data_type:
             self.df = getattr(pandas, "read_{}".format(data_type))(self.data)
         else:
