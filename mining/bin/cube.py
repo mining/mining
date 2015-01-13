@@ -5,6 +5,8 @@ monkey.patch_all()
 
 import gc
 import traceback
+import requests
+import pandas
 from datetime import datetime
 
 from pandas import DataFrame
@@ -94,16 +96,24 @@ class CubeProcess(object):
             self.keys = keys
         self.keys = list(keys)
 
-    def frame(self):
-        log_it("LOAD DATA ON DATAWAREHOUSE: {}".format(self.slug),
-               "bin-mining")
-        self.df = DataFrame(self.data)
+    def frame(self, data_type=None):
+        log_it("LOAD DATA ON DATAWAREHOUSE via {}: {}".format(
+            data_type or 'dict', self.slug), "bin-mining")
+        if data_type:
+            self.df = getattr(pandas, "read_{}".format(data_type))(self.data)
+        else:
+            self.df = DataFrame(self.data)
+
         if self.df.empty:
             self.pdict = {}
             log_it('[warning]Empty cube: {}!!'.format(self.cube),
                    "bin-mining")
             return
-        self.df.columns = self.keys
+
+        try:
+            self.df.columns = self.keys
+        except AttributeError:
+            self._keys(self.df.columns.tolist())
         self.df.head()
 
         self.pdict = map(fix_render, self.df.to_dict(outtype='records'))
@@ -144,6 +154,10 @@ def process(_cube):
             c._data(cube_join.none())
             c._keys(cube_join.none().columns.values)
             c.frame()
+            c.save()
+        elif _cube.get('type') == 'url':
+            c._data(requests.get(_cube.get('connection')).text)
+            c.frame(data_type=_cube.get('url_type'))
             c.save()
 
     except Exception, e:
