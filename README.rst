@@ -1,10 +1,7 @@
-.. image:: https://badge.waffle.io/avelino/mining.png?label=ready&title=Ready 
- :target: https://waffle.io/avelino/mining
- :alt: 'Stories in Ready'
 Open Mining
 ===========
 
-.. image:: https://raw.github.com/avelino/mining/master/mining/assets/image/openmining.io.png
+.. image:: https://raw.githubusercontent.com/mining/frontend/master/assets/image/openmining.io.png
     :alt: OpenMining
 
 .. image:: https://travis-ci.org/avelino/mining.png?branch=master
