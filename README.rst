@@ -139,4 +139,5 @@ Sponsor
 -------
 
 * `UP! Essência <http://www.upessencia.com.br/>`_
+* `Project1 <http://www.project1.com.br/>`_
 * `Lemes Consultoria <http://www.lemeconsultoria.com.br/>`_
