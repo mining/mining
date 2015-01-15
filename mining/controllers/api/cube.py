@@ -1,14 +1,11 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
 from bottle import Bottle
 from bottle.ext.mongo import MongoPlugin
 import datetime
 
-from redis import Redis
-from rq import Queue
-
 from mining.utils import conf, parse_dumps
+from mining.tasks import process
 from .base import get, post, put, delete
 
 
@@ -62,12 +59,7 @@ def cube_get_late(mongodb, slug=None):
 def cube_post(mongodb, slug=None):
     ret = post(mongodb, collection, opt={'status': False})
     cube = json.loads(ret)
-    Queue(connection=Redis()).enqueue_call(
-        func='mining.bin.cube.run',
-        args=(cube['slug'],),
-        timeout=1200
-    )
-
+    process.delay(cube)
     return ret
 
 
@@ -75,12 +67,7 @@ def cube_post(mongodb, slug=None):
 def cube_put(mongodb, slug=None):
     ret = put(mongodb, collection, slug, opt={'status': False})
     cube = json.loads(ret)
-    Queue(connection=Redis()).enqueue_call(
-        func='mining.bin.cube.run',
-        args=(cube['slug'],),
-        timeout=1200
-    )
-
+    process.delay(cube)
     return ret
 
 
