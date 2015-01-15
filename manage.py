@@ -21,6 +21,8 @@ from mining.controllers.export import export_app
 from mining.utils import conf
 from mining.auth import auth
 from mining.settings import TEMPLATE_PATH, STATIC_PATH
+from mining.celeryc import celery_app
+from mining.bin.scheduler import scheduler_app
 
 
 reload(sys)
@@ -85,6 +87,22 @@ def runserver(port, ip, debug):
     click.echo(u'OpenMining start server at: {}:{}'.format(ip, port))
     run(app=app, host=ip, port=port, debug=debug,
         reloader=True, server=GeventWebSocketServer)
+
+
+@cmds.command()
+@click.option('--concurrency', type=int, default=4,
+              help="""Number of child processes processing the queue. The
+              default is the number of CPUs available on your system.""")
+def celery(concurrency):
+    click.echo(u'OpenMining start tasks')
+    args = ["celery", "worker", "--concurrency={}".format(concurrency)]
+    celery_app.start(args)
+
+
+@cmds.command()
+def scheduler():
+    click.echo(u'OpenMining start scheduler')
+    scheduler_app()
 
 
 if __name__ == "__main__":
