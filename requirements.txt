@@ -10,10 +10,10 @@ beaker
 python-dateutil
 nose
 redis
-rq
 openpyxl==1.8.6
 xlwt
 gevent
 schedule
 requests
 click==3.3
+celery==3.1.17
