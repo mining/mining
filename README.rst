@@ -91,8 +91,8 @@ Run
 .. code:: bash
 
     python manage.py runserver
-    python mining/bin/scheduler.py
-    rqworker
+    python manage.py celery
+    python manage.py scheduler
 
 
 Running Demo

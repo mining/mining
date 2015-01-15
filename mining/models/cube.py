@@ -1,11 +1,5 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from gevent import monkey
-monkey.patch_all()
-
 import gc
-import traceback
-import requests
 import pandas
 from datetime import datetime
 
@@ -16,33 +10,13 @@ from sqlalchemy.sql import text
 from sqlalchemy.orm import sessionmaker
 
 from mining.utils import conf, log_it
-from mining.utils._pandas import fix_render, CubeJoin
-from mining.multithread import ThreadPool
+from mining.utils._pandas import fix_render
 from mining.db.datawarehouse import DataWarehouse
 
 from bottle.ext.mongo import MongoPlugin
 
 
-def run(cube_slug=None):
-    mongo = MongoPlugin(
-        uri=conf("mongodb")["uri"],
-        db=conf("mongodb")["db"],
-        json_mongo=True).get_mongo()
-
-    pool = ThreadPool(20)
-
-    for cube in mongo['cube'].find():
-        slug = cube['slug']
-        if cube_slug and cube_slug != slug:
-            continue
-
-        pool.add_task(process, cube)
-
-    pool.wait_completion()
-    return True
-
-
-class CubeProcess(object):
+class Cube(object):
     def __init__(self, _cube):
 
         log_it("START: {}".format(_cube['slug']), "bin-mining")
@@ -52,7 +26,10 @@ class CubeProcess(object):
             db=conf("mongodb")["db"],
             json_mongo=True).get_mongo()
 
-        del _cube['_id']
+        try:
+            del _cube['_id']
+        except KeyError:
+            pass
         self.cube = _cube
         self.slug = self.cube['slug']
 
@@ -132,42 +109,3 @@ class CubeProcess(object):
 
         log_it("CLEAN MEMORY: {}".format(self.slug), "bin-mining")
         gc.collect()
-
-
-def process(_cube):
-    try:
-        log_it("START: {}".format(_cube['slug']), "bin-mining")
-
-        mongo = MongoPlugin(
-            uri=conf("mongodb")["uri"],
-            db=conf("mongodb")["db"],
-            json_mongo=True).get_mongo()
-
-        c = CubeProcess(_cube)
-        if _cube.get('type') == 'relational':
-            c.load()
-            c.frame()
-            c.save()
-        elif _cube.get('type') == 'cube_join':
-            c.environment(_cube.get('type'))
-            cube_join = CubeJoin(_cube)
-            c._data(cube_join.none())
-            c._keys(cube_join.none().columns.values)
-            c.frame()
-            c.save()
-        elif _cube.get('type') == 'url':
-            c._data(requests.get(_cube.get('connection')).text)
-            c.frame(data_type=_cube.get('url_type'))
-            c.save()
-
-    except Exception, e:
-        log_it(e, "bin-mining")
-        log_it(traceback.format_exc(), "bin-mining")
-        _cube['run'] = False
-        mongo['cube'].update({'slug': _cube['slug']}, _cube)
-
-    log_it("END: {}".format(_cube['slug']), "bin-mining")
-
-
-if __name__ == "__main__":
-    run()
