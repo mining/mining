@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+import os
+import sys
+import subprocess
 from setuptools import setup, find_packages
+from Cython.Build import cythonize
 import mining
 
 
@@ -34,6 +38,19 @@ try:
 except:
     long_description = mining.__description__
 
+
+def generate_cython():
+    cwd = os.path.abspath(os.path.dirname(__file__))
+    print("Cythonizing sources")
+    p = subprocess.call([sys.executable,
+                          os.path.join(cwd, 'scripts', 'cythonize.py'),
+                          'mining'],
+                         cwd=cwd)
+    if p != 0:
+        raise RuntimeError("Running cythonize failed!")
+
+
+generate_cython()
 setup(name='mining',
       version=mining.__version__,
       description=mining.__description__,
@@ -50,4 +67,5 @@ setup(name='mining',
       dependency_links=dependency_links,
       test_suite='nose.main',
       include_package_data=True,
-      zip_safe=False)
+      zip_safe=False,
+      ext_modules=cythonize(["mining/utils/*.pyx"]))
