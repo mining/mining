@@ -50,17 +50,53 @@ class Elasticsearch(object):
         data['count'] = count
         return data
 
-    def filter(self):
-        """Generate dict to applay filter on Elasticsearch"""
+    def filter(self, filters=[]):
+        """Generate dict to applay filter on Elasticsearch
+        should: OR
+        must: AND
+        """
         filter = {
-            "query": {
-                "bool": {
-                    "should": [
-                        {"match": {"country": "Brazil"}},
-                        {"match": {"full_name": "Daniel Austin"}}
-                    ]
-                }
-            }
+           "query": {
+              "filtered": {
+                 "query": {
+                    "bool": {
+                       "must": []
+                    }
+                 },
+                 "filter": {
+                    "bool": {
+                       "must": []
+                    }
+                 }
+              }
+           }
         }
-        filter = {"query": {"match_all": {}}}
-        return filter
+        filtered_query = filter['query']["filtered"]["query"]['bool']['must']
+        filtered_filter = filter['query']["filtered"]["filter"]['bool']['must']
+
+        if len(filters) >= 1:
+            for f in filters:
+                s = f.split('__')
+                field = s[1]
+                operator = s[2]
+                value = request.GET.get(f)
+                if operator == 'is':
+                    filter_type = "match"
+                    filter_obj = filtered_query
+                    if len(value.split(" ")) == 1:
+                        filter_type = "term"
+                        filter_obj = filtered_filter
+                        if type(value) in [str, unicode]:
+                            value = value.lower()
+
+                    filter_obj.append({filter_type: {field: value}})
+                """
+                if operator == 'like':
+                    df = df[df[field].str.contains(value)]
+                elif operator == 'regex':
+                    df = DataFrameSearchColumn(df, field, value, operator)
+                else:
+                    df = df.query(df_generate(df, value, f))
+                """
+            return filter
+        return {"query": {"match_all": {}}}
