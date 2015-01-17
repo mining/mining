@@ -112,7 +112,7 @@ def data(ws, mongodb, slug):
     del filters, fields, columns
     gc.collect()
     categories = []
-    for i in df.to_dict(outtype='records')[page_start:page_end]:
+    for i in df.to_dict(orient='records')[page_start:page_end]:
         if element.get('categories', None):
             categories.append(i[element.get('categories')])
         ws.send(json.dumps({'type': 'data', 'data': i}))

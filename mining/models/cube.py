@@ -93,7 +93,7 @@ class Cube(object):
             self._keys(self.df.columns.tolist())
         self.df.head()
 
-        self.pdict = map(fix_render, self.df.to_dict(outtype='records'))
+        self.pdict = map(fix_render, self.df.to_dict(orient='records'))
 
     def save(self):
         log_it("SAVE DATA (JSON) ON DATA WAREHOUSE: {}".format(self.slug),
