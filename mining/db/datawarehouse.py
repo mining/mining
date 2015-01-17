@@ -9,3 +9,10 @@ DW = __from__(conf('datawarehouse')['engine'])
 class DataWarehouse(DW):
     def __init__(self):
         self.conf = conf('datawarehouse')
+
+    @property
+    def search(self):
+        try:
+            return self._search 
+        except:
+            return False
