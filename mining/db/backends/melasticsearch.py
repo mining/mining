@@ -32,11 +32,12 @@ class Elasticsearch(object):
                           body={"columns": data.get('columns')})
         return self.conn()
 
-    def get(self, house, content_type="dict", callback={}):
+    def get(self, house, filters=None, content_type="dict", callback={}):
         """Get meta data on Elasticsearch"""
         count = self.conn().count(index=house, doc_type="data").get('count')
         doc_data = self.conn().search(index=house, doc_type='data',
-                                      body=self.filter(), size=count)
+                                      body=self.filter(filters=filters),
+                                      size=count)
         data = {}
         """
         data['data'] = [obj.get("_source")
