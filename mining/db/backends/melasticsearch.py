@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 import json
 import requests
+from bottle import request
 from elasticsearch import Elasticsearch as ES
 
 from mining.utils.listc import listc_dict
 
 
 class Elasticsearch(object):
+
+    _search = True
+
     def conn(self):
         """Open connection on Elasticsearch DataBase"""
         conn = ES([
