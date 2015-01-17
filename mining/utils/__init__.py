@@ -12,7 +12,10 @@ from mining.settings import PROJECT_PATH
 
 
 def slugfy(text):
-    slug = unicodedata.normalize("NFKD", text).encode("UTF-8", "ignore")
+    try:
+        slug = unicodedata.normalize("NFKD", text).encode("UTF-8", "ignore")
+    except:
+        slug = text
     slug = re.sub(r"[^\w]+", " ", slug)
     slug = "-".join(slug.lower().strip().split())
     if not slug:
