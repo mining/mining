@@ -39,7 +39,14 @@ def data(ws, mongodb, slug):
     if request.GET.get('limit', True) is False:
         element['page_limit'] = 9999999999
 
-    data = DW.get(element.get('cube'))
+    filters = [i[0] for i in request.GET.iteritems()
+               if len(i[0].split('filter__')) > 1]
+
+    if not DW.search:
+        data = DW.get(element.get('cube'))
+    else:
+        data = DW.get(element.get('cube'), filters=filters)
+
     columns = data.get('columns') or []
 
     fields = columns
@@ -51,9 +58,6 @@ def data(ws, mongodb, slug):
                         'data': str(cube_last_update.get('lastupdate', ''))}))
 
     ws.send(json.dumps({'type': 'columns', 'data': fields}))
-
-    filters = [i[0] for i in request.GET.iteritems()
-               if len(i[0].split('filter__')) > 1]
 
     if element['type'] == 'grid':
         page = int(request.GET.get('page', 1))
