@@ -48,14 +48,14 @@ class Elasticsearch(object):
     def filter(self):
         """Generate dict to applay filter on Elasticsearch"""
         filter = {
-          "query": {
-            "bool": {
-              "should": [
-                { "match": { "country":  "Brazil"}},
-                { "match": { "full_name": "Daniel Austin"}}
-              ]
+            "query": {
+                "bool": {
+                    "should": [
+                        {"match": {"country": "Brazil"}},
+                        {"match": {"full_name": "Daniel Austin"}}
+                    ]
+                }
             }
-          }
         }
-        filter = {"query": {"match_all" : {}}}
+        filter = {"query": {"match_all": {}}}
         return filter
