@@ -23,6 +23,7 @@ from mining.auth import auth
 from mining.settings import TEMPLATE_PATH, STATIC_PATH
 from mining.celeryc import celery_app
 from mining.bin.scheduler import scheduler_app
+from mining.bin.demo.build_admin import build
 
 
 reload(sys)
@@ -103,6 +104,12 @@ def celery(concurrency):
 def scheduler():
     click.echo(u'OpenMining start scheduler')
     scheduler_app()
+
+
+@cmds.command()
+def build_demo():
+    click.echo(u'OpenMining load demo system')
+    build()
 
 
 if __name__ == "__main__":

@@ -100,7 +100,7 @@ Running Demo
 
 .. code:: bash
 
-    python mining/bin/demo/build_admin.py
+    python manage.py build_demo
 
 
 And now you can login with: username 'admin' and password 'admin'.
