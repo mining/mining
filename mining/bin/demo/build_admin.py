@@ -7,7 +7,10 @@ from mining.tasks import process
 import sqlite3
 
 demo_path = os.path.abspath(os.path.dirname(__file__))
-os.remove(os.path.join(demo_path, 'demo.db'))
+try:
+    os.remove(os.path.join(demo_path, 'demo.db'))
+except OSError:
+    pass
 conn = sqlite3.connect('{}'.format(os.path.join(demo_path, 'demo.db')))
 cur = conn.cursor()
 f = open('{}'.format(os.path.join(demo_path, 'base.sql')), 'r')
