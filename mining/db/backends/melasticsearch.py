@@ -56,20 +56,20 @@ class Elasticsearch(object):
         must: AND
         """
         filter = {
-           "query": {
-              "filtered": {
-                 "query": {
-                    "bool": {
-                       "must": []
+            "query": {
+                "filtered": {
+                    "query": {
+                        "bool": {
+                            "must": []
+                        }
+                    },
+                    "filter": {
+                        "bool": {
+                            "must": []
+                        }
                     }
-                 },
-                 "filter": {
-                    "bool": {
-                       "must": []
-                    }
-                 }
-              }
-           }
+                }
+            }
         }
         filtered_query = filter['query']["filtered"]["query"]['bool']['must']
         filtered_filter = filter['query']["filtered"]["filter"]['bool']['must']

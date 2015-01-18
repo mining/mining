@@ -13,6 +13,6 @@ class DataWarehouse(DW):
     @property
     def search(self):
         try:
-            return self._search 
+            return self._search
         except:
             return False
