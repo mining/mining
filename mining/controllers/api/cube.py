@@ -58,8 +58,12 @@ def cube_get_late(mongodb, slug=None):
 @cube_app.route('/', method='POST')
 def cube_post(mongodb, slug=None):
     ret = post(mongodb, collection, opt={'status': False})
-    cube = json.loads(ret)
-    process.delay(cube)
+    try:
+        cube = json.loads(ret)
+        process.delay(cube)
+    except TypeError:
+        pass
+
     return ret
 
 
