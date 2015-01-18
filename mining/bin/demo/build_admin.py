@@ -3,7 +3,7 @@
 import requests
 import json
 import os
-from mining.bin.cube import run
+from mining.tasks import process
 import sqlite3
 
 demo_path = os.path.abspath(os.path.dirname(__file__))
@@ -186,7 +186,7 @@ for cb in data.get('cube'):
     r = requests.post(url_api.get('cube'), data=json.dumps(cb),
                       headers=headers)
     print 'RUNNING cube {}'.format(cb.get('slug'))
-    run(cb.get('slug'))
+    process(cb)
 
 print 'CREATE element'
 for el in data.get('element'):
