@@ -107,9 +107,11 @@ def scheduler():
 
 
 @cmds.command()
-def build_demo():
+@click.option('--level', type=int, default=0,
+              help="What level of data volume?")
+def build_demo(level):
     click.echo(u'OpenMining load demo system')
-    build()
+    build(level)
 
 
 if __name__ == "__main__":

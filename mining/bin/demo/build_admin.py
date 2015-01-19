@@ -7,7 +7,7 @@ from mining.tasks import process
 import sqlite3
 
 
-def build():
+def build(level=0):
     demo_path = os.path.abspath(os.path.dirname(__file__))
     try:
         os.remove(os.path.join(demo_path, 'demo.db'))
@@ -20,6 +20,14 @@ def build():
     print 'INSERT SQLITE DATA'
     cur.executescript(sql_str)
     conn.commit()
+    f.close()
+    if level>0:
+        l = open(os.path.join(demo_path, 'people.sql'), 'r').read()
+        print 'INSERT SQLITE DATA LEVEL {}'.format(level)
+        for i in xrange(level):
+            cur.executescript(l)
+            conn.commit()
+            print "LEVEL {} COMMIT".format(i)
     cur.close()
 
     url_api = {
