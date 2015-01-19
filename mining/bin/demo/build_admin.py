@@ -21,7 +21,7 @@ def build(level=0):
     cur.executescript(sql_str)
     conn.commit()
     f.close()
-    if level>0:
+    if level > 0:
         l = open(os.path.join(demo_path, 'people.sql'), 'r').read()
         print 'INSERT SQLITE DATA LEVEL {}'.format(level)
         for i in xrange(level):
