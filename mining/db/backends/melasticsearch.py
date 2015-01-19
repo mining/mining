@@ -2,7 +2,7 @@
 import json
 import requests
 from bottle import request
-from elasticsearch import Elasticsearch as ES
+from elasticsearch import RequestsHttpConnection, Elasticsearch as ES
 
 from mining.utils.listc import listc_dict
 
@@ -13,36 +13,50 @@ class Elasticsearch(object):
 
     def conn(self):
         """Open connection on Elasticsearch DataBase"""
-        conn = ES([
-            {"host": self.conf.get('host'),
-             "port": self.conf.get('port')}
-        ])
+        conn = ES([{"host": self.conf.get('host'),
+                    "port": int(self.conf.get('port'))}],
+                  connection_class=RequestsHttpConnection)
         return conn
+
+    def _bulk(self, bulk):
+        requests.post("http://{}:{}/_bulk".format(
+            self.conf.get('host'), self.conf.get('port')),
+            headers={'content-type': 'application/json'},
+            data=bulk)
 
     def save(self, house, data, content_type='dict'):
         """Save meta dada on Elasticsearch"""
         requests.delete("http://{}:{}/{}".format(
             self.conf.get('host'), self.conf.get('port'), house))
-        for obj in data.get('data'):
-            self.conn().index(index=house,
-                              doc_type='data'.format(house),
-                              body=obj)
+        bulk = ""
+        for i, obj in enumerate(data.get('data')):
+            bulk += "{}\n".format(json.dumps({"index":
+                                              {"_index": house,
+                                               "_type": "data"}}))
+            bulk += "{}\n".format(json.dumps(obj))
+
+            if i % 1000 == 0:
+                self._bulk(bulk)
+                bulk = ""
+        self._bulk(bulk)
         self.conn().index(index=house,
                           doc_type='columns',
                           body={"columns": data.get('columns')})
         return self.conn()
 
-    def get(self, house, filters=None, content_type="dict", callback={}):
+    def get(self, house, filters=None, page=1, content_type="dict",
+            callback={}):
         """Get meta data on Elasticsearch"""
-        count = self.conn().count(index=house, doc_type="data").get('count')
+        doc_args = {"size": 50, "from_": page - 1}
+        if not page:
+            doc_args = {}
+        count = self.conn().count(
+            index=house, doc_type="data",
+            body=self.filter(filters=filters)).get('count')
         doc_data = self.conn().search(index=house, doc_type='data',
                                       body=self.filter(filters=filters),
-                                      size=count)
+                                      **doc_args)
         data = {}
-        """
-        data['data'] = [obj.get("_source")
-                        for obj in doc_data.get('hits').get('hits')]
-        """
         data['data'] = listc_dict(doc_data.get('hits').get('hits'), "_source")
         doc_columns = self.conn().search(index=house, doc_type='columns',
                                          body=self.filter())
