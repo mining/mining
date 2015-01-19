@@ -39,13 +39,25 @@ def data(ws, mongodb, slug):
     if request.GET.get('limit', True) is False:
         element['page_limit'] = 9999999999
 
+    if element['type'] == 'grid':
+        page = int(request.GET.get('page', 1))
+        page_start = 0
+        page_end = element['page_limit']
+        if page >= 2:
+            page_end = element['page_limit'] * page
+            page_start = page_end - element['page_limit']
+    else:
+        page = 1
+        page_start = None
+        page_end = None
+
     filters = [i[0] for i in request.GET.iteritems()
                if len(i[0].split('filter__')) > 1]
 
     if not DW.search:
-        data = DW.get(element.get('cube'))
+        data = DW.get(element.get('cube'), page=page)
     else:
-        data = DW.get(element.get('cube'), filters=filters)
+        data = DW.get(element.get('cube'), filters=filters, page=page)
 
     columns = data.get('columns') or []
 
@@ -58,17 +70,6 @@ def data(ws, mongodb, slug):
                         'data': str(cube_last_update.get('lastupdate', ''))}))
 
     ws.send(json.dumps({'type': 'columns', 'data': fields}))
-
-    if element['type'] == 'grid':
-        page = int(request.GET.get('page', 1))
-        page_start = 0
-        page_end = element['page_limit']
-        if page >= 2:
-            page_end = element['page_limit'] * page
-            page_start = page_end - element['page_limit']
-    else:
-        page_start = None
-        page_end = None
 
     df = DataFrame(data.get('data') or {}, columns=fields)
     if len(filters) >= 1:
@@ -110,13 +111,18 @@ def data(ws, mongodb, slug):
             ind += 1
         df = df.sort(orderby, ascending=orderby__order)
 
-    ws.send(json.dumps({'type': 'max_page', 'data': len(df)}))
+    ws.send(json.dumps({'type': 'max_page',
+                        'data': data.get('count', len(df))}))
 
     # CLEAN MEMORY
     del filters, fields, columns
     gc.collect()
     categories = []
-    for i in df.to_dict(orient='records')[page_start:page_end]:
+
+    records = df.to_dict(orient='records')
+    if not DW.search:
+        records = records[page_start:page_end]
+    for i in records:
         if element.get('categories', None):
             categories.append(i[element.get('categories')])
         ws.send(json.dumps({'type': 'data', 'data': i}))
