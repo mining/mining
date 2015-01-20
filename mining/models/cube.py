@@ -11,7 +11,7 @@ from sqlalchemy.orm import sessionmaker
 
 from mining.utils import conf, log_it
 from mining.utils._pandas import fix_render
-from mining.db.datawarehouse import DataWarehouse
+from mining.db import DataWarehouse
 
 from bottle.ext.mongo import MongoPlugin
 

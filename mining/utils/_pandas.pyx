@@ -7,7 +7,7 @@ from datetime import date, datetime
 from pandas import DataFrame, date_range, tslib, concat
 
 from mining.utils import conf
-from mining.db.datawarehouse import DataWarehouse
+from mining.db import DataWarehouse
 
 
 def fix_type(value):
