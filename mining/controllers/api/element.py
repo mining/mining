@@ -4,10 +4,9 @@ from bottle import Bottle
 from bottle.ext.mongo import MongoPlugin
 
 from mining.utils import conf
-from mining.db.datawarehouse import DataWarehouse
+from mining.db import DataWarehouse
 from .base import get, post, put, delete
 
-import json
 
 collection = 'element'
 

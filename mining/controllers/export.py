@@ -3,7 +3,6 @@
 from gevent import monkey
 monkey.patch_all()
 
-import json
 import gc
 
 from bottle import Bottle, request, response
@@ -14,7 +13,7 @@ from pandas import DataFrame
 from mining.settings import PROJECT_PATH
 from mining.utils import conf
 from mining.utils._pandas import df_generate, DataFrameSearchColumn
-from mining.db.datawarehouse import DataWarehouse
+from mining.db import DataWarehouse
 
 
 export_app = Bottle()

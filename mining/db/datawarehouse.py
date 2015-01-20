@@ -1,18 +1,8 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from mining.utils import conf, __from__
+from mining.utils import conf
 
 
-DW = __from__(conf('datawarehouse')['engine'])
-
-
-class DataWarehouse(DW):
+class GenericDataWarehouse(object):
     def __init__(self):
         self.conf = conf('datawarehouse')
-
-    @property
-    def search(self):
-        try:
-            return self._search
-        except:
-            return False
+        self.search = False
