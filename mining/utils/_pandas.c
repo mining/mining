@@ -844,6 +844,7 @@ static char __pyx_k_Timestamp[] = "Timestamp";
 static char __pyx_k_enumerate[] = "enumerate";
 static char __pyx_k_iteritems[] = "iteritems";
 static char __pyx_k_metaclass[] = "__metaclass__";
+static char __pyx_k_mining_db[] = "mining.db";
 static char __pyx_k_str_field[] = "str_field";
 static char __pyx_k_ValueError[] = "ValueError";
 static char __pyx_k_date_range[] = "date_range";
@@ -865,7 +866,6 @@ static char __pyx_k_drawAlignedString[] = "drawAlignedString";
 static char __pyx_k_UnicodeDecodeError[] = "UnicodeDecodeError";
 static char __pyx_k_mining_utils__pandas[] = "mining.utils._pandas";
 static char __pyx_k_DataFrameSearchColumn[] = "DataFrameSearchColumn";
-static char __pyx_k_mining_db_datawarehouse[] = "mining.db.datawarehouse";
 static char __pyx_k_reportlab_pdfgen_convas[] = "reportlab.pdfgen.convas";
 static char __pyx_k_home_avelino_Dropbox_avelino_pr[] = "/home/avelino/Dropbox/avelino/projects/mining/mining/utils/_pandas.pyx";
 static PyObject *__pyx_n_s_Canvas;
@@ -942,7 +942,7 @@ static PyObject *__pyx_n_s_mark;
 static PyObject *__pyx_n_s_merge;
 static PyObject *__pyx_n_s_metaclass;
 static PyObject *__pyx_n_s_method;
-static PyObject *__pyx_n_s_mining_db_datawarehouse;
+static PyObject *__pyx_n_s_mining_db;
 static PyObject *__pyx_n_s_mining_utils;
 static PyObject *__pyx_n_s_mining_utils__pandas;
 static PyObject *__pyx_n_s_module;
@@ -5480,7 +5480,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_merge, __pyx_k_merge, sizeof(__pyx_k_merge), 0, 0, 1, 1},
   {&__pyx_n_s_metaclass, __pyx_k_metaclass, sizeof(__pyx_k_metaclass), 0, 0, 1, 1},
   {&__pyx_n_s_method, __pyx_k_method, sizeof(__pyx_k_method), 0, 0, 1, 1},
-  {&__pyx_n_s_mining_db_datawarehouse, __pyx_k_mining_db_datawarehouse, sizeof(__pyx_k_mining_db_datawarehouse), 0, 0, 1, 1},
+  {&__pyx_n_s_mining_db, __pyx_k_mining_db, sizeof(__pyx_k_mining_db), 0, 0, 1, 1},
   {&__pyx_n_s_mining_utils, __pyx_k_mining_utils, sizeof(__pyx_k_mining_utils), 0, 0, 1, 1},
   {&__pyx_n_s_mining_utils__pandas, __pyx_k_mining_utils__pandas, sizeof(__pyx_k_mining_utils__pandas), 0, 0, 1, 1},
   {&__pyx_n_s_module, __pyx_k_module, sizeof(__pyx_k_module), 0, 0, 1, 1},
@@ -6130,7 +6130,7 @@ PyMODINIT_FUNC PyInit__pandas(void)
  * from pandas import DataFrame, date_range, tslib, concat
  * 
  * from mining.utils import conf             # <<<<<<<<<<<<<<
- * from mining.db.datawarehouse import DataWarehouse
+ * from mining.db import DataWarehouse
  * 
  */
   __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 9; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -6150,7 +6150,7 @@ PyMODINIT_FUNC PyInit__pandas(void)
   /* "mining/utils/_pandas.pyx":10
  * 
  * from mining.utils import conf
- * from mining.db.datawarehouse import DataWarehouse             # <<<<<<<<<<<<<<
+ * from mining.db import DataWarehouse             # <<<<<<<<<<<<<<
  * 
  * 
  */
@@ -6159,7 +6159,7 @@ PyMODINIT_FUNC PyInit__pandas(void)
   __Pyx_INCREF(__pyx_n_s_DataWarehouse);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_DataWarehouse);
   __Pyx_GIVEREF(__pyx_n_s_DataWarehouse);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_mining_db_datawarehouse, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 10; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_mining_db, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 10; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_DataWarehouse); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 10; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
