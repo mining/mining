@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from gevent import monkey
 
@@ -15,7 +14,7 @@ from pandas import DataFrame
 
 from mining.utils import conf
 from mining.utils._pandas import df_generate, DataFrameSearchColumn
-from mining.db.datawarehouse import DataWarehouse
+from mining.db import DataWarehouse
 
 
 stream_app = Bottle()
