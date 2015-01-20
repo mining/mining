@@ -5,7 +5,7 @@ import json
 
 from redis import StrictRedis
 
-from mining.db.datawarehouse import DataWarehouse
+from mining.db import DataWarehouse
 
 
 class connecion_via_drive_test(unittest.TestCase):
