@@ -21,8 +21,8 @@ class Elasticsearch(GenericDataWarehouse):
 
     def _bulk(self, bulk):
         requests.post("{}/_bulk".format(self.base_url),
-            headers={'content-type': 'application/json'},
-            data=bulk)
+                      headers={'content-type': 'application/json'},
+                      data=bulk)
 
     def save(self, house, data, content_type='dict'):
         """Save meta dada on Elasticsearch"""
