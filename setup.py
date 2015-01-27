@@ -43,9 +43,9 @@ def generate_cython():
     cwd = os.path.abspath(os.path.dirname(__file__))
     print("Cythonizing sources")
     p = subprocess.call([sys.executable,
-                          os.path.join(cwd, 'scripts', 'cythonize.py'),
-                          'mining'],
-                         cwd=cwd)
+                        os.path.join(cwd, 'scripts', 'cythonize.py'),
+                        'mining'],
+                        cwd=cwd)
     if p != 0:
         raise RuntimeError("Running cythonize failed!")
 
@@ -68,4 +68,5 @@ setup(name='mining',
       test_suite='nose.main',
       include_package_data=True,
       zip_safe=False,
-      ext_modules=cythonize(["mining/utils/*.pyx"]))
+      ext_modules=cythonize(["mining/utils/*.pyx"]),
+      data_files=[('mining', ['mining/mining.ini'])])
