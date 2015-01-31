@@ -40,14 +40,13 @@ If you use Mac OSX you can install all dependencies using `HomeBrew <http://brew
 Install Open Mining
 -------
 
-**Clone the repository and install it**
+**Clone the repository**
 
 .. code:: bash
 
     $ git clone git@github.com:avelino/mining.git
     $ cd mining
     $ git submodule update
-    $ python setup.py install
 
 **Run pip install on project requirements**
 
@@ -55,17 +54,23 @@ Install Open Mining
 
     $ pip install -r requirements.txt
 
+**Copy the sample ini file to mining.ini**
+
+.. code:: bash
+
+    $ cp mining/mining.sample.ini mining/mining.ini    
+
+**Install it**
+
+.. code:: bash
+
+    $ python setup.py install
+
 **Install numexpr**
 
 .. code:: bash
 
     $ pip install numexpr==2.3
-
-**Copy the sample ini file to mining.ini**
-
-.. code:: bash
-
-    $ cp mining/mining.sample.ini mining/mining.ini
 
 **Install javascript assets using Bower**
 
@@ -80,7 +85,7 @@ Install Open Mining
 
 Install mongodb and redis-server, make sure it running
 
-**If "python manage.py runserver" returns "ConfigParser.NoSectionError: No section: 'mongodb'"**
+**If "python setup.py install" returns "error: can't copy 'mining/mining.ini': doesn't exist or not a regular file"**
 
 copy mining/mining.sample.ini to mining/mining.ini
 
