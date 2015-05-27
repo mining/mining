@@ -16,8 +16,7 @@ from geventwebsocket.handler import WebSocketHandler
 from beaker.middleware import SessionMiddleware
 
 from mining.controllers.api import api_app
-from mining.controllers.stream import stream_app
-from mining.controllers.export import export_app
+from mining.controllers.data import data_app
 from mining.utils import conf
 from mining.auth import auth
 from mining.settings import TEMPLATE_PATH, STATIC_PATH
@@ -42,8 +41,7 @@ session_opts = {
 
 app = SessionMiddleware(Bottle(), session_opts)
 app.wrap_app.mount('/api', api_app)
-app.wrap_app.mount('/stream', stream_app)
-app.wrap_app.mount('/export', export_app)
+app.wrap_app.mount('/data', data_app)
 
 app.wrap_app.install(auth)
 
