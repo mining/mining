@@ -42,11 +42,7 @@ docs/site
 # Pycharm
 .idea
 
-mining/assets/bower
-mining/assets/exports
 mining/mining.ini
-
-data
 
 # Sqlite
 *.db
