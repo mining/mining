@@ -63,5 +63,5 @@ def __from__(path):
         _import = path.split('.')[-1]
         _from = u".".join(path.split('.')[:-1])
         return getattr(__import__(_from, fromlist=[_import]), _import)
-    except:
+    except TypeError:
         return object
