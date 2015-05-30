@@ -4,7 +4,7 @@ pandas==0.15.2
 SQLAlchemy==0.9.1
 bottle==0.12.7
 bottle-mongo==0.2.4
-bottle-websocket==0.2.5
+bottle-websocket==0.2.8
 bottle-auth==0.3.3
 bottle-beaker
 beaker
