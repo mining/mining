@@ -14,6 +14,11 @@ from mining.settings import PROJECT_PATH
 from mining.utils import conf, __from__
 from mining.utils._pandas import df_generate, DataFrameSearchColumn
 from mining.db import DataWarehouse
+from mining.settings import HAS_GEO
+
+if HAS_GEO:
+    import shapely.wkt
+    from geopandas import GeoDataFrame, GeoSeries
 
 
 data_app = Bottle()
@@ -73,13 +78,14 @@ def data(mongodb, slug):
     if request.GET.get('fields', None):
         fields = request.GET.get('fields').split(',')
 
-    cube_last_update = mongodb['cube'].find_one({'slug': element.get('cube')})
+    cube_conf = mongodb['cube'].find_one({'slug': element.get('cube')})
     DM.send(json.dumps({'type': 'last_update',
-                        'data': str(cube_last_update.get('lastupdate', ''))}))
+                        'data': str(cube_conf.get('lastupdate', ''))}))
 
     DM.send(json.dumps({'type': 'columns', 'data': fields}))
 
     df = DataFrame(data.get('data') or {}, columns=fields)
+
     if len(filters) >= 1:
         for f in filters:
             s = f.split('__')
@@ -123,7 +129,7 @@ def data(mongodb, slug):
                         'data': data.get('count', len(df))}))
 
     # CLEAN MEMORY
-    del filters, fields, columns
+    del filters, columns
     gc.collect()
     categories = []
 
@@ -154,6 +160,23 @@ def data(mongodb, slug):
             if ext == 'csv':
                 df.to_csv(file_name, sep=";")
                 contenttype = 'text/csv'
+            elif ext == 'geojson' and \
+                    HAS_GEO and 'spatial' in cube_conf.get('type'):
+
+                geom_col = 'geom'
+
+                wkt_geoms = df[geom_col]
+                s = wkt_geoms.apply(lambda x: shapely.wkt.loads(x))
+                df[geom_col] = GeoSeries(s)
+                df = GeoDataFrame(df, geometry=geom_col, columns=fields)
+
+                o = df.to_json()
+                # TODO: Refactor in order to serve directly from memory
+                # without saving on disk
+                ifile = open(file_name, "w")
+                ifile.write(o)
+                ifile.close()
+                contenttype = ' application/vnd.geo+json'
             else:
                 df.to_excel(file_name)
                 contenttype = 'application/vnd.ms-excel'

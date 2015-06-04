@@ -12,8 +12,14 @@ from sqlalchemy.orm import sessionmaker
 from mining.utils import conf, log_it
 from mining.utils._pandas import fix_render
 from mining.db import DataWarehouse
+from mining.settings import HAS_GEO
 
 from bottle.ext.mongo import MongoPlugin
+
+if HAS_GEO:
+    import binascii
+    import shapely.wkb
+    from geopandas import GeoDataFrame, GeoSeries
 
 
 class Cube(object):
@@ -49,6 +55,7 @@ class Cube(object):
 
         log_it("CONNECT IN RELATION DATA BASE: {}".format(self.slug),
                "bin-mining")
+
         if 'sqlite' in self.connection:
             e = create_engine(self.connection)
         else:
@@ -79,7 +86,21 @@ class Cube(object):
         if data_type:
             self.df = getattr(pandas, "read_{}".format(data_type))(self.data)
         else:
-            self.df = DataFrame(self.data)
+            if self.cube.get('type') == 'relational_spatial':
+                geom_col = 'geom'
+                crs = None
+                df = DataFrame(self.data, columns=self.keys)
+                wkb_geoms = df[geom_col]
+
+                s = wkb_geoms.apply(lambda x: shapely.wkb.loads(
+                    binascii.unhexlify(x.encode())))
+
+                df[geom_col] = GeoSeries(s)
+
+                self.df = GeoDataFrame(df, crs=crs, geometry=geom_col)
+
+            else:
+                self.df = DataFrame(self.data)
 
         if self.df.empty:
             self.pdict = {}
