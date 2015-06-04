@@ -23,6 +23,7 @@ from mining.settings import TEMPLATE_PATH, STATIC_PATH
 from mining.celeryc import celery_app
 from mining.bin.scheduler import scheduler_app
 from mining.bin.demo.build_admin import build
+from mining.settings import HAS_GEO
 
 
 reload(sys)
@@ -57,14 +58,16 @@ def static(path):
 def index():
     return {'get_url': app.wrap_app.get_url,
             'protocol': conf('openmining')['protocol'],
-            'lang': conf('openmining')['lang']}
+            'lang': conf('openmining')['lang'],
+            'has_geo': HAS_GEO}
 
 
 @app.wrap_app.route('/login')
 @view('login.html')
 def login():
     return {'get_url': app.wrap_app.get_url,
-            'lang': conf('openmining')['lang']}
+            'lang': conf('openmining')['lang'],
+            'has_geo': HAS_GEO}
 
 
 @click.group()
