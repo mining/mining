@@ -3,6 +3,7 @@
 import json
 import re
 import os
+import ast
 import unicodedata
 import ConfigParser
 from bson import ObjectId
@@ -28,18 +29,15 @@ def conf(section, ini="mining.ini"):
     config.read(os.path.join(PROJECT_PATH, ini))
     _dict = {}
     options = config.options(section)
+
     for option in options:
         try:
-            _dict[option] = config.get(section, option)
+            _dict[option] = ast.literal_eval(config.get(section, option))
         except:
-            _dict[option] = None
-
-    if 'sql_conn_params' in options:
-        import ast
-
-        _dict['sql_conn_params'] = ast.literal_eval(_dict['sql_conn_params'])
-    else:
-        _dict['sql_conn_params'] = {}
+            try:
+                _dict[option] = config.get(section, option)
+            except:
+                _dict[option] = None
 
     return _dict
 
