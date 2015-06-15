@@ -10,7 +10,4 @@ celery_app = Celery(
     backend=conf("celery").get("backend", 'amqp://'),
     include=['mining.tasks'])
 
-celery_app.conf.update(
-    CELERY_TASK_RESULT_EXPIRES=conf("celery").get("result_expires", 3600),
-    CELERYD_POOL="gevent"
-)
+celery_app.conf.update(**conf("celery").get("params", {}))
