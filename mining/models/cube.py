@@ -112,8 +112,19 @@ class Cube(object):
             self.df.columns = self.keys
         except AttributeError:
             self._keys(self.df.columns.tolist())
-        self.df.head()
 
+        # If the OML is active, it renders the script that there is
+        if conf("oml").get("on") and self.cube.get("oml"):
+            from oml import RunTime
+            self.df.columns = self.keys
+            df = RunTime(conf("oml").get("language", "lua"),
+                         self.df.to_dict(orient='records'),
+                         self.cube.get("oml"),
+                         conf("oml").get("class", {"OML": "oml.base.OMLBase"}))
+            self.df = DataFrame(df)
+            self._keys(self.df.columns.tolist())
+
+        self.df.head()
         self.pdict = map(fix_render, self.df.to_dict(orient='records'))
 
     def save(self):
