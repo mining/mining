@@ -86,9 +86,9 @@ class Cube(object):
         if data_type:
             self.df = getattr(pandas, "read_{}".format(data_type))(self.data)
         else:
-            if self.cube.get('type') == 'relational_spatial':
-                geom_col = 'geom'
-                crs = None
+            if self.cube.get('spatial'):
+                geom_col = self.cube.get('geom')
+                crs = self.cube.get('crs')
                 df = DataFrame(self.data, columns=self.keys)
                 wkb_geoms = df[geom_col]
 

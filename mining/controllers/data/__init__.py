@@ -161,14 +161,16 @@ def data(mongodb, slug):
                 df.to_csv(file_name, sep=";")
                 contenttype = 'text/csv'
             elif ext == 'geojson' and \
-                    HAS_GEO and 'spatial' in cube_conf.get('type'):
+                    HAS_GEO and cube_conf.get('spatial', False):
 
-                geom_col = 'geom'
+                geom_col = cube_conf.get('geom')
+                crs = cube_conf.get('crs')
 
                 wkt_geoms = df[geom_col]
                 s = wkt_geoms.apply(lambda x: shapely.wkt.loads(x))
                 df[geom_col] = GeoSeries(s)
-                df = GeoDataFrame(df, geometry=geom_col, columns=fields)
+                df = GeoDataFrame(
+                    df, geometry=geom_col, crs=crs, columns=fields)
 
                 o = df.to_json()
                 # TODO: Refactor in order to serve directly from memory

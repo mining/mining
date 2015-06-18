@@ -21,7 +21,7 @@ def process(_cube):
             json_mongo=True).get_mongo()
 
         c = Cube(_cube)
-        if _cube.get('type') in ('relational', 'relational_spatial'):
+        if _cube.get('type') == 'relational':
             c.load()
             c.frame()
             c.save()
