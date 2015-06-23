@@ -46,6 +46,7 @@ Install Open Mining
 
     $ git clone git@github.com:avelino/mining.git
     $ cd mining
+    $ git submodule init
     $ git submodule update
 
 **Run pip install on project requirements**
@@ -76,7 +77,7 @@ Install Open Mining
 
 .. code:: bash
 
-    $ mining/frontend
+    $ cd mining/frontend
     $ bower install
 
 **FAQ**
