@@ -54,7 +54,8 @@ def dashboard_get(mongodb, slug=None):
                             'scheduler_status': True,
                             'scheduler_interval': True,
                             'scheduler_type': True,
-                            'spatial': True
+                            'spatial': True,
+                            'geom': True,
                         })
                     if _cube:
                         del _cube['_id']

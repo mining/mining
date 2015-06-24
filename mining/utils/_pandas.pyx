@@ -8,6 +8,13 @@ from pandas import DataFrame, date_range, tslib, concat
 
 from mining.utils import conf
 from mining.db import DataWarehouse
+from mining.settings import HAS_GEO
+
+if HAS_GEO:
+    from functools import partial
+    from shapely.ops import transform
+    import pyproj
+    import shapely.wkt
 
 
 def fix_type(value):
@@ -101,6 +108,31 @@ def DataFrameSearchColumn(df, field, value, operator):
         if operator == 'regex' and re.search(value, str(record)):
             ndf = concat([df[df[field] == record], ndf], ignore_index=True)
     return ndf
+
+
+def geom_transform(srid_in, srid_out, geom):
+    project = partial(
+        pyproj.transform,
+        pyproj.Proj(init="epsg:%s" % srid_in),
+        pyproj.Proj(init="epsg:%s" % srid_out))
+
+    return transform(project, geom)
+
+
+def GeoDataFrameSearchColumn(df, field, value, operator):
+    if not HAS_GEO:
+        raise Exception("Geospatial support not configured."
+                        "Can't filter using geospatial operators!")
+    else:
+        if value.startswith('SRID'):
+            # it is EWKT so take proj info and transform
+            srid_str, wkr_str = value.split(';')
+            geo_value = shapely.wkt.loads(wkr_str)
+            geo_value = geom_transform(srid_str[5:], df.crs, geo_value)
+        else:
+            geo_value = shapely.wkt.loads(value)
+        geo_series_op = getattr(df[field], operator)
+        return df[geo_series_op(geo_value)]
 
 
 class CubeJoin(object):

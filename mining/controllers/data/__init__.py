@@ -11,8 +11,12 @@ from bottle.ext.mongo import MongoPlugin
 from pandas import DataFrame
 
 from mining.settings import PROJECT_PATH
-from mining.utils import conf, __from__
-from mining.utils._pandas import df_generate, DataFrameSearchColumn
+from mining.utils import conf, __from__, parse_dumps
+from mining.utils._pandas import (
+    df_generate,
+    DataFrameSearchColumn,
+    GeoDataFrameSearchColumn
+)
 from mining.db import DataWarehouse
 from mining.settings import HAS_GEO
 
@@ -86,6 +90,17 @@ def data(mongodb, slug):
 
     df = DataFrame(data.get('data') or {}, columns=fields)
 
+    if cube_conf.get('spatial', False):
+        # Redefine DataFrame as a GeoDataFrame
+        geom_col = cube_conf.get('geom')
+        crs = cube_conf.get('crs')
+
+        wkt_geoms = df[geom_col]
+        s = wkt_geoms.apply(lambda x: shapely.wkt.loads(x))
+        df[geom_col] = GeoSeries(s)
+        df = GeoDataFrame(
+            df, geometry=geom_col, crs=crs, columns=fields)
+
     if len(filters) >= 1:
         for f in filters:
             s = f.split('__')
@@ -96,6 +111,8 @@ def data(mongodb, slug):
                 df = df[df[field].str.contains(value)]
             elif operator == 'regex':
                 df = DataFrameSearchColumn(df, field, value, operator)
+            elif operator.startswith('geo_'):
+                df = GeoDataFrameSearchColumn(df, field, value, operator[4:])
             else:
                 df = df.query(df_generate(df, value, f))
 
@@ -139,7 +156,7 @@ def data(mongodb, slug):
     for i in records:
         if element.get('categories', None):
             categories.append(i[element.get('categories')])
-        DM.send(json.dumps({'type': 'data', 'data': i}))
+        DM.send(json.dumps({'type': 'data', 'data': i}, default=parse_dumps))
 
     DM.send(json.dumps({'type': 'categories', 'data': categories}))
     DM.send(json.dumps({'type': 'close'}))
@@ -162,23 +179,13 @@ def data(mongodb, slug):
                 contenttype = 'text/csv'
             elif ext == 'geojson' and \
                     HAS_GEO and cube_conf.get('spatial', False):
-
-                geom_col = cube_conf.get('geom')
-                crs = cube_conf.get('crs')
-
-                wkt_geoms = df[geom_col]
-                s = wkt_geoms.apply(lambda x: shapely.wkt.loads(x))
-                df[geom_col] = GeoSeries(s)
-                df = GeoDataFrame(
-                    df, geometry=geom_col, crs=crs, columns=fields)
-
                 o = df.to_json()
                 # TODO: Refactor in order to serve directly from memory
                 # without saving on disk
                 ifile = open(file_name, "w")
                 ifile.write(o)
                 ifile.close()
-                contenttype = ' application/vnd.geo+json'
+                contenttype = 'application/vnd.geo+json'
             else:
                 df.to_excel(file_name)
                 contenttype = 'application/vnd.ms-excel'
@@ -195,4 +202,4 @@ def data(mongodb, slug):
 
             return o
 
-        return json.dumps(DM.data)
+        return json.dumps(DM.data, default=parse_dumps)

@@ -9,7 +9,11 @@ import ConfigParser
 from bson import ObjectId
 from datetime import datetime
 
-from mining.settings import PROJECT_PATH
+from mining.settings import PROJECT_PATH, HAS_GEO
+
+if HAS_GEO:
+    from shapely.geometry import mapping
+    from shapely.geometry.base import BaseGeometry
 
 
 def slugfy(text):
@@ -53,6 +57,8 @@ def parse_dumps(obj):
         return str(obj.strftime("%Y-%m-%d %H:%M:%S"))
     if isinstance(obj, ObjectId):
         return str(obj)
+    if isinstance(obj, BaseGeometry):
+        return mapping(obj)
     return json.JSONEncoder.default(obj)
 
 
