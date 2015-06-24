@@ -42,7 +42,11 @@ docs/site
 # Pycharm
 .idea
 
+# mining
 mining/mining.ini
+
+# celery
+dump.rdb
 
 # Sqlite
 *.db
