@@ -127,6 +127,15 @@ def data(mongodb, slug):
     gc.collect()
     categories = []
 
+    # TODO: loop in aggregate (apply mult aggregate)
+    aggregate = [i[0] for i in request.GET.iteritems()
+                 if len(i[0].split('aggregate__')) > 1]
+    if len(aggregate) >= 1:
+        agg = aggregate[0].split('__')
+        _agg = getattr(df.groupby(agg[1]), request.GET.get(aggregate[0]))()
+        DF_A = DataFrame(_agg[_agg.keys()[0]]).to_dict().get(_agg.keys()[0])
+        DM.send(json.dumps({'type': 'aggregate', 'data': DF_A}))
+
     records = df.to_dict(orient='records')
     if not DW.search:
         records = records[page_start:page_end]
