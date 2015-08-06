@@ -16,3 +16,5 @@ script: make test
 notifications:
   irc: "irc.freenode.org#openmining"
   on_success: "never"
+after_success:
+  - coveralls

@@ -1,7 +1,6 @@
 .PHONY: test
 test: pep8 clean
-	@coverage report
-	@nosetests mining/test
+	@nosetests --with-coverage --cover-package=mining mining/test
 	@$(which gulp.js)
 
 .PHONY: tox-test
