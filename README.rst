@@ -8,7 +8,10 @@ Open Mining
     :target: https://travis-ci.org/avelino/mining
     :alt: Build Status - Travis CI
 
-Business Intelligence (BI) Application Server written in Python 
+.. image:: https://coveralls.io/repos/avelino/mining/badge.svg?branch=master&service=github
+    :target: https://coveralls.io/github/avelino/mining?branch=master
+
+Business Intelligence (BI) Application Server written in Python
 
 
 Contribute
