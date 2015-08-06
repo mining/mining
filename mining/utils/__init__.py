@@ -8,6 +8,7 @@ import unicodedata
 import ConfigParser
 from bson import ObjectId
 from datetime import datetime
+from bottle import request
 
 from mining.settings import PROJECT_PATH
 
@@ -63,3 +64,15 @@ def __from__(path):
         return getattr(__import__(_from, fromlist=[_import]), _import)
     except TypeError:
         return object
+
+
+def query_field(f):
+    ret = {}
+    value = request.GET.get(f)
+    if value:
+        s = f.split('__')
+        ret['action'] = s[0]
+        ret['field'] = s[1]
+        ret['operator'] = s[2]
+        ret['value'] = value
+    return ret
