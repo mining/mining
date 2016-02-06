@@ -150,7 +150,7 @@ Screenshots
 Credits
 -------
 
-Authors: `Avelino <https://github.com/avelino/`>_ and `UP! Essência <http://www.upessencia.com.br/>`_
+Authors: `Avelino <https://github.com/avelino/>`_ and `UP! Essência <http://www.upessencia.com.br/>`_
 
 Many thanks to all the contributors!
 
