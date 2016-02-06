@@ -107,10 +107,12 @@ Run
 Running Demo
 ------------
 
+Make sure runserver still running when run 'build_demo' command.
+
 .. code:: bash
 
-    python manage.py build_demo
     python manage.py runserver
+    python manage.py build_demo
 
 
 And now you can login with: username 'admin' and password 'admin'.
