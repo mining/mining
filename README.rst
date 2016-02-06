@@ -117,8 +117,8 @@ Make sure runserver still running when run 'build_demo' command.
 
 And now you can login with: username 'admin' and password 'admin'.
 
-Screenshot
-----------
+Screenshots
+-----------
 
 **Dashboard OpenMining**
 
