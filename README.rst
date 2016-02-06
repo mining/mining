@@ -147,8 +147,15 @@ Screenshot
     :alt: Late Scheduler and running Cubes OpenMining
 
 
-Sponsor
+Credits
 -------
 
-* `UP! Essência <http://www.upessencia.com.br/>`_
-* `ZNC <http://www.znc.com.br/>`_
+Authors: Thiago Avelino and `UP! Essência <http://www.upessencia.com.br/>`_
+
+Many thanks to all the contributors!
+
+
+License
+-------
+
+Licensed under the MIT license (see MIT-LICENSE file)
