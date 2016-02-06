@@ -4,8 +4,8 @@ Open Mining
 .. image:: https://raw.githubusercontent.com/mining/frontend/master/assets/image/openmining.io.png
     :alt: OpenMining
 
-.. image:: https://travis-ci.org/avelino/mining.png?branch=master
-    :target: https://travis-ci.org/avelino/mining
+.. image:: https://travis-ci.org/mining/mining.png?branch=master
+    :target: https://travis-ci.org/mining/mining
     :alt: Build Status - Travis CI
 
 .. image:: https://coveralls.io/repos/avelino/mining/badge.svg?branch=master&service=github
