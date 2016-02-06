@@ -43,7 +43,7 @@ If you use Mac OSX you can install all dependencies using `HomeBrew <http://brew
 Install Open Mining
 -------
 
-**Clone the repository**
+**Clone the repository and install submodule**
 
 .. code:: bash
 
@@ -62,7 +62,7 @@ Install Open Mining
 
 .. code:: bash
 
-    $ cp mining/mining.sample.ini mining/mining.ini    
+    $ cp mining/mining.sample.ini mining/mining.ini
 
 **Install it**
 
