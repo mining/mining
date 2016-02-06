@@ -4,8 +4,8 @@ Open Mining
 .. image:: https://raw.githubusercontent.com/mining/frontend/master/assets/image/openmining.io.png
     :alt: OpenMining
 
-.. image:: https://travis-ci.org/avelino/mining.png?branch=master
-    :target: https://travis-ci.org/avelino/mining
+.. image:: https://travis-ci.org/mining/mining.png?branch=master
+    :target: https://travis-ci.org/mining/mining
     :alt: Build Status - Travis CI
 
 .. image:: https://coveralls.io/repos/avelino/mining/badge.svg?branch=master&service=github
@@ -43,7 +43,7 @@ If you use Mac OSX you can install all dependencies using `HomeBrew <http://brew
 Install Open Mining
 -------
 
-**Clone the repository**
+**Clone the repository and install submodule**
 
 .. code:: bash
 
@@ -62,7 +62,7 @@ Install Open Mining
 
 .. code:: bash
 
-    $ cp mining/mining.sample.ini mining/mining.ini    
+    $ cp mining/mining.sample.ini mining/mining.ini
 
 **Install it**
 
@@ -117,8 +117,8 @@ Make sure runserver still running when run 'build_demo' command.
 
 And now you can login with: username 'admin' and password 'admin'.
 
-Screenshot
-----------
+Screenshots
+-----------
 
 **Dashboard OpenMining**
 
@@ -147,8 +147,15 @@ Screenshot
     :alt: Late Scheduler and running Cubes OpenMining
 
 
-Sponsor
+Credits
 -------
 
-* `UP! Essência <http://www.upessencia.com.br/>`_
-* `ZNC <http://www.znc.com.br/>`_
+Authors: Thiago Avelino and `UP! Essência <http://www.upessencia.com.br/>`_
+
+Many thanks to all the contributors!
+
+
+License
+-------
+
+Licensed under the MIT license (see MIT-LICENSE file)
