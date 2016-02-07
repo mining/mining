@@ -27,7 +27,10 @@ def slugfy(text):
 
 def conf(section, ini="mining.ini"):
     config = ConfigParser.ConfigParser()
-    config.read(os.path.join(PROJECT_PATH, ini))
+    if os.path.isfile(os.path.join(PROJECT_PATH, ini)):
+        config.read(os.path.join(PROJECT_PATH, ini))
+    else:
+        config.read(os.path.join(PROJECT_PATH, "mining.sample.ini"))
     _dict = {}
     options = config.options(section)
 
