@@ -23,6 +23,7 @@ Join us on IRC at **#openmining** on freenode (`web access <http://webchat.freen
 Requirements
 ------------
 
+* Python 2.7 (Backend)
 * MongoDB (Admin)
 * Redis (Queue and DataWarehouse)
 * Bower (Install frontend libs, NodeJS depends)
