@@ -58,12 +58,6 @@ Install Open Mining
 
     $ pip install -r requirements.txt
 
-**Copy the sample ini file to mining.ini**
-
-.. code:: bash
-
-    $ cp mining/mining.sample.ini mining/mining.ini
-
 **Install it**
 
 .. code:: bash
@@ -88,10 +82,6 @@ Install Open Mining
 **If mongodb or redis-server problems**
 
 Install mongodb and redis-server, make sure it running
-
-**If "python setup.py install" returns "error: can't copy 'mining/mining.ini': doesn't exist or not a regular file"**
-
-copy mining/mining.sample.ini to mining/mining.ini
 
 
 Run
