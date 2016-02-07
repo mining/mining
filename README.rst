@@ -62,7 +62,7 @@ Install Open Mining
 
 .. code:: bash
 
-    $ python setup.py install
+    $ python setup.py develop
 
 **Install numexpr**
 
