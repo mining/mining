@@ -48,7 +48,7 @@ Install Open Mining
 
 .. code:: bash
 
-    $ git clone git@github.com:avelino/mining.git
+    $ git clone git@github.com:mining/mining.git
     $ cd mining
     $ git submodule init
     $ git submodule update
@@ -113,28 +113,28 @@ Screenshots
 
 **Dashboard OpenMining**
 
-.. image:: https://raw.github.com/avelino/mining/master/docs/docs/img/dashboard-openmining_new.png
+.. image:: https://raw.github.com/mining/mining/master/docs/docs/img/dashboard-openmining_new.png
     :alt: Dashboard OpenMining
 
 **Dashboard Charts OpenMining**
 
-.. image:: https://raw.github.com/avelino/mining/master/docs/docs/img/charts-openmining_new.png
+.. image:: https://raw.github.com/mining/mining/master/docs/docs/img/charts-openmining_new.png
     :alt: Dashboard Charts OpenMining
 
 **Dashboard Charts OpenMining**
 
-.. image:: https://raw.github.com/avelino/mining/master/docs/docs/img/charts2-openmining_new.png
+.. image:: https://raw.github.com/mining/mining/master/docs/docs/img/charts2-openmining_new.png
     :alt: Dashboard Charts OpenMining
 
 **Dashboard Widgets OpenMining**
 
-.. image:: https://raw.github.com/avelino/mining/master/docs/docs/img/widgets-openmining_new.png
+.. image:: https://raw.github.com/mining/mining/master/docs/docs/img/widgets-openmining_new.png
     :alt: Dashboard Widgets OpenMining
 
 
 **Late Scheduler and running Cubes OpenMining**
 
-.. image:: https://raw.github.com/avelino/mining/master/docs/docs/img/late-scheduler-openmining_new.png
+.. image:: https://raw.github.com/mining/mining/master/docs/docs/img/late-scheduler-openmining_new.png
     :alt: Late Scheduler and running Cubes OpenMining
 
 
