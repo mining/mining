@@ -2,7 +2,7 @@ language: python
 python:
   - "2.7"
 env:
-  - LUA=libluajit-5.1-dev
+  - LUA=libluajit-5.1
   - LUA=lua5.2-dev
 services:
   - redis-server
