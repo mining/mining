@@ -11,9 +11,9 @@ tox-test: environment
 environment:
 	@pip install -r requirements_dev.txt
 	@pip install -r requirements.txt
-	@pip install numexpr==2.3
 	@python setup.py develop
-	@npm install gulp gulp-jshint
+	@pip install numexpr==2.3
+	@npm install bower
 	@mv mining/mining.sample.ini mining/mining.ini
 
 .PHONY: install
