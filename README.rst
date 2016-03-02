@@ -85,6 +85,12 @@ Install Open Mining
 Install mongodb and redis-server, make sure it running
 
 
+**Supported databases**
+
+For example, to connect to a PostgreSQL database make sure you install a driver like **psycopg2**. OpenMining supports all databases that the underlying ORM SQLAlchemy supports.
+See the `SQLAlchemy documentation <http://docs.sqlalchemy.org/en/rel_0_9/core/engines.html>`_ for more info about drivers and connection strings.
+
+
 Run
 ---
 
