@@ -1,5 +1,4 @@
 flake8
 coverage
 webtest
-mkdocs
 coveralls
