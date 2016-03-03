@@ -9,12 +9,11 @@ tox-test: environment
 
 .PHONY: environment
 environment:
+	@pip install Cython
+	@pip install numpy
 	@pip install -r requirements_dev.txt
-	@pip install -r requirements.txt
 	@python setup.py develop
-	@pip install numexpr==2.3
 	@npm install bower
-	@mv mining/mining.sample.ini mining/mining.ini
 
 .PHONY: install
 install:

@@ -1,5 +1,6 @@
-Cython==0.21.2
-pandas==0.15.2
+numpy
+numexpr==2.4
+pandas==0.17.1
 SQLAlchemy==0.9.1
 bottle==0.12.7
 bottle-mongo==0.2.4
