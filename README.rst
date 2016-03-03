@@ -1,16 +1,15 @@
 Open Mining
 ===========
 
-.. image:: https://raw.githubusercontent.com/mining/frontend/master/assets/image/openmining.io.png
-    :alt: OpenMining
-
-
 .. image:: https://circleci.com/gh/mining/mining/tree/master.svg?style=svg
     :target: https://circleci.com/gh/mining/mining/tree/master
     :alt: Build Status - Circle CI
 
 .. image:: https://coveralls.io/repos/avelino/mining/badge.svg?branch=master&service=github
     :target: https://coveralls.io/github/avelino/mining?branch=master
+
+.. image:: https://raw.githubusercontent.com/mining/frontend/master/assets/image/openmining.io.png
+    :alt: OpenMining
 
 Business Intelligence (BI) Application Server written in Python
 
