@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 import os
 import sys
@@ -13,6 +12,8 @@ REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()
 
 dependency_links = [i.strip() for i in open("requirements.txt").readlines()
                     if i.startswith("http")]
+
+DATA_DIR = os.path.abspath(os.path.dirname(__file__))
 
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -40,12 +41,11 @@ except:
 
 
 def generate_cython():
-    cwd = os.path.abspath(os.path.dirname(__file__))
     print("Cythonizing sources")
     p = subprocess.call([sys.executable,
-                        os.path.join(cwd, 'scripts', 'cythonize.py'),
+                        os.path.join(DATA_DIR, 'scripts', 'cythonize.py'),
                         'mining'],
-                        cwd=cwd)
+                        cwd=DATA_DIR)
     if p != 0:
         raise RuntimeError("Running cythonize failed!")
 
@@ -59,8 +59,8 @@ setup(name='mining',
       keywords='open mining bi business intelligence platform riak',
       author=mining.__author__,
       author_email=mining.__email__,
-      url='http://openmining.io',
-      download_url="https://github.com/avelino/mining/tarball/master",
+      url='https://github.com/mining/mining',
+      download_url="https://github.com/mining/mining/tarball/master",
       license=mining.__license__,
       packages=find_packages(exclude=('doc', 'docs',)),
       install_requires=REQUIREMENTS,
