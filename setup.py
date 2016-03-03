@@ -68,5 +68,4 @@ setup(name='mining',
       test_suite='nose.main',
       include_package_data=True,
       zip_safe=False,
-      ext_modules=cythonize(["mining/utils/*.pyx"]),
-      data_files=[('mining', ['mining/mining.ini'])])
+      ext_modules=cythonize(["mining/utils/*.pyx"]),)
