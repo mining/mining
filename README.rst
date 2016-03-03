@@ -25,6 +25,7 @@ Requirements
 ------------
 
 * Python 2.7 (Backend)
+* Lua 5.2 or LuaJIT 5.1 (OML backend)
 * MongoDB (Admin)
 * Redis (Queue and DataWarehouse)
 * Bower (Install frontend libs, NodeJS depends)
