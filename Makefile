@@ -15,6 +15,11 @@ environment:
 	@python setup.py develop
 	@npm install bower
 
+.PHONY: build
+build: environment
+	@cd mining; git submodule init; git submodule update
+	@cd mining/frontend; bower install
+
 .PHONY: install
 install:
 	@python setup.py install
