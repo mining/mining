@@ -5,8 +5,8 @@ Open Mining
     :target: https://circleci.com/gh/mining/mining/tree/master
     :alt: Build Status - Circle CI
 
-.. image:: https://coveralls.io/repos/avelino/mining/badge.svg?branch=master&service=github
-    :target: https://coveralls.io/github/avelino/mining?branch=master
+.. image:: https://coveralls.io/repos/github/mining/mining/badge.svg?branch=master
+    :target: https://coveralls.io/github/mining/mining?branch=master
 
 .. image:: https://raw.githubusercontent.com/mining/frontend/master/assets/image/openmining.io.png
     :alt: OpenMining
