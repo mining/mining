@@ -46,39 +46,17 @@ If you use Mac OSX you can install all dependencies using `HomeBrew <http://brew
 Install Open Mining
 -------
 
-**Clone the repository and install submodule**
+**Clone the repository**
 
 .. code:: bash
 
     $ git clone git@github.com:mining/mining.git
-    $ cd mining
-    $ git submodule init
-    $ git submodule update
 
-**Run pip install on project requirements**
+**Install python and bower dependencies using make command**
 
 .. code:: bash
 
-    $ pip install -r requirements.txt
-
-**Install it**
-
-.. code:: bash
-
-    $ python setup.py develop
-
-**Install numexpr**
-
-.. code:: bash
-
-    $ pip install numexpr==2.3
-
-**Install javascript assets using Bower**
-
-.. code:: bash
-
-    $ cd mining/frontend
-    $ bower install
+    $ make build
 
 **FAQ**
 
@@ -90,6 +68,7 @@ Install mongodb and redis-server, make sure it running
 **Supported databases**
 
 For example, to connect to a PostgreSQL database make sure you install a driver like **psycopg2**. OpenMining supports all databases that the underlying ORM SQLAlchemy supports.
+
 See the `SQLAlchemy documentation <http://docs.sqlalchemy.org/en/rel_0_9/core/engines.html>`_ for more info about drivers and connection strings.
 
 
