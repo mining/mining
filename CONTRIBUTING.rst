@@ -9,6 +9,6 @@ Examples of contributions include:
 * Documentation improvements
 * Bug reports and patch reviews
 
-**Warning: pull requests are ignored!** `File a ticket`__ to suggest changes.
+Pull requests are welcome! `Open an issue`__ to suggest changes.
 
 __ https://github.com/avelino/mining/issues
