@@ -19,12 +19,6 @@ Open Mining
 Business Intelligence (BI) Application Server written in Python
 
 
-Contribute
-----------
-
-Join us on IRC at **#openmining** on freenode (`web access <http://webchat.freenode.net/?channels=openmining>`_).
-
-
 Requirements
 ------------
 
@@ -127,6 +121,12 @@ Screenshots
 
 .. image:: https://raw.github.com/mining/mining/master/docs/docs/img/late-scheduler-openmining_new.png
     :alt: Late Scheduler and running Cubes OpenMining
+
+
+Contribute
+----------
+
+Join us on IRC at **#openmining** on freenode (`web access <http://webchat.freenode.net/?channels=openmining>`_).
 
 
 Credits
