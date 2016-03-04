@@ -8,6 +8,11 @@ Open Mining
 .. image:: https://coveralls.io/repos/github/mining/mining/badge.svg?branch=master
     :target: https://coveralls.io/github/mining/mining?branch=master
 
+.. image:: https://landscape.io/github/mining/mining/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/mining/mining/master
+   :alt: Code Health
+
+
 .. image:: https://raw.githubusercontent.com/mining/frontend/master/assets/image/openmining.io.png
     :alt: OpenMining
 
