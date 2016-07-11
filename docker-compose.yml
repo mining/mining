@@ -1,0 +1,13 @@
+version: '2'
+services:
+  mining:
+    build: .
+    links:
+      - mongodb
+      - redis
+    ports:
+      - "8888:8888"
+  mongodb:
+    image: "mongo:3.2"
+  redis:
+    image: "redis:3.2"
