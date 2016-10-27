@@ -1,0 +1,37 @@
+version: '2'
+services:
+  mining:
+    restart: always
+    build: .
+    depends_on:
+      - celery
+      - scheduler
+    links:
+      - mongodb
+      - redis
+    ports:
+      - "8888:8888"
+  celery:
+    restart: always
+    build: .
+    links:
+      - mongodb
+      - redis
+    environment:
+      - C_FORCE_ROOT="true"
+    command: python manage.py celery
+  scheduler:
+    restart: always
+    build: .
+    links:
+      - mongodb
+      - redis
+    environment:
+      - C_FORCE_ROOT="true"
+    command: python manage.py scheduler
+  mongodb:
+    image: "mongo:3.2"
+    volumes:
+      - ./data/mongo:/data/db
+  redis:
+    image: "redis:3.2"
