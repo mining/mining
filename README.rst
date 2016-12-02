@@ -140,4 +140,4 @@ Many thanks to all the contributors!
 License
 -------
 
-Licensed under the MIT license (see MIT-LICENSE file)
+Licensed under the MIT license (see the (`LICENSE file <https://github.com/mining/mining/blob/master/LICENSE>`_).
